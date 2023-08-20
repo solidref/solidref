@@ -35,7 +35,3 @@ An object should only communicate with its immediate neighbors. This leads to a 
 
 ### Separation of Concerns
 Different functionalities should be separated into distinct sections or modules. This makes the system more modular.
-
----
-
-This is a starting point. You can expand this markdown file by adding more principles, providing more detailed explanations, or including examples.

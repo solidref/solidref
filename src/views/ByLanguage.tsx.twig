@@ -1,0 +1,31 @@
+import React from "react";
+import Page from "../components/Page.js";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+
+const ByLanguage: React.FC = () => {
+  return (
+    <Page>
+      <Box sx={{ '{{' }} flexGrow: 1 {{ '}}' }}>
+        <Grid container spacing={2}>
+{% for node in ast.children %}
+{% if (node.type == 'heading') and (node.depth == 2) %}
+          <Grid item xs={{ '{' }}12{{ '}' }}>
+            <h2>{{ node.children[0].value }}</h2>
+          </Grid>
+{% endif %}
+{% if( node.type == 'heading') and (node.depth == 3) %}
+          <Grid item xs={{ '{' }}6{{ '}' }}>
+            <h3>{{ node.children[0].value }}</h3>
+            <p>test</p>
+          </Grid>
+          <Grid item xs={{ '{' }}6{{ '}' }}></Grid>
+{% endif %}
+{% endfor %}
+        </Grid>
+      </Box>
+    </Page>
+  );
+};
+
+export default ByLanguage;
