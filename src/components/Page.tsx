@@ -1,5 +1,5 @@
-import { Container } from "@mui/material";
-import React from "react";
+import {Container} from '@mui/material';
+import React from 'react';
 // import { useParams } from "react-router-dom";
 
 // type Params = {
@@ -10,8 +10,8 @@ interface PageProps {
   children?: React.ReactNode;
 }
 
-const Page: React.FC<PageProps> = ({ children }) => {
-//   const { name } = useParams<Params>();
+const Page: React.FC<PageProps> = ({children}) => {
+  //   const { name } = useParams<Params>();
 
   return (
     <div>

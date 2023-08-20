@@ -1,5 +1,7 @@
+{% set header_present = 0 %}
+{% set paragraph_present = 0 %}
 import React from "react";
-import Page from "../components/Page.js";
+import Page from "../components/Page";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
@@ -9,19 +11,42 @@ const ByLanguage: React.FC = () => {
       <Box sx={{ '{{' }} flexGrow: 1 {{ '}}' }}>
         <Grid container spacing={2}>
 {% for node in ast.children %}
-{% if (node.type == 'heading') and (node.depth == 2) %}
+  {% if node.type == 'heading' %}
+    {% if paragraph_present == 1 %}
+    {# close previous paragraph grid #}
+          </Grid>
+          <Grid item xs={{ '{' }}6{{ '}' }} id={{ '{' }}'{{ node_id(node.children[0].value) }}-code'{{ '}' }}/>
+      {% set paragraph_present = 0 %}
+    {% endif %}
+    {% if node.depth == 2 %}{% set header_present=1 %}
           <Grid item xs={{ '{' }}12{{ '}' }}>
             <h2>{{ node.children[0].value }}</h2>
           </Grid>
-{% endif %}
-{% if( node.type == 'heading') and (node.depth == 3) %}
-          <Grid item xs={{ '{' }}6{{ '}' }}>
+    {% endif %}
+    {% if node.depth == 3 %}
+          <Grid item xs={{ '{' }}12{{ '}' }} id={{ '{' }}'{{ node_id(node.children[0].value) }}'{{ '}' }}>
             <h3>{{ node.children[0].value }}</h3>
-            <p>test</p>
           </Grid>
-          <Grid item xs={{ '{' }}6{{ '}' }}></Grid>
-{% endif %}
+    {% endif %}
+    {% set header_present = 1 %}
+  {% endif %}
+  {% if node.type == 'paragraph' %}
+    {% set paragraph_present = 1 %}
+          
+    {% if header_present == 1 %}
+    {# start paragraph grid #}
+          <Grid item xs={{ '{' }}6{{ '}' }}>
+      {% set header_present = 0 %}
+    {% endif %}
+            <p>{{ node.children[0].value }}</p>
+  {% endif %}
 {% endfor %}
+{% if paragraph_present == 1 %}
+{# close previous paragraph grid #}
+          </Grid>
+          <Grid item xs={{ '{' }}6{{ '}' }}/>
+  {% set paragraph_present = 0 %}
+{% endif %}
         </Grid>
       </Box>
     </Page>

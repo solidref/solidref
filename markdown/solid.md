@@ -34,4 +34,7 @@ Avoid adding functionality until it's necessary. Prevents overengineering.
 An object should only communicate with its immediate neighbors. This leads to a more decoupled system.
 
 ### Separation of Concerns
+
+Different functionalities should be separated into distinct sections or modules. This makes the system more modular.
+
 Different functionalities should be separated into distinct sections or modules. This makes the system more modular.
