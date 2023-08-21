@@ -1,7 +1,5 @@
 # Coding Principles
 
-A collection of widely-accepted coding principles that guide software design and development.
-
 ## SOLID Principles
 
 ### Single Responsibility Principle (SRP)

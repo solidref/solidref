@@ -1,14 +1,25 @@
 {% set header_present = 0 %}
 {% set paragraph_present = 0 %}
-import React from "react";
-import Page from "../components/Page";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import React from 'react';
+import Page from '../components/Page';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import { useParams } from "react-router-dom";
+
+type Params = {
+  language: string;
+};
 
 const ByLanguage: React.FC = () => {
+
+  const {language} = useParams<Params>();
+
   return (
     <Page>
       <Box sx={{ '{{' }} flexGrow: 1 {{ '}}' }}>
+        <Grid item xs={{ '{' }}12{{ '}' }}>
+          <h1>Coding principles under <i>{language}</i></h1>
+        </Grid>
         <Grid container spacing={2}>
 {% for node in ast.children %}
   {% if node.type == 'heading' %}

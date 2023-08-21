@@ -14,7 +14,7 @@ const App: React.FC = () => {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/by-language/:name" element={<ByLanguage />} />
+            <Route path="/by-language/:language" element={<ByLanguage />} />
           </Routes>
         </main>
         <Footer />

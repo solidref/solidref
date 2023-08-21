@@ -2,16 +2,29 @@ import React from 'react';
 import Page from '../components/Page';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import {useParams} from 'react-router-dom';
+import SyntaxHighlighter from '../components/SyntaxHighlighter';
+
+type Params = {
+  language: string;
+};
 
 const ByLanguage: React.FC = () => {
+  const {language} = useParams<Params>();
+
+  // const code = ''
+  const code = `import createTheme from '@mui/material/styles';
+import green, grey, red from '@mui/material/colors';`;
+
   return (
     <Page>
       <Box sx={{flexGrow: 1}}>
+        <Grid item xs={12}>
+          <h1>
+            Coding principles under <i>{language}</i>
+          </h1>
+        </Grid>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <p>A collection of widely-accepted coding principles that guide software design and development.</p>
-          </Grid>
-          <Grid item xs={6} id={'solid-principles-code'} />
           <Grid item xs={12}>
             <h2>SOLID Principles</h2>
           </Grid>
@@ -25,7 +38,9 @@ const ByLanguage: React.FC = () => {
               making the system more modular and easier to maintain.
             </p>
           </Grid>
-          <Grid item xs={6} id={'open-closed-principle-ocp--code'} />
+          <Grid item xs={6} id={'open-closed-principle-ocp--code'}>
+            <SyntaxHighlighter code={code} language={language} />
+          </Grid>
           <Grid item xs={12} id={'open-closed-principle-ocp-'}>
             <h3>Open/Closed Principle (OCP)</h3>
           </Grid>
