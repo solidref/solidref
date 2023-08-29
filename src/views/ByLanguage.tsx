@@ -3,7 +3,6 @@ import Page from '../components/Page';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import {useParams} from 'react-router-dom';
-import SyntaxHighlighter from '../components/SyntaxHighlighter';
 
 type Params = {
   language: string;
@@ -11,10 +10,6 @@ type Params = {
 
 const ByLanguage: React.FC = () => {
   const {language} = useParams<Params>();
-
-  // const code = ''
-  const code = `import createTheme from '@mui/material/styles';
-import green, grey, red from '@mui/material/colors';`;
 
   return (
     <Page>
@@ -38,9 +33,7 @@ import green, grey, red from '@mui/material/colors';`;
               making the system more modular and easier to maintain.
             </p>
           </Grid>
-          <Grid item xs={6} id={'open-closed-principle-ocp--code'}>
-            <SyntaxHighlighter code={code} language={language} />
-          </Grid>
+          <Grid item xs={6} id={'open-closed-principle-ocp--code'} />
           <Grid item xs={12} id={'open-closed-principle-ocp-'}>
             <h3>Open/Closed Principle (OCP)</h3>
           </Grid>
