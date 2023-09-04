@@ -5,6 +5,7 @@ export type LanguageHierarchy = {
 }
 
 export type LanguageHierarchyObject = {
+  ready?: boolean;
   rootLanguages?: string[];
   languages?: string[];
   languageLink?: {[key: string]: string[]};
@@ -20,11 +21,11 @@ export type MarkdownObject = {
   [key: string]: any,
 }
 
-export type LanguageMarkdownsObject = {
+export type LanguageMarkdownObject = {
   [key: string]: MarkdownObject,
 }
 
-export const languageMarkdownsState = atom<LanguageMarkdownsObject>({
+export const languageMarkdownState = atom<LanguageMarkdownObject>({
   key: 'arrayOfStructuresState',
   default: {}, // default empty array
 });

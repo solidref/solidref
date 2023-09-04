@@ -1,15 +1,38 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Page from '../components/Page';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import {useParams} from 'react-router-dom';
+import {useRecoilState, useRecoilValueLoadable} from 'recoil';
+
+import { LanguageHierarchyObject, languageMarkdownState } from '../state';
+import {loadMarkdownByLanguage} from '../selector';
 
 type Params = {
   language: string;
 };
 
-const ByLanguage: React.FC = () => {
-  const {language} = useParams<Params>();
+export type ByLanguageProps = {
+  languageHierarchy?: LanguageHierarchyObject;
+};
+
+function ByLanguage({languageHierarchy = {}}: ByLanguageProps) {
+  const {language = 'javascript'} = useParams<Params>();
+
+  const searchLanguage = `${
+    languageHierarchy?.languageLink ? languageHierarchy?.languageLink[language] : 'javascript-javascript'
+  }`;
+  const [languageMarkdown, setLanguageMarkdown] = useRecoilState(languageMarkdownState);
+  const languageMarkdownLoadable =  useRecoilValueLoadable(loadMarkdownByLanguage(searchLanguage));
+
+  useEffect(() => {
+    if (languageMarkdownLoadable.state === 'hasValue') {
+      setLanguageMarkdown({
+        ...languageMarkdown,
+        ...languageMarkdownLoadable.contents,
+      });
+    }
+  }, [languageMarkdownLoadable.state]);
 
   return (
     <Page>

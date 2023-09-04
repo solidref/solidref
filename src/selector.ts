@@ -25,7 +25,7 @@ export const loadMarkdownByLanguage = selectorFamily<MarkdownObject, string>({
   key: 'loadMarkdownByLanguage',
   get: (language: string) => async () => {
     try {
-      const response = await fetch(`/generated/${language}.json`);
+      const response = await fetch(`/generated/languages/${language}.json`);
       const data: MarkdownObject = await response.json();
       return data;
     } catch (error) {
