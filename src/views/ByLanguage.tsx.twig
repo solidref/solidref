@@ -1,18 +1,82 @@
 {% set header_present = 0 %}
 {% set paragraph_present = 0 %}
-import React from 'react';
+{% set header_value = '' %}
+import React, {useEffect} from 'react';
 import Page from '../components/Page';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { useParams } from "react-router-dom";
+import {useParams} from 'react-router-dom';
+import {useRecoilState, useRecoilValueLoadable} from 'recoil';
+
+import { LanguageHierarchyObject, languageMarkdownState } from '../state';
+import {loadMarkdownByLanguage} from '../selector';
+import SyntaxHighlighter from '../components/SyntaxHighlighter';
 
 type Params = {
   language: string;
 };
 
-const ByLanguage: React.FC = () => {
+export type ByLanguageProps = {
+  languageHierarchy?: LanguageHierarchyObject;
+};
 
-  const {language} = useParams<Params>();
+function ByLanguage({languageHierarchy = {}}: ByLanguageProps) {
+  const {language = 'javascript'} = useParams<Params>();
+
+  const searchLanguage = `${
+    languageHierarchy?.languageLink ? languageHierarchy?.languageLink[language] : 'javascript-javascript'
+  }`;
+  const [languageMarkdown, setLanguageMarkdown] = useRecoilState(languageMarkdownState);
+  const languageMarkdownLoadable =  useRecoilValueLoadable(loadMarkdownByLanguage(searchLanguage));
+
+  useEffect(() => {
+    if (languageMarkdownLoadable.state === 'hasValue') {
+      setLanguageMarkdown({
+        ...languageMarkdown,
+        ...languageMarkdownLoadable.contents,
+      });
+    }
+  }, [languageMarkdownLoadable.state]);
+
+  const makeKey = (key: string): string => {
+    return key.replace(/[^\w]+/gi, '-').toLowerCase();
+  };
+
+  const codeSample = (id: string) => {
+    if (!languageMarkdown.ready) {
+      return <>Loading ...</>;
+    }
+
+    // Find the starting index after the heading "Single Responsibility Principle (SRP)"
+    const startIndex = languageMarkdown?.markdown?.children.findIndex(
+      (child) =>
+        child.type === 'heading' &&
+        child.depth === 3 && // Assuming you want h3 headings
+        makeKey(child?.children?.[0]?.value || '') === id,
+    );
+
+    // Find the ending index before the next heading of the same level (h3)
+    const endIndex = languageMarkdown?.markdown?.children.findIndex(
+      (child, index) =>
+        index > (startIndex ?? 0) && // Start looking after the starting index
+        child.type === 'heading' &&
+        child.depth === 3, // Assuming you want h3 headings
+    );
+
+    // Slice the children array based on the found indices
+    const slicedChildren = languageMarkdown?.markdown?.children.slice((startIndex ?? 0) + 1, endIndex);
+   
+    if (!slicedChildren?.length) {
+      return <>Missing information</>;
+    }
+
+    return <>{slicedChildren.map(c => {
+      switch (c.type) {
+        case 'code':
+          return (<SyntaxHighlighter code={c.value || ''} language={c.lang || 'js'} />)
+      }
+    })}</>;
+  }
 
   return (
     <Page>
@@ -26,7 +90,9 @@ const ByLanguage: React.FC = () => {
     {% if paragraph_present == 1 %}
     {# close previous paragraph grid #}
           </Grid>
-          <Grid item xs={{ '{' }}6{{ '}' }} id={{ '{' }}'{{ node_id(node.children[0].value) }}-code'{{ '}' }}/>
+          <Grid item xs={{ '{' }}6{{ '}' }} id={{ '{' }}'{{ node_id(header_value) }}-code'{{ '}' }}>
+            {codeSample('{{ node_id(header_value) }}')}
+          </Grid>
       {% set paragraph_present = 0 %}
     {% endif %}
     {% if node.depth == 2 %}{% set header_present=1 %}
@@ -36,6 +102,7 @@ const ByLanguage: React.FC = () => {
     {% endif %}
     {% if node.depth == 3 %}
           <Grid item xs={{ '{' }}12{{ '}' }} id={{ '{' }}'{{ node_id(node.children[0].value) }}'{{ '}' }}>
+            {% set header_value = node.children[0].value %}
             <h3>{{ node.children[0].value }}</h3>
           </Grid>
     {% endif %}

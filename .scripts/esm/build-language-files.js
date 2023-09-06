@@ -4,7 +4,6 @@ import {fileURLToPath} from 'url';
 import {globby} from 'globby';
 
 import {fromMarkdown} from 'mdast-util-from-markdown';
-import {createRequire} from 'module';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,8 +19,22 @@ function ofUnix(file) {
 async function parseAndSave(file) {
   console.log(file.replace(ofUnix(pathJoin(__dirname, '..', '..')) + '/', ''));
 
-  const mdString = await readFile(file).toString('utf-8');
+  const mdString = await readFile(file, 'utf-8');
   const mdObject = fromMarkdown(mdString);
+
+  // Function to resolve Promises in the object
+  async function resolvePromises(obj) {
+    if (typeof obj === 'object' && obj !== null) {
+      for (const key in obj) {
+        obj[key] = await resolvePromises(obj[key]);
+      }
+    } else if (obj instanceof Promise) {
+      return await obj;
+    }
+    return obj;
+  }
+
+  const resolvedMdObject = await resolvePromises(mdObject);
 
   const debug = process.env === 'development' ? [null, 2] : [];
 
@@ -29,7 +42,7 @@ async function parseAndSave(file) {
   await mkdir(dirName, {recursive: true});
 
   const fileName = pathJoin(dirName, basename(file, '.md') + '.json');
-  await writeFile(fileName, JSON.stringify(mdObject, ...debug));
+  await writeFile(fileName, JSON.stringify(resolvedMdObject, ...debug));
 }
 
 async function main() {

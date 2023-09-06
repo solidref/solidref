@@ -56,6 +56,6 @@ function Home({languageHierarchy = {}}: HomeProps) {
       </Box>
     </Page>
   );
-};
+}
 
 export default Home;

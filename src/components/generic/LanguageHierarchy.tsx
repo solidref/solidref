@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 
 import {languageHierarchyState, LanguageHierarchyObject} from '../../state';
-import { useRecoilState, useRecoilValueLoadable } from 'recoil';
-import { loadLanguageHierarchy } from '../../selector';
+import {useRecoilState, useRecoilValueLoadable} from 'recoil';
+import {loadLanguageHierarchy} from '../../selector';
 
 export type LanguageHierarchyLoaderProps = {
   exportLanguageHierarchy: (value: LanguageHierarchyObject) => void;
@@ -16,7 +16,6 @@ function LanguageHierarchyLoader({exportLanguageHierarchy}: LanguageHierarchyLoa
     if (languageHierarchyLoadable.state === 'hasValue') {
       setLanguageHierarchy({
         ...languageHierarchy,
-        ...({ready: true}),
         ...languageHierarchyLoadable.contents,
       });
       exportLanguageHierarchy({
@@ -28,6 +27,6 @@ function LanguageHierarchyLoader({exportLanguageHierarchy}: LanguageHierarchyLoa
   }, [languageHierarchyLoadable.state]);
 
   return <></>;
-};
+}
 
 export default LanguageHierarchyLoader;
