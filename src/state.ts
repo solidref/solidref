@@ -8,6 +8,7 @@ export type LanguageHierarchyObject = {
   ready?: boolean;
   rootLanguages?: string[];
   languages?: string[];
+  languageMap?: {[key: string]: string[]};
   languageLink?: {[key: string]: string[]};
 };
 

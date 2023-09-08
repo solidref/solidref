@@ -1,25 +1,17 @@
 import React from 'react';
 import Page from '../components/Page';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import {styled} from '@mui/material/styles';
-import Link from '@mui/material/Link';
 import {LanguageHierarchyObject} from '../state';
-
-const Item = styled(Paper)(({theme}) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+import LanguageItem from './home/LanguageItem';
 
 export type HomeProps = {
   languageHierarchy?: LanguageHierarchyObject;
 };
 
 function Home({languageHierarchy = {}}: HomeProps) {
+  console.log(languageHierarchy);
+
   return (
     <Page>
       <Box sx={{flexGrow: 1}}>
@@ -27,14 +19,12 @@ function Home({languageHierarchy = {}}: HomeProps) {
           {languageHierarchy.ready ? (
             languageHierarchy?.rootLanguages?.map((language) => (
               <Grid item xs={4} key={language}>
-                <Link color="inherit" variant="h6" underline="none" href={`/by-language/${language}`}>
-                  <Item>{language}</Item>
-                </Link>
+                <LanguageItem language={language} subLanguages={languageHierarchy?.languageMap?.[language] ?? []} />
               </Grid>
             ))
           ) : (
             <Grid item xs={4}>
-              <Item>Loading...</Item>
+              Loading...
             </Grid>
           )}
         </Grid>
@@ -42,14 +32,12 @@ function Home({languageHierarchy = {}}: HomeProps) {
           {languageHierarchy?.languages?.length ? (
             languageHierarchy?.languages?.map((language) => (
               <Grid item xs={4} key={language}>
-                <Link color="inherit" variant="h6" underline="none" href={`/by-language/${language}`}>
-                  <Item>{language}</Item>
-                </Link>
+                <LanguageItem language={language} />
               </Grid>
             ))
           ) : (
             <Grid item xs={4}>
-              <Item>Loading...</Item>
+              Loading...
             </Grid>
           )}
         </Grid>

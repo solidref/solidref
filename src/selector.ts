@@ -14,6 +14,7 @@ export const loadLanguageHierarchy = selector<LanguageHierarchyObject>({
       languages: Object.keys(data)
         .map((l) => data[l])
         .reduce((acc, cur) => [...acc, ...cur], []),
+      languageMap: data,
       languageLink: Object.keys(data)
         .map((l) => data[l].map((ll) => ({[ll]: `${l}-${ll}`})).reduce((acc, cur) => ({...acc, ...cur}), {}))
         .reduce((acc, cur) => ({...acc, ...cur}), {}),
