@@ -5,6 +5,7 @@ import {styled} from '@mui/material/styles';
 
 import SvgIconByName from '../../icons/SvgIconByName';
 import {Button, Menu, MenuItem} from '@mui/material';
+import ContentLoader from 'react-content-loader';
 
 const LanguagePaper = styled(Paper)(({theme}) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,6 +35,7 @@ const TextPaper = styled(Paper)(({theme}) => ({
 }));
 
 export interface LanguageItemProps extends PaperProps {
+  loading?: boolean;
   language: string;
   subLanguages?: string[];
 }
@@ -102,7 +104,7 @@ function parseColor(colorString: string) {
   return null; // Invalid color format
 }
 
-function LanguageItem({language, subLanguages = [], ...rest}: LanguageItemProps) {
+function LanguageItem({language, loading = false, subLanguages = [], ...rest}: LanguageItemProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -197,7 +199,18 @@ function LanguageItem({language, subLanguages = [], ...rest}: LanguageItemProps)
 
   console.log(subLanguages);
 
-  if (!subLanguages.length || !subLanguages.filter(l => l !== language).length) {
+  if (loading) {
+    return (
+      <LanguagePaper>
+        <ContentLoader viewBox="0 0 380 40">
+          <rect x="8" y="8" rx="5" ry="5" width="24" height="24" />
+          <rect x="40" y="12" rx="4" ry="4" width="100" height="16" />
+        </ContentLoader>
+      </LanguagePaper>
+    );
+  }
+
+  if (!subLanguages.length || !subLanguages.filter((l) => l !== language).length) {
     return (
       <Link href={`/by-language/${language}`}>
         <LanguagePaper {...rest} id={colorId} style={{backgroundColor: fadedColor || dominantColor}}>

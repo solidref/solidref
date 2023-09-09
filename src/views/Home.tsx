@@ -3,44 +3,44 @@ import Page from '../components/Page';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import {LanguageHierarchyObject} from '../state';
-import LanguageItem from './home/LanguageItem';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import {Paper} from '@mui/material';
+import RootLanguages from './home/RootLanguages';
+import AllLanguages from './home/AllLanguages';
 
 export type HomeProps = {
   languageHierarchy?: LanguageHierarchyObject;
 };
 
 function Home({languageHierarchy = {}}: HomeProps) {
-  console.log(languageHierarchy);
+  const [view, setView] = React.useState('list');
+
+  const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+    setView(nextView);
+  };
 
   return (
     <Page>
       <Box sx={{flexGrow: 1}}>
         <Grid container spacing={2}>
-          {languageHierarchy.ready ? (
-            languageHierarchy?.rootLanguages?.map((language) => (
-              <Grid item xs={4} key={language}>
-                <LanguageItem language={language} subLanguages={languageHierarchy?.languageMap?.[language] ?? []} />
-              </Grid>
-            ))
-          ) : (
-            <Grid item xs={4}>
-              Loading...
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <Paper elevation={0} style={{margin: '10px 0', display: 'flex', justifyContent: 'end'}}>
+              <ToggleButtonGroup value={view} exclusive onChange={handleChange}>
+                <ToggleButton value="list" aria-label="list">
+                  <ViewListIcon />
+                </ToggleButton>
+                <ToggleButton value="module" aria-label="module">
+                  <ViewModuleIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid container spacing={2}>
-          {languageHierarchy?.languages?.length ? (
-            languageHierarchy?.languages?.map((language) => (
-              <Grid item xs={4} key={language}>
-                <LanguageItem language={language} />
-              </Grid>
-            ))
-          ) : (
-            <Grid item xs={4}>
-              Loading...
-            </Grid>
-          )}
-        </Grid>
+        {view === 'list' ? <RootLanguages languageHierarchy={languageHierarchy} /> : <></>}
+        {view === 'module' ? <AllLanguages languageHierarchy={languageHierarchy} /> : <></>}
       </Box>
     </Page>
   );
