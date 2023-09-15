@@ -1,0 +1,208 @@
+---
+language: C Language
+code: c
+parent: null
+birth: 1972
+death: null
+description: |
+  C is a general-purpose programming language known for its low-level memory manipulation and efficient performance. It has a simple and expressive syntax and is widely used in system programming and embedded systems.
+principles:
+  - title: Single Responsibility Principle (SRP)
+    code: |
+      /* Bad example: A function handling both data retrieval and presentation */
+      void fetchAndRenderUserData() {
+          // ...
+      }
+
+      /* Good example: Separating concerns into different functions or modules */
+      void fetchUserData() {
+          // ...
+      }
+
+      void renderUserData(UserData data) {
+          // ...
+      }
+  - title: Open/Closed Principle (OCP)
+    code: |
+      /* Bad example: Modifying existing code to add new functionality */
+      struct Rectangle {
+          float width;
+          float height;
+      };
+
+      float computeArea(struct Rectangle rect) {
+          return rect.width * rect.height;
+      }
+
+      /* Good example: Using abstraction to allow extension without modification */
+      typedef struct {
+          float (*computeArea)(void* self);
+      } Shape;
+
+      typedef struct {
+          Shape shape;
+          float radius;
+      } Circle;
+
+      float computeCircleArea(void* self) {
+          Circle* circle = (Circle*)self;
+          return 3.14 * circle->radius * circle->radius;
+      }
+  - title: Liskov Substitution Principle (LSP)
+    code: |
+      /* Bad example: Derived struct changes the behavior of the base struct */
+      typedef struct {
+          void (*fly)(void* self);
+      } Bird;
+
+      void ostrichFly(void* self) {
+          // Ostrich can't fly
+      }
+
+      /* Good example: Derived structs maintain the behavior of the base struct */
+      typedef struct {
+          void (*fly)(void* self);
+      } FlyingBird;
+
+      typedef struct {
+          void (*walk)(void* self);
+      } NonFlyingBird;
+  - title: Interface Segregation Principle (ISP)
+    code: |
+      /* Bad example: A bulky interface */
+      typedef struct {
+          void (*work)(void* self);
+          void (*eat)(void* self);
+      } Worker;
+
+      /* Good example: Segregated interfaces */
+      typedef struct {
+          void (*work)(void* self);
+      } Workable;
+
+      typedef struct {
+          void (*eat)(void* self);
+      } Eatable;
+  - title: Dependency Inversion Principle (DIP)
+    code: |
+      /* Bad example: High-level module depending on a low-level module */
+      typedef struct {
+          void (*turnOn)(void* self);
+      } LightBulb;
+
+      typedef struct {
+          LightBulb* bulb;
+      } Switch;
+
+      /* Good example: Both high-level and low-level modules depend on abstractions */
+      typedef struct {
+          void (*turnOn)(void* self);
+      } Device;
+
+      typedef struct {
+          Device* device;
+      } Fan;
+
+      typedef struct {
+          Device* device;
+      } Switch;
+  - title: DRY (Don't Repeat Yourself)
+    code: |
+      /* Bad example: Repeated logic */
+      int addTaxForFood(int price) {
+          return price + (price * 0.05);
+      }
+
+      int addTaxForElectronics(int price) {
+          return price + (price * 0.05);
+      }
+
+      /* Good example: Single function for repeated logic */
+      int addTax(int price, float rate) {
+          return price + (int)(price * rate);
+      }
+  - title: KISS (Keep It Simple, Stupid)
+    code: |
+      /* Bad example: Overcomplicated way to check even numbers */
+      int isEven(int num) {
+          return num % abs(2) == 0;
+      }
+
+      /* Good example: Simplified approach */
+      int isEven(int num) {
+          return num % 2 == 0;
+      }
+  - title: YAGNI (You Aren't Gonna Need It)
+    code: |
+      /* Bad example: Adding unnecessary features */
+      struct Car {
+          void (*drive)(void* self);
+          void (*fly)(void* self);  // Cars don't fly!
+      };
+
+      /* Good example: Only implement what's needed */
+      typedef struct {
+          void (*drive)(void* self);
+      } Car;
+  - title: Law of Demeter (Principle of Least Knowledge)
+    code: |
+      /* Bad example: Accessing nested structures directly */
+      typedef struct {
+          float amount;
+      } Money;
+
+      typedef struct {
+          Money money;
+      } Wallet;
+
+      typedef struct {
+          Wallet wallet;
+      } Person;
+
+      bool purchase(void* item, Person* buyer) {
+          if (buyer->wallet.money.amount >= item.price) { /* ... */ }
+          return 0;
+      }
+
+      /* Good example: Using encapsulation */
+      typedef struct {
+          float money;
+      } Money;
+
+      typedef struct {
+          Money money;
+      } Wallet;
+
+      typedef struct {
+          Wallet wallet;
+      } Person;
+
+      float getMoneyAmount(Person* buyer) {
+          return buyer->wallet.money;
+      }
+
+      bool purchase(void* item, Person* buyer) {
+          if (getMoneyAmount(buyer) >= item.price) { /* ... */ }
+          return 0;
+      }
+  - title: Separation of Concerns
+    code: |
+      /* Bad example: Mixing data retrieval and presentation */
+      typedef struct {
+          void (*fetchUserData)(void* self);
+          void (*render)(void* self);
+          void (*calculateAge)(void* self);
+      } UserComponent;
+
+      /* Good example: Separating concerns into different modules */
+      typedef struct {
+          void (*fetchUserData)(void* self);
+      } UserDataService;
+
+      typedef struct {
+          void (*calculateAge)(void* self);
+      } UserLogic;
+
+      typedef struct {
+          void (*render)(void* self);
+      } UserComponent;
