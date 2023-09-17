@@ -1,6 +1,6 @@
 // selectors.js
 import {selector, selectorFamily} from 'recoil';
-import {LanguageHierarchy, LanguageHierarchyObject, LanguageMarkdownObject, MarkdownRootNode} from './state';
+import {LanguageHierarchy, LanguageHierarchyObject, LanguageObject, LanguageYamlObject} from './state';
 
 export const loadLanguageHierarchy = selector<LanguageHierarchyObject>({
   key: 'loadLanguageHierarchy',
@@ -11,28 +11,25 @@ export const loadLanguageHierarchy = selector<LanguageHierarchyObject>({
     return {
       ready: true,
       rootLanguages: Object.keys(data),
-      languages: Object.keys(data)
-        .map((l) => data[l])
-        .reduce((acc, cur) => [...acc, ...cur], []),
-      languageMap: data,
-      languageLink: Object.keys(data)
-        .map((l) => data[l].map((ll) => ({[ll]: `${l}-${ll}`})).reduce((acc, cur) => ({...acc, ...cur}), {}))
-        .reduce((acc, cur) => ({...acc, ...cur}), {}),
+      allLanguages: Object.keys(data)
+        .map((l) => [l, ...(data[l].children ?? [])])
+        .reduce((acc, cur) => [...new Set([...acc, ...cur])].sort(), []),
+      hierarchy: data,
     } as unknown as LanguageHierarchyObject;
   },
 });
 
 // This is a selector family, which means it can take a parameter (in this case, the language)
-export const loadMarkdownByLanguage = selectorFamily<LanguageMarkdownObject, string>({
-  key: 'loadMarkdownByLanguage',
+export const loadYamlByLanguage = selectorFamily<LanguageObject, string>({
+  key: 'loadYamlByLanguage',
   get: (language: string) => async () => {
     try {
       const response = await fetch(`/generated/languages/${language}.json`);
-      const markdown: MarkdownRootNode = await response.json();
+      const languageObject: LanguageYamlObject = await response.json();
       return {
         ready: true,
-        markdown,
-      } as unknown as LanguageMarkdownObject;
+        languageObject,
+      } as unknown as LanguageObject;
     } catch (error) {
       throw error; // Handle errors as needed, this will set the Recoil loadable to an error state
     }

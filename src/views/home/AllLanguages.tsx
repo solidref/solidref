@@ -10,8 +10,8 @@ export type LanguageListProps = {
 function LanguageModule({languageHierarchy = {}}: LanguageListProps) {
   return (
     <Grid container spacing={2}>
-      {languageHierarchy?.languages?.length ? (
-        languageHierarchy?.languages?.map((language) => (
+      {languageHierarchy?.allLanguages?.length ? (
+        languageHierarchy?.allLanguages?.map((language) => (
           <Grid item xs={4} key={language}>
             <LanguageItem language={language} />
           </Grid>

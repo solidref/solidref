@@ -1,15 +1,19 @@
 import {atom} from 'recoil';
 
 export type LanguageHierarchy = {
-  [key: string]: string[];
+  [key: string]: {
+    children?: string[];
+    birth: string;
+    death: string;
+    code?: string;
+  };
 };
 
 export type LanguageHierarchyObject = {
   ready?: boolean;
   rootLanguages?: string[];
-  languages?: string[];
-  languageMap?: {[key: string]: string[]};
-  languageLink?: {[key: string]: string[]};
+  allLanguages?: string[];
+  hierarchy?: LanguageHierarchy;
 };
 
 export const languageHierarchyState = atom<LanguageHierarchyObject>({
@@ -17,26 +21,22 @@ export const languageHierarchyState = atom<LanguageHierarchyObject>({
   default: {}, // default empty object
 });
 
-export interface MarkdownTreeNode {
-  type: string;
-  children?: MarkdownTreeNode[];
-  depth?: number;
-  value?: string;
-  lang?: string;
-  // Add other properties as needed
-}
-
-export interface MarkdownRootNode {
-  type: 'root';
-  children: MarkdownTreeNode[];
-}
-
-export type LanguageMarkdownObject = {
-  ready?: boolean;
-  markdown?: MarkdownRootNode;
+export type LanguageYamlObject = {
+  language?: string;
+  code?: string;
+  parent?: string;
+  birth?: number;
+  death?: number;
+  description?: string;
+  principles?: Array<{title: string; code: string}>;
 };
 
-export const languageMarkdownState = atom<LanguageMarkdownObject>({
+export type LanguageObject = {
+  ready?: boolean;
+  languageObject?: LanguageYamlObject;
+};
+
+export const languageObjectState = atom<LanguageObject>({
   key: 'arrayOfStructuresState',
   default: {}, // default empty array
 });

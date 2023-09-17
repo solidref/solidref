@@ -7,13 +7,16 @@ export type LanguageListProps = {
   languageHierarchy?: LanguageHierarchyObject;
 };
 
-function AllLanguages({languageHierarchy = {}}: LanguageListProps) {
+function RootLanguages({languageHierarchy = {}}: LanguageListProps) {
   return (
     <Grid container spacing={2}>
       {languageHierarchy.ready
         ? languageHierarchy?.rootLanguages?.map((language) => (
             <Grid item xs={4} key={language}>
-              <LanguageItem language={language} subLanguages={languageHierarchy?.languageMap?.[language] ?? []} />
+              <LanguageItem
+                language={language}
+                subLanguages={languageHierarchy?.hierarchy?.[language]?.children ?? []}
+              />
             </Grid>
           ))
         : [0, 1].map(
@@ -29,4 +32,4 @@ function AllLanguages({languageHierarchy = {}}: LanguageListProps) {
   );
 }
 
-export default AllLanguages;
+export default RootLanguages;

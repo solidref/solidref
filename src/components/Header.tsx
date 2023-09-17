@@ -32,7 +32,7 @@ function Header() {
       <AppBar position="fixed">
         <Toolbar sx={{justifyContent: 'space-between'}}>
           <Box sx={{flex: 1}} />
-          <Link variant="h6" underline="none" color="inherit" href="/premium-themes/onepirate/" sx={{fontSize: 24}}>
+          <Link variant="h6" underline="none" color="inherit" href="/" sx={{fontSize: 24}}>
             {'SOLIDref'}
           </Link>
           <Box sx={{flex: 1, display: 'flex', justifyContent: 'flex-end'}}>
