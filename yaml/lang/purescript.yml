@@ -1,7 +1,7 @@
 ---
 language: PureScript
 code: purescript
-parent: Haskell
+parent: haskell
 birth: 2013
 death: null
 description: A strongly-typed functional programming language that compiles to JavaScript. It's inspired by Haskell and offers advanced type features.

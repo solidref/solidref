@@ -7,7 +7,7 @@ import MuiToolbar from '@mui/material/Toolbar';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { IconButton } from '@mui/material';
+import {IconButton} from '@mui/material';
 
 function AppBar(props: AppBarProps) {
   return <MuiAppBar elevation={0} position="fixed" {...props} />;

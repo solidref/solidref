@@ -85,26 +85,46 @@ function ByLanguage({languageHierarchy = {}}: ByLanguageProps) {
           <h1>Coding principles under <i>{language}</i></h1>
         </Grid>
         <Grid container spacing={2}>
-        {% for principlesType in ast.content %}
-          <Grid item xs={12}>
-            <h2>{{ principlesType.subtitle }}</h2>
+{% for node in ast.children %}
+  {% if node.type == 'heading' %}
+    {% if paragraph_present == 1 %}
+    {# close previous paragraph grid #}
           </Grid>
-          {% for principle in principlesType.principles %}
-          {% set header_value = principle.name %}
-          <Grid item xs={12} id={{ '{' }}'{{ node_id(header_value) }}-head'{{ '}' }}>
-            <h3>{{header_value}}</h3>
-          </Grid>
-
-          <Grid item xs={6} id={{ '{' }}'{{ node_id(header_value) }}-desc'{{ '}' }}>
-            <p>
-              {{principle.description}}
-            </p>
-          </Grid>
-          <Grid item xs={6} id={{ '{' }}'{{ node_id(header_value) }}-code'{{ '}' }}>
+          <Grid item xs={{ '{' }}6{{ '}' }} id={{ '{' }}'{{ node_id(header_value) }}-code'{{ '}' }}>
             {codeSample('{{ node_id(header_value) }}')}
           </Grid>
-          {% endfor %}
-        {% endfor %}
+      {% set paragraph_present = 0 %}
+    {% endif %}
+    {% if node.depth == 2 %}{% set header_present=1 %}
+          <Grid item xs={{ '{' }}12{{ '}' }}>
+            <h2>{{ node.children[0].value }}</h2>
+          </Grid>
+    {% endif %}
+    {% if node.depth == 3 %}
+          <Grid item xs={{ '{' }}12{{ '}' }} id={{ '{' }}'{{ node_id(node.children[0].value) }}'{{ '}' }}>
+            {% set header_value = node.children[0].value %}
+            <h3>{{ node.children[0].value }}</h3>
+          </Grid>
+    {% endif %}
+    {% set header_present = 1 %}
+  {% endif %}
+  {% if node.type == 'paragraph' %}
+    {% set paragraph_present = 1 %}
+          
+    {% if header_present == 1 %}
+    {# start paragraph grid #}
+          <Grid item xs={{ '{' }}6{{ '}' }}>
+      {% set header_present = 0 %}
+    {% endif %}
+            <p>{{ node.children[0].value }}</p>
+  {% endif %}
+{% endfor %}
+{% if paragraph_present == 1 %}
+{# close previous paragraph grid #}
+          </Grid>
+          <Grid item xs={{ '{' }}6{{ '}' }}/>
+  {% set paragraph_present = 0 %}
+{% endif %}
         </Grid>
       </Box>
     </Page>

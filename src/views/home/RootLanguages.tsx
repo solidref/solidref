@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import LanguageItem from './LanguageItem';
-import { LanguageHierarchyObject } from '../../state';
+import {LanguageHierarchyObject} from '../../state';
 
 export type LanguageListProps = {
   languageHierarchy?: LanguageHierarchyObject;

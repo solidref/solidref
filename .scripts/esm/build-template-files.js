@@ -3,7 +3,8 @@ import {join, dirname} from 'path';
 import {fileURLToPath} from 'url';
 import {TwingEnvironment, TwingLoaderArray, TwingFunction} from 'twing';
 
-import {fromMarkdown} from 'mdast-util-from-markdown';
+// import {fromMarkdown} from 'mdast-util-from-markdown';
+import yaml from 'yaml';
 
 main();
 
@@ -11,13 +12,16 @@ async function main() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
 
-  const solidMd = join(__dirname, '..', '..', 'markdown', 'solid.md');
+  // const solidMd = join(__dirname, '..', '..', 'markdown', 'solid.md');
+  const solidYaml = join(__dirname, '..', '..', 'yaml', 'solid.yml');
 
-  const markdownContent = readFileSync(solidMd);
+  // const mdString = readFileSync(solidMd);
+  const yamlString = readFileSync(solidYaml).toString('utf-8');
 
-  const parsedContent = fromMarkdown(markdownContent);
+  // const mdObject = fromMarkdown(mdString);
+  const yamlObject = yaml.parse(yamlString);
 
-  // console.log(parsedContent);
+  // console.log(mdObject);
 
   const templatePath = join(__dirname, '..', '..', 'src', 'views', 'ByLanguage.tsx.twig');
 
@@ -38,7 +42,8 @@ async function main() {
   );
 
   const reactComponent = await twing.render('template.twig', {
-    ast: parsedContent,
+    // ast: mdObject,
+    ast: yamlObject,
   });
 
   const componentPath = join(__dirname, '..', '..', 'src', 'views', 'ByLanguage.tsx');

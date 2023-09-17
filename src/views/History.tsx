@@ -5,11 +5,11 @@ export type HistoryProps = {};
 
 // Sample data based on the order of introduction of languages derived from C
 const data = [
-  { year: 1972, C: 1 }, // C was introduced in 1972
-  { year: 1980, C: 1, Cpp: 1 }, // C++ was introduced in 1980
-  { year: 1983, C: 1, Cpp: 2, ObjectiveC: 1 }, // Objective-C was introduced in 1983
-  { year: 1990, C: 1, Cpp: 2, ObjectiveC: 3 }, // Objective-C was introduced in 1983
-  { year: 2000, C: 1, Cpp: 2, ObjectiveC: 3 }, // Objective-C was introduced in 1983
+  {year: 1972, C: 1}, // C was introduced in 1972
+  {year: 1980, C: 1, Cpp: 1}, // C++ was introduced in 1980
+  {year: 1983, C: 1, Cpp: 2, ObjectiveC: 1}, // Objective-C was introduced in 1983
+  {year: 1990, C: 1, Cpp: 2, ObjectiveC: 3}, // Objective-C was introduced in 1983
+  {year: 2000, C: 1, Cpp: 2, ObjectiveC: 3}, // Objective-C was introduced in 1983
   // ... continue for other languages
 ];
 
