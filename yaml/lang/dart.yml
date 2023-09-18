@@ -3,7 +3,6 @@ language: Dart
 code: dart
 parent: c
 birth: 2011
-death: null
 description: Developed by Google, Dart is an object-oriented, class-based language with C-style syntax. It can be transpiled to JavaScript and is used for building mobile and desktop web applications.
 principles:
   - title: Single Responsibility Principle (SRP)

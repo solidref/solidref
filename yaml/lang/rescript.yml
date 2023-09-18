@@ -2,8 +2,7 @@
 language: ReasonML / ReScript
 code: reasonml
 parent: ocaml
-birth: 2016 (ReasonML) / 2020 (ReScript)
-death: null
+birth: 2020
 description: Developed by Facebook, ReasonML offers a syntax close to JavaScript with the power of OCaml. It provides a strong type system and functional programming features. ReasonML is a syntax extension and toolchain for OCaml, which compiles to readable JavaScript. ReScript is a JavaScript backend for the OCaml compiler and has evolved to be its own language with its own syntax, heavily influenced by ReasonML and OCaml.
 principles:
   - title: Single Responsibility Principle (SRP)
@@ -126,7 +125,7 @@ principles:
   - title: YAGNI (You Aren't Gonna Need It)
     code: |
       /* Bad example: Adding unnecessary features */
-      type car = 
+      type car =
         | Drive
         | Fly;  /* Cars don't fly! */
 

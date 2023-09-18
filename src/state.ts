@@ -1,12 +1,14 @@
 import {atom} from 'recoil';
 
+export type LanguageItem = {
+  children?: string[];
+  birth: string;
+  death: string;
+  code?: string;
+};
+
 export type LanguageHierarchy = {
-  [key: string]: {
-    children?: string[];
-    birth: string;
-    death: string;
-    code?: string;
-  };
+  [key: string]: LanguageItem;
 };
 
 export type LanguageHierarchyObject = {

@@ -3,7 +3,6 @@ language: TypeScript
 code: typescript
 parent: javascript
 birth: 2012
-death: null
 description: Developed by Microsoft, TypeScript is a superset of JavaScript that adds optional static typing. It can catch type-related errors at compile-time, making it a favorite for large-scale applications.
 principles:
   - title: Single Responsibility Principle (SRP)

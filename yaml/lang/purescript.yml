@@ -3,7 +3,6 @@ language: PureScript
 code: purescript
 parent: haskell
 birth: 2013
-death: null
 description: A strongly-typed functional programming language that compiles to JavaScript. It's inspired by Haskell and offers advanced type features.
 principles:
   - title: Single Responsibility Principle (SRP)
@@ -12,24 +11,24 @@ principles:
       module User where
 
       saveUserData :: UserData -> Effect Unit
-      saveUserData userData = 
+      saveUserData userData =
         -- ...
 
       sendNotification :: Notification -> Effect Unit
-      sendNotification notification = 
+      sendNotification notification =
         -- ...
 
       -- Good example: Splitting responsibilities into separate modules
       module UserDataManager where
 
       saveUserData :: UserData -> Effect Unit
-      saveUserData userData = 
+      saveUserData userData =
         -- ...
 
       module UserNotification where
 
       sendNotification :: Notification -> Effect Unit
-      sendNotification notification = 
+      sendNotification notification =
         -- ...
   - title: Open/Closed Principle (OCP)
     code: |
@@ -123,22 +122,22 @@ principles:
       module User where
 
       fetchUserData :: Effect UserData
-      fetchUserData = 
+      fetchUserData =
         -- ...
 
       renderUser :: UserData -> String
-      renderUser user = 
+      renderUser user =
         -- ...
 
       -- Good example: Separating concerns into different modules
       module UserData where
 
       fetchUserData :: Effect UserData
-      fetchUserData = 
+      fetchUserData =
         -- ...
 
       module UserView where
 
       renderUser :: UserData -> String
-      renderUser user = 
+      renderUser user =
         -- ...

@@ -3,7 +3,6 @@ language: C++
 code: cpp
 parent: c
 birth: 1985
-death: null
 description: C++ is a general-purpose programming language created as an extension of the C programming language. It adds features like object-oriented programming and generic programming to C, making it a versatile language used in various domains.
 principles:
   - title: Single Responsibility Principle (SRP)

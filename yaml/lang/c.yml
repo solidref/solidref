@@ -1,9 +1,7 @@
 ---
 language: C Language
 code: c
-parent: null
 birth: 1972
-death: null
 description: |
   C is a general-purpose programming language known for its low-level memory manipulation and efficient performance. It has a simple and expressive syntax and is widely used in system programming and embedded systems.
 principles:

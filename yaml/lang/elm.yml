@@ -3,7 +3,6 @@ language: Elm
 code: elm
 parent: haskell
 birth: 2012
-death: null
 description: A functional language that compiles to JavaScript. It's known for its performance and strong emphasis on simplicity and quality tooling.
 principles:
   - title: Single Responsibility Principle (SRP)
@@ -12,24 +11,24 @@ principles:
       module User exposing (saveUserData, sendNotification)
 
       saveUserData : UserData -> Cmd Msg
-      saveUserData userData = 
+      saveUserData userData =
           -- ...
 
       sendNotification : Notification -> Cmd Msg
-      sendNotification notification = 
+      sendNotification notification =
           -- ...
 
       -- Good example: Splitting responsibilities into separate modules
       module UserDataManager exposing (saveUserData)
 
       saveUserData : UserData -> Cmd Msg
-      saveUserData userData = 
+      saveUserData userData =
           -- ...
 
       module UserNotification exposing (sendNotification)
 
       sendNotification : Notification -> Cmd Msg
-      sendNotification notification = 
+      sendNotification notification =
           -- ...
   - title: Open/Closed Principle (OCP)
     code: |

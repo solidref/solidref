@@ -1,8 +1,6 @@
 language: Python
 code: python
-parent: null
 birth: 1991
-death: null
 description: A widely-used high-level, interpreted, and general-purpose programming language. It prioritizes readability, allowing developers to express concepts in fewer lines of code than languages like C++ or Java.
 principles:
   - title: Single Responsibility Principle (SRP)

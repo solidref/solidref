@@ -1,9 +1,7 @@
 ---
 language: JavaScript (ECMAScript)
 code: javascript
-parent: null
 birth: 1995
-death: null
 description: A collection of widely-accepted coding principles that guide software design and development.
 principles:
   - title: Single Responsibility Principle (SRP)

@@ -3,7 +3,6 @@ language: CoffeeScript
 code: coffee
 parent: javascript
 birth: 2009
-death: null
 description: Offers a more concise syntax and additional features not present in JavaScript. It compiles directly into JavaScript. Its syntax influenced many of the updates in ES6.
 principles:
   - title: Single Responsibility Principle (SRP)

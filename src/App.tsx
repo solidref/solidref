@@ -9,6 +9,7 @@ import {RecoilRoot} from 'recoil';
 
 import {LanguageHierarchyObject} from './state';
 import LanguageHierarchyLoader from './components/generic/LanguageHierarchy';
+import History from './views/History';
 
 const App: React.FC = () => {
   const [languageHierarchy, setLanguageHierarchy] = useState<LanguageHierarchyObject>({});
@@ -27,6 +28,7 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Home languageHierarchy={languageHierarchy} />} />
               <Route path="/by-language/:language" element={<ByLanguage languageHierarchy={languageHierarchy} />} />
+              <Route path="/history" element={<History languageHierarchy={languageHierarchy} />} />
             </Routes>
           </main>
           <Footer />

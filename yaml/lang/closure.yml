@@ -3,7 +3,6 @@ language: ClojureScript
 code: clojure
 parent: javascript
 birth: 2011
-death: null
 description: A compiler for Clojure that targets JavaScript. It brings the power of Clojure (a functional Lisp dialect) to web development.
 principles:
   - title: Single Responsibility Principle (SRP)
@@ -107,7 +106,7 @@ principles:
       ;; Bad example: Mixing data retrieval and presentation in one namespace
       (ns user)
 
-      (defn fetch-user-data [] 
+      (defn fetch-user-data []
         ;; ...
         )
 
@@ -118,7 +117,7 @@ principles:
       ;; Good example: Separating concerns into different namespaces
       (ns user-data)
 
-      (defn fetch-user-data [] 
+      (defn fetch-user-data []
         ;; ...
         )
 

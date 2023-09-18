@@ -3,7 +3,6 @@ language: Assembly Script
 code: typescript
 parent: typescript
 birth: 2017
-death: null
 description: A subset of TypeScript (a variation, to be precise) that targets WebAssembly, allowing developers to write WebAssembly using a syntax familiar to JavaScript/TypeScript developers.
 principles:
   - title: Single Responsibility Principle (SRP)
