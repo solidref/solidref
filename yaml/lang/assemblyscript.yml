@@ -6,212 +6,247 @@ birth: 2017
 description: A subset of TypeScript (a variation, to be precise) that targets WebAssembly, allowing developers to write WebAssembly using a syntax familiar to JavaScript/TypeScript developers.
 principles:
   - title: Single Responsibility Principle (SRP)
-    code: |
-      // Bad example: A class handling both user data management and user notifications
-      class User {
-          saveUserData(): void { /* ... */ }
-          sendNotification(): void { /* ... */ }
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Splitting responsibilities into separate classes
+          class UserDataManager {
+              saveUserData(): void { /* ... */ }
+          }
 
-      // Good example: Splitting responsibilities into separate classes
-      class UserDataManager {
-          saveUserData(): void { /* ... */ }
-      }
+          class UserNotification {
+              sendNotification(): void { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: A class handling both user data management and user notifications
+          class User {
+              saveUserData(): void { /* ... */ }
+              sendNotification(): void { /* ... */ }
+          }
 
-      class UserNotification {
-          sendNotification(): void { /* ... */ }
-      }
   - title: Open/Closed Principle (OCP)
-    code: |
-      // Bad example: Modifying existing code to add new functionality
-      class Rectangle {
-          width: f64;
-          height: f64;
-          computeArea(): f64 {
-              return this.width * this.height;
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Using abstraction to allow extension without modification
+          abstract class Shape {
+              abstract computeArea(): f64;
           }
-      }
 
-      // Good example: Using abstraction to allow extension without modification
-      abstract class Shape {
-          abstract computeArea(): f64;
-      }
-
-      class Circle extends Shape {
-          radius: f64;
-          override computeArea(): f64 {
-              return 3.14 * this.radius * this.radius;
+          class Circle extends Shape {
+              radius: f64;
+              override computeArea(): f64 {
+                  return 3.14 * this.radius * this.radius;
+              }
           }
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: Modifying existing code to add new functionality
+          class Rectangle {
+              width: f64;
+              height: f64;
+              computeArea(): f64 {
+                  return this.width * this.height;
+              }
+          }
+
   - title: Liskov Substitution Principle (LSP)
-    code: |
-      // Bad example: Derived class changes the behavior of the base class
-      class Bird {
-          fly(): void { /* ... */ }
-      }
-
-      class Ostrich extends Bird {
-          override fly(): void {
-              // Throw an error or handle differently
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Derived classes maintain the behavior of the base class
+          class FlyingBird {
+              fly(): void { /* ... */ }
           }
-      }
 
-      // Good example: Derived classes maintain the behavior of the base class
-      class FlyingBird {
-          fly(): void { /* ... */ }
-      }
+          class NonFlyingBird {
+              walk(): void { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Derived class changes the behavior of the base class
+          class Bird {
+              fly(): void { /* ... */ }
+          }
 
-      class NonFlyingBird {
-          walk(): void { /* ... */ }
-      }
+          class Ostrich extends Bird {
+              override fly(): void {
+                  // Throw an error or handle differently
+              }
+          }
+
   - title: Interface Segregation Principle (ISP)
-    code: |
-      // Bad example: A bulky interface
-      interface Worker {
-          work(): void;
-          eat(): void;
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Segregated interfaces
+          interface Workable {
+              work(): void;
+          }
 
-      // Good example: Segregated interfaces
-      interface Workable {
-          work(): void;
-      }
+          interface Eatable {
+              eat(): void;
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: A bulky interface
+          interface Worker {
+              work(): void;
+              eat(): void;
+          }
 
-      interface Eatable {
-          eat(): void;
-      }
   - title: Dependency Inversion Principle (DIP)
-    code: |
-      // Bad example: High-level module depending on a low-level module
-      class LightBulb {
-          turnOn(): void { /* ... */ }
-      }
-
-      class Switch {
-          private bulb: LightBulb;
-          constructor(bulb: LightBulb) {
-              this.bulb = bulb;
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Both high-level and low-level modules depend on abstractions
+          interface Device {
+              turnOn(): void;
           }
-          operate(): void {
-              this.bulb.turnOn();
-          }
-      }
 
-      // Good example: Both high-level and low-level modules depend on abstractions
-      interface Device {
-          turnOn(): void;
-      }
-
-      class Fan implements Device {
-          turnOn(): void { /* ... */ }
-      }
-
-      class Switch {
-          private device: Device;
-          constructor(device: Device) {
-              this.device = device;
+          class Fan implements Device {
+              turnOn(): void { /* ... */ }
           }
-          operate(): void {
-              this.device.turnOn();
+
+          class Switch {
+              private device: Device;
+              constructor(device: Device) {
+                  this.device = device;
+              }
+              operate(): void {
+                  this.device.turnOn();
+              }
           }
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: High-level module depending on a low-level module
+          class LightBulb {
+              turnOn(): void { /* ... */ }
+          }
+
+          class Switch {
+              private bulb: LightBulb;
+              constructor(bulb: LightBulb) {
+                  this.bulb = bulb;
+              }
+              operate(): void {
+                  this.bulb.turnOn();
+              }
+          }
+
   - title: DRY (Don't Repeat Yourself)
-    code: |
-      // Bad example: Repeated logic
-      function addTaxForFood(price: f64): f64 {
-          return price + (price * 0.05);
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Single function for repeated logic
+          function addTax(price: f64, rate: f64 = 0.05): f64 {
+              return price + (price * rate);
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Repeated logic
+          function addTaxForFood(price: f64): f64 {
+              return price + (price * 0.05);
+          }
 
-      function addTaxForElectronics(price: f64): f64 {
-          return price + (price * 0.05);
-      }
-
-      // Good example: Single function for repeated logic
-      function addTax(price: f64, rate: f64 = 0.05): f64 {
-          return price + (price * rate);
-      }
   - title: KISS (Keep It Simple, Stupid)
-    code: |
-      // Bad example: Overcomplicated way to check even numbers
-      function isEven(num: i32): bool {
-          return num % (num > 0 ? 2 : -2) == 0;
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Simplified approach
+          function isEven(num: i32): bool {
+              return num % 2 == 0;
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Overcomplicated way to check even numbers
+          function isEven(num: i32): bool {
+              return num % (num > 0 ? 2 : -2) == 0;
+          }
 
-      // Good example: Simplified approach
-      function isEven(num: i32): bool {
-          return num % 2 == 0;
-      }
   - title: YAGNI (You Aren't Gonna Need It)
-    code: |
-      // Bad example: Adding unnecessary features
-      class Car {
-          drive(): void { /* ... */ }
-          fly(): void { /* ... */ }  // Cars don't fly!
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Only implement what's needed
+          class Car {
+              drive(): void { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Adding unnecessary features
+          class Car {
+              drive(): void { /* ... */ }
+              fly(): void { /* ... */ }  // Cars don't fly!
+          }
 
-      // Good example: Only implement what's needed
-      class Car {
-          drive(): void { /* ... */ }
-      }
   - title: Law of Demeter (Principle of Least Knowledge)
-    code: |
-      // Bad example: Accessing nested structures directly
-      class Wallet {
-          money: f64 = 100.0;
-      }
-
-      class Person {
-          wallet: Wallet = new Wallet();
-      }
-
-      function purchase(itemPrice: f64, buyer: Person): bool {
-          if (buyer.wallet.money >= itemPrice) {
-              // ...
-              return true;
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Using encapsulation
+          class Wallet {
+              private _money: f64 = 100.0;
+              getAmount(): f64 {
+                  return this._money;
+              }
           }
-          return false;
-      }
 
-      // Good example: Using encapsulation
-      class Wallet {
-          private _money: f64 = 100.0;
-          getAmount(): f64 {
-              return this._money;
+          class Person {
+              wallet: Wallet = new Wallet();
+              getMoneyAmount(): f64 {
+                  return this.wallet.getAmount();
+              }
           }
-      }
 
-      class Person {
-          wallet: Wallet = new Wallet();
-          getMoneyAmount(): f64 {
-              return this.wallet.getAmount();
+          function purchase(itemPrice: f64, buyer: Person): bool {
+              if (buyer.getMoneyAmount() >= itemPrice) {
+                  // ...
+                  return true;
+              }
+              return false;
           }
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: Accessing nested structures directly
+          class Wallet {
+              money: f64 = 100.0;
+          }
 
-      function purchase(itemPrice: f64, buyer: Person): bool {
-          if (buyer.getMoneyAmount() >= itemPrice) {
-              // ...
-              return true;
+          class Person {
+              wallet: Wallet = new Wallet();
           }
-          return false;
-      }
+
+          function purchase(itemPrice: f64, buyer: Person): bool {
+              if (buyer.wallet.money >= itemPrice) {
+                  // ...
+                  return true;
+              }
+              return false;
+          }
+
   - title: Separation of Concerns
-    code: |
-      // Bad example: Mixing data retrieval and presentation
-      class UserComponent {
-          fetchUserData(): void { /* ... */ }
-          render(): void { /* ... */ }
-          calculateAge(): void { /* ... */ }
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Separating concerns into different modules
+          class UserDataService {
+              fetchUserData(): void { /* ... */ }
+          }
 
-      // Good example: Separating concerns into different modules
-      class UserDataService {
-          fetchUserData(): void { /* ... */ }
-      }
+          class UserLogic {
+              calculateAge(): void { /* ... */ }
+          }
 
-      class UserLogic {
-          calculateAge(): void { /* ... */ }
-      }
-
-      class UserComponent {
-          render(): void { /* ... */ }
-      }
+          class UserComponent {
+              render(): void { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Mixing data retrieval and presentation
+          class UserComponent {
+              fetchUserData(): void { /* ... */ }
+              render(): void { /* ... */ }
+              calculateAge(): void { /* ... */ }
+          }

@@ -8,9 +8,11 @@ export const loadLanguageHierarchy = selector<LanguageHierarchyObject>({
     const response = await fetch('/generated/languages.json');
     const data = (await response.json()) as LanguageHierarchy;
 
+    console.log(data);
+
     return {
       ready: true,
-      rootLanguages: Object.keys(data),
+      rootLanguages: Object.keys(data).filter((key) => data?.[key]?.children?.length),
       allLanguages: Object.keys(data)
         .map((l) => [l, ...(data[l].children ?? [])])
         .reduce((acc, cur) => [...new Set([...acc, ...cur])].sort(), []),

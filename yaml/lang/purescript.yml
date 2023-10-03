@@ -6,138 +6,210 @@ birth: 2013
 description: A strongly-typed functional programming language that compiles to JavaScript. It's inspired by Haskell and offers advanced type features.
 principles:
   - title: Single Responsibility Principle (SRP)
-    code: |
-      -- Bad example: A module handling both user data management and user notifications
-      module User where
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Splitting responsibilities into separate modules
+          module UserDataManager where
 
-      saveUserData :: UserData -> Effect Unit
-      saveUserData userData =
-        -- ...
+          saveUserData :: UserData -> Effect Unit
+          saveUserData userData =
+            -- ...
 
-      sendNotification :: Notification -> Effect Unit
-      sendNotification notification =
-        -- ...
+          module UserNotification where
 
-      -- Good example: Splitting responsibilities into separate modules
-      module UserDataManager where
+          sendNotification :: Notification -> Effect Unit
+          sendNotification notification =
+            -- ...
 
-      saveUserData :: UserData -> Effect Unit
-      saveUserData userData =
-        -- ...
+      - title: Bad Example
+        code: |
+          -- Bad example: A module handling both user data management and user notifications
+          module User where
 
-      module UserNotification where
+          saveUserData :: UserData -> Effect Unit
+          saveUserData userData =
+            -- ...
 
-      sendNotification :: Notification -> Effect Unit
-      sendNotification notification =
-        -- ...
+          sendNotification :: Notification -> Effect Unit
+          sendNotification notification =
+            -- ...
+
   - title: Open/Closed Principle (OCP)
-    code: |
-      data Shape = Rectangle Number Number | Circle Number
+    examples:
+      - title: Good Example
+        code: |
+          data Shape = Rectangle Number Number | Circle Number
 
-      computeArea :: Shape -> Number
-      computeArea shape =
-        case shape of
-          Rectangle width height -> width * height
-          Circle radius -> 3.14 * radius * radius
+          computeArea :: Shape -> Number
+          computeArea shape =
+            case shape of
+              Rectangle width height -> width * height
+              Circle radius -> 3.14 * radius * radius
+
+      - title: Bad Example
+        code: |
+          -- Modifying existing code to add new functionality
+          data Shape = Rectangle Number Number | Circle Number | Triangle Number Number Number
+
+          computeArea :: Shape -> Number
+          computeArea shape =
+            case shape of
+              Rectangle width height -> width * height
+              Circle radius -> 3.14 * radius * radius
+              Triangle a b c -> -- calculate triangle area
+
   - title: Liskov Substitution Principle (LSP)
-    code: |
-      data Bird = Sparrow | Ostrich
+    examples:
+      - title: Good Example
+        code: |
+          data Bird = Sparrow | Ostrich
 
-      fly :: Bird -> String
-      fly bird =
-        case bird of
-          Sparrow -> "Flying high!"
-          Ostrich -> "Can't fly!"
+          fly :: Bird -> String
+          fly bird =
+            case bird of
+              Sparrow -> "Flying high!"
+              Ostrich -> "Can't fly!"
+
+      - title: Bad Example
+        code: |
+          -- Bad example: Derived type changes the behavior
+          data Bird = Sparrow | Ostrich | Penguin
+
+          fly :: Bird -> String
+          fly bird =
+            case bird of
+              Sparrow -> "Flying high!"
+              Ostrich -> "Can't fly!"
+              Penguin -> "Can swim but can't fly!"
+
   - title: Interface Segregation Principle (ISP)
-    code: |
-      -- PureScript doesn't have interfaces in the same way some OOP languages do, but type classes can serve a similar purpose. They allow you to define a set of functions that a type must implement, and then you can write functions that work for any type that implements the type class.
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Using type classes to define behavior
+          class Lightable a where
+            turnOn :: a -> Effect Unit
 
-      class Lightable a where
-        turnOn :: a -> Effect Unit
+          instance lightableLightBulb :: Lightable LightBulb where
+            turnOn _ = log "Light bulb turned on"
 
-      data LightBulb = LightBulb
+          operate :: forall a. Lightable a => a -> Effect Unit
+          operate device = turnOn device
 
-      instance lightableLightBulb :: Lightable LightBulb where
-        turnOn _ = log "Light bulb turned on"
+      - title: Bad Example
+        code: |
+          -- Bad example: Overly generic function
+          operate :: forall a. a -> Effect Unit
+          operate device =
+            -- ...
 
-      operate :: forall a. Lightable a => a -> Effect Unit
-      operate device = turnOn device
   - title: Dependency Inversion Principle (DIP)
-    code: |
-      class Lightable a where
-        turnOn :: a -> Effect Unit
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Using type classes for dependency inversion
+          class Lightable a where
+            turnOn :: a -> Effect Unit
 
-      data LightBulb = LightBulb
+          instance lightableLightBulb :: Lightable LightBulb where
+            turnOn _ = log "Light bulb turned on"
 
-      instance lightableLightBulb :: Lightable LightBulb where
-        turnOn _ = log "Light bulb turned on"
+          operate :: forall a. Lightable a => a -> Effect Unit
+          operate device = turnOn device
 
-      operate :: forall a. Lightable a => a -> Effect Unit
-      operate device = turnOn device
+      - title: Bad Example
+        code: |
+          -- Bad example: Direct dependency
+          operate :: LightBulb -> Effect Unit
+          operate device =
+            -- ...
+
   - title: DRY (Don't Repeat Yourself)
-    code: |
-      -- Bad example: Repeated logic
-      addTaxForFood :: Number -> Number
-      addTaxForFood price = price + price * 0.05
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Single function for repeated logic
+          addTax :: Number -> Number -> Number
+          addTax rate price = price + price * rate
 
-      addTaxForElectronics :: Number -> Number
-      addTaxForElectronics price = price + price * 0.05
+      - title: Bad Example
+        code: |
+          -- Bad example: Repeated logic
+          addTaxForFood :: Number -> Number
+          addTaxForFood price = price + price * 0.05
 
-      -- Good example: Single function for repeated logic
-      addTax :: Number -> Number -> Number
-      addTax rate price = price + price * rate
+          addTaxForElectronics :: Number -> Number
+          addTaxForElectronics price = price + price * 0.05
+
   - title: KISS (Keep It Simple, Stupid)
-    code: |
-      -- Bad example: Overcomplicated way to check even numbers
-      isEven :: Int -> Boolean
-      isEven num = mod num (if num > 0 then 2 else -2) == 0
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Simplified approach
+          isEven :: Int -> Boolean
+          isEven num = mod num 2 == 0
 
-      -- Good example: Simplified approach
-      isEven :: Int -> Boolean
-      isEven num = mod num 2 == 0
+      - title: Bad Example
+        code: |
+          -- Bad example: Overcomplicated check
+          isEven :: Int -> Boolean
+          isEven num = mod num (if num > 0 then 2 else -2) == 0
+
   - title: YAGNI (You Aren't Gonna Need It)
-    code: |
-      -- Bad example: Adding unnecessary features
-      data Car = Drive | Fly  -- Cars don't fly!
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Only implement what's needed
+          data Car = Drive
 
-      -- Good example: Only implement what's needed
-      data Car = Drive
+      - title: Bad Example
+        code: |
+          -- Bad example: Unnecessary feature
+          data Car = Drive | Fly
+
   - title: Law of Demeter (Principle of Least Knowledge)
-    code: |
-      -- Bad example: Accessing nested structures directly
-      data Wallet = Wallet { money :: Number }
-      data Person = Person { wallet :: Wallet }
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Using pattern matching to minimize knowledge
+          purchase :: Number -> Person -> Boolean
+          purchase itemPrice (Person { wallet }) =
+            let (Wallet { money }) = wallet
+            in money >= itemPrice
 
-      purchase :: Number -> Person -> Boolean
-      purchase itemPrice (Person { wallet: (Wallet { money }) }) = money >= itemPrice
+      - title: Bad Example
+        code: |
+          -- Bad example: Accessing nested structures directly
+          purchase :: Number -> Person -> Boolean
+          purchase itemPrice (Person { wallet: (Wallet { money }) }) = money >= itemPrice
 
-      -- Good example: Using pattern matching to minimize knowledge
-      purchase :: Number -> Person -> Boolean
-      purchase itemPrice (Person { wallet }) =
-        let (Wallet { money }) = wallet
-        in money >= itemPrice
   - title: Separation of Concerns
-    code: |
-      -- Bad example: Mixing data retrieval and presentation in one module
-      module User where
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Separating concerns into different modules
+          module UserData where
 
-      fetchUserData :: Effect UserData
-      fetchUserData =
-        -- ...
+          fetchUserData :: Effect UserData
+          fetchUserData =
+            -- ...
 
-      renderUser :: UserData -> String
-      renderUser user =
-        -- ...
+          module UserView where
 
-      -- Good example: Separating concerns into different modules
-      module UserData where
+          renderUser :: UserData -> String
+          renderUser user =
+            -- ...
 
-      fetchUserData :: Effect UserData
-      fetchUserData =
-        -- ...
+      - title: Bad Example
+        code: |
+          -- Bad example: Mixing data retrieval and presentation in one module
+          module User where
 
-      module UserView where
+          fetchUserData :: Effect UserData
+          fetchUserData =
+            -- ...
 
-      renderUser :: UserData -> String
-      renderUser user =
-        -- ...
+          renderUser :: UserData -> String
+          renderUser user =
+            -- ...

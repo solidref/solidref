@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import MuiAppBar, {AppBarProps} from '@mui/material/AppBar';
 import {styled} from '@mui/material/styles';
 import MuiToolbar from '@mui/material/Toolbar';
@@ -8,23 +7,38 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import {IconButton} from '@mui/material';
+import Logo from './Logo';
+import ColorModeSwitch from './header/ColorModeSwitch';
 
 function AppBar(props: AppBarProps) {
   return <MuiAppBar elevation={0} position="fixed" {...props} />;
 }
 
-const Toolbar = styled(MuiToolbar)(({theme}) => ({
+export const Toolbar = styled(MuiToolbar)(({theme}) => ({
+  background: theme.palette.primary.dark,
   height: 64,
   [theme.breakpoints.up('sm')]: {
     height: 70,
   },
+
+  '& svg': {
+    color: theme.palette.primary.light,
+  },
 }));
 
-const rightLink = {
-  fontSize: 16,
-  color: 'common.white',
-  ml: 3,
-};
+export const CenteredToolbar = styled(Toolbar)(({theme}) => ({
+  justifyContent: 'center !important',
+  overflow: 'auto',
+  flexDirection: 'column',
+  height: 'auto !important',
+  padding: '50px 0',
+
+  '& .MuiTypography-root': {
+    flexGrow: '1',
+    color: theme.palette.primary.light,
+    padding: '10px 0',
+  },
+}));
 
 function Header() {
   return (
@@ -32,17 +46,8 @@ function Header() {
       <AppBar position="fixed">
         <Toolbar sx={{justifyContent: 'space-between'}}>
           <Box sx={{flex: 1}} />
-          <Link variant="h6" underline="none" color="inherit" href="/" sx={{fontSize: 24}}>
-            {'SOLIDref'}
-          </Link>
+          <Logo size={2} />
           <Box sx={{flex: 1, display: 'flex', justifyContent: 'flex-end'}}>
-            {/* <a href="https://github.com/dragoscirjan/solidref" rel="external nofollow noreferrer" target="_blank">
-              <img
-                alt="GitHub Repo stars"
-                style={{height: '26px', opacity: '0.8'}}
-                src="https://img.shields.io/github/stars/dragoscirjan/solidref?style=social"
-              />
-            </a> */}
             <a href="https://github.com/dragoscirjan/solidref" rel="external nofollow noreferrer" target="_blank">
               <IconButton aria-label="Github Repository">
                 <GitHubIcon />
@@ -66,24 +71,7 @@ function Header() {
                 <TwitterIcon />
               </IconButton>
             </a>
-
-            {/* <Link
-              color="inherit"
-              variant="h6"
-              underline="none"
-              href="/"
-              sx={rightLink}
-            >
-              {'Sign In'}
-            </Link>
-            <Link
-              variant="h6"
-              underline="none"
-              href="/premium-themes/onepirate/sign-up/"
-              sx={{...rightLink, color: 'secondary.main'}}
-            >
-              {'Sign Up'}
-            </Link> */}
+            <ColorModeSwitch />
           </Box>
         </Toolbar>
       </AppBar>

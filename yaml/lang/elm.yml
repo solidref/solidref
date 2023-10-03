@@ -6,143 +6,171 @@ birth: 2012
 description: A functional language that compiles to JavaScript. It's known for its performance and strong emphasis on simplicity and quality tooling.
 principles:
   - title: Single Responsibility Principle (SRP)
-    code: |
-      -- Bad example: A module handling both user data management and user notifications
-      module User exposing (saveUserData, sendNotification)
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Splitting responsibilities into separate modules
+          module UserDataManager exposing (saveUserData)
 
-      saveUserData : UserData -> Cmd Msg
-      saveUserData userData =
-          -- ...
+          saveUserData : UserData -> Cmd Msg
+          saveUserData userData =
+              -- ...
 
-      sendNotification : Notification -> Cmd Msg
-      sendNotification notification =
-          -- ...
+          module UserNotification exposing (sendNotification)
 
-      -- Good example: Splitting responsibilities into separate modules
-      module UserDataManager exposing (saveUserData)
+          sendNotification : Notification -> Cmd Msg
+          sendNotification notification =
+              -- ...
 
-      saveUserData : UserData -> Cmd Msg
-      saveUserData userData =
-          -- ...
+      - title: Bad Example
+        code: |
+          -- Bad example: A module handling both user data management and user notifications
+          module User exposing (saveUserData, sendNotification)
 
-      module UserNotification exposing (sendNotification)
+          saveUserData : UserData -> Cmd Msg
+          saveUserData userData =
+              -- ...
 
-      sendNotification : Notification -> Cmd Msg
-      sendNotification notification =
-          -- ...
+          sendNotification : Notification -> Cmd Msg
+          sendNotification notification =
+              -- ...
+
   - title: Open/Closed Principle (OCP)
-    code: |
-      -- Using a union type to represent different shapes
-      type Shape
-          = Rectangle Float Float
-          | Circle Float
+    examples:
+      - title: Good Example
+        code: |
+          -- Using a union type to represent different shapes
+          type Shape
+              = Rectangle Float Float
+              | Circle Float
 
-      -- Easily extendable without modifying existing code
-      computeArea : Shape -> Float
-      computeArea shape =
-          case shape of
-              Rectangle width height ->
-                  width * height
+          -- Easily extendable without modifying existing code
+          computeArea : Shape -> Float
+          computeArea shape =
+              case shape of
+                  Rectangle width height ->
+                      width * height
 
-              Circle radius ->
-                  3.14 * radius * radius
+                  Circle radius ->
+                      3.14 * radius * radius
+
   - title: Liskov Substitution Principle (LSP)
-    code: |
-      -- If you have a function expecting a Bird, any subtype (or variant) of Bird can be passed
-      type Bird
-          = Sparrow
-          | Ostrich
+    examples:
+      - title: Good Example
+        code: |
+          -- If you have a function expecting a Bird, any subtype (or variant) of Bird can be passed
+          type Bird
+              = Sparrow
+              | Ostrich
 
-      fly : Bird -> String
-      fly bird =
-          case bird of
-              Sparrow ->
-                  "Flying high!"
+          fly : Bird -> String
+          fly bird =
+              case bird of
+                  Sparrow ->
+                      "Flying high!"
 
-              Ostrich ->
-                  "Can't fly!"
+                  Ostrich ->
+                      "Can't fly!"
+
   - title: Interface Segregation Principle (ISP)
     description: Elm doesn't have interfaces or classes, so these principles don't apply in the same way as in OOP languages. However, Elm promotes the use of small, focused functions and modules, which naturally aligns with the spirit of ISP. For DIP, Elm's architecture encourages defining clear boundaries and interactions between different parts of the system, which can be seen as a form of dependency inversion at a higher level.
+
   - title: Dependency Inversion Principle (DIP)
     description: Elm doesn't have interfaces or classes, so these principles don't apply in the same way as in OOP languages. However, Elm promotes the use of small, focused functions and modules, which naturally aligns with the spirit of ISP. For DIP, Elm's architecture encourages defining clear boundaries and interactions between different parts of the system, which can be seen as a form of dependency inversion at a higher level.
+
   - title: DRY (Don't Repeat Yourself)
-    code: |
-      -- Bad example: Repeated logic
-      addTaxForFood : Float -> Float
-      addTaxForFood price =
-          price + (price * 0.05)
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Single function for repeated logic
+          addTax : Float -> Float -> Float
+          addTax price rate =
+              price + (price * rate)
 
-      addTaxForElectronics : Float -> Float
-      addTaxForElectronics price =
-          price + (price * 0.05)
+      - title: Bad Example
+        code: |
+          -- Bad example: Repeated logic
+          addTaxForFood : Float -> Float
+          addTaxForFood price =
+              price + (price * 0.05)
 
-      -- Good example: Single function for repeated logic
-      addTax : Float -> Float -> Float
-      addTax price rate =
-          price + (price * rate)
+          addTaxForElectronics : Float -> Float
+          addTaxForElectronics price =
+              price + (price * 0.05)
+
   - title: KISS (Keep It Simple, Stupid)
-    code: |
-      -- Bad example: Overcomplicated way to check even numbers
-      isEven : Int -> Bool
-      isEven num =
-          modBy (if num > 0 then 2 else -2) num == 0
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Simplified approach
+          isEven : Int -> Bool
+          isEven num =
+              modBy 2 num == 0
 
-      -- Good example: Simplified approach
-      isEven : Int -> Bool
-      isEven num =
-          modBy 2 num == 0
+      - title: Bad Example
+        code: |
+          -- Bad example: Overcomplicated way to check even numbers
+          isEven : Int -> Bool
+          isEven num =
+              modBy (if num > 0 then 2 else -2) num == 0
+
   - title: YAGNI (You Aren't Gonna Need It)
-    code: |
-      -- Bad example: Adding unnecessary features
-      type Car
-          = Drive
-          | Fly  -- Cars don't fly!
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Only implement what's needed
+          type Car
+              = Drive
 
-      -- Good example: Only implement what's needed
-      type Car
-          = Drive
+      - title: Bad Example
+        code: |
+          -- Bad example: Adding unnecessary features
+          type Car
+              = Drive
+              | Fly  -- Cars don't fly!
+
   - title: Law of Demeter (Principle of Least Knowledge)
-    code: |
-      -- Bad example: Accessing nested structures directly
-      type alias Wallet =
-          { money : Float }
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Using encapsulation
+          type alias Wallet =
+              { money : Float }
 
-      type alias Person =
-          { wallet : Wallet }
+          getMoney : Wallet -> Float
+          getMoney wallet =
+              wallet.money
 
-      purchase : Float -> Person -> Bool
-      purchase itemPrice buyer =
-          buyer.wallet.money >= itemPrice
+          type alias Person =
+              { wallet : Wallet }
 
-      -- Good example: Using encapsulation
-      type alias Wallet =
-          { money : Float }
+          purchase : Float -> Person -> Bool
+          purchase itemPrice buyer =
+              getMoney buyer.wallet >= itemPrice
 
-      getMoney : Wallet -> Float
-      getMoney wallet =
-          wallet.money
+      - title: Bad Example
+        code: |
+          -- Bad example: Accessing nested structures directly
+          type alias Wallet =
+              { money : Float }
 
-      type alias Person =
-          { wallet : Wallet }
+          type alias Person =
+              { wallet : Wallet }
 
-      purchase : Float -> Person -> Bool
-      purchase itemPrice buyer =
-          getMoney buyer.wallet >= itemPrice
+          purchase : Float -> Person -> Bool
+          purchase itemPrice buyer =
+              buyer.wallet.money >= itemPrice
+
   - title: Separation of Concerns
-    code: |
-      -- Bad example: Mixing data retrieval and presentation
-      type alias UserComponent =
-          { userData : UserData
-          , view : Html Msg
-          , age : Int
-          }
+    examples:
+      - title: Good Example
+        code: |
+          -- Good example: Separating concerns into different modules or types
+          type alias UserDataService =
+              { userData : UserData }
 
-      -- Good example: Separating concerns into different modules or types
-      type alias UserDataService =
-          { userData : UserData }
+          type alias UserLogic =
+              { age : Int }
 
-      type alias UserLogic =
-          { age : Int }
-
-      type alias UserComponent =
-          { view : Html Msg }
+          type alias UserComponent =
+              { view : Html Msg }

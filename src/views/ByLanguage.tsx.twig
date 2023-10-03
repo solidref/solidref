@@ -8,7 +8,11 @@ import {useRecoilState, useRecoilValueLoadable} from 'recoil';
 
 import {LanguageHierarchyObject, languageObjectState} from '../state';
 import {loadYamlByLanguage} from '../selector';
-import SyntaxHighlighter from '../components/SyntaxHighlighter';
+import CodeExampleAccordion from '../components/code/CodeExampleAccordion';
+import {CenteredToolbar} from '../components/Header';
+import Typography from '@mui/material/Typography';
+import SvgIconByName from '../icons/SvgIconByName';
+import { styled } from '@mui/material';
 
 type Params = {
   language: string;
@@ -17,6 +21,16 @@ type Params = {
 export type ByLanguageProps = {
   languageHierarchy?: LanguageHierarchyObject;
 };
+
+export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
+  width: '100px',
+  height: '100px',
+  transform: 'rotate(-15deg)',
+
+  '&.GenericCodeIcon': {
+    fill: theme.palette.primary.light,
+  }
+}));
 
 function ByLanguage({languageHierarchy = {}}: ByLanguageProps) {
   const {language = 'javascript'} = useParams<Params>();
@@ -38,7 +52,7 @@ function ByLanguage({languageHierarchy = {}}: ByLanguageProps) {
     return key.replace(/[^\w]+/gi, '-').toLowerCase();
   };
 
-  const codeSample = (id: string) => {
+  const renderCodeSamples = (id: string) => {
     if (!languageObject.ready) {
       return <>Loading ...</>;
     }
@@ -48,39 +62,47 @@ function ByLanguage({languageHierarchy = {}}: ByLanguageProps) {
     if (!principle) {
       return <>Missing information</>;
     }
-    return <SyntaxHighlighter code={principle?.code || ''} language={languageObject?.languageObject?.code || 'js'} />;
+    return <CodeExampleAccordion examples={principle?.examples || []} language={languageObject?.languageObject?.code || 'js'} />;
   };
 
   return (
-    <Page>
-      <Box sx={{ '{{' }} flexGrow: 1 {{ '}}' }}>
-        <Grid item xs={{ '{' }}12{{ '}' }}>
-          <h1>Coding principles under <i>{language}</i></h1>
-        </Grid>
-        <Grid container spacing={2}>
-        {% for principlesType in ast.content %}
-          <Grid item xs={12}>
-            <h2>{{ principlesType.subtitle }}</h2>
-          </Grid>
-          {% for principle in principlesType.principles %}
-          {% set header_value = principle.name %}
-          <Grid item xs={12} id={{ '{' }}'{{ node_id(header_value) }}-head'{{ '}' }}>
-            <h3>{{header_value}}</h3>
-          </Grid>
+    <>
+      <CenteredToolbar sx={{'{{'}}justifyContent: 'space-between'{{'}}'}}>
+          <Typography variant="h2">
+            <i>{languageObject?.languageObject?.language}</i> Coding Principles
+          </Typography>
+          <Typography variant="h6">
+            Here are the <i>{languageObject?.languageObject?.language}</i> Coding Principles explained
+          </Typography>
+          <StyledSvgIconByName name={languageObject?.languageObject?.code ?? ''} />
+        </CenteredToolbar>
+      <Page>
+        <Box sx={{ '{{' }} flexGrow: 1 {{ '}}' }}>
+          <Grid container spacing={2}>
+          {% for principlesType in ast.content %}
+            <Grid item xs={12}>
+              <h2>{{ principlesType.subtitle }}</h2>
+            </Grid>
+            {% for principle in principlesType.principles %}
+            {% set header_value = principle.name %}
+            <Grid item xs={12} id={{ '{' }}'{{ node_id(header_value) }}-head'{{ '}' }}>
+              <h3>{{header_value}}</h3>
+            </Grid>
 
-          <Grid item xs={6} id={{ '{' }}'{{ node_id(header_value) }}-desc'{{ '}' }}>
-            <p>
-              {{principle.description}}
-            </p>
-          </Grid>
-          <Grid item xs={6} id={{ '{' }}'{{ node_id(header_value) }}-code'{{ '}' }}>
-            {codeSample('{{ node_id(header_value) }}')}
-          </Grid>
+            <Grid item xs={12} id={{ '{' }}'{{ node_id(header_value) }}-desc'{{ '}' }}>
+              <p>
+                {{principle.description}}
+              </p>
+            </Grid>
+            <Grid item xs={12} id={{ '{' }}'{{ node_id(header_value) }}-code'{{ '}' }}>
+              {renderCodeSamples('{{ node_id(header_value) }}')}
+            </Grid>
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
-        </Grid>
-      </Box>
-    </Page>
+          </Grid>
+        </Box>
+      </Page>
+    </>
   );
 };
 

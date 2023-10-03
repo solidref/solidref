@@ -98,7 +98,7 @@ principles:
       };
 
       let productionDatabase = {
-        fetch: id => "Real data for " ++ id /* Assume some real fetching here */
+        fetch: id => "Real data for " ++ id; /* Assume some real fetching here */
       };
 
       let getData = (db, id) => db.fetch(id);

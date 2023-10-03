@@ -17,7 +17,6 @@ export type HistoryProps = {
 // ];
 
 function History({languageHierarchy}: HistoryProps) {
-
   return <LanguageEvolutionChart languageHierarchy={languageHierarchy} />;
   // https://recharts.org/en-US/examples/TinyLineChart
   // return (

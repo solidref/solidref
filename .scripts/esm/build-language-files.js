@@ -43,7 +43,9 @@ async function main() {
     const parentLanguage = yamlObject?.parent ?? basename(file, '.yml');
     const language = basename(file, '.yml');
     languageHierarchy[language] = {
-      children: [...new Set([...(languageHierarchy?.[language]?.children ?? []), language])],
+      children: [...new Set([...(languageHierarchy?.[language]?.children ?? []), language])].filter(
+        (l) => l != language,
+      ),
       birth: yamlObject.birth,
       death: yamlObject.death,
       code: yamlObject.code,

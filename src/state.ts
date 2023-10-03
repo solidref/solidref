@@ -23,6 +23,11 @@ export const languageHierarchyState = atom<LanguageHierarchyObject>({
   default: {}, // default empty object
 });
 
+export type CodeExample = {
+  title?: string;
+  code?: string;
+};
+
 export type LanguageYamlObject = {
   language?: string;
   code?: string;
@@ -30,7 +35,7 @@ export type LanguageYamlObject = {
   birth?: number;
   death?: number;
   description?: string;
-  principles?: Array<{title: string; code: string}>;
+  principles?: Array<{title: string; examples: CodeExample[]}>;
 };
 
 export type LanguageObject = {

@@ -107,12 +107,10 @@ function CustomTooltip({active, payload, connectionObject, languages}: any) {
   return null;
 }
 
-
-
 export default function LanguageEvolutionChart({languageHierarchy}: HistoryGraphProps) {
   const years = createYearArray(languageHierarchy?.hierarchy ?? {}, 1970);
   const data = toChartData(years, languageHierarchy?.hierarchy ?? {});
-  const connectionObject: Record<string, any> = {}
+  const connectionObject: Record<string, any> = {};
 
   const onLineMouseMove = (e: any) => {
     connectionObject.stroke = e.stroke;

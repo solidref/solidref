@@ -1,9 +1,10 @@
 import React from 'react';
 
 import OriginalSyntaxHighlighter from 'react-syntax-highlighter';
-import {docco} from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import {docco, darcula} from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import {Code} from 'react-content-loader';
+import {styled, useTheme} from '@mui/material';
 
 interface SyntaxHighlighterProps {
   code: string;
@@ -11,10 +12,13 @@ interface SyntaxHighlighterProps {
 }
 
 const SyntaxHighlighter = ({code, language = ''}: SyntaxHighlighterProps) => {
+  const theme = useTheme();
+  docco.hljs.background = theme.palette.primary.light;
+  darcula.hljs.background = theme.palette.primary.light;
   return (
     <div>
       {language.length > 0 && code.length > 0 ? (
-        <OriginalSyntaxHighlighter language={language} style={docco}>
+        <OriginalSyntaxHighlighter language={language} style={theme.palette.mode === 'light' ? docco : darcula}>
           {code}
         </OriginalSyntaxHighlighter>
       ) : (

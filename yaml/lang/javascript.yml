@@ -5,210 +5,255 @@ birth: 1995
 description: A collection of widely-accepted coding principles that guide software design and development.
 principles:
   - title: Single Responsibility Principle (SRP)
-    code: |
-      // Bad example: A class handling both user data management and user notifications
-      class User {
-          saveUserData() { /* ... */ }
-          sendNotification() { /* ... */ }
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Splitting responsibilities into separate classes
+          class UserDataManager {
+              saveUserData() { /* ... */ }
+          }
 
-      // Good example: Splitting responsibilities into separate classes
-      class UserDataManager {
-          saveUserData() { /* ... */ }
-      }
+          class UserNotification {
+              sendNotification() { /* ... */ }
+          }
 
-      class UserNotification {
-          sendNotification() { /* ... */ }
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: A class handling both user data management and user notifications
+          class User {
+              saveUserData() { /* ... */ }
+              sendNotification() { /* ... */ }
+          }
+
   - title: Open/Closed Principle (OCP)
-    code: |
-      // Bad example: Modifying existing code to add new functionality
-      function AreaCalculator(shape) {
-          if (shape.type === 'rectangle') {
-              return shape.width * shape.height;
-          } else if (shape.type === 'circle') {
-              return 3.14 * shape.radius * shape.radius;
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Using abstraction to allow extension without modification
+          function computeArea(shape) {
+              return shape.computeArea();
           }
-      }
 
-      // Good example: Using abstraction to allow extension without modification
-      function computeArea(shape) {
-          return shape.computeArea();
-      }
+          const rectangle = {
+              computeArea: function() {
+                  return this.width * this.height;
+              },
+              width: 10,
+              height: 5
+          };
 
-      const rectangle = {
-          computeArea: function() {
-              return this.width * this.height;
-          },
-          width: 10,
-          height: 5
-      };
+          const circle = {
+              computeArea: function() {
+                  return 3.14 * this.radius * this.radius;
+              },
+              radius: 5
+          }
 
-      const circle = {
-          computeArea: function() {
-              return 3.14 * this.radius * this.radius;
-          },
-          radius: 5
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: Modifying existing code to add new functionality
+          function AreaCalculator(shape) {
+              if (shape.type === 'rectangle') {
+                  return shape.width * shape.height;
+              } else if (shape.type === 'circle') {
+                  return 3.14 * shape.radius * shape.radius;
+              }
+          }
+
   - title: Liskov Substitution Principle (LSP)
-    code: |
-      // Bad example: Derived class changes the behavior of the base class
-      class Bird {
-          fly() { /* ... */ }
-      }
-
-      class Ostrich extends Bird {
-          fly() {
-              throw new Error("Can't fly");
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Derived classes maintain the behavior of the base class
+          class FlyingBird {
+              fly() { /* ... */ }
           }
-      }
 
-      // Good example: Derived classes maintain the behavior of the base class
-      class FlyingBird {
-          fly() { /* ... */ }
-      }
+          class NonFlyingBird {
+              walk() { /* ... */ }
+          }
 
-      class NonFlyingBird {
-          walk() { /* ... */ }
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: Derived class changes the behavior of the base class
+          class Bird {
+              fly() { /* ... */ }
+          }
+
+          class Ostrich extends Bird {
+              fly() {
+                  throw new Error("Can't fly");
+              }
+          }
+
   - title: Interface Segregation Principle (ISP)
-    code: |
-      // JavaScript doesn't have interfaces in the same way TypeScript does.
-      // But the principle can be illustrated using function requirements.
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Breaking down the function into more specific ones
+          function createPerson(name, age) { /* ... */ }
+          function assignTask(worker, task) { /* ... */ }
+          function feedWorker(worker, food) { /* ... */ }
 
-      // Bad example: A function requiring many parameters
-      function createWorker(name, age, task, food) { /* ... */ }
+      - title: Bad Example
+        code: |
+          // Bad example: A function requiring many parameters
+          function createWorker(name, age, task, food) { /* ... */ }
 
-      // Good example: Breaking down the function into more specific ones
-      function createPerson(name, age) { /* ... */ }
-      function assignTask(worker, task) { /* ... */ }
-      function feedWorker(worker, food) { /* ... */ }
   - title: Dependency Inversion Principle (DIP)
-    code: |
-      // Bad example: High-level module depending on a low-level module
-      class LightBulb {
-          turnOn() { /* ... */ }
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Both high-level and low-level modules depend on abstractions
+          class Switch {
+              constructor(device) {
+                  this.device = device;
+              }
+              operate() {
+                  this.device.turnOn();
+              }
+          }
 
-      class Switch {
-          constructor(bulb) {
-              this.bulb = bulb;
+          const fan = {
+              turnOn: function() { /* ... */ }
           }
-          operate() {
-              this.bulb.turnOn();
-          }
-      }
 
-      // Good example: Both high-level and low-level modules depend on abstractions
-      class Switch {
-          constructor(device) {
-              this.device = device;
+      - title: Bad Example
+        code: |
+          // Bad example: High-level module depending on a low-level module
+          class LightBulb {
+              turnOn() { /* ... */ }
           }
-          operate() {
-              this.device.turnOn();
-          }
-      }
 
-      const fan = {
-          turnOn: function() { /* ... */ }
-      }
+          class Switch {
+              constructor(bulb) {
+                  this.bulb = bulb;
+              }
+              operate() {
+                  this.bulb.turnOn();
+              }
+          }
+
   - title: DRY (Don't Repeat Yourself)
-    code: |
-      // Bad example: Repeated logic
-      function addTaxForFood(price) {
-          return price + (price * 0.05);
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Single function for repeated logic
+          function addTax(price, rate = 0.05) {
+              return price + (price * rate);
+          }
 
-      function addTaxForElectronics(price) {
-          return price + (price * 0.05);
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: Repeated logic
+          function addTaxForFood(price) {
+              return price + (price * 0.05);
+          }
 
-      // Good example: Single function for repeated logic
-      function addTax(price, rate = 0.05) {
-          return price + (price * rate);
-      }
+          function addTaxForElectronics(price) {
+              return price + (price * 0.05);
+          }
+
   - title: KISS (Keep It Simple, Stupid)
-    code: |
-      // Bad example: Overcomplicated way to check even numbers
-      function isEven(num) {
-          return num % Math.abs(2) === 0;
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Simplified approach
+          function isEven(num) {
+              return num % 2 === 0;
+          }
 
-      // Good example: Simplified approach
-      function isEven(num) {
-          return num % 2 === 0;
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: Overcomplicated way to check even numbers
+          function isEven(num) {
+              return num % Math.abs(2) === 0;
+          }
+
   - title: YAGNI (You Aren't Gonna Need It)
-    code: |
-      // Bad example: Adding unnecessary features
-      class Car {
-          drive() { /* ... */ }
-          fly() { /* ... */ }  // Cars don't fly!
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Only implement what's needed
+          class Car {
+              drive() { /* ... */ }
+          }
 
-      // Good example: Only implement what's needed
-      class Car {
-          drive() { /* ... */ }
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: Adding unnecessary features
+          class Car {
+              drive() { /* ... */ }
+              fly() { /* ... */ }  // Cars don't fly!
+
   - title: Law of Demeter (Principle of Least Knowledge)
-    code: |
-      // Bad example: Accessing nested structures directly
-      class Wallet {
-          constructor() {
-              this.money = { amount: 100 };
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Using encapsulation
+          class Wallet {
+              constructor() {
+                  this._money = 100;
+              }
+              getAmount() {
+                  return this._money;
+              }
           }
-      }
 
-      class Person {
-          constructor() {
-              this.wallet = new Wallet();
+          class Person {
+              constructor() {
+                  this.wallet = new Wallet();
+              }
+              getMoneyAmount() {
+                  return this.wallet.getAmount();
+              }
           }
-      }
 
-      function purchase(item, buyer) {
-          if (buyer.wallet.money.amount >= item.price) { /* ... */ }
-      }
+          function purchase(item, buyer) {
+              if (buyer.getMoneyAmount() >= item.price) { /* ... */ }
+          }
 
-      // Good example: Using encapsulation
-      class Wallet {
-          constructor() {
-              this._money = 100;
+      - title: Bad Example
+        code: |
+          // Bad example: Accessing nested structures directly
+          class Wallet {
+              constructor() {
+                  this.money = { amount: 100 };
+              }
           }
-          getAmount() {
-              return this._money;
-          }
-      }
 
-      class Person {
-          constructor() {
-              this.wallet = new Wallet();
+          class Person {
+              constructor() {
+                  this.wallet = new Wallet();
+              }
           }
-          getMoneyAmount() {
-              return this.wallet.getAmount();
-          }
-      }
 
-      function purchase(item, buyer) {
-          if (buyer.getMoneyAmount() >= item.price) { /* ... */ }
-      }
+          function purchase(item, buyer) {
+              if (buyer.wallet.money.amount >= item.price) { /* ... */ }
+          }
+
   - title: Separation of Concerns
-    code: |
-      // Bad example: Mixing data retrieval and presentation
-      class UserComponent {
-          fetchUserData() { /* ... */ }
-          render() { /* ... */ }
-          calculateAge() { /* ... */ }
-      }
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Separating concerns into different modules
+          class UserDataService {
+              fetchUserData() { /* ... */ }
+          }
 
-      // Good example: Separating concerns into different modules
-      class UserDataService {
-          fetchUserData() { /* ... */ }
-      }
+          class UserLogic {
+              calculateAge() { /* ... */ }
+          }
 
-      class UserLogic {
-          calculateAge() { /* ... */ }
-      }
+          class UserComponent {
+              render() { /* ... */ }
+          }
 
-      class UserComponent {
-          render() { /* ... */ }
-      }
+      - title: Bad Example
+        code: |
+          // Bad example: Mixing data retrieval and presentation
+          class UserComponent {
+              fetchUserData() { /* ... */ }
+              render() { /* ... */ }
+              calculateAge() { /* ... */ }
+          }
