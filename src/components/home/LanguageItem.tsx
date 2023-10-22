@@ -6,6 +6,7 @@ import {styled} from '@mui/material/styles';
 import SvgIconByName from '../../icons/SvgIconByName';
 import {Button, Menu, MenuItem} from '@mui/material';
 import ContentLoader from 'react-content-loader';
+import {normalizeLanguageName} from '../../utils/language';
 
 const LanguagePaper = styled(Paper)(({theme}) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -210,7 +211,7 @@ function LanguageItem({language, loading = false, subLanguages = [], ...rest}: L
 
   if (!subLanguages.length || !subLanguages.filter((l) => l !== language).length) {
     return (
-      <Link href={`/by-language/${language}`}>
+      <Link href={`/by-language/${normalizeLanguageName(language)}`}>
         <LanguagePaper {...rest} id={colorId} style={{backgroundColor: fadedColor || dominantColor}}>
           <SvgIconByName name={language} />
           <TextPaper elevation={0}>{toCamelCase(language)}</TextPaper>
@@ -242,7 +243,7 @@ function LanguageItem({language, loading = false, subLanguages = [], ...rest}: L
       >
         {[...new Set([...subLanguages, language])].sort().map((language) => (
           <MenuItem onClick={handleClose} style={{width: '300px'}}>
-            <Link href={`/by-language/${language}`}>
+            <Link href={`/by-language/${normalizeLanguageName(language)}`}>
               <LanguagePaper {...rest} elevation={0} style={{background: 'transparent', height: 'auto'}}>
                 <SvgIconByName name={language} />
                 <TextPaper elevation={0}>{toCamelCase(language)}</TextPaper>

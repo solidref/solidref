@@ -13,8 +13,12 @@ interface SyntaxHighlighterProps {
 
 const SyntaxHighlighter = ({code, language = ''}: SyntaxHighlighterProps) => {
   const theme = useTheme();
-  docco.hljs.background = theme.palette.primary.light;
-  darcula.hljs.background = theme.palette.primary.light;
+  docco.hljs.background = 'transparent';
+  docco.hljs.overflow = 'inherit';
+  docco.hljs.padding = '0';
+  darcula.hljs.background = 'transparent';
+  darcula.hljs.overflow = 'inherit';
+  darcula.hljs.padding = '0';
   return (
     <div>
       {language.length > 0 && code.length > 0 ? (

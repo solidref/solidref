@@ -5,7 +5,7 @@ parent: c
 birth: 2011
 description: Developed by Google, Dart is an object-oriented, class-based language with C-style syntax. It can be transpiled to JavaScript and is used for building mobile and desktop web applications.
 principles:
-  - title: Single Responsibility Principle (SRP)
+  - title: SOLID / Single Responsibility Principle (SRP)
     examples:
       - title: Good Example
         code: |
@@ -26,7 +26,7 @@ principles:
             void sendNotification() { /* ... */ }
           }
 
-  - title: Open/Closed Principle (OCP)
+  - title: SOLID / Open/Closed Principle (OCP)
     examples:
       - title: Good Example
         code: |
@@ -50,7 +50,7 @@ principles:
             double computeArea() => width * height;
           }
 
-  - title: Liskov Substitution Principle (LSP)
+  - title: SOLID / Liskov Substitution Principle (LSP)
     examples:
       - title: Good Example
         code: |
@@ -77,7 +77,7 @@ principles:
             }
           }
 
-  - title: Interface Segregation Principle (ISP)
+  - title: SOLID / Interface Segregation Principle (ISP)
     examples:
       - title: Good Example
         code: |
@@ -98,7 +98,7 @@ principles:
             void eat();
           }
 
-  - title: Dependency Inversion Principle (DIP)
+  - title: SOLID / Dependency Inversion Principle (DIP)
     examples:
       - title: Good Example
         code: |
@@ -135,7 +135,7 @@ principles:
             }
           }
 
-  - title: DRY (Don't Repeat Yourself)
+  - title: Don't Repeat Yourself (DRY)
     examples:
       - title: Good Example
         code: |
@@ -155,7 +155,7 @@ principles:
             return price + (price * 0.05);
           }
 
-  - title: KISS (Keep It Simple, Stupid)
+  - title: Keep It Simple, Stupid (KISS)
     examples:
       - title: Good Example
         code: |
@@ -171,7 +171,7 @@ principles:
             return num % num.abs() == 0;
           }
 
-  - title: YAGNI (You Aren't Gonna Need It)
+  - title: You Aren't Gonna Need It (YAGNI)
     examples:
       - title: Good Example
         code: |

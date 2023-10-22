@@ -33,7 +33,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "build:deps": "run-s build:deps:* && npm run prettier",
-    "build:deps:twig": "node .scripts/esm/build-template-files.js",
+    "build:deps:twig": "echo node .scripts/esm/build-template-files.js",
     "build:deps:json": "node .scripts/esm/build-language-files.js",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",

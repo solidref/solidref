@@ -1,10 +1,12 @@
 import React, {PureComponent} from 'react';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
-import {LanguageHierarchy, LanguageHierarchyObject} from '../../state';
+import {LanguageHierarchy} from '../../state';
 import randomcolor from 'randomcolor';
 
 export type HistoryGraphProps = {
-  languageHierarchy?: LanguageHierarchyObject;
+  languages: LanguageHierarchy;
+  width?: number;
+  height?: number;
 };
 
 function toNumber(nr: unknown): number {
@@ -33,7 +35,7 @@ function createYearArray(languages: LanguageHierarchy, start = 1940) {
     }
   }
 
-  return [...new Set([...yearsArray.sort((a, b) => a - b), currentYear])];
+  return [...new Set([...yearsArray, currentYear])].sort((a, b) => a - b).filter((year) => year <= currentYear);
 }
 
 type LanguageData = {
@@ -107,9 +109,9 @@ function CustomTooltip({active, payload, connectionObject, languages}: any) {
   return null;
 }
 
-export default function LanguageEvolutionChart({languageHierarchy}: HistoryGraphProps) {
-  const years = createYearArray(languageHierarchy?.hierarchy ?? {}, 1970);
-  const data = toChartData(years, languageHierarchy?.hierarchy ?? {});
+export default function LanguageEvolutionChart({languages, width, height = 500}: HistoryGraphProps) {
+  const years = createYearArray(languages, 1970);
+  const data = toChartData(years, languages);
   const connectionObject: Record<string, any> = {};
 
   const onLineMouseMove = (e: any) => {
@@ -117,15 +119,13 @@ export default function LanguageEvolutionChart({languageHierarchy}: HistoryGraph
   };
 
   return (
-    <ResponsiveContainer width={800} height={400}>
-      <LineChart width={800} height={400} data={data} syncMethod="value">
+    <ResponsiveContainer width={width} height={height}>
+      <LineChart width={width} height={height} data={data} syncMethod="value">
         <XAxis dataKey="year" />
         {/* <YAxis ticks={languages} domain={[0, languages.length - 1]} /> */}
         <Legend />
-        <Tooltip
-          content={<CustomTooltip languages={languageHierarchy?.hierarchy ?? {}} connectionObject={connectionObject} />}
-        />
-        {Object.keys(languageHierarchy?.hierarchy ?? {}).map((language) => (
+        <Tooltip content={<CustomTooltip languages={languages} connectionObject={connectionObject} />} />
+        {Object.keys(languages).map((language) => (
           <Line
             type="monotone"
             dataKey={language}

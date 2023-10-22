@@ -40,7 +40,8 @@ async function main() {
     const yamlString = await readFile(file, 'utf-8');
     const yamlObject = yaml.parse(yamlString);
 
-    const parentLanguage = yamlObject?.parent ?? basename(file, '.yml');
+    let parentLanguages = yamlObject?.parent ?? basename(file, '.yml');
+    parentLanguages = Array.isArray(parentLanguages) ? parentLanguages : [parentLanguages];
     const language = basename(file, '.yml');
     languageHierarchy[language] = {
       children: [...new Set([...(languageHierarchy?.[language]?.children ?? []), language])].filter(
@@ -50,10 +51,12 @@ async function main() {
       death: yamlObject.death,
       code: yamlObject.code,
     };
-    languageHierarchy[parentLanguage] = {
-      ...(languageHierarchy[parentLanguage] ?? {}),
-      children: [...new Set([...(languageHierarchy?.[parentLanguage]?.children ?? []), language])],
-    };
+    parentLanguages.forEach((parentLanguage) => {
+      languageHierarchy[parentLanguage] = {
+        ...(languageHierarchy[parentLanguage] ?? {}),
+        children: [...new Set([...(languageHierarchy?.[parentLanguage]?.children ?? []), language])],
+      };
+    });
   }
 
   await writeFile(

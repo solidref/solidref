@@ -40,7 +40,6 @@ function findSectionSiblings(el: HTMLElement, className: string): HTMLElement[] 
   let sibling: ChildNode | null | undefined = el.parentNode?.firstChild;
 
   while (sibling) {
-    console.log(sibling);
     if (sibling.nodeType === 1 && sibling !== el && (sibling as HTMLElement).classList.contains(className)) {
       siblings.push(sibling as HTMLElement);
     }

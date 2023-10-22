@@ -2,7 +2,6 @@ import {CodeExample} from '../../state';
 import SyntaxHighlighter from './SyntaxHighlighter';
 import HorizontalAccordion from '../generic/accordion/HorizontalAccordion';
 import HorizontalAccordionSection from '../generic/accordion/HorizontalAccordionSection';
-import {Typography} from '@mui/material';
 import HorizontalAccordionSectionTitle from '../generic/accordion/HorizontalAccordionSectionTitle';
 import HorizontalAccordionSectionContent from '../generic/accordion/HorizontalAccordionSectionContent';
 
@@ -32,15 +31,3 @@ function CodeExampleAccordion({examples, language = 'js'}: CodeExampleAccordionP
 }
 
 export default CodeExampleAccordion;
-
-/* <HorizontalAccordionSummary
-            expandIcon={false}
-            onClick={(event) => {
-              console.log(event);
-            }}
-          >
-            <Typography>{example.title || 'make me a title'}</Typography>
-          </HorizontalAccordionSummary>
-          <HorizontalAccordionDetails>
-            <SyntaxHighlighter code={example.code || '// missing code'} language={language} />
-          </HorizontalAccordionDetails> */

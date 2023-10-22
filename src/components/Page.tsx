@@ -7,7 +7,7 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({children}) => {
   return (
-    <div style={{textAlign: 'left', padding: '0 0 200px 0'}}>
+    <div style={{textAlign: 'left', padding: '20px 0 200px 0'}}>
       <Container maxWidth="lg">{children}</Container>
     </div>
   );

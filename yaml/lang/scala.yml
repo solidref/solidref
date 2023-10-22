@@ -1,0 +1,180 @@
+---
+language: Scala
+code: scala
+birth: 2003
+parent:
+  - java
+  - haskell
+  - ml
+description: Scala is a high-level, statically-typed language that integrates object-oriented and functional programming paradigms. It is known for its concise syntax and is designed to be interoperable with Java.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    examples:
+      - title: Good Example
+        code: |
+          class AuthenticationService {
+            def authenticate(user: User): Boolean = {
+              // authentication logic
+              true
+            }
+          }
+      - title: Bad Example
+        code: |
+          class UserManager {
+            def authenticate(user: User): Boolean = {
+              // authentication logic
+              true
+            }
+            def placeOrder(user: User, order: Order): Unit = {
+              // order placement logic
+            }
+          }
+  - title: SOLID / Open/Closed Principle (OCP)
+    examples:
+      - title: Good Example
+        code: |
+          trait Shape {
+            def area(): Double
+          }
+          class Circle(radius: Double) extends Shape {
+            def area(): Double = Math.PI * radius * radius
+          }
+      - title: Bad Example
+        code: |
+          class Shape(shapeType: String, width: Double = 0, height: Double = 0, radius: Double = 0) {
+            def area(): Double = shapeType match {
+              case "circle" => Math.PI * radius * radius
+              case "rectangle" => width * height
+              case _ => 0.0
+            }
+          }
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    examples:
+      - title: Good Example
+        code: |
+          class Bird {
+            def fly(): Unit = { /* flying logic */ }
+          }
+          class Sparrow extends Bird {
+            override def fly(): Unit = { /* flying logic specific to Sparrow */ }
+          }
+      - title: Bad Example
+        code: |
+          class Bird {
+            def fly(): Unit = { /* flying logic */ }
+          }
+          class Penguin extends Bird {
+            override def fly(): Unit = throw new Exception("Penguins can't fly!")
+          }
+  - title: SOLID / Interface Segregation Principle (ISP)
+    examples:
+      - title: Good Example
+        code: |
+          trait Flyer {
+            def fly(): Unit
+          }
+          trait Swimmer {
+            def swim(): Unit
+          }
+          class Sparrow extends Flyer {
+            def fly(): Unit = { /* flying logic */ }
+          }
+      - title: Bad Example
+        code: |
+          trait BirdActions {
+            def fly(): Unit
+            def swim(): Unit
+          }
+          class Sparrow extends BirdActions {
+            def fly(): Unit = { /* flying logic */ }
+            def swim(): Unit = {} // Doesn't make sense for Sparrow
+          }
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    examples:
+      - title: Good Example
+        code: |
+          trait Database {
+            def save(data: String): Unit
+          }
+          class MySQLDatabase extends Database {
+            def save(data: String): Unit = { /* MySQL-specific save logic */ }
+          }
+          class DataManager(db: Database) {
+            def store(data: String): Unit = db.save(data)
+          }
+      - title: Bad Example
+        code: |
+          class MySQLDatabase {
+            def save(data: String): Unit = { /* MySQL-specific save logic */ }
+          }
+          class DataManager {
+            private val db = new MySQLDatabase()
+            def store(data: String): Unit = db.save(data)
+          }
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          object AreaCalculator {
+            def rectangleArea(width: Double, height: Double): Double = width * height
+          }
+      - title: Bad Example
+        code: |
+          object AreaCalculator {
+            def rectangleArea(width: Double, height: Double): Double = width * height
+            def squareArea(side: Double): Double = side * side
+          }
+  - title: Keep It Simple, Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          def add(a: Int, b: Int): Int = a + b
+      - title: Bad Example
+        code: |
+          def add(a: Int, b: Int, debug: Boolean = false): Int = {
+            if(debug) println(s"Adding $a and $b")
+            val result = a + b
+            if(debug) println(s"Result is $result")
+            result
+          }
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          class ShoppingCart {
+            private var items: List[Item] = List()
+            def addItem(item: Item): Unit = items = item :: items
+          }
+      - title: Bad Example
+        code: |
+          class ShoppingCart {
+            private var items: List[Item] = List()
+            private var futureFeature: Option[String] = None
+            def addItem(item: Item): Unit = items = item :: items
+          }
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          class Wallet(private var balance: Double) {
+            def deductAmount(amount: Double): Unit = balance -= amount
+          }
+          class Person(private val wallet: Wallet) {
+            def pay(amount: Double): Unit = wallet.deductAmount(amount)
+          }
+      - title: Bad Example
+        code: |
+          class Wallet(var balance: Double) { }
+          class Person(private val wallet: Wallet) {
+            def pay(amount: Double): Unit = wallet.balance -= amount
+          }
+  - title: Separation of Concerns
+    examples:
+      - title: Good Example
+        code: |
+          class UserRepository {
+            def save(user: User): Unit = { /* save logic */ }
+          }
+          class UserNotificationService {
+            def notify(user: User): Unit = { /* notification logic */ }
+          }

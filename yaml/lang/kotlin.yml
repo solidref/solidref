@@ -1,0 +1,280 @@
+---
+# name of the programming language
+language: Kotlin
+# code of the programming language as per Markdown syntax hightlighting rules
+code: kotlin
+# code of the programming language as per Markdown syntax for the programming
+# language that the subject of this yaml has been derived from
+parent: java
+# year of birth
+birth: 2011
+# description of the language
+description: Kotlin is a modern, expressive, and concise programming language that is 100% interoperable with Java. It is officially supported by Google for Android development and offers many advanced features, including null safety, coroutines, and extension functions.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    examples:
+      - title: Good Example
+        code: |
+          // A class that only handles user authentication
+          class AuthenticationService {
+              fun authenticate(user: User): Boolean {
+                  // authentication logic
+                  return true
+              }
+          }
+      - title: Bad Example
+        code: |
+          // A class that manages both users and their orders
+          class UserManager {
+              fun authenticate(user: User): Boolean {
+                  // authentication logic
+                  return true
+              }
+
+              fun placeOrder(user: User, order: Order) {
+                  // order placement logic
+              }
+          }
+  - title: SOLID / Open/Closed Principle (OCP)
+    examples:
+      - title: Good Example
+        code: |
+          // Base class for shapes with an extensible method for calculating area
+          open class Shape {
+              open fun area(): Double = 0.0
+          }
+
+          class Circle(val radius: Double) : Shape() {
+              override fun area(): Double = 3.14 * radius * radius
+          }
+      - title: Bad Example
+        code: |
+          // A class that's not easily extensible for new shapes
+          class Shape(val type: String, val width: Double = 0.0, val height: Double = 0.0, val radius: Double = 0.0) {
+              fun area(): Double {
+                  return when(type) {
+                      "rectangle" -> width * height
+                      "circle" -> 3.14 * radius * radius
+                      else -> 0.0
+                  }
+              }
+          }
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    examples:
+      - title: Good Example
+        code: |
+          // Derived classes are substitutable for their base class
+          open class Bird {
+              open fun fly() { /* flying logic */ }
+          }
+
+          class Sparrow : Bird() {
+              override fun fly() { /* overridden flying logic for Sparrow */ }
+          }
+      - title: Bad Example
+        code: |
+          // Derived class is not truly an extension of the base class
+          open class Bird {
+              open fun fly() { /* flying logic */ }
+          }
+
+          class Ostrich : Bird() {
+              // Ostrich can't fly, but we're inheriting from a class that can
+              override fun fly() { throw Exception("Ostrich can't fly") }
+          }
+
+  - title: SOLID / Interface Segregation Principle (ISP)
+    examples:
+      - title: Good Example
+        code: |
+          // Separate interfaces for different functionalities
+          interface Flyer {
+              fun fly()
+          }
+
+          interface Runner {
+              fun run()
+          }
+
+          class Sparrow : Flyer {
+              override fun fly() { /* flying logic for Sparrow */ }
+          }
+
+          class Ostrich : Runner {
+              override fun run() { /* running logic for Ostrich */ }
+          }
+      - title: Bad Example
+        code: |
+          // One interface for all bird actions
+          interface BirdActions {
+              fun fly()
+              fun run()
+          }
+
+          class Sparrow : BirdActions {
+              override fun fly() { /* flying logic for Sparrow */ }
+              override fun run() { /* running doesn't make sense for Sparrow */ }
+          }
+
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    examples:
+      - title: Good Example
+        code: |
+          // Using abstraction (interface) to invert the dependency
+          interface Database {
+              fun save(data: String)
+          }
+
+          class MySQLDatabase : Database {
+              override fun save(data: String) { /* MySQL save logic */ }
+          }
+
+          class DataManager(private val db: Database) {
+              fun store(data: String) {
+                  db.save(data)
+              }
+          }
+      - title: Bad Example
+        code: |
+          // Direct dependency on a specific database implementation
+          class MySQLDatabase {
+              fun save(data: String) { /* MySQL save logic */ }
+          }
+
+          class DataManager {
+              private val db = MySQLDatabase()
+
+              fun store(data: String) {
+                  db.save(data)
+              }
+          }
+
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          // Using a function to avoid repeating the same logic
+          fun calculateArea(width: Double, height: Double): Double {
+              return width * height
+          }
+      - title: Bad Example
+        code: |
+          // Repeating the area calculation logic
+          fun calculateRectangleArea(width: Double, height: Double): Double {
+              return width * height
+          }
+
+          fun calculateSquareArea(side: Double): Double {
+              return side * side
+          }
+
+  - title: Keep It Simple, Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          // Simple function to add numbers
+          fun add(a: Int, b: Int): Int {
+              return a + b
+          }
+      - title: Bad Example
+        code: |
+          // Over-complicated function to add numbers
+          fun add(a: Int, b: Int, debug: Boolean = false): Int {
+              if(debug) {
+                  println("Adding $a and $b")
+              }
+              val result = a + b
+              if(debug) {
+                  println("Result is $result")
+              }
+              return result
+          }
+
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          // Only adding necessary functionality
+          class ShoppingCart {
+              private val items = mutableListOf<Item>()
+
+              fun addItem(item: Item) {
+                  items.add(item)
+              }
+
+              fun getTotal(): Double {
+                  return items.sumOf { it.price }
+              }
+          }
+      - title: Bad Example
+        code: |
+          // Adding unnecessary future-proofing
+          class ShoppingCart {
+              private val items = mutableListOf<Item>()
+              private val discounts = mutableListOf<Discount>()
+
+              fun addItem(item: Item) {
+                  items.add(item)
+              }
+
+              fun applyDiscount(discount: Discount) {
+                  discounts.add(discount)
+              }
+
+              // Many other unnecessary methods
+
+              fun getTotal(): Double {
+                  return items.sumOf { it.price }
+              }
+          }
+
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          class Wallet {
+              var money: Double = 0.0
+
+              fun deductAmount(amount: Double) {
+                  if (money >= amount) {
+                      money -= amount
+                  }
+              }
+          }
+
+          class Person(private val wallet: Wallet) {
+              fun buySomething(price: Double) {
+                  wallet.deductAmount(price)
+              }
+          }
+      - title: Bad Example
+        code: |
+          class Wallet {
+              var money: Double = 0.0
+          }
+
+          class Person(private val wallet: Wallet) {
+              fun buySomething(price: Double) {
+                  if (wallet.money >= price) {
+                      wallet.money -= price
+                  }
+              }
+          }
+
+  - title: Separation of Concerns
+    examples:
+      - title: Good Example
+        code: |
+          class UserDatabase {
+              fun saveUser(user: User) { /* save user to database logic */ }
+          }
+
+          class UserUI {
+              fun displayUser(user: User) { /* display user on UI logic */ }
+          }
+      - title: Bad Example
+        code: |
+          class UserManager {
+              fun saveUser(user: User) { /* save user to database logic */ }
+              fun displayUser(user: User) { /* display user on UI logic */ }
+          }

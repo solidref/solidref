@@ -6,7 +6,10 @@ export type HorizontalAccordionSectionContentProps = {
 };
 
 const ContentContainer = styled('div')({
+  // background: 'red',
   display: 'none',
+  flexGrow: 1,
+  overflow: 'auto',
 
   '&:after': {
     position: 'relative',

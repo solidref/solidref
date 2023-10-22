@@ -5,7 +5,7 @@ parent: haskell
 birth: 2012
 description: A functional language that compiles to JavaScript. It's known for its performance and strong emphasis on simplicity and quality tooling.
 principles:
-  - title: Single Responsibility Principle (SRP)
+  - title: SOLID / Single Responsibility Principle (SRP)
     examples:
       - title: Good Example
         code: |
@@ -35,7 +35,7 @@ principles:
           sendNotification notification =
               -- ...
 
-  - title: Open/Closed Principle (OCP)
+  - title: SOLID / Open/Closed Principle (OCP)
     examples:
       - title: Good Example
         code: |
@@ -54,7 +54,7 @@ principles:
                   Circle radius ->
                       3.14 * radius * radius
 
-  - title: Liskov Substitution Principle (LSP)
+  - title: SOLID / Liskov Substitution Principle (LSP)
     examples:
       - title: Good Example
         code: |
@@ -72,13 +72,13 @@ principles:
                   Ostrich ->
                       "Can't fly!"
 
-  - title: Interface Segregation Principle (ISP)
+  - title: SOLID / Interface Segregation Principle (ISP)
     description: Elm doesn't have interfaces or classes, so these principles don't apply in the same way as in OOP languages. However, Elm promotes the use of small, focused functions and modules, which naturally aligns with the spirit of ISP. For DIP, Elm's architecture encourages defining clear boundaries and interactions between different parts of the system, which can be seen as a form of dependency inversion at a higher level.
 
-  - title: Dependency Inversion Principle (DIP)
+  - title: SOLID / Dependency Inversion Principle (DIP)
     description: Elm doesn't have interfaces or classes, so these principles don't apply in the same way as in OOP languages. However, Elm promotes the use of small, focused functions and modules, which naturally aligns with the spirit of ISP. For DIP, Elm's architecture encourages defining clear boundaries and interactions between different parts of the system, which can be seen as a form of dependency inversion at a higher level.
 
-  - title: DRY (Don't Repeat Yourself)
+  - title: Don't Repeat Yourself (DRY)
     examples:
       - title: Good Example
         code: |
@@ -98,7 +98,7 @@ principles:
           addTaxForElectronics price =
               price + (price * 0.05)
 
-  - title: KISS (Keep It Simple, Stupid)
+  - title: Keep It Simple, Stupid (KISS)
     examples:
       - title: Good Example
         code: |
@@ -114,7 +114,7 @@ principles:
           isEven num =
               modBy (if num > 0 then 2 else -2) num == 0
 
-  - title: YAGNI (You Aren't Gonna Need It)
+  - title: You Aren't Gonna Need It (YAGNI)
     examples:
       - title: Good Example
         code: |

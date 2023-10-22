@@ -28,6 +28,22 @@ export type CodeExample = {
   code?: string;
 };
 
+export type CodingPrinciple = {
+  title: string;
+  description?: string;
+  examples?: CodeExample[];
+};
+
+export type CodingPrinciplesObject = {
+  ready?: boolean;
+  principles?: CodingPrinciple[];
+};
+
+export const codingPrinciplesState = atom<CodingPrinciplesObject>({
+  key: 'arrayOfCondingPrincipleGroup',
+  default: {}, // default empty array
+});
+
 export type LanguageYamlObject = {
   language?: string;
   code?: string;
@@ -35,7 +51,7 @@ export type LanguageYamlObject = {
   birth?: number;
   death?: number;
   description?: string;
-  principles?: Array<{title: string; examples: CodeExample[]}>;
+  principles?: CodingPrinciple[];
 };
 
 export type LanguageObject = {

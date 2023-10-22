@@ -7,7 +7,6 @@ export interface HorizontalAccordionProps extends PaperProps {}
 const Container = styled(Paper)({
   display: 'flex',
   height: '400px',
-  overflow: 'auto',
 });
 
 function HorizontalAccordion({children, ...rest}: HorizontalAccordionProps) {

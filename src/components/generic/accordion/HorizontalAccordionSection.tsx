@@ -9,7 +9,7 @@ const SectionContainer = styled(Paper)(({theme}) => ({
   display: 'flex',
   flex: '0 0 auto',
   transition: 'flex 0.3s ease',
-  width: '5%',
+  width: '10%',
 
   '&:hover': {
     background: theme.palette.mode === 'light' ? light['100'] : dark['100'],
@@ -17,11 +17,11 @@ const SectionContainer = styled(Paper)(({theme}) => ({
 
   '&.HorizontalAccordionSection-Targeted': {
     background: theme.palette.primary.light,
+    display: 'flex',
     flex: '1 0 auto',
     flexDirection: 'column',
     justifyContent: 'left',
     padding: '10px',
-    width: 'auto',
   },
 
   '&.HorizontalAccordionSection-Targeted:hover': {

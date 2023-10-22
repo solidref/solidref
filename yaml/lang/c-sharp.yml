@@ -1,0 +1,225 @@
+---
+language: C#
+code: csharp
+birth: 2000
+parent:
+ - c
+ - java
+description: A modern, object-oriented, and statically-typed language developed by Microsoft. C# is widely used for building Windows applications, web applications, and games using the .NET framework.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    code: |
+      // Bad example: A class handling both user data management and user notifications
+      public class User {
+          public void SaveUserData() { /* ... */ }
+          public void SendNotification() { /* ... */ }
+      }
+
+      // Good example: Splitting responsibilities into separate classes
+      public class UserDataManager {
+          public void SaveUserData() { /* ... */ }
+      }
+
+      public class UserNotification {
+          public void SendNotification() { /* ... */ }
+      }
+  - title: SOLID / Open/Closed Principle (OCP)
+    code: |
+      // Bad example: Modifying existing code to add new functionality
+      public double CalculateArea(object shape) {
+          if (shape is Rectangle) {
+              var rect = (Rectangle)shape;
+              return rect.Width * rect.Height;
+          } else if (shape is Circle) {
+              var circle = (Circle)shape;
+              return 3.14 * circle.Radius * circle.Radius;
+          }
+          return 0.0;
+      }
+
+      // Good example: Using abstraction to allow extension without modification
+      public interface IShape {
+          double CalculateArea();
+      }
+
+      public class Rectangle : IShape {
+          public double Width { get; set; }
+          public double Height { get; set; }
+          public double CalculateArea() {
+              return Width * Height;
+          }
+      }
+
+      public class Circle : IShape {
+          public double Radius { get; set; }
+          public double CalculateArea() {
+              return 3.14 * Radius * Radius;
+          }
+      }
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    code: |
+      // Bad example: Derived class changes the behavior of the base class
+      public class Bird {
+          public virtual void Fly() { /* ... */ }
+      }
+
+      public class Ostrich : Bird {
+          public override void Fly() {
+              throw new Exception("Can't fly");
+          }
+      }
+
+      // Good example: Derived classes maintain the behavior of the base class
+      public interface IFlyingBird {
+          void Fly();
+      }
+
+      public interface IWalkableBird {
+          void Walk();
+      }
+  - title: SOLID / Interface Segregation Principle (ISP)
+    code: |
+      // Bad example: A bulky interface
+      public interface IWorker {
+          void Work();
+          void Eat();
+      }
+
+      // Good example: Breaking down the interface into more specific ones
+      public interface IWorkable {
+          void Work();
+      }
+
+      public interface IEatable {
+          void Eat();
+      }
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    code: |
+      // Bad example: High-level module depending on a low-level module
+      public class LightBulb {
+          public void TurnOn() { /* ... */ }
+      }
+
+      public class Switch {
+          private LightBulb _bulb;
+          public Switch(LightBulb bulb) {
+              _bulb = bulb;
+          }
+          public void Operate() {
+              _bulb.TurnOn();
+          }
+      }
+
+      // Good example: Both high-level and low-level modules depend on abstractions
+      public interface IDevice {
+          void TurnOn();
+      }
+
+      public class Fan : IDevice {
+          public void TurnOn() { /* ... */ }
+      }
+
+      public class SmartSwitch {
+          private IDevice _device;
+          public SmartSwitch(IDevice device) {
+              _device = device;
+          }
+          public void Operate() {
+              _device.TurnOn();
+          }
+      }
+  - title: Don't Repeat Yourself (DRY)
+    code: |
+      // Bad example: Repeated logic
+      public double AddTaxForFood(double price) {
+          return price + (price * 0.05);
+      }
+
+      public double AddTaxForElectronics(double price) {
+          return price + (price * 0.05);
+      }
+
+      // Good example: Single function for repeated logic
+      public double AddTax(double price, double rate = 0.05) {
+          return price + (price * rate);
+      }
+  - title: Keep It Simple, Stupid (KISS)
+    code: |
+      // Bad example: Overcomplicated way to check even numbers
+      public bool IsEven(int num) {
+          return num % Math.Abs(2) == 0;
+      }
+
+      // Good example: Simplified approach
+      public bool IsEven(int num) {
+          return num % 2 == 0;
+      }
+  - title: You Aren't Gonna Need It (YAGNI)
+    code: |
+      // Bad example: Adding unnecessary features
+      public class Car {
+          public void Drive() { /* ... */ }
+          public void Fly() { /* ... */ }  // Cars don't fly!
+      }
+
+      // Good example: Only implement what's needed
+      public class Car {
+          public void Drive() { /* ... */ }
+      }
+  - title: Law of Demeter (Principle of Least Knowledge)
+    code: |
+      // Bad example: Accessing nested structures directly
+      public class Wallet {
+          public double Money { get; set; }
+      }
+
+      public class Person {
+          public Wallet Wallet { get; set; }
+      }
+
+      public bool Purchase(double itemPrice, Person buyer) {
+          return buyer.Wallet.Money >= itemPrice;
+      }
+
+      // Good example: Using encapsulation
+      public class Wallet {
+          private double _money;
+          public Wallet(double initialMoney) {
+              _money = initialMoney;
+          }
+          public double GetAmount() {
+              return _money;
+          }
+      }
+
+      public class Person {
+          public Wallet Wallet { get; set; }
+          public double GetMoneyAmount() {
+              return Wallet.GetAmount();
+          }
+      }
+
+      public bool Purchase(double itemPrice, Person buyer) {
+          return buyer.GetMoneyAmount() >= itemPrice;
+      }
+  - title: Separation of Concerns
+    code: |
+      // Bad example: Mixing data retrieval and presentation
+      public class UserComponent {
+          public UserData FetchUserData() { /* ... */ }
+          public void Render(UserData user) { /* ... */ }
+          public void CalculateAge(UserData user) { /* ... */ }
+      }
+
+      // Good example: Separating concerns into different classes
+      public class UserDataService {
+          public UserData FetchUserData() { /* ... */ }
+      }
+
+      public class UserLogic {
+          public void CalculateAge(UserData user) { /* ... */ }
+      }
+
+      public class UserComponent {
+          public void Render(UserData user) { /* ... */ }
+      }
