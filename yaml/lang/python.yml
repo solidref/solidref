@@ -248,7 +248,6 @@ principles:
 
               def calculate_age(self):
                   pass
-
   - title: The Zen of Python (PEP 20)
     description: A collection of guiding aphorisms for writing computer programs in Python. It emphasizes readability, simplicity, and clarity in code.
     examples:

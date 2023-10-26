@@ -52,9 +52,13 @@ content:
   - name: "Separation of Concerns"
     description: "Different functionalities should be separated into distinct sections or modules. This makes the system more modular."
 
-Following the template from above, please generate the yaml content for Groovy language
-
-
+---
+require: Following the template from above, please generate the yaml content for Groovy language
 TODO: Bash, Powershell, C++ per version, C per version, Ruby, Cobol, Tcl, S, Lisp, Ada & Ada95, Lua, Elixir, Raku,
-
-https://en.wikipedia.org/wiki/History_of_programming_languages
+urls:
+  - https://en.wikipedia.org/wiki/History_of_programming_languages
+  - https://canvasjs.com/react-charts/
+  - https://apexcharts.com/react-chart-demos/timeline-charts/multi-series/
+  - https://d3js.org/
+  - https://d3-graph-gallery.com/
+  - https://code.tutsplus.com/best-free-javascript-graph-visualization-libraries--cms-41710a
