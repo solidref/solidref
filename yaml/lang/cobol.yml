@@ -1,0 +1,265 @@
+---
+language: COBOL
+code: cobol
+birth: 1959
+description: >
+  COBOL (Common Business-Oriented Language) is a procedural programming language designed for business applications. COBOL is known for its verbose syntax and its capability to run on both legacy mainframes and modern systems.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    examples:
+      - title: Good Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. DataStorage.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 DATA-TABLE.
+              05 DATA-ITEM    PIC X(50) OCCURS 100 TIMES.
+
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. UIHandler.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 DISPLAY-DATA.
+              05 DISPLAY-ITEM PIC X(50) OCCURS 100 TIMES.
+      - title: Bad Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. DataAndUIHandler.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 DATA-TABLE.
+              05 DATA-ITEM    PIC X(50) OCCURS 100 TIMES.
+          01 DISPLAY-DATA.
+              05 DISPLAY-ITEM PIC X(50) OCCURS 100 TIMES.
+
+  - title: SOLID / Open/Closed Principle (OCP)
+    examples:
+      - title: Not Applicable
+        code: |
+          Not Applicable
+
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    examples:
+      - title: Not Applicable
+        code: |
+          Not Applicable
+
+  - title: SOLID / Interface Segregation Principle (ISP)
+    examples:
+      - title: Not Applicable
+        code: |
+          Not Applicable
+
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    examples:
+      - title: Not Applicable
+        code: |
+          Not Applicable
+
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. TaxCalculator.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 RATE            PIC 9V99 VALUE 0.
+          01 PRICE           PIC 9(5)V99 VALUE 0.
+
+          PROCEDURE DIVISION.
+          CALCULATE-TAX.
+              COMPUTE PRICE = PRICE * RATE.
+      - title: Bad Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. FoodTaxCalculator.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 PRICE           PIC 9(5)V99 VALUE 0.
+
+          PROCEDURE DIVISION.
+          CALCULATE-TAX.
+              COMPUTE PRICE = PRICE * 0.1.
+
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. ElectronicsTaxCalculator.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 PRICE           PIC 9(5)V99 VALUE 0.
+
+          PROCEDURE DIVISION.
+          CALCULATE-TAX.
+              COMPUTE PRICE = PRICE * 0.1.
+
+  - title: Keep It Simple, Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. NumberChecker.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 NUMBER          PIC 9(5) VALUE 0.
+
+          PROCEDURE DIVISION.
+          CHECK-EVEN.
+              IF NUMBER MOD 2 = 0 THEN
+                  DISPLAY "Number is even".
+              ELSE
+                  DISPLAY "Number is odd".
+      - title: Bad Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. ComplexNumberChecker.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 NUMBER          PIC 9(5) VALUE 0.
+
+          PROCEDURE DIVISION.
+          CHECK-EVEN.
+              IF NUMBER > 0 THEN
+                  IF NUMBER MOD 2 = 0 THEN
+                      DISPLAY "Number is even".
+                  ELSE
+                      DISPLAY "Number is odd".
+              ELSE
+                  IF NUMBER MOD -2 = 0 THEN
+                      DISPLAY "Number is even".
+                  ELSE
+                      DISPLAY "Number is odd".
+
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. Car.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+
+          PROCEDURE DIVISION.
+          DRIVE.
+              DISPLAY "Driving the car".
+      - title: Bad Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. OverengineeredCar.
+  - title: Data Layout Clarity
+    examples:
+      - title: Good Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. ClearDataLayout.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 CUSTOMER-RECORD.
+              05 CUSTOMER-ID             PIC 9(5).
+              05 CUSTOMER-NAME           PIC X(30).
+              05 CUSTOMER-DOB            PIC 9(8).
+      - title: Bad Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. UnclearDataLayout.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 REC.
+              05 ID                     PIC 9(5).
+              05 NAME                   PIC X(30).
+              05 DOB                    PIC 9(8).
+
+  - title: Proper Use of Sections and Paragraphs
+    examples:
+      - title: Good Example
+        code: |
+          PROCEDURE DIVISION.
+          000-MAIN-LOGIC SECTION.
+          100-INITIALIZE-PARAGRAPH.
+              PERFORM 200-SETUP-PARAGRAPH.
+              PERFORM 300-PROCESS-PARAGRAPH.
+          200-SETUP-PARAGRAPH.
+              ...
+          300-PROCESS-PARAGRAPH.
+              ...
+      - title: Bad Example
+        code: |
+          PROCEDURE DIVISION.
+          INITIALIZE-PARAGRAPH.
+              ...
+          SETUP-PARAGRAPH.
+              ...
+          PROCESS-PARAGRAPH.
+              ...
+
+  - title: Avoid GO TOs for Control Flow
+    examples:
+      - title: Good Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. NoGotoExample.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 SOME-VARIABLE     PIC X(1) VALUE 'Y'.
+
+          PROCEDURE DIVISION.
+          CHECK-VARIABLE.
+              IF SOME-VARIABLE = 'Y'
+                  DISPLAY 'Yes'
+              ELSE
+                  DISPLAY 'No'.
+      - title: Bad Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. GotoExample.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+          01 SOME-VARIABLE     PIC X(1) VALUE 'Y'.
+
+          PROCEDURE DIVISION.
+          CHECK-VARIABLE.
+              IF SOME-VARIABLE = 'Y'
+                  GO TO DISPLAY-YES
+              ELSE
+                  GO TO DISPLAY-NO.
+
+          DISPLAY-YES.
+              DISPLAY 'Yes'.
+              STOP RUN.
+
+          DISPLAY-NO.
+              DISPLAY 'No'.
+              STOP RUN.
+
+  - title: Modular and Reusable Code
+    examples:
+      - title: Good Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. ModularCode.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+
+          PROCEDURE DIVISION.
+          MAIN-PARAGRAPH.
+              PERFORM PRINT-HELLO-WORLD
+              PERFORM PRINT-GOODBYE.
+
+          PRINT-HELLO-WORLD.
+              DISPLAY 'Hello, World!'.
+
+          PRINT-GOODBYE.
+              DISPLAY 'Goodbye!'.
+      - title: Bad Example
+        code: |
+          IDENTIFICATION DIVISION.
+          PROGRAM-ID. NonModularCode.
+          DATA DIVISION.
+          WORKING-STORAGE SECTION.
+
+          PROCEDURE DIVISION.
+          MAIN-PARAGRAPH.
+              DISPLAY 'Hello, World!'.
+              DISPLAY 'Goodbye!'.
+
+

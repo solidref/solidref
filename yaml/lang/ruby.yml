@@ -1,0 +1,299 @@
+---
+language: Ruby
+code: ruby
+birth: 1995
+description: >
+  Ruby is a dynamic, object-oriented, general-purpose programming language. It is known for its simplicity and productivity, emphasizing human-readable code. Ruby has a strong focus on developer happiness and is often used for web development and scripting.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    description: >
+      A class should have only one reason to change. This ensures that a class addresses only one concern, making the system more modular and easier to maintain.
+    examples:
+      - title: Good Example
+        code: |
+          class DataStorage
+            def initialize
+              @data = []
+            end
+
+            def store(data)
+              @data << data
+            end
+          end
+
+          class UIHandler
+            def render(data)
+              # Render data to UI
+            end
+          end
+      - title: Bad Example
+        code: |
+          class DataAndUIHandler
+            def initialize
+              @data = []
+            end
+
+            def store(data)
+              @data << data
+            end
+
+            def render
+              # Render data to UI
+            end
+          end
+  - title: SOLID / Open/Closed Principle (OCP)
+    description: >
+      Software entities should be open for extension but closed for modification. This allows adding new features without altering existing code.
+    examples:
+      - title: Good Example
+        code: |
+          class Circle < Shape
+            attr_accessor :radius
+
+            def calculate_area
+              3.14 * radius * radius
+            end
+          end
+
+          class Rectangle < Shape
+            attr_accessor :width, :height
+
+            def calculate_area
+              width * height
+            end
+          end
+      - title: Bad Example
+        code: |
+          class Shape
+            attr_accessor :type
+
+            def calculate_area
+              raise NotImplementedError
+            end
+          end
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    description: >
+      Subtypes must be substitutable for their base types. This ensures that a derived class is truly an extension of the base class.
+    examples:
+      - title: Good Example
+        code: |
+          class Sparrow < Bird
+            def fly
+              # Flying behavior
+            end
+          end
+
+          class NonFlyingBird
+            def walk
+              # Walking behavior
+            end
+          end
+      - title: Bad Example
+        code: |
+          class Ostrich < Bird
+            def fly
+              raise "Can't fly!"
+            end
+          end
+
+          class Bird
+            def fly
+              # ...
+            end
+          end
+  - title: SOLID / Interface Segregation Principle (ISP)
+    description: >
+      Clients should not be forced to depend on interfaces they do not use. This makes the system more modular and easier to understand.
+    examples:
+      - title: Good Example
+        code: |
+          module Workable
+            def work
+              # Work behavior
+            end
+          end
+
+          module Eatable
+            def eat
+              # Eat behavior
+            end
+          end
+      - title: Bad Example
+        code: |
+          module Worker
+            def work
+              # Work behavior
+            end
+
+            def eat
+              # Eat behavior
+            end
+          end
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    description: >
+      High-level modules should not depend on low-level modules; both should depend on abstractions. This decouples software modules.
+    examples:
+      - title: Good Example
+        code: |
+          class LightBulb
+            def turn_on
+              # Turn on the light bulb
+            end
+          end
+
+          class Fan
+            def turn_on
+              # Turn on the fan
+            end
+          end
+
+          class Switch
+            def initialize(device)
+              @device = device
+            end
+
+            def operate
+              @device.turn_on
+            end
+          end
+      - title: Bad Example
+        code: |
+          class LightBulb
+            def turn_on
+              # Turn on the light bulb
+            end
+          end
+
+          class Switch
+            def initialize(light_bulb)
+              @light_bulb = light_bulb
+            end
+
+            def operate
+              @light_bulb.turn_on
+            end
+          end
+  - title: Don't Repeat Yourself (DRY)
+    description: >
+      Every piece of knowledge or logic should exist in a single place. This reduces repetition and potential errors.
+    examples:
+      - title: Good Example
+        code: |
+          def calculate_tax(rate, price)
+            price * rate
+          end
+      - title: Bad Example
+        code: |
+          def calculate_tax_for_food(price)
+            price * 0.1 # 10% tax
+          end
+
+          def calculate_tax_for_electronics(price)
+            price * 0.1 # 10% tax
+          end
+  - title: Keep It Simple, Stupid (KISS)
+    description: >
+      Systems work best when kept simple. Avoid unnecessary complexity.
+    examples:
+      - title: Good Example
+        code: |
+          def is_even(num)
+            num % 2 == 0
+          end
+      - title: Bad Example
+        code: |
+          def is_even(num)
+            if num > 0
+              if num % 2 == 0
+                true
+              else
+                false
+              end
+            else
+              if num % -2 == 0
+                true
+              else
+                false
+              end
+            end
+          end
+  - title: You Aren't Gonna Need It (YAGNI)
+    description: >
+      Avoid adding functionality until it's necessary. Prevents over-engineering.
+    examples:
+      - title: Good Example
+        code: |
+          class Car
+            def drive
+              # Drive the car
+            end
+          end
+      - title: Bad Example
+        code: |
+          class Car
+            def drive
+              # Drive the car
+            end
+
+            def fly
+              # Cars don't fly!
+            end
+          end
+  - title: Law of Demeter (Principle of Least Knowledge)
+    description: >
+      An object should only communicate with its immediate neighbors. This leads to a more decoupled system.
+    examples:
+      - title: Good Example
+        code: |
+          class Wallet
+            attr_accessor :money
+          end
+
+          class Person
+            attr_accessor :wallet
+          end
+
+          def purchase_item(item_price, person)
+            person.wallet.money >= item_price
+          end
+      - title: Bad Example
+        code: |
+          class Wallet
+            attr_accessor :money
+          end
+
+          class Person
+            attr_accessor :wallet
+          end
+
+          def purchase_item(item_price, buyer)
+            buyer.wallet.money >= item_price
+          end
+  - title: Separation of Concerns
+    description: >
+      Different functionalities should be separated into distinct sections or modules. This makes the system more modular.
+    examples:
+      - title: Good Example
+        code: |
+          class DataStorage
+            def fetch_data
+              # Fetch data
+            end
+          end
+
+          class UIComponent
+            def render(data)
+              # Render data
+            end
+          end
+      - title: Bad Example
+        code: |
+          class UserComponent
+            def fetch_user_data
+              # Fetch user data
+            end
+
+            def render
+              # Render data
+            end
+          end

@@ -1,7 +1,7 @@
 ---
 language: Swift
 code: swift
-parent: Objective-C
+parent: objectivec
 birth: 2014
 description: >
   Swift is a general-purpose, multi-paradigm programming language developed by Apple. It is designed to be concise, safe, and interoperable with Objective-C. Swift is commonly used for iOS, macOS, watchOS, and tvOS app development.
