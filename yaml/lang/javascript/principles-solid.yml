@@ -1,17 +1,6 @@
-language: JavaScript
-code: javascript
-birth: 1995
-parent:
-  # - awk
-  # - hypertalk
-  - java
-  - perl
-  - python
-  # - self
-  # - scheme
-description: A collection of widely-accepted coding principles that guide software design and development.
+---
 principles:
-  - title: SOLID / Single Responsibility Principle (SRP)
+  - abbr: SRP
     examples:
       - title: Good Example (ES6)
         code: |
@@ -23,7 +12,6 @@ principles:
           class UserNotification {
               sendNotification() { /* ... */ }
           }
-
       - title: Good Example (ES5)
         code: |
           // Good example (ES5): Splitting responsibilities using function constructors
@@ -34,7 +22,6 @@ principles:
           function UserNotification() {
               this.sendNotification = function() { /* ... */ };
           }
-
       - title: Bad Example (ES6)
         code: |
           // Bad example (ES6): A single ES6 class handling both user data and notifications
@@ -42,7 +29,6 @@ principles:
               saveUserData() { /* ... */ }
               sendNotification() { /* ... */ }
           }
-
       - title: Bad Example (ES5)
         code: |
           // Bad example (ES5): A single function constructor handling both user data and notifications
@@ -50,8 +36,7 @@ principles:
               this.saveUserData = function() { /* ... */ };
               this.sendNotification = function() { /* ... */ };
           }
-
-  - title: SOLID / Open/Closed Principle (OCP)
+  - abbr: OCP
     examples:
       - title: Good Example (ES6)
         code: |
@@ -71,7 +56,6 @@ principles:
                   return this.width * this.height;
               }
           }
-
       - title: Good Example (ES5)
         code: |
           // Good example (ES5): Using prototype to allow extension without modification
@@ -86,7 +70,6 @@ principles:
           Rectangle.prototype.computeArea = function() {
               return this.width * this.height;
           };
-
       - title: Bad Example (ES6)
         code: |
           // Bad example (ES6): Modifying existing ES6 class methods to add new functionality
@@ -99,7 +82,6 @@ principles:
                   }
               }
           }
-
       - title: Bad Example (ES5)
         code: |
           // Bad example (ES5): Modifying existing code to add new functionality
@@ -110,7 +92,7 @@ principles:
                   return 3.14 * shape.radius * shape.radius;
               }
           }
-  - title: SOLID / Liskov Substitution Principle (LSP)
+  - abbr: LSP
     examples:
       - title: Good Example (ES6)
         code: |
@@ -122,7 +104,6 @@ principles:
           class Sparrow extends Bird {
               fly() { /* ... */ }  // Sparrow, being a Bird, can fly
           }
-
       - title: Good Example (ES5)
         code: |
           // Good example (ES5): Using function constructors and prototype inheritance
@@ -131,7 +112,6 @@ principles:
 
           function Sparrow() {}
           Sparrow.prototype = Object.create(Bird.prototype);
-
       - title: Bad Example (ES6)
         code: |
           // Bad example (ES6): Using ES6 classes where the derived class changes the behavior of the base class
@@ -144,7 +124,6 @@ principles:
                   throw new Error("Can't fly");  // Ostrich, being a Bird, should not alter the expected behavior of the fly method
               }
           }
-
       - title: Bad Example (ES5)
         code: |
           // Bad example (ES5): Using function constructors where the derived class alters the base class behavior
@@ -156,8 +135,7 @@ principles:
           Ostrich.prototype.fly = function() {
               throw new Error("Can't fly");
           }
-
-  - title: SOLID / Interface Segregation Principle (ISP)
+  - abbr: ISP
     examples:
       - title: Good Example (ES6)
         code: |
@@ -174,7 +152,6 @@ principles:
           class Robot extends Worker {}
 
           class Animal extends Feeder {}
-
       - title: Good Example (ES5)
         code: |
           // Good example (ES5): Using function constructors to segregate interfaces
@@ -192,7 +169,6 @@ principles:
 
           function Animal() {}
           Animal.prototype = Object.create(Feeder.prototype);
-
       - title: Bad Example (ES6)
         code: |
           // Bad example (ES6): Using a single ES6 class that does not segregate interfaces
@@ -200,14 +176,13 @@ principles:
               work() { /* ... */ }
               eat() { /* ... */ }  // This method should not be part of the Worker interface
           }
-
       - title: Bad Example (ES5)
         code: |
           // Bad example (ES5): Using a single function constructor that does not segregate interfaces
           function Worker() {}
           Worker.prototype.work = function() { /* ... */ };
           Worker.prototype.eat = function() { /* ... */ };  // This method should not be part of the Worker interface
-  - title: SOLID / Dependency Inversion Principle (DIP)
+  - abbr: DIP
     examples:
       - title: Good Example (ES6)
         code: |
@@ -226,7 +201,6 @@ principles:
           }
 
           const wallSwitch = new Switch(new Fan());
-
       - title: Good Example (ES5)
         code: |
           // Good example (ES5): Using function constructors and prototype inheritance for dependency inversion
@@ -241,7 +215,6 @@ principles:
           Fan.prototype.turnOn = function() { /* ... */ };
 
           const wallSwitch = new Switch(new Fan());
-
       - title: Bad Example (ES6)
         code: |
           // Bad example (ES6): Using ES6 classes where the high-level module depends directly on a low-level module
@@ -257,7 +230,6 @@ principles:
                   this.bulb.turnOn();
               }
           }
-
       - title: Bad Example (ES5)
         code: |
           // Bad example (ES5): Using function constructors where the high-level module has a direct dependency on the low-level module
@@ -270,217 +242,3 @@ principles:
           Switch.prototype.operate = function() {
               this.bulb.turnOn();
           };
-
-  - title: Don't Repeat Yourself (DRY)
-    examples:
-      - title: Good Example (ES6)
-        code: |
-          // Good example (ES6): Using default parameters and arrow functions for repeated logic
-          const addTax = (price, rate = 0.05) => price + (price * rate);
-
-      - title: Good Example (ES5)
-        code: |
-          // Good example (ES5): Reusing a single function to avoid duplicated logic
-          function addTax(price, rate) {
-              rate = rate || 0.05;
-              return price + (price * rate);
-          }
-
-      - title: Bad Example (ES6)
-        code: |
-          // Bad example (ES6): Repeated logic in separate arrow functions
-          const addTaxForFood = (price) => price + (price * 0.05);
-          const addTaxForElectronics = (price) => price + (price * 0.05);
-
-      - title: Bad Example (ES5)
-        code: |
-          // Bad example (ES5): Repeated logic in separate functions
-          function addTaxForFood(price) {
-              return price + (price * 0.05);
-          }
-
-          function addTaxForElectronics(price) {
-              return price + (price * 0.05);
-          }
-  - title: Keep It Simple, Stupid (KISS)
-    examples:
-      - title: Good Example (ES6)
-        code: |
-          // Good example (ES6): Simplified approach using arrow function
-          const isEven = num => num % 2 === 0;
-
-      - title: Good Example (ES5)
-        code: |
-          // Good example (ES5): Straightforward function to check even numbers
-          function isEven(num) {
-              return num % 2 === 0;
-          }
-
-      - title: Bad Example (ES6)
-        code: |
-          // Bad example (ES6): Overcomplicated check using arrow function
-          const isEven = num => num % Math.abs(2) === 0;
-
-      - title: Bad Example (ES5)
-        code: |
-          // Bad example (ES5): Overcomplicated way to check even numbers
-          function isEven(num) {
-              return num % Math.abs(2) === 0;
-          }
-
-  - title: You Aren't Gonna Need It (YAGNI)
-    examples:
-      - title: Good Example (ES6)
-        code: |
-          // Good example (ES6): Implementing only the needed methods using classes
-          class Car {
-              drive() { /* ... */ }
-          }
-
-      - title: Good Example (ES5)
-        code: |
-          // Good example (ES5): Implementing only the needed methods using function constructor
-          function Car() {}
-          Car.prototype.drive = function() { /* ... */ };
-
-      - title: Bad Example (ES6)
-        code: |
-          // Bad example (ES6): Adding unnecessary features using classes
-          class Car {
-              drive() { /* ... */ }
-              fly() { /* ... */ }  // Cars don't fly!
-          }
-
-      - title: Bad Example (ES5)
-        code: |
-          // Bad example (ES5): Adding unnecessary features using function constructor
-          function Car() {}
-          Car.prototype.drive = function() { /* ... */ };
-          Car.prototype.fly = function() { /* ... */ };  // Cars don't fly!
-  - title: Law of Demeter (Principle of Least Knowledge)
-    examples:
-      - title: Good Example (ES6)
-        code: |
-          // Good example (ES6): Using classes for encapsulation
-          class Wallet {
-              constructor() {
-                  this._money = 100;
-              }
-              getAmount() {
-                  return this._money;
-              }
-          }
-
-          class Person {
-              constructor() {
-                  this.wallet = new Wallet();
-              }
-              getMoneyAmount() {
-                  return this.wallet.getAmount();
-              }
-          }
-
-          function purchase(item, buyer) {
-              if (buyer.getMoneyAmount() >= item.price) { /* ... */ }
-          }
-
-      - title: Good Example (ES5)
-        code: |
-          // Good example (ES5): Using function constructors for encapsulation
-          function Wallet() {
-              this._money = 100;
-          }
-          Wallet.prototype.getAmount = function() {
-              return this._money;
-          }
-
-          function Person() {
-              this.wallet = new Wallet();
-          }
-          Person.prototype.getMoneyAmount = function() {
-              return this.wallet.getAmount();
-          }
-
-          function purchase(item, buyer) {
-              if (buyer.getMoneyAmount() >= item.price) { /* ... */ }
-          }
-
-      - title: Bad Example (ES6)
-        code: |
-          // Bad example (ES6): Accessing nested structures directly using classes
-          class Wallet {
-              constructor() {
-                  this.money = { amount: 100 };
-              }
-          }
-
-          class Person {
-              constructor() {
-                  this.wallet = new Wallet();
-              }
-          }
-
-          function purchase(item, buyer) {
-              if (buyer.wallet.money.amount >= item.price) { /* ... */ }
-          }
-
-      - title: Bad Example (ES5)
-        code: |
-          // Bad example (ES5): Accessing nested structures directly using function constructors
-          function Wallet() {
-              this.money = { amount: 100 };
-          }
-
-          function Person() {
-              this.wallet = new Wallet();
-          }
-
-          function purchase(item, buyer) {
-              if (buyer.wallet.money.amount >= item.price) { /* ... */ }
-          }
-
-  - title: Separation of Concerns
-    examples:
-      - title: Good Example (ES6)
-        code: |
-          // Good example (ES6): Separating concerns into different classes
-          class UserDataService {
-              fetchUserData() { /* ... */ }
-          }
-
-          class UserLogic {
-              calculateAge() { /* ... */ }
-          }
-
-          class UserComponent {
-              render() { /* ... */ }
-          }
-
-      - title: Good Example (ES5)
-        code: |
-          // Good example (ES5): Separating concerns into different function constructors
-          function UserDataService() {}
-          UserDataService.prototype.fetchUserData = function() { /* ... */ }
-
-          function UserLogic() {}
-          UserLogic.prototype.calculateAge = function() { /* ... */ }
-
-          function UserComponent() {}
-          UserComponent.prototype.render = function() { /* ... */ }
-
-      - title: Bad Example (ES6)
-        code: |
-          // Bad example (ES6): Mixing data retrieval, logic, and presentation in one class
-          class UserComponent {
-              fetchUserData() { /* ... */ }
-              render() { /* ... */ }
-              calculateAge() { /* ... */ }
-          }
-
-      - title: Bad Example (ES5)
-        code: |
-          // Bad example (ES5): Mixing data retrieval, logic, and presentation in one function constructor
-          function UserComponent() {}
-          UserComponent.prototype.fetchUserData = function() { /* ... */ }
-          UserComponent.prototype.render = function() { /* ... */ }
-          UserComponent.prototype.calculateAge = function() { /* ... */ }

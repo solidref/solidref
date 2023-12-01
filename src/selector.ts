@@ -1,127 +1,136 @@
-// selectors.js
-import {selector, selectorFamily} from 'recoil';
+import {GetRecoilValue, RecoilState, selector, selectorFamily} from 'recoil';
 import {
-  CodingPrinciple,
-  CodingPrinciplesObject,
-  LanguageHierarchy,
-  LanguageHierarchyObject,
-  LanguageObject,
-  LanguageYamlObject,
-  codingPrinciplesState,
+  DefaultMessageTtl,
+  HierarchyLanguage,
+  HierarchyLanguagesState,
+  Language,
+  languageHierarchyState,
+  LanguagesState,
+  languagesState,
+  Message,
+  MessagesState,
+  messagesState,
 } from './state';
+import {id} from './utils/id';
 
-export const loadLanguageHierarchy = selector<LanguageHierarchyObject>({
+// Function to add a message with TTL
+function addMessageWithTTL(
+  set: (recoilVal: RecoilState<MessagesState>, newVal: (prevVal: MessagesState) => MessagesState) => void,
+  message: Omit<Message, 'id' | 'ttl'> & {ttl?: number; id?: string},
+) {
+  // ensure ttl
+  message = {
+    id: id(),
+    ttl: DefaultMessageTtl,
+    ...message,
+  };
+  // add message
+  set(messagesState, (prev) => ({
+    ...prev,
+    messages: [...prev.messages, message as Message],
+  }));
+  // remove message after TTL
+  setTimeout(() => {
+    set(messagesState, (prev: MessagesState) => ({
+      ...prev,
+      messages: prev.messages.filter((m: Message) => m.id !== message.id),
+    }));
+  }, message.ttl);
+}
+
+export const loadLanguageHierarchy = selector<HierarchyLanguagesState>({
   key: 'loadLanguageHierarchy',
-  get: async () => {
-    const response = await fetch('/generated/languages.json');
-    const data = (await response.json()) as LanguageHierarchy;
+  get: async ({get, set}: any) => {
+    try {
+      const response = await fetch('/generated/hierarchy.json');
+      if (!response.ok) {
+        throw new Error('Failed to load language hierarchy.');
+      }
 
-    return {
-      ready: true,
-      rootLanguages: Object.keys(data).filter((key) => data?.[key]?.children?.length),
-      allLanguages: Object.keys(data)
-        .map((l) => [l, ...(data[l].children ?? [])])
-        .reduce((acc, cur) => [...new Set([...acc, ...cur])].sort(), []),
-      hierarchy: data,
-    } as unknown as LanguageHierarchyObject;
+      const list = (await response.json()) as HierarchyLanguage[];
+      return {
+        ready: true,
+        list,
+      };
+    } catch (error) {
+      console.error('Error fetching language hierarchy:', error);
+      addMessageWithTTL(set, {
+        message: error instanceof Error ? error.message : 'Could not load language hierarchy data',
+        type: 'error',
+      });
+
+      return {
+        ...get(languageHierarchyState),
+        ready: false
+      };
+    }
   },
 });
 
-// This is a selector family, which means it can take a parameter (in this case, the language)
-export const loadCodingPrinciples = selector<CodingPrinciplesObject>({
-  key: 'loadCodingPrinciples',
-  get: async () => {
-    const principlesYAML = [
-      {
-        title: 'SOLID / Single Responsibility Principle (SRP)',
-        description:
-          'A class should have only one reason to change. This ensures that a class addresses only one concern, making the system more modular and easier to maintain.',
-      },
-      {
-        title: 'SOLID / Open/Closed Principle (OCP)',
-        description:
-          'Software entities should be open for extension but closed for modification. This allows adding new features without altering existing code.',
-      },
-      {
-        title: 'SOLID / Liskov Substitution Principle (LSP)',
-        description:
-          'Subtypes must be substitutable for their base types. This ensures that a derived class is truly an extension of the base class.',
-      },
-      {
-        title: 'SOLID / Interface Segregation Principle (ISP)',
-        description:
-          'Clients should not be forced to depend on interfaces they do not use. This makes the system more modular and easier to understand.',
-      },
-      {
-        title: 'SOLID / Dependency Inversion Principle (DIP)',
-        description:
-          'High-level modules should not depend on low-level modules; both should depend on abstractions. This decouples software modules.',
-      },
-      {
-        title: "Don't Repeat Yourself (DRY)",
-        description:
-          'Every piece of knowledge or logic should exist in a single place. This reduces repetition and potential errors.',
-      },
-      {
-        title: 'Keep It Simple, Stupid (KISS)',
-        description: 'Systems work best when kept simple. Avoid unnecessary complexity.',
-      },
-      {
-        title: "You Aren't Gonna Need It (YAGNI)",
-        description: "Avoid adding functionality until it's necessary. Prevents over-engineering.",
-      },
-      {
-        title: 'Law of Demeter (Principle of Least Knowledge)',
-        description:
-          'An object should only communicate with its immediate neighbors. This leads to a more decoupled system.',
-      },
-      {
-        title: 'Separation of Concerns',
-        description:
-          'Different functionalities should be separated into distinct sections or modules. This makes the system more modular.',
-      },
-    ];
+type LanguageSelectorGetSet = {
+  get: GetRecoilValue;
+  set: (recoilVal: RecoilState<LanguagesState>, newVal: LanguagesState | ((prevVal: LanguagesState) => LanguagesState)) => void;
+};
 
-    const result: CodingPrinciplesObject = {
-      ready: true,
-      principles: principlesYAML.map((principle) => ({
-        title: principle.title,
-        description: principle.description,
-      })),
-    };
-
-    return result;
-  },
-});
-
-// This is a selector family, which means it can take a parameter (in this case, the language)
-export const loadYamlByLanguage = selectorFamily<LanguageObject, string>({
-  key: 'loadYamlByLanguage',
+export const loadLanguage = selectorFamily<LanguagesState, string>({
+  key: 'loadLanguage',
   get:
-    (language: string) =>
-    async ({get}) => {
-      const codingPrinciplesObject = get(loadCodingPrinciples);
-
+    (code) =>
+    async ({get, set}: LanguageSelectorGetSet) => {
       try {
-        const response = await fetch(`/generated/languages/${language}.json`);
-
-        const languageObject: LanguageYamlObject = await response.json();
-        languageObject.principles = languageObject?.principles?.map((principle: CodingPrinciple) => {
-          const fromPrinciplesObject =
-            codingPrinciplesObject.principles?.find((item) => item.title === principle.title) || {};
-
-          return {
-            ...principle,
-            ...fromPrinciplesObject,
-          };
+        const currentLanguagesState = get(languagesState);
+        // Set specific language's readiness to false
+        set(languagesState, {
+          ...currentLanguagesState,
+          languages: {
+            ...currentLanguagesState.languages,
+            [code]: { ...currentLanguagesState.languages[code], ready: false },
+          },
         });
 
-        return {
-          ready: true,
-          languageObject,
-        } as unknown as LanguageObject;
+        const response = await fetch(`/generated/${code}.json`);
+        if (!response.ok) {
+          throw new Error('Failed to load language details.');
+        }
+
+        const language = (await response.json()) as Language;
+
+        // Update specific language's data and readiness
+        set(languagesState, (prev) => ({
+          ...prev,
+          languages: {
+            ...(prev.languages ?? {}),
+            [code]: { language, ready: true },
+          },
+        }));
+
+        return get(languagesState).languages[code];
       } catch (error) {
-        throw error; // Handle errors as needed, this will set the Recoil loadable to an error state
+        console.error('Error fetching language:', error);
+        addMessageWithTTL(set, {
+          message: error instanceof Error ? error.message : 'Could not load language details',
+          type: 'error',
+        });
+
+        // Update specific language's readiness to false in case of error
+        set(languagesState, (prev) => ({
+          ...prev,
+          languages: {
+            ...prev.languages,
+            [code]: { ...prev.languages[code], ready: false },
+          },
+        }));
+
+        return get(languagesState);
       }
     },
+});
+
+// selector for adding messages
+export const addMessageSelector = selector<MessagesState>({
+  key: 'addMessageSelector',
+  get: ({get}) => get(messagesState),
+  set: ({set}, message: Message) => {
+    addMessageWithTTL(set, message);
+  },
 });

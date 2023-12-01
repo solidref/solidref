@@ -1,65 +1,114 @@
 import {atom} from 'recoil';
 
-export type LanguageItem = {
-  children?: string[];
-  birth: string;
-  death: string;
-  code?: string;
-};
-
-export type LanguageHierarchy = {
-  [key: string]: LanguageItem;
-};
-
-export type LanguageHierarchyObject = {
-  ready?: boolean;
-  rootLanguages?: string[];
-  allLanguages?: string[];
-  hierarchy?: LanguageHierarchy;
-};
-
-export const languageHierarchyState = atom<LanguageHierarchyObject>({
-  key: 'languageHierarchy',
-  default: {}, // default empty object
-});
-
 export type CodeExample = {
-  title?: string;
   code?: string;
+  title?: string;
 };
 
 export type CodingPrinciple = {
-  title: string;
+  abbr: string;
   description?: string;
   examples?: CodeExample[];
+  title?: string;
+  type: 'solid' | 'proprietary';
 };
 
-export type CodingPrinciplesObject = {
-  ready?: boolean;
-  principles?: CodingPrinciple[];
+export type CodingPrinciples = {
+  proprietary?: CodingPrinciple[];
+  solid?: CodingPrinciple[];
 };
 
-export const codingPrinciplesState = atom<CodingPrinciplesObject>({
-  key: 'arrayOfCondingPrincipleGroup',
-  default: {}, // default empty array
-});
+export type DesignPattern = {
+  abbr: string;
+  description?: string;
+  example: CodeExample;
+  title?: string;
+  type: 'behavioral' | 'creational' | 'structural';
+};
 
-export type LanguageYamlObject = {
-  language?: string;
-  code?: string;
-  parent?: string;
+export type DesignPatterns = {
+  behavioral?: DesignPattern[];
+  creational?: DesignPattern[];
+  structural?: DesignPattern[];
+};
+
+export type Language = {
   birth?: number;
+  code: string;
   death?: number;
   description?: string;
-  principles?: CodingPrinciple[];
+  inspiredBy?: string[];
+  inspiring?: string[];
+  name: string;
+  patterns?: DesignPatterns;
+  principles?: CodingPrinciples;
 };
 
-export type LanguageObject = {
+export interface HierarchyLanguage extends Omit<Language, 'patterns' & 'principles'> {
+  url: string;
+}
+
+export const DefaultMessageTtl = 5000;
+
+export type MessageType = 'error' | 'warning' | 'success';
+
+export type Message = {
+  id: string;
+  message: string;
+  ttl: number;
+  type: MessageType;
+};
+
+/**
+ * States
+ */
+
+export type StateReadiness = {
   ready?: boolean;
-  languageObject?: LanguageYamlObject;
 };
 
-export const languageObjectState = atom<LanguageObject>({
-  key: 'arrayOfStructuresState',
-  default: {}, // default empty array
+/**
+ * Hierarchy Languages State
+ */
+export interface HierarchyLanguagesState extends StateReadiness {
+  list?: HierarchyLanguage[];
+}
+
+export const languageHierarchyState = atom<HierarchyLanguagesState>({
+  key: 'hierarchyLanguages',
+  default: {}, // default empty object
+});
+
+/**
+ * Hierarchy Languages State
+ */
+
+export type LanguageState = StateReadiness & {
+  language: Language;
+}
+
+export type LanguagesState = {
+  languages: Record<string, LanguageState>
+};
+
+export const languagesState = atom<LanguagesState>({
+  key: 'languagesState',
+  default: {
+    languages: {}
+  },
+});
+
+/**
+ * Messages State
+ */
+
+export interface MessagesState extends StateReadiness {
+  messages: Message[];
+}
+
+export const messagesState = atom<MessagesState>({
+  key: 'messagesState',
+  default: {
+    messages: [],
+  }, // default empty array
 });

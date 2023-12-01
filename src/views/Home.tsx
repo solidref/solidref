@@ -2,7 +2,7 @@ import React from 'react';
 import Page from '../components/Page';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import {LanguageHierarchyObject} from '../state';
+// import {LanguageHierarchyObject} from '../state';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -14,10 +14,10 @@ import {CenteredToolbar} from '../components/Header';
 import Typography from '@mui/material/Typography';
 
 export type HomeProps = {
-  languageHierarchy?: LanguageHierarchyObject;
+  // languageHierarchy?: LanguageHierarchyObject;
 };
 
-function Home({languageHierarchy = {}}: HomeProps) {
+function Home({} /*languageHierarchy = {}*/ : HomeProps) {
   const theme = useTheme();
 
   const [view, setView] = React.useState('list');
@@ -48,8 +48,8 @@ function Home({languageHierarchy = {}}: HomeProps) {
               </Paper>
             </Grid>
           </Grid>
-          {view === 'list' ? <RootLanguages languageHierarchy={languageHierarchy} /> : <></>}
-          {view === 'module' ? <AllLanguages languageHierarchy={languageHierarchy} /> : <></>}
+          {/* {view === 'list' ? <RootLanguages languageHierarchy={languageHierarchy} /> : <></>}
+          {view === 'module' ? <AllLanguages languageHierarchy={languageHierarchy} /> : <></>} */}
         </Box>
       </Page>
     </>

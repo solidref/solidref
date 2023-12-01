@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {LanguageHierarchy, LanguageHierarchyObject} from '../state';
+// import {LanguageHierarchy, LanguageHierarchyObject} from '../state';
 import LanguageEvolutionChart from './history/LanguageEvolutionChart';
 import {CenteredToolbar} from '../components/Header';
 import Typography from '@mui/material/Typography';
@@ -9,7 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 
 export type HistoryProps = {
-  languageHierarchy?: LanguageHierarchyObject;
+  // languageHierarchy?: LanguageHierarchyObject;
 };
 
 const Search = styled('div')(({theme}) => ({
@@ -56,54 +56,55 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
   },
 }));
 
-function History({languageHierarchy}: HistoryProps) {
-  const [search, setSearch] = useState<string>('');
-  const [languages, setLanguages] = useState<LanguageHierarchy>(languageHierarchy?.hierarchy ?? {});
+function History({} /*languageHierarchy*/ : HistoryProps) {
+  return <></>;
+  // const [search, setSearch] = useState<string>('');
+  // const [languages, setLanguages] = useState<LanguageHierarchy>(languageHierarchy?.hierarchy ?? {});
 
-  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
+  // const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearch(event.target.value);
+  // };
 
-  useEffect(() => {
-    const hierarchy = languageHierarchy?.hierarchy ?? {};
-    if (!search) {
-      setLanguages(hierarchy);
-      return;
-    }
-    setLanguages(
-      Object.keys(hierarchy)
-        .filter(
-          (key) => key.includes(search) || hierarchy[key]?.children?.filter((item) => item.includes(search)).length,
-        )
-        .reduce((acc, cur) => {
-          return {
-            ...acc,
-            [cur]: hierarchy[cur],
-          };
-        }, {}),
-    );
-  }, [search, languageHierarchy]);
+  // useEffect(() => {
+  //   const hierarchy = languageHierarchy?.hierarchy ?? {};
+  //   if (!search) {
+  //     setLanguages(hierarchy);
+  //     return;
+  //   }
+  //   setLanguages(
+  //     Object.keys(hierarchy)
+  //       .filter(
+  //         (key) => key.includes(search) || hierarchy[key]?.children?.filter((item) => item.includes(search)).length,
+  //       )
+  //       .reduce((acc, cur) => {
+  //         return {
+  //           ...acc,
+  //           [cur]: hierarchy[cur],
+  //         };
+  //       }, {}),
+  //   );
+  // }, [search, languageHierarchy]);
 
-  return (
-    <>
-      <CenteredToolbar sx={{justifyContent: 'space-between'}}>
-        <Typography variant="h2">A History of Programming Languages</Typography>
-        <Typography variant="h6">Here is a graphic history of programming languages</Typography>
-      </CenteredToolbar>
-      <Page>
-        <Paper elevation={0} style={{display: 'flex', justifyContent: 'right'}} onChange={onSearchChange}>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase placeholder="Search Language…" inputProps={{'aria-label': 'search'}} />
-          </Search>
-        </Paper>
-        <Divider style={{margin: '20px 0'}} />
-        <LanguageEvolutionChart languages={languages} />
-      </Page>
-    </>
-  );
+  // return (
+  //   <>
+  //     <CenteredToolbar sx={{justifyContent: 'space-between'}}>
+  //       <Typography variant="h2">A History of Programming Languages</Typography>
+  //       <Typography variant="h6">Here is a graphic history of programming languages</Typography>
+  //     </CenteredToolbar>
+  //     <Page>
+  //       <Paper elevation={0} style={{display: 'flex', justifyContent: 'right'}} onChange={onSearchChange}>
+  //         <Search>
+  //           <SearchIconWrapper>
+  //             <SearchIcon />
+  //           </SearchIconWrapper>
+  //           <StyledInputBase placeholder="Search Language…" inputProps={{'aria-label': 'search'}} />
+  //         </Search>
+  //       </Paper>
+  //       <Divider style={{margin: '20px 0'}} />
+  //       {/* <LanguageEvolutionChart languages={languages} /> */}
+  //     </Page>
+  //   </>
+  // );
 }
 
 export default History;

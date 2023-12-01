@@ -1,0 +1,1131 @@
+---
+patterns:
+  - abbr: ChainOfResponsibility
+    examples:
+      - title: Chain Of Responsibility
+        code: |
+          /**
+          * The Handler interface declares a method for building the chain of handlers.
+          * It also declares a method for executing a request.
+          */
+          interface Handler {
+              setNext(handler: Handler): Handler;
+
+              handle(request: string): string;
+          }
+
+          /**
+          * The default chaining behavior can be implemented inside a base handler class.
+          */
+          abstract class AbstractHandler implements Handler
+          {
+              private nextHandler: Handler;
+
+              public setNext(handler: Handler): Handler {
+                  this.nextHandler = handler;
+                  // Returning a handler from here will let us link handlers in a
+                  // convenient way like this:
+                  // monkey.setNext(squirrel).setNext(dog);
+                  return handler;
+              }
+
+              public handle(request: string): string {
+                  if (this.nextHandler) {
+                      return this.nextHandler.handle(request);
+                  }
+
+                  return null;
+              }
+          }
+
+          /**
+          * All Concrete Handlers either handle a request or pass it to the next handler
+          * in the chain.
+          */
+          class MonkeyHandler extends AbstractHandler {
+              public handle(request: string): string {
+                  if (request === 'Banana') {
+                      return `Monkey: I'll eat the ${request}.`;
+                  }
+                  return super.handle(request);
+
+              }
+          }
+
+          class SquirrelHandler extends AbstractHandler {
+              public handle(request: string): string {
+                  if (request === 'Nut') {
+                      return `Squirrel: I'll eat the ${request}.`;
+                  }
+                  return super.handle(request);
+              }
+          }
+
+          class DogHandler extends AbstractHandler {
+              public handle(request: string): string {
+                  if (request === 'MeatBall') {
+                      return `Dog: I'll eat the ${request}.`;
+                  }
+                  return super.handle(request);
+              }
+          }
+
+          /**
+          * The client code is usually suited to work with a single handler. In most
+          * cases, it is not even aware that the handler is part of a chain.
+          */
+          function clientCode(handler: Handler) {
+              const foods = ['Nut', 'Banana', 'Cup of coffee'];
+
+              for (const food of foods) {
+                  console.log(`Client: Who wants a ${food}?`);
+
+                  const result = handler.handle(food);
+                  if (result) {
+                      console.log(`  ${result}`);
+                  } else {
+                      console.log(`  ${food} was left untouched.`);
+                  }
+              }
+          }
+
+          /**
+          * The other part of the client code constructs the actual chain.
+          */
+          const monkey = new MonkeyHandler();
+          const squirrel = new SquirrelHandler();
+          const dog = new DogHandler();
+
+          monkey.setNext(squirrel).setNext(dog);
+
+          /**
+          * The client should be able to send a request to any handler, not just the
+          * first one in the chain.
+          */
+          console.log('Chain: Monkey > Squirrel > Dog\n');
+          clientCode(monkey);
+          console.log('');
+
+          console.log('Subchain: Squirrel > Dog\n');
+          clientCode(squirrel);
+  - abbr: Command
+    examples:
+      - title: Command
+        code: |
+          /**
+          * The Command interface declares a method for executing a command.
+          */
+          interface Command {
+              execute(): void;
+          }
+
+          /**
+          * Some commands can implement simple operations on their own.
+          */
+          class SimpleCommand implements Command {
+              private payload: string;
+
+              constructor(payload: string) {
+                  this.payload = payload;
+              }
+
+              public execute(): void {
+                  console.log(`SimpleCommand: See, I can do simple things like printing (${this.payload})`);
+              }
+          }
+
+          /**
+          * However, some commands can delegate more complex operations to other objects,
+          * called "receivers."
+          */
+          class ComplexCommand implements Command {
+              private receiver: Receiver;
+
+              /**
+              * Context data, required for launching the receiver's methods.
+              */
+              private a: string;
+
+              private b: string;
+
+              /**
+              * Complex commands can accept one or several receiver objects along with
+              * any context data via the constructor.
+              */
+              constructor(receiver: Receiver, a: string, b: string) {
+                  this.receiver = receiver;
+                  this.a = a;
+                  this.b = b;
+              }
+
+              /**
+              * Commands can delegate to any methods of a receiver.
+              */
+              public execute(): void {
+                  console.log('ComplexCommand: Complex stuff should be done by a receiver object.');
+                  this.receiver.doSomething(this.a);
+                  this.receiver.doSomethingElse(this.b);
+              }
+          }
+
+          /**
+          * The Receiver classes contain some important business logic. They know how to
+          * perform all kinds of operations, associated with carrying out a request. In
+          * fact, any class may serve as a Receiver.
+          */
+          class Receiver {
+              public doSomething(a: string): void {
+                  console.log(`Receiver: Working on (${a}.)`);
+              }
+
+              public doSomethingElse(b: string): void {
+                  console.log(`Receiver: Also working on (${b}.)`);
+              }
+          }
+
+          /**
+          * The Invoker is associated with one or several commands. It sends a request to
+          * the command.
+          */
+          class Invoker {
+              private onStart: Command;
+
+              private onFinish: Command;
+
+              /**
+              * Initialize commands.
+              */
+              public setOnStart(command: Command): void {
+                  this.onStart = command;
+              }
+
+              public setOnFinish(command: Command): void {
+                  this.onFinish = command;
+              }
+
+              /**
+              * The Invoker does not depend on concrete command or receiver classes. The
+              * Invoker passes a request to a receiver indirectly, by executing a
+              * command.
+              */
+              public doSomethingImportant(): void {
+                  console.log('Invoker: Does anybody want something done before I begin?');
+                  if (this.isCommand(this.onStart)) {
+                      this.onStart.execute();
+                  }
+
+                  console.log('Invoker: ...doing something really important...');
+
+                  console.log('Invoker: Does anybody want something done after I finish?');
+                  if (this.isCommand(this.onFinish)) {
+                      this.onFinish.execute();
+                  }
+              }
+
+              private isCommand(object): object is Command {
+                  return object.execute !== undefined;
+              }
+          }
+
+          /**
+          * The client code can parameterize an invoker with any commands.
+          */
+          const invoker = new Invoker();
+          invoker.setOnStart(new SimpleCommand('Say Hi!'));
+          const receiver = new Receiver();
+          invoker.setOnFinish(new ComplexCommand(receiver, 'Send email', 'Save report'));
+
+          invoker.doSomethingImportant();
+  - abbr: Iterator
+    examples:
+      - title: Iterator
+        code: |
+          // The collection interface must declare a factory method for
+          // producing iterators. You can declare several methods if there
+          // are different kinds of iteration available in your program.
+          interface SocialNetwork is
+              method createFriendsIterator(profileId):ProfileIterator
+              method createCoworkersIterator(profileId):ProfileIterator
+
+
+          // Each concrete collection is coupled to a set of concrete
+          // iterator classes it returns. But the client isn't, since the
+          // signature of these methods returns iterator interfaces.
+          class Facebook implements SocialNetwork is
+              // ... The bulk of the collection's code should go here ...
+
+              // Iterator creation code.
+              method createFriendsIterator(profileId) is
+                  return new FacebookIterator(this, profileId, "friends")
+              method createCoworkersIterator(profileId) is
+                  return new FacebookIterator(this, profileId, "coworkers")
+
+
+          // The common interface for all iterators.
+          interface ProfileIterator is
+              method getNext():Profile
+              method hasMore():bool
+
+
+          // The concrete iterator class.
+          class FacebookIterator implements ProfileIterator is
+              // The iterator needs a reference to the collection that it
+              // traverses.
+              private field facebook: Facebook
+              private field profileId, type: string
+
+              // An iterator object traverses the collection independently
+              // from other iterators. Therefore it has to store the
+              // iteration state.
+              private field currentPosition
+              private field cache: array of Profile
+
+              constructor FacebookIterator(facebook, profileId, type) is
+                  this.facebook = facebook
+                  this.profileId = profileId
+                  this.type = type
+
+              private method lazyInit() is
+                  if (cache == null)
+                      cache = facebook.socialGraphRequest(profileId, type)
+
+              // Each concrete iterator class has its own implementation
+              // of the common iterator interface.
+              method getNext() is
+                  if (hasMore())
+                      result = cache[currentPosition]
+                      currentPosition++
+                      return result
+
+              method hasMore() is
+                  lazyInit()
+                  return currentPosition < cache.length
+
+
+          // Here is another useful trick: you can pass an iterator to a
+          // client class instead of giving it access to a whole
+          // collection. This way, you don't expose the collection to the
+          // client.
+          //
+          // And there's another benefit: you can change the way the
+          // client works with the collection at runtime by passing it a
+          // different iterator. This is possible because the client code
+          // isn't coupled to concrete iterator classes.
+          class SocialSpammer is
+              method send(iterator: ProfileIterator, message: string) is
+                  while (iterator.hasMore())
+                      profile = iterator.getNext()
+                      System.sendEmail(profile.getEmail(), message)
+
+
+          // The application class configures collections and iterators
+          // and then passes them to the client code.
+          class Application is
+              field network: SocialNetwork
+              field spammer: SocialSpammer
+
+              method config() is
+                  if working with Facebook
+                      this.network = new Facebook()
+                  if working with LinkedIn
+                      this.network = new LinkedIn()
+                  this.spammer = new SocialSpammer()
+
+              method sendSpamToFriends(profile) is
+                  iterator = network.createFriendsIterator(profile.getId())
+                  spammer.send(iterator, "Very important message")
+
+              method sendSpamToCoworkers(profile) is
+                  iterator = network.createCoworkersIterator(profile.getId())
+                  spammer.send(iterator, "Very important message")
+  - abbr: Mediator
+    examples:
+      - title: Mediator
+        code: |
+          /**
+          * The Mediator interface declares a method used by components to notify the
+          * mediator about various events. The Mediator may react to these events and
+          * pass the execution to other components.
+          */
+          interface Mediator {
+              notify(sender: object, event: string): void;
+          }
+
+          /**
+          * Concrete Mediators implement cooperative behavior by coordinating several
+          * components.
+          */
+          class ConcreteMediator implements Mediator {
+              private component1: Component1;
+
+              private component2: Component2;
+
+              constructor(c1: Component1, c2: Component2) {
+                  this.component1 = c1;
+                  this.component1.setMediator(this);
+                  this.component2 = c2;
+                  this.component2.setMediator(this);
+              }
+
+              public notify(sender: object, event: string): void {
+                  if (event === 'A') {
+                      console.log('Mediator reacts on A and triggers following operations:');
+                      this.component2.doC();
+                  }
+
+                  if (event === 'D') {
+                      console.log('Mediator reacts on D and triggers following operations:');
+                      this.component1.doB();
+                      this.component2.doC();
+                  }
+              }
+          }
+
+          /**
+          * The Base Component provides the basic functionality of storing a mediator's
+          * instance inside component objects.
+          */
+          class BaseComponent {
+              protected mediator: Mediator;
+
+              constructor(mediator?: Mediator) {
+                  this.mediator = mediator!;
+              }
+
+              public setMediator(mediator: Mediator): void {
+                  this.mediator = mediator;
+              }
+          }
+
+          /**
+          * Concrete Components implement various functionality. They don't depend on
+          * other components. They also don't depend on any concrete mediator classes.
+          */
+          class Component1 extends BaseComponent {
+              public doA(): void {
+                  console.log('Component 1 does A.');
+                  this.mediator.notify(this, 'A');
+              }
+
+              public doB(): void {
+                  console.log('Component 1 does B.');
+                  this.mediator.notify(this, 'B');
+              }
+          }
+
+          class Component2 extends BaseComponent {
+              public doC(): void {
+                  console.log('Component 2 does C.');
+                  this.mediator.notify(this, 'C');
+              }
+
+              public doD(): void {
+                  console.log('Component 2 does D.');
+                  this.mediator.notify(this, 'D');
+              }
+          }
+
+          /**
+          * The client code.
+          */
+          const c1 = new Component1();
+          const c2 = new Component2();
+          const mediator = new ConcreteMediator(c1, c2);
+
+          console.log('Client triggers operation A.');
+          c1.doA();
+
+          console.log('');
+          console.log('Client triggers operation D.');
+          c2.doD();
+  - abbr: Memento
+    examples:
+      - title: Memento
+        code: |
+          /**
+          * The Originator holds some important state that may change over time. It also
+          * defines a method for saving the state inside a memento and another method for
+          * restoring the state from it.
+          */
+          class Originator {
+              /**
+              * For the sake of simplicity, the originator's state is stored inside a
+              * single variable.
+              */
+              private state: string;
+
+              constructor(state: string) {
+                  this.state = state;
+                  console.log(`Originator: My initial state is: ${state}`);
+              }
+
+              /**
+              * The Originator's business logic may affect its internal state. Therefore,
+              * the client should backup the state before launching methods of the
+              * business logic via the save() method.
+              */
+              public doSomething(): void {
+                  console.log('Originator: I\'m doing something important.');
+                  this.state = this.generateRandomString(30);
+                  console.log(`Originator: and my state has changed to: ${this.state}`);
+              }
+
+              private generateRandomString(length: number = 10): string {
+                  const charSet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+                  return Array
+                      .apply(null, { length })
+                      .map(() => charSet.charAt(Math.floor(Math.random() * charSet.length)))
+                      .join('');
+              }
+
+              /**
+              * Saves the current state inside a memento.
+              */
+              public save(): Memento {
+                  return new ConcreteMemento(this.state);
+              }
+
+              /**
+              * Restores the Originator's state from a memento object.
+              */
+              public restore(memento: Memento): void {
+                  this.state = memento.getState();
+                  console.log(`Originator: My state has changed to: ${this.state}`);
+              }
+          }
+
+          /**
+          * The Memento interface provides a way to retrieve the memento's metadata, such
+          * as creation date or name. However, it doesn't expose the Originator's state.
+          */
+          interface Memento {
+              getState(): string;
+
+              getName(): string;
+
+              getDate(): string;
+          }
+
+          /**
+          * The Concrete Memento contains the infrastructure for storing the Originator's
+          * state.
+          */
+          class ConcreteMemento implements Memento {
+              private state: string;
+
+              private date: string;
+
+              constructor(state: string) {
+                  this.state = state;
+                  this.date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+              }
+
+              /**
+              * The Originator uses this method when restoring its state.
+              */
+              public getState(): string {
+                  return this.state;
+              }
+
+              /**
+              * The rest of the methods are used by the Caretaker to display metadata.
+              */
+              public getName(): string {
+                  return `${this.date} / (${this.state.substr(0, 9)}...)`;
+              }
+
+              public getDate(): string {
+                  return this.date;
+              }
+          }
+
+          /**
+          * The Caretaker doesn't depend on the Concrete Memento class. Therefore, it
+          * doesn't have access to the originator's state, stored inside the memento. It
+          * works with all mementos via the base Memento interface.
+          */
+          class Caretaker {
+              private mementos: Memento[] = [];
+
+              private originator: Originator;
+
+              constructor(originator: Originator) {
+                  this.originator = originator;
+              }
+
+              public backup(): void {
+                  console.log('\nCaretaker: Saving Originator\'s state...');
+                  this.mementos.push(this.originator.save());
+              }
+
+              public undo(): void {
+                  if (!this.mementos.length) {
+                      return;
+                  }
+                  const memento = this.mementos.pop();
+
+                  console.log(`Caretaker: Restoring state to: ${memento.getName()}`);
+                  this.originator.restore(memento);
+              }
+
+              public showHistory(): void {
+                  console.log('Caretaker: Here\'s the list of mementos:');
+                  for (const memento of this.mementos) {
+                      console.log(memento.getName());
+                  }
+              }
+          }
+
+          /**
+          * Client code.
+          */
+          const originator = new Originator('Super-duper-super-puper-super.');
+          const caretaker = new Caretaker(originator);
+
+          caretaker.backup();
+          originator.doSomething();
+
+          caretaker.backup();
+          originator.doSomething();
+
+          caretaker.backup();
+          originator.doSomething();
+
+          console.log('');
+          caretaker.showHistory();
+
+          console.log('\nClient: Now, let\'s rollback!\n');
+          caretaker.undo();
+
+          console.log('\nClient: Once more!\n');
+          caretaker.undo();
+  - abbr: Observer
+    examples:
+      - title: Observer
+        code: |
+          /**
+          * The Subject interface declares a set of methods for managing subscribers.
+          */
+          interface Subject {
+              // Attach an observer to the subject.
+              attach(observer: Observer): void;
+
+              // Detach an observer from the subject.
+              detach(observer: Observer): void;
+
+              // Notify all observers about an event.
+              notify(): void;
+          }
+
+          /**
+          * The Subject owns some important state and notifies observers when the state
+          * changes.
+          */
+          class ConcreteSubject implements Subject {
+              /**
+              * @type {number} For the sake of simplicity, the Subject's state, essential
+              * to all subscribers, is stored in this variable.
+              */
+              public state: number;
+
+              /**
+              * @type {Observer[]} List of subscribers. In real life, the list of
+              * subscribers can be stored more comprehensively (categorized by event
+              * type, etc.).
+              */
+              private observers: Observer[] = [];
+
+              /**
+              * The subscription management methods.
+              */
+              public attach(observer: Observer): void {
+                  const isExist = this.observers.includes(observer);
+                  if (isExist) {
+                      return console.log('Subject: Observer has been attached already.');
+                  }
+
+                  console.log('Subject: Attached an observer.');
+                  this.observers.push(observer);
+              }
+
+              public detach(observer: Observer): void {
+                  const observerIndex = this.observers.indexOf(observer);
+                  if (observerIndex === -1) {
+                      return console.log('Subject: Nonexistent observer.');
+                  }
+
+                  this.observers.splice(observerIndex, 1);
+                  console.log('Subject: Detached an observer.');
+              }
+
+              /**
+              * Trigger an update in each subscriber.
+              */
+              public notify(): void {
+                  console.log('Subject: Notifying observers...');
+                  for (const observer of this.observers) {
+                      observer.update(this);
+                  }
+              }
+
+              /**
+              * Usually, the subscription logic is only a fraction of what a Subject can
+              * really do. Subjects commonly hold some important business logic, that
+              * triggers a notification method whenever something important is about to
+              * happen (or after it).
+              */
+              public someBusinessLogic(): void {
+                  console.log('\nSubject: I\'m doing something important.');
+                  this.state = Math.floor(Math.random() * (10 + 1));
+
+                  console.log(`Subject: My state has just changed to: ${this.state}`);
+                  this.notify();
+              }
+          }
+
+          /**
+          * The Observer interface declares the update method, used by subjects.
+          */
+          interface Observer {
+              // Receive update from subject.
+              update(subject: Subject): void;
+          }
+
+          /**
+          * Concrete Observers react to the updates issued by the Subject they had been
+          * attached to.
+          */
+          class ConcreteObserverA implements Observer {
+              public update(subject: Subject): void {
+                  if (subject instanceof ConcreteSubject && subject.state < 3) {
+                      console.log('ConcreteObserverA: Reacted to the event.');
+                  }
+              }
+          }
+
+          class ConcreteObserverB implements Observer {
+              public update(subject: Subject): void {
+                  if (subject instanceof ConcreteSubject && (subject.state === 0 || subject.state >= 2)) {
+                      console.log('ConcreteObserverB: Reacted to the event.');
+                  }
+              }
+          }
+
+          /**
+          * The client code.
+          */
+
+          const subject = new ConcreteSubject();
+
+          const observer1 = new ConcreteObserverA();
+          subject.attach(observer1);
+
+          const observer2 = new ConcreteObserverB();
+          subject.attach(observer2);
+
+          subject.someBusinessLogic();
+          subject.someBusinessLogic();
+
+          subject.detach(observer2);
+
+          subject.someBusinessLogic();
+  - abbr: State
+    examples:
+      - title: State
+        code: |
+          /**
+          * The Context defines the interface of interest to clients. It also maintains a
+          * reference to an instance of a State subclass, which represents the current
+          * state of the Context.
+          */
+          class Context {
+              /**
+              * @type {State} A reference to the current state of the Context.
+              */
+              private state: State;
+
+              constructor(state: State) {
+                  this.transitionTo(state);
+              }
+
+              /**
+              * The Context allows changing the State object at runtime.
+              */
+              public transitionTo(state: State): void {
+                  console.log(`Context: Transition to ${(<any>state).constructor.name}.`);
+                  this.state = state;
+                  this.state.setContext(this);
+              }
+
+              /**
+              * The Context delegates part of its behavior to the current State object.
+              */
+              public request1(): void {
+                  this.state.handle1();
+              }
+
+              public request2(): void {
+                  this.state.handle2();
+              }
+          }
+
+          /**
+          * The base State class declares methods that all Concrete State should
+          * implement and also provides a backreference to the Context object, associated
+          * with the State. This backreference can be used by States to transition the
+          * Context to another State.
+          */
+          abstract class State {
+              protected context: Context;
+
+              public setContext(context: Context) {
+                  this.context = context;
+              }
+
+              public abstract handle1(): void;
+
+              public abstract handle2(): void;
+          }
+
+          /**
+          * Concrete States implement various behaviors, associated with a state of the
+          * Context.
+          */
+          class ConcreteStateA extends State {
+              public handle1(): void {
+                  console.log('ConcreteStateA handles request1.');
+                  console.log('ConcreteStateA wants to change the state of the context.');
+                  this.context.transitionTo(new ConcreteStateB());
+              }
+
+              public handle2(): void {
+                  console.log('ConcreteStateA handles request2.');
+              }
+          }
+
+          class ConcreteStateB extends State {
+              public handle1(): void {
+                  console.log('ConcreteStateB handles request1.');
+              }
+
+              public handle2(): void {
+                  console.log('ConcreteStateB handles request2.');
+                  console.log('ConcreteStateB wants to change the state of the context.');
+                  this.context.transitionTo(new ConcreteStateA());
+              }
+          }
+
+          /**
+          * The client code.
+          */
+          const context = new Context(new ConcreteStateA());
+          context.request1();
+          context.request2();
+  - abbr: Strategy
+    examples:
+      - title: Strategy
+        code: |
+          /**
+          * The Context defines the interface of interest to clients.
+          */
+          class Context {
+              /**
+              * @type {Strategy} The Context maintains a reference to one of the Strategy
+              * objects. The Context does not know the concrete class of a strategy. It
+              * should work with all strategies via the Strategy interface.
+              */
+              private strategy: Strategy;
+
+              /**
+              * Usually, the Context accepts a strategy through the constructor, but also
+              * provides a setter to change it at runtime.
+              */
+              constructor(strategy: Strategy) {
+                  this.strategy = strategy;
+              }
+
+              /**
+              * Usually, the Context allows replacing a Strategy object at runtime.
+              */
+              public setStrategy(strategy: Strategy) {
+                  this.strategy = strategy;
+              }
+
+              /**
+              * The Context delegates some work to the Strategy object instead of
+              * implementing multiple versions of the algorithm on its own.
+              */
+              public doSomeBusinessLogic(): void {
+                  // ...
+
+                  console.log('Context: Sorting data using the strategy (not sure how it\'ll do it)');
+                  const result = this.strategy.doAlgorithm(['a', 'b', 'c', 'd', 'e']);
+                  console.log(result.join(','));
+
+                  // ...
+              }
+          }
+
+          /**
+          * The Strategy interface declares operations common to all supported versions
+          * of some algorithm.
+          *
+          * The Context uses this interface to call the algorithm defined by Concrete
+          * Strategies.
+          */
+          interface Strategy {
+              doAlgorithm(data: string[]): string[];
+          }
+
+          /**
+          * Concrete Strategies implement the algorithm while following the base Strategy
+          * interface. The interface makes them interchangeable in the Context.
+          */
+          class ConcreteStrategyA implements Strategy {
+              public doAlgorithm(data: string[]): string[] {
+                  return data.sort();
+              }
+          }
+
+          class ConcreteStrategyB implements Strategy {
+              public doAlgorithm(data: string[]): string[] {
+                  return data.reverse();
+              }
+          }
+
+          /**
+          * The client code picks a concrete strategy and passes it to the context. The
+          * client should be aware of the differences between strategies in order to make
+          * the right choice.
+          */
+          const context = new Context(new ConcreteStrategyA());
+          console.log('Client: Strategy is set to normal sorting.');
+          context.doSomeBusinessLogic();
+
+          console.log('');
+
+          console.log('Client: Strategy is set to reverse sorting.');
+          context.setStrategy(new ConcreteStrategyB());
+          context.doSomeBusinessLogic();
+  - abbr: TemplateMethod
+    examples:
+      - title: Template Method
+        code: |
+          /**
+          * The Abstract Class defines a template method that contains a skeleton of some
+          * algorithm, composed of calls to (usually) abstract primitive operations.
+          *
+          * Concrete subclasses should implement these operations, but leave the template
+          * method itself intact.
+          */
+          abstract class AbstractClass {
+              /**
+              * The template method defines the skeleton of an algorithm.
+              */
+              public templateMethod(): void {
+                  this.baseOperation1();
+                  this.requiredOperations1();
+                  this.baseOperation2();
+                  this.hook1();
+                  this.requiredOperation2();
+                  this.baseOperation3();
+                  this.hook2();
+              }
+
+              /**
+              * These operations already have implementations.
+              */
+              protected baseOperation1(): void {
+                  console.log('AbstractClass says: I am doing the bulk of the work');
+              }
+
+              protected baseOperation2(): void {
+                  console.log('AbstractClass says: But I let subclasses override some operations');
+              }
+
+              protected baseOperation3(): void {
+                  console.log('AbstractClass says: But I am doing the bulk of the work anyway');
+              }
+
+              /**
+              * These operations have to be implemented in subclasses.
+              */
+              protected abstract requiredOperations1(): void;
+
+              protected abstract requiredOperation2(): void;
+
+              /**
+              * These are "hooks." Subclasses may override them, but it's not mandatory
+              * since the hooks already have default (but empty) implementation. Hooks
+              * provide additional extension points in some crucial places of the
+              * algorithm.
+              */
+              protected hook1(): void { }
+
+              protected hook2(): void { }
+          }
+
+          /**
+          * Concrete classes have to implement all abstract operations of the base class.
+          * They can also override some operations with a default implementation.
+          */
+          class ConcreteClass1 extends AbstractClass {
+              protected requiredOperations1(): void {
+                  console.log('ConcreteClass1 says: Implemented Operation1');
+              }
+
+              protected requiredOperation2(): void {
+                  console.log('ConcreteClass1 says: Implemented Operation2');
+              }
+          }
+
+          /**
+          * Usually, concrete classes override only a fraction of base class' operations.
+          */
+          class ConcreteClass2 extends AbstractClass {
+              protected requiredOperations1(): void {
+                  console.log('ConcreteClass2 says: Implemented Operation1');
+              }
+
+              protected requiredOperation2(): void {
+                  console.log('ConcreteClass2 says: Implemented Operation2');
+              }
+
+              protected hook1(): void {
+                  console.log('ConcreteClass2 says: Overridden Hook1');
+              }
+          }
+
+          /**
+          * The client code calls the template method to execute the algorithm. Client
+          * code does not have to know the concrete class of an object it works with, as
+          * long as it works with objects through the interface of their base class.
+          */
+          function clientCode(abstractClass: AbstractClass) {
+              // ...
+              abstractClass.templateMethod();
+              // ...
+          }
+
+          console.log('Same client code can work with different subclasses:');
+          clientCode(new ConcreteClass1());
+          console.log('');
+
+          console.log('Same client code can work with different subclasses:');
+          clientCode(new ConcreteClass2());
+  - abbr: Visitor
+    examples:
+      - title: Visitor
+        code: |
+          /**
+          * The Component interface declares an `accept` method that should take the base
+          * visitor interface as an argument.
+          */
+          interface Component {
+              accept(visitor: Visitor): void;
+          }
+
+          /**
+          * Each Concrete Component must implement the `accept` method in such a way that
+          * it calls the visitor's method corresponding to the component's class.
+          */
+          class ConcreteComponentA implements Component {
+              /**
+              * Note that we're calling `visitConcreteComponentA`, which matches the
+              * current class name. This way we let the visitor know the class of the
+              * component it works with.
+              */
+              public accept(visitor: Visitor): void {
+                  visitor.visitConcreteComponentA(this);
+              }
+
+              /**
+              * Concrete Components may have special methods that don't exist in their
+              * base class or interface. The Visitor is still able to use these methods
+              * since it's aware of the component's concrete class.
+              */
+              public exclusiveMethodOfConcreteComponentA(): string {
+                  return 'A';
+              }
+          }
+
+          class ConcreteComponentB implements Component {
+              /**
+              * Same here: visitConcreteComponentB => ConcreteComponentB
+              */
+              public accept(visitor: Visitor): void {
+                  visitor.visitConcreteComponentB(this);
+              }
+
+              public specialMethodOfConcreteComponentB(): string {
+                  return 'B';
+              }
+          }
+
+          /**
+          * The Visitor Interface declares a set of visiting methods that correspond to
+          * component classes. The signature of a visiting method allows the visitor to
+          * identify the exact class of the component that it's dealing with.
+          */
+          interface Visitor {
+              visitConcreteComponentA(element: ConcreteComponentA): void;
+
+              visitConcreteComponentB(element: ConcreteComponentB): void;
+          }
+
+          /**
+          * Concrete Visitors implement several versions of the same algorithm, which can
+          * work with all concrete component classes.
+          *
+          * You can experience the biggest benefit of the Visitor pattern when using it
+          * with a complex object structure, such as a Composite tree. In this case, it
+          * might be helpful to store some intermediate state of the algorithm while
+          * executing visitor's methods over various objects of the structure.
+          */
+          class ConcreteVisitor1 implements Visitor {
+              public visitConcreteComponentA(element: ConcreteComponentA): void {
+                  console.log(`${element.exclusiveMethodOfConcreteComponentA()} + ConcreteVisitor1`);
+              }
+
+              public visitConcreteComponentB(element: ConcreteComponentB): void {
+                  console.log(`${element.specialMethodOfConcreteComponentB()} + ConcreteVisitor1`);
+              }
+          }
+
+          class ConcreteVisitor2 implements Visitor {
+              public visitConcreteComponentA(element: ConcreteComponentA): void {
+                  console.log(`${element.exclusiveMethodOfConcreteComponentA()} + ConcreteVisitor2`);
+              }
+
+              public visitConcreteComponentB(element: ConcreteComponentB): void {
+                  console.log(`${element.specialMethodOfConcreteComponentB()} + ConcreteVisitor2`);
+              }
+          }
+
+          /**
+          * The client code can run visitor operations over any set of elements without
+          * figuring out their concrete classes. The accept operation directs a call to
+          * the appropriate operation in the visitor object.
+          */
+          function clientCode(components: Component[], visitor: Visitor) {
+              // ...
+              for (const component of components) {
+                  component.accept(visitor);
+              }
+              // ...
+          }
+
+          const components = [
+              new ConcreteComponentA(),
+              new ConcreteComponentB(),
+          ];
+
+          console.log('The client code works with all visitors via the base Visitor interface:');
+          const visitor1 = new ConcreteVisitor1();
+          clientCode(components, visitor1);
+          console.log('');
+
+          console.log('It allows the same client code to work with different types of visitors:');
+          const visitor2 = new ConcreteVisitor2();
+          clientCode(components, visitor2);

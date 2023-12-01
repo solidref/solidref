@@ -19,12 +19,15 @@ function ofUnix(file) {
 }
 
 async function yamlParseAndSave(file) {
-  console.log(file.replace(ofUnix(pathJoin(__dirname, '..', '..')) + '/', ''));
+  file = file.replace(ofUnix(pathJoin(__dirname, '..', '..')) + '/', '');
+  console.log(file);
+
+  const chunks = file.split('/');
 
   const yamlString = await readFile(file, 'utf-8');
   const yamlObject = yaml.parse(yamlString);
 
-  const dirName = pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages');
+  const dirName = pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages', chunks[chunks.length - 2]);
   await mkdir(dirName, {recursive: true});
 
   const fileName = pathJoin(dirName, basename(file, '.yml') + '.json');
@@ -32,35 +35,37 @@ async function yamlParseAndSave(file) {
 }
 
 async function main() {
-  const yamlFiles = await globby([ofUnix(pathJoin(__dirname, '..', '..', 'yaml', 'lang', '*.yml'))]);
+  const search = ofUnix(pathJoin(__dirname, '..', '..', 'yaml', 'lang', '**', 'lang.yml'));
+  console.log(search);
+  const yamlFiles = await globby([search]);
   await Promise.all(yamlFiles.map((file) => yamlParseAndSave(file)));
 
   const languageHierarchy = {};
-  for (const file of yamlFiles) {
-    const yamlString = await readFile(file, 'utf-8');
-    const yamlObject = yaml.parse(yamlString);
+  // for (const file of yamlFiles) {
+  //   const yamlString = await readFile(file, 'utf-8');
+  //   const yamlObject = yaml.parse(yamlString);
 
-    let parentLanguages = yamlObject?.parent ?? basename(file, '.yml');
-    parentLanguages = Array.isArray(parentLanguages) ? parentLanguages : [parentLanguages];
-    const language = basename(file, '.yml');
-    languageHierarchy[language] = {
-      children: [...new Set([...(languageHierarchy?.[language]?.children ?? []), language])].filter(
-        (l) => l != language,
-      ),
-      birth: yamlObject.birth,
-      death: yamlObject.death,
-      code: yamlObject.code,
-    };
-    parentLanguages.forEach((parentLanguage) => {
-      languageHierarchy[parentLanguage] = {
-        ...(languageHierarchy[parentLanguage] ?? {}),
-        children: [...new Set([...(languageHierarchy?.[parentLanguage]?.children ?? []), language])],
-      };
-    });
-  }
+  //   let parentLanguages = yamlObject?.parent ?? basename(file, '.yml');
+  //   parentLanguages = Array.isArray(parentLanguages) ? parentLanguages : [parentLanguages];
+  //   const language = basename(file, '.yml');
+  //   languageHierarchy[language] = {
+  //     children: [...new Set([...(languageHierarchy?.[language]?.children ?? []), language])].filter(
+  //       (l) => l != language,
+  //     ),
+  //     birth: yamlObject.birth,
+  //     death: yamlObject.death,
+  //     code: yamlObject.code,
+  //   };
+  //   parentLanguages.forEach((parentLanguage) => {
+  //     languageHierarchy[parentLanguage] = {
+  //       ...(languageHierarchy[parentLanguage] ?? {}),
+  //       children: [...new Set([...(languageHierarchy?.[parentLanguage]?.children ?? []), language])],
+  //     };
+  //   });
+  // }
 
-  await writeFile(
-    pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages.json'),
-    JSON.stringify(languageHierarchy, ...jsonStringifyConfig),
-  );
+  // await writeFile(
+  //   pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages.json'),
+  //   JSON.stringify(languageHierarchy, ...jsonStringifyConfig),
+  // );
 }

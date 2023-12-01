@@ -54,7 +54,8 @@ content:
 
 ---
 require: Following the template from above, please generate the yaml content for Groovy language
-TODO: Bash, Powershell, Tcl, S, Lisp, Ada & Ada95, Lua, Elixir, Raku,
+TODO: Bash, Powershell, Cold Fusion, CFScript
+TODO: https://refactoring.guru/design-patterns
 urls:
   - https://en.wikipedia.org/wiki/History_of_programming_languages
   - https://canvasjs.com/react-charts/
