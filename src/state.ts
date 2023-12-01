@@ -70,11 +70,11 @@ export type StateReadiness = {
 /**
  * Hierarchy Languages State
  */
-export interface HierarchyLanguagesState extends StateReadiness {
+export interface LanguagesHierarchyState extends StateReadiness {
   list?: HierarchyLanguage[];
 }
 
-export const languageHierarchyState = atom<HierarchyLanguagesState>({
+export const languageHierarchyState = atom<LanguagesHierarchyState>({
   key: 'hierarchyLanguages',
   default: {}, // default empty object
 });
@@ -85,16 +85,16 @@ export const languageHierarchyState = atom<HierarchyLanguagesState>({
 
 export type LanguageState = StateReadiness & {
   language: Language;
-}
+};
 
 export type LanguagesState = {
-  languages: Record<string, LanguageState>
+  languages: Record<string, LanguageState>;
 };
 
 export const languagesState = atom<LanguagesState>({
   key: 'languagesState',
   default: {
-    languages: {}
+    languages: {},
   },
 });
 

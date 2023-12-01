@@ -2,7 +2,7 @@ import {GetRecoilValue, RecoilState, selector, selectorFamily} from 'recoil';
 import {
   DefaultMessageTtl,
   HierarchyLanguage,
-  HierarchyLanguagesState,
+  LanguagesHierarchyState,
   Language,
   languageHierarchyState,
   LanguagesState,
@@ -38,7 +38,7 @@ function addMessageWithTTL(
   }, message.ttl);
 }
 
-export const loadLanguageHierarchy = selector<HierarchyLanguagesState>({
+export const loadLanguageHierarchy = selector<LanguagesHierarchyState>({
   key: 'loadLanguageHierarchy',
   get: async ({get, set}: any) => {
     try {
@@ -61,22 +61,25 @@ export const loadLanguageHierarchy = selector<HierarchyLanguagesState>({
 
       return {
         ...get(languageHierarchyState),
-        ready: false
+        ready: false,
       };
     }
   },
 });
 
-type LanguageSelectorGetSet = {
-  get: GetRecoilValue;
-  set: (recoilVal: RecoilState<LanguagesState>, newVal: LanguagesState | ((prevVal: LanguagesState) => LanguagesState)) => void;
-};
+// type LanguageSelectorGetSet = {
+//   get: GetRecoilValue;
+//   set: (
+//     recoilVal: RecoilState<LanguagesState>,
+//     newVal: LanguagesState | ((prevVal: LanguagesState) => LanguagesState),
+//   ) => void;
+// };
 
 export const loadLanguage = selectorFamily<LanguagesState, string>({
   key: 'loadLanguage',
   get:
     (code) =>
-    async ({get, set}: LanguageSelectorGetSet) => {
+    async ({get, set}: any) => {
       try {
         const currentLanguagesState = get(languagesState);
         // Set specific language's readiness to false
@@ -84,7 +87,7 @@ export const loadLanguage = selectorFamily<LanguagesState, string>({
           ...currentLanguagesState,
           languages: {
             ...currentLanguagesState.languages,
-            [code]: { ...currentLanguagesState.languages[code], ready: false },
+            [code]: {...currentLanguagesState.languages[code], ready: false},
           },
         });
 
@@ -96,11 +99,11 @@ export const loadLanguage = selectorFamily<LanguagesState, string>({
         const language = (await response.json()) as Language;
 
         // Update specific language's data and readiness
-        set(languagesState, (prev) => ({
+        set(languagesState, (prev: LanguagesState) => ({
           ...prev,
           languages: {
             ...(prev.languages ?? {}),
-            [code]: { language, ready: true },
+            [code]: {language, ready: true},
           },
         }));
 
@@ -113,11 +116,11 @@ export const loadLanguage = selectorFamily<LanguagesState, string>({
         });
 
         // Update specific language's readiness to false in case of error
-        set(languagesState, (prev) => ({
+        set(languagesState, (prev: LanguagesState) => ({
           ...prev,
           languages: {
             ...prev.languages,
-            [code]: { ...prev.languages[code], ready: false },
+            [code]: {...prev.languages[code], ready: false},
           },
         }));
 
@@ -129,8 +132,8 @@ export const loadLanguage = selectorFamily<LanguagesState, string>({
 // selector for adding messages
 export const addMessageSelector = selector<MessagesState>({
   key: 'addMessageSelector',
-  get: ({get}) => get(messagesState),
-  set: ({set}, message: Message) => {
+  get: ({get}: any) => get(messagesState),
+  set: ({set}: any, message: Message) => {
     addMessageWithTTL(set, message);
   },
-});
+} as any);

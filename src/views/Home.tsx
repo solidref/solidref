@@ -12,13 +12,15 @@ import RootLanguages from '../components/home/RootLanguages';
 import AllLanguages from '../components/home/AllLanguages';
 import {CenteredToolbar} from '../components/Header';
 import Typography from '@mui/material/Typography';
+import { languageHierarchyState } from '../state';
+import { useRecoilValue } from 'recoil';
 
-export type HomeProps = {
-  // languageHierarchy?: LanguageHierarchyObject;
-};
+export type HomeProps = {};
 
-function Home({} /*languageHierarchy = {}*/ : HomeProps) {
+function Home({}: HomeProps) {
   const theme = useTheme();
+
+  const { list } = useRecoilValue(languageHierarchyState);
 
   const [view, setView] = React.useState('list');
 

@@ -7,19 +7,12 @@ import ByLanguage from './views/ByLanguage';
 import './App.css';
 import {RecoilRoot} from 'recoil';
 import {createTheme} from '@mui/material/styles';
-import {LanguageHierarchyObject} from './state';
 import LanguageHierarchyLoader from './components/generic/LanguageHierarchy';
 import History from './views/History';
 import {ThemeProvider} from '@emotion/react';
 import {lightTheme, darkTheme, ColorModeContext} from './theme';
 
 const App: React.FC = () => {
-  const [languageHierarchy, setLanguageHierarchy] = useState<LanguageHierarchyObject>({});
-
-  const exportLanguageHierarchy = (value: LanguageHierarchyObject) => {
-    setLanguageHierarchy(value);
-  };
-
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
   const colorMode = useMemo(
     () => ({
@@ -48,12 +41,11 @@ const App: React.FC = () => {
           <RecoilRoot>
             <Router>
               <Header />
-              <LanguageHierarchyLoader exportLanguageHierarchy={exportLanguageHierarchy} />
               <main>
                 <Routes>
-                  <Route path="/" element={<Home languageHierarchy={languageHierarchy} />} />
-                  <Route path="/by-language/:language" element={<ByLanguage languageHierarchy={languageHierarchy} />} />
-                  <Route path="/history" element={<History languageHierarchy={languageHierarchy} />} />
+                  <Route path="/" element={<Home />} />
+                  <Route path="/by-language/:language" element={<ByLanguage />} />
+                  <Route path="/history" element={<History />} />
                 </Routes>
               </main>
               <Footer />

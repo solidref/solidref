@@ -6,14 +6,8 @@ import {useParams} from 'react-router-dom';
 import {useRecoilState, useRecoilValue, useRecoilValueLoadable} from 'recoil';
 
 import {
-  CodingPrinciple,
-  CodingPrinciplesObject,
-  LanguageHierarchyObject,
-  LanguageObject,
-  codingPrinciplesState,
-  languageObjectState,
+  CodingPrinciple, LanguagesHierarchyState, languageHierarchyState,
 } from '../state';
-import {loadYamlByLanguage} from '../selector';
 import CodeExampleAccordion from '../components/code/CodeExampleAccordion';
 import {CenteredToolbar} from '../components/Header';
 import Typography from '@mui/material/Typography';
@@ -26,7 +20,7 @@ type Params = {
 };
 
 export type ByLanguageProps = {
-  languageHierarchy?: LanguageHierarchyObject;
+  languagesHierarchy?: LanguagesHierarchyState;
 };
 
 export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
@@ -45,75 +39,77 @@ export const Principle = styled('div')(({theme}) => ({
   padding: '10px',
 }));
 
-function ByLanguage({languageHierarchy = {}}: ByLanguageProps) {
-  let {language = 'javascript'} = useParams<Params>();
+function ByLanguage({}: ByLanguageProps) {
 
-  const searchLanguage = `${language}`;
 
-  const codingPrinciplesObjectLoadable = useRecoilValueLoadable(codingPrinciplesState);
-  useRecoilState<CodingPrinciplesObject>(codingPrinciplesState);
+  // let {language = 'javascript'} = useParams<Params>();
 
-  const [languageObject, setLanguageObject] = useRecoilState<LanguageObject>(languageObjectState);
-  const languageObjectLoadable = useRecoilValueLoadable(loadYamlByLanguage(searchLanguage));
+  // const searchLanguage = `${language}`;
 
-  useEffect(() => {
-    if (languageObjectLoadable.state === 'hasValue' && codingPrinciplesObjectLoadable.state === 'hasValue') {
-      setLanguageObject({
-        ...languageObject,
-        ...languageObjectLoadable.contents,
-      });
-    }
-  }, [languageObjectLoadable.state, codingPrinciplesObjectLoadable.state]);
+  // const codingPrinciplesObjectLoadable = useRecoilValueLoadable(codingPrinciplesState);
+  // useRecoilState<CodingPrinciplesObject>(codingPrinciplesState);
 
-  const makeKey = (key: string): string => {
-    return key.replace(/[^\w]+/gi, '-').toLowerCase();
-  };
+  // const [languageObject, setLanguageObject] = useRecoilState<LanguageObject>(languageObjectState);
+  // const languageObjectLoadable = useRecoilValueLoadable(loadYamlByLanguage(searchLanguage));
 
-  const renderCodeSamples = (principle: CodingPrinciple) => {
-    return (
-      <CodeExampleAccordion
-        examples={principle?.examples || []}
-        language={languageObject?.languageObject?.code || 'js'}
-      />
-    );
-  };
+  // useEffect(() => {
+  //   if (languageObjectLoadable.state === 'hasValue' && codingPrinciplesObjectLoadable.state === 'hasValue') {
+  //     setLanguageObject({
+  //       ...languageObject,
+  //       ...languageObjectLoadable.contents,
+  //     });
+  //   }
+  // }, [languageObjectLoadable.state, codingPrinciplesObjectLoadable.state]);
 
-  const renderPrinciple = (principle: CodingPrinciple) => {
-    return (
-      <Grid item xs={12} sm={6} key={makeKey(principle.title)} id={makeKey(principle.title)}>
-        <Principle>
-          <h3>{principle.title}</h3>
-          <p>{principle.description}</p>
-          {renderCodeSamples(principle)}
-        </Principle>
-      </Grid>
-    );
-  };
+  // const makeKey = (key: string): string => {
+  //   return key.replace(/[^\w]+/gi, '-').toLowerCase();
+  // };
 
-  const renderPrinciples = () => {
-    return (
-      <Grid container columns={12} spacing={4}>
-        {languageObject?.languageObject?.principles?.map((principle) => renderPrinciple(principle))}
-      </Grid>
-    );
-  };
+  // const renderCodeSamples = (principle: CodingPrinciple) => {
+  //   return (
+  //     <CodeExampleAccordion
+  //       examples={principle?.examples || []}
+  //       language={languageObject?.languageObject?.code || 'js'}
+  //     />
+  //   );
+  // };
 
-  return (
-    <>
-      <CenteredToolbar sx={{justifyContent: 'space-between'}}>
-        <Typography variant="h2">
-          <i>{languageObject?.languageObject?.language}</i> Coding Principles
-        </Typography>
-        <Typography variant="h6">
-          Here are the <i>{languageObject?.languageObject?.language}</i> Coding Principles explained
-        </Typography>
-        <StyledSvgIconByName name={languageObject?.languageObject?.code ?? ''} />
-      </CenteredToolbar>
-      <Page>
-        <Box sx={{flexGrow: 1}}>{renderPrinciples()}</Box>
-      </Page>
-    </>
-  );
+  // const renderPrinciple = (principle: CodingPrinciple) => {
+  //   return (
+  //     <Grid item xs={12} sm={6} key={makeKey(principle.title)} id={makeKey(principle.title)}>
+  //       <Principle>
+  //         <h3>{principle.title}</h3>
+  //         <p>{principle.description}</p>
+  //         {renderCodeSamples(principle)}
+  //       </Principle>
+  //     </Grid>
+  //   );
+  // };
+
+  // const renderPrinciples = () => {
+  //   return (
+  //     <Grid container columns={12} spacing={4}>
+  //       {languageObject?.languageObject?.principles?.map((principle) => renderPrinciple(principle))}
+  //     </Grid>
+  //   );
+  // };
+
+  // return (
+  //   <>
+  //     <CenteredToolbar sx={{justifyContent: 'space-between'}}>
+  //       <Typography variant="h2">
+  //         <i>{languageObject?.languageObject?.language}</i> Coding Principles
+  //       </Typography>
+  //       <Typography variant="h6">
+  //         Here are the <i>{languageObject?.languageObject?.language}</i> Coding Principles explained
+  //       </Typography>
+  //       <StyledSvgIconByName name={languageObject?.languageObject?.code ?? ''} />
+  //     </CenteredToolbar>
+  //     <Page>
+  //       <Box sx={{flexGrow: 1}}>{renderPrinciples()}</Box>
+  //     </Page>
+  //   </>
+  // );
 }
 
 export default ByLanguage;
