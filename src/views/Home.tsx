@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Page from '../components/Page';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,17 +12,15 @@ import RootLanguages from '../components/home/RootLanguages';
 import AllLanguages from '../components/home/AllLanguages';
 import {CenteredToolbar} from '../components/Header';
 import Typography from '@mui/material/Typography';
-import { languageHierarchyState } from '../state';
-import { useRecoilValue } from 'recoil';
+import {languagesHierarchyState} from '../state';
+import {useRecoilValue} from 'recoil';
 
 export type HomeProps = {};
 
 function Home({}: HomeProps) {
   const theme = useTheme();
 
-  const { list } = useRecoilValue(languageHierarchyState);
-
-  const [view, setView] = React.useState('list');
+  const [view, setView] = useState('list');
 
   const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
     setView(nextView);
@@ -50,8 +48,8 @@ function Home({}: HomeProps) {
               </Paper>
             </Grid>
           </Grid>
-          {/* {view === 'list' ? <RootLanguages languageHierarchy={languageHierarchy} /> : <></>}
-          {view === 'module' ? <AllLanguages languageHierarchy={languageHierarchy} /> : <></>} */}
+          {view === 'list' ? <RootLanguages /> : <></>}
+          {view === 'module' ? <AllLanguages /> : <></>}
         </Box>
       </Page>
     </>

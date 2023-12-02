@@ -5,12 +5,14 @@ import Footer from './components/Footer';
 import Home from './views/Home';
 import ByLanguage from './views/ByLanguage';
 import './App.css';
-import {RecoilRoot} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import {createTheme} from '@mui/material/styles';
-import LanguageHierarchyLoader from './components/generic/LanguageHierarchy';
 import History from './views/History';
 import {ThemeProvider} from '@emotion/react';
 import {lightTheme, darkTheme, ColorModeContext} from './theme';
+import {loadLanguageHierarchy} from './selector';
+import {languagesHierarchyState} from './state';
+import LanguageHierarchyLoader from './components/generic/LanguageHierarchyLoader';
 
 const App: React.FC = () => {
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
@@ -22,6 +24,8 @@ const App: React.FC = () => {
     }),
     [],
   );
+
+  const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
 
   const theme = useMemo(() => {
     const defaultTheme = mode === 'light' ? lightTheme : darkTheme;
@@ -38,7 +42,8 @@ const App: React.FC = () => {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <RecoilRoot>
+          <LanguageHierarchyLoader setLanguagesHierarchyState={setLanguagesHierarchyState} />
+          <React.Suspense fallback={<div>Loading...</div>}>
             <Router>
               <Header />
               <main>
@@ -50,7 +55,7 @@ const App: React.FC = () => {
               </main>
               <Footer />
             </Router>
-          </RecoilRoot>
+          </React.Suspense>
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>

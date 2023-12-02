@@ -4,7 +4,7 @@ import {
   HierarchyLanguage,
   LanguagesHierarchyState,
   Language,
-  languageHierarchyState,
+  languagesHierarchyState,
   LanguagesState,
   languagesState,
   Message,
@@ -41,6 +41,7 @@ function addMessageWithTTL(
 export const loadLanguageHierarchy = selector<LanguagesHierarchyState>({
   key: 'loadLanguageHierarchy',
   get: async ({get, set}: any) => {
+    console.log('Loading language hierarchy');
     try {
       const response = await fetch('/generated/hierarchy.json');
       if (!response.ok) {
@@ -54,13 +55,14 @@ export const loadLanguageHierarchy = selector<LanguagesHierarchyState>({
       };
     } catch (error) {
       console.error('Error fetching language hierarchy:', error);
-      addMessageWithTTL(set, {
-        message: error instanceof Error ? error.message : 'Could not load language hierarchy data',
-        type: 'error',
-      });
+      console.log(set);
+      // addMessageWithTTL(set, {
+      //   message: error instanceof Error ? error.message : 'Could not load language hierarchy data',
+      //   type: 'error',
+      // });
 
       return {
-        ...get(languageHierarchyState),
+        ...get(languagesHierarchyState),
         ready: false,
       };
     }

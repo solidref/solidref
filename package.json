@@ -32,9 +32,10 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "build:deps": "run-s build:deps:* && npm run prettier",
+    "build:deps": "run-s build:deps:*",
     "build:deps:twig": "echo node .scripts/esm/build-template-files.js",
     "build:deps:json": "node .scripts/esm/build-language-files.js",
+    "--postbuild:deps": "npm run prettier",
     "prebuild:deps": "rimraf ./public/generated",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",

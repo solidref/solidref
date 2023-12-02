@@ -36,36 +36,20 @@ async function yamlParseAndSave(file) {
 
 async function main() {
   const search = ofUnix(pathJoin(__dirname, '..', '..', 'yaml', 'lang', '**', 'lang.yml'));
-  console.log(search);
+
   const yamlFiles = await globby([search]);
   await Promise.all(yamlFiles.map((file) => yamlParseAndSave(file)));
 
-  const languageHierarchy = {};
-  // for (const file of yamlFiles) {
-  //   const yamlString = await readFile(file, 'utf-8');
-  //   const yamlObject = yaml.parse(yamlString);
+  const languageHierarchy = [];
+  for (const file of yamlFiles) {
+    const yamlString = await readFile(file, 'utf-8');
+    const yamlObject = yaml.parse(yamlString);
 
-  //   let parentLanguages = yamlObject?.parent ?? basename(file, '.yml');
-  //   parentLanguages = Array.isArray(parentLanguages) ? parentLanguages : [parentLanguages];
-  //   const language = basename(file, '.yml');
-  //   languageHierarchy[language] = {
-  //     children: [...new Set([...(languageHierarchy?.[language]?.children ?? []), language])].filter(
-  //       (l) => l != language,
-  //     ),
-  //     birth: yamlObject.birth,
-  //     death: yamlObject.death,
-  //     code: yamlObject.code,
-  //   };
-  //   parentLanguages.forEach((parentLanguage) => {
-  //     languageHierarchy[parentLanguage] = {
-  //       ...(languageHierarchy[parentLanguage] ?? {}),
-  //       children: [...new Set([...(languageHierarchy?.[parentLanguage]?.children ?? []), language])],
-  //     };
-  //   });
-  // }
+    languageHierarchy.push(yamlObject);
+  }
 
-  // await writeFile(
-  //   pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages.json'),
-  //   JSON.stringify(languageHierarchy, ...jsonStringifyConfig),
-  // );
+  await writeFile(
+    pathJoin(__dirname, '..', '..', 'public', 'generated', 'hierarchy.json'),
+    JSON.stringify(languageHierarchy, ...jsonStringifyConfig),
+  );
 }

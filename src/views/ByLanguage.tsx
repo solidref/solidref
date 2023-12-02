@@ -5,9 +5,7 @@ import Grid from '@mui/material/Grid';
 import {useParams} from 'react-router-dom';
 import {useRecoilState, useRecoilValue, useRecoilValueLoadable} from 'recoil';
 
-import {
-  CodingPrinciple, LanguagesHierarchyState, languageHierarchyState,
-} from '../state';
+import {CodingPrinciple, LanguagesHierarchyState, languagesHierarchyState} from '../state';
 import CodeExampleAccordion from '../components/code/CodeExampleAccordion';
 import {CenteredToolbar} from '../components/Header';
 import Typography from '@mui/material/Typography';
@@ -19,9 +17,7 @@ type Params = {
   language: string;
 };
 
-export type ByLanguageProps = {
-  languagesHierarchy?: LanguagesHierarchyState;
-};
+export type ByLanguageProps = {};
 
 export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
   width: '100px',
@@ -39,9 +35,7 @@ export const Principle = styled('div')(({theme}) => ({
   padding: '10px',
 }));
 
-function ByLanguage({}: ByLanguageProps) {
-
-
+function ByLanguage() {
   // let {language = 'javascript'} = useParams<Params>();
 
   // const searchLanguage = `${language}`;
@@ -110,6 +104,8 @@ function ByLanguage({}: ByLanguageProps) {
   //     </Page>
   //   </>
   // );
+
+  return <></>;
 }
 
 export default ByLanguage;

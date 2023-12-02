@@ -74,7 +74,7 @@ export interface LanguagesHierarchyState extends StateReadiness {
   list?: HierarchyLanguage[];
 }
 
-export const languageHierarchyState = atom<LanguagesHierarchyState>({
+export const languagesHierarchyState = atom<LanguagesHierarchyState>({
   key: 'hierarchyLanguages',
   default: {}, // default empty object
 });
