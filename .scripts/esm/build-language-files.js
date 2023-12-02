@@ -1,4 +1,5 @@
 import {promises as fs} from 'fs';
+import { existsSync } from 'fs';
 import {join as pathJoin, dirname, basename} from 'path';
 import {fileURLToPath} from 'url';
 import {globby} from 'globby';
@@ -21,16 +22,41 @@ function ofUnix(file) {
 async function yamlParseAndSave(file) {
   file = file.replace(ofUnix(pathJoin(__dirname, '..', '..')) + '/', '');
   console.log(file);
-
-  const chunks = file.split('/');
+  const sourceDirName = dirname(file);
 
   const yamlString = await readFile(file, 'utf-8');
   const yamlObject = yaml.parse(yamlString);
 
-  const dirName = pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages', chunks[chunks.length - 2]);
-  await mkdir(dirName, {recursive: true});
+  [
+    'patterns-behavioral',
+    'patterns-creational',
+    'patterns-structural',
+    'principles-proprietary',
+    'principles-solid',
+  ].forEach(async (name) => {
+    const newFile = pathJoin(sourceDirName, name) + '.yml';
+    if (existsSync(newFile)) {
+      console.log(newFile);
+      const yamlString = await readFile(file, 'utf-8');
+      const ch = name.split('-');
+      yamlObject[ch[0]] = {
+        ...(yamlObject[ch[0]] || {}),
+        [ch[1]]: yaml.parse(yamlString),
+      };
+    }
+  });
 
-  const fileName = pathJoin(dirName, basename(file, '.yml') + '.json');
+  const generatedDirName = pathJoin(
+    __dirname,
+    '..',
+    '..',
+    'public',
+    'generated',
+    'languages',
+  );
+  await mkdir(generatedDirName, {recursive: true});
+
+  const fileName = pathJoin(generatedDirName, yamlObject.code + '.json');
   await writeFile(fileName, JSON.stringify(yamlObject, ...jsonStringifyConfig));
 }
 
