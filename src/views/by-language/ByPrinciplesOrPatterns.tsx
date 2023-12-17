@@ -1,11 +1,10 @@
-
 import React from 'react';
-import { Language } from '../../state';
+import {Language} from '../../state';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import { CodingPrincipleTitles } from '../../constants';
+import {CodingPrincipleTitles} from '../../constants';
 import ByCodingPrinciples from './ByCodingPrinciples';
 
 function a11yProps(index: number) {
@@ -45,17 +44,15 @@ type CodingPrinciplesProps = {
   language: Language;
 };
 
-
 function ByPrinciplesOrPatterns({language}: CodingPrinciplesProps) {
   const [value, setValue] = React.useState(0);
 
-  console.log('language', language)
+  console.log('language', language);
 
-  const values: Record<string, number> = {}
+  const values: Record<string, number> = {};
   let count = 0;
-  Object.keys(language?.principles ?? {}).forEach(key => values[key] = count++)
-  Object.keys(language?.patterns ?? {}).forEach(key => values[key] = count++)
-
+  Object.keys(language?.principles ?? {}).forEach((key) => (values[key] = count++));
+  Object.keys(language?.patterns ?? {}).forEach((key) => (values[key] = count++));
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -83,7 +80,7 @@ function ByPrinciplesOrPatterns({language}: CodingPrinciplesProps) {
       </Box>
       {Object.keys(language?.principles ?? {}).map((key) => (
         <CustomTabPanel key={`priciples-panel-${key}`} value={value} index={values[key]}>
-          <ByCodingPrinciples principles={(language?.principles as any)[key]}></ByCodingPrinciples>
+          <ByCodingPrinciples code={language.code} principles={(language?.principles as any)[key]}></ByCodingPrinciples>
         </CustomTabPanel>
       ))}
       {Object.keys(language?.patterns ?? {}).map((key) => (
