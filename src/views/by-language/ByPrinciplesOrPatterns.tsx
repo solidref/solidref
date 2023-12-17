@@ -6,6 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
 import {CodingPrincipleTitles} from '../../constants';
 import ByCodingPrinciples from './ByCodingPrinciples';
+import ByDesignPatterns from './ByDesignPatterns';
 
 function a11yProps(index: number) {
   return {
@@ -80,12 +81,12 @@ function ByPrinciplesOrPatterns({language}: CodingPrinciplesProps) {
       </Box>
       {Object.keys(language?.principles ?? {}).map((key) => (
         <CustomTabPanel key={`priciples-panel-${key}`} value={value} index={values[key]}>
-          <ByCodingPrinciples code={language.code} principles={(language?.principles as any)[key]}></ByCodingPrinciples>
+          <ByCodingPrinciples code={language.code} principles={(language?.principles as any)[key]} />
         </CustomTabPanel>
       ))}
       {Object.keys(language?.patterns ?? {}).map((key) => (
         <CustomTabPanel key={`patterns-panel-${key}`} value={value} index={values[key]}>
-          {key}
+          <ByDesignPatterns code={language.code} patterns={(language?.patterns as any)[key]} />
         </CustomTabPanel>
       ))}
     </>

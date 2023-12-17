@@ -21,7 +21,7 @@ export type CodingPrinciples = {
 export type DesignPattern = {
   abbr: string;
   description?: string;
-  example: CodeExample;
+  examples: CodeExample[];
   title?: string;
   type: 'behavioral' | 'creational' | 'structural';
 };
