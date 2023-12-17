@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+
+
+# Getting Started with Create React App# Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -44,3 +46,16 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# Getting Started with Create React App
+
+
+https://www.tutorialspoint.com/design_pattern/design_pattern_overview.htm
+https://www.freecodecamp.org/news/javascript-design-patterns-explained/
+https://refactoring.guru/design-patterns/factory-method
+https://sourcemaking.com/refactoring
+https://www.dofactory.com/net/design-patterns
+
+https://www.baeldung.com/solid-principles
+https://en.wikipedia.org/wiki/SOLID
+https://www.geeksforgeeks.org/solid-principle-in-programming-understand-with-real-life-examples/

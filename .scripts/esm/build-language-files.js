@@ -37,11 +37,12 @@ async function yamlParseAndSave(file) {
     const newFile = pathJoin(sourceDirName, name) + '.yml';
     if (existsSync(newFile)) {
       console.log(newFile);
-      const yamlString = await readFile(file, 'utf-8');
+      const yamlString = await readFile(newFile, 'utf-8');
+      const newYamlObject = yaml.parse(yamlString);
       const ch = name.split('-');
       yamlObject[ch[0]] = {
         ...(yamlObject[ch[0]] || {}),
-        [ch[1]]: yaml.parse(yamlString),
+        [ch[1]]: newYamlObject.principles ?? newYamlObject.patterns ?? [],
       };
     }
   });

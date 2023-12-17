@@ -10,6 +10,7 @@ import {
   Message,
   MessagesState,
   messagesState,
+  LanguageState,
 } from './state';
 import {id} from './utils/id';
 
@@ -55,12 +56,6 @@ export const loadLanguageHierarchy = selector<LanguagesHierarchyState>({
       };
     } catch (error) {
       console.error('Error fetching language hierarchy:', error);
-      console.log(set);
-      // addMessageWithTTL(set, {
-      //   message: error instanceof Error ? error.message : 'Could not load language hierarchy data',
-      //   type: 'error',
-      // });
-
       return {
         ...get(languagesHierarchyState),
         ready: false,
@@ -69,64 +64,44 @@ export const loadLanguageHierarchy = selector<LanguagesHierarchyState>({
   },
 });
 
-// type LanguageSelectorGetSet = {
-//   get: GetRecoilValue;
-//   set: (
-//     recoilVal: RecoilState<LanguagesState>,
-//     newVal: LanguagesState | ((prevVal: LanguagesState) => LanguagesState),
-//   ) => void;
-// };
+export const loadLanguages = selectorFamily<LanguageState, string>({
+  key: 'loadLanguages',
+  get:
+    (code) =>
+    ({get}) =>
+      get(languagesState)[code],
+  set:
+    (code) =>
+    ({set}, newValue) =>
+      set(languagesState, (prevState) => ({
+        ...prevState,
+        [code]: newValue as LanguageState,
+      })),
+});
 
-export const loadLanguage = selectorFamily<LanguagesState, string>({
+export const loadLanguage = selectorFamily<LanguageState, string>({
   key: 'loadLanguage',
   get:
     (code) =>
-    async ({get, set}: any) => {
+    async ({get}: any) => {
+      console.log(`Loading ${code} language`);
       try {
-        const currentLanguagesState = get(languagesState);
-        // Set specific language's readiness to false
-        set(languagesState, {
-          ...currentLanguagesState,
-          languages: {
-            ...currentLanguagesState.languages,
-            [code]: {...currentLanguagesState.languages[code], ready: false},
-          },
-        });
-
-        const response = await fetch(`/generated/${code}.json`);
+        const response = await fetch(`/generated/languages/${code}.json`);
         if (!response.ok) {
-          throw new Error('Failed to load language details.');
+          throw new Error(`Failed to load '${code}' language.`);
         }
 
-        const language = (await response.json()) as Language;
-
-        // Update specific language's data and readiness
-        set(languagesState, (prev: LanguagesState) => ({
-          ...prev,
-          languages: {
-            ...(prev.languages ?? {}),
-            [code]: {language, ready: true},
-          },
-        }));
-
-        return get(languagesState).languages[code];
+        const language = (await response.json()) as Language[];
+        return {
+          ready: true,
+          language,
+        };
       } catch (error) {
-        console.error('Error fetching language:', error);
-        addMessageWithTTL(set, {
-          message: error instanceof Error ? error.message : 'Could not load language details',
-          type: 'error',
-        });
-
-        // Update specific language's readiness to false in case of error
-        set(languagesState, (prev: LanguagesState) => ({
-          ...prev,
-          languages: {
-            ...prev.languages,
-            [code]: {...prev.languages[code], ready: false},
-          },
-        }));
-
-        return get(languagesState);
+        console.error(`Error fetching '${code}' language:`, error);
+        return {
+          ...get(languagesState)[code],
+          ready: false,
+        };
       }
     },
 });

@@ -87,15 +87,11 @@ export type LanguageState = StateReadiness & {
   language: Language;
 };
 
-export type LanguagesState = {
-  languages: Record<string, LanguageState>;
-};
+export type LanguagesState = Record<string, LanguageState>;
 
 export const languagesState = atom<LanguagesState>({
   key: 'languagesState',
-  default: {
-    languages: {},
-  },
+  default: {},
 });
 
 /**

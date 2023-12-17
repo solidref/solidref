@@ -1,17 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Page from '../components/Page';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import {useParams} from 'react-router-dom';
-import {useRecoilState, useRecoilValue, useRecoilValueLoadable} from 'recoil';
+import {useRecoilState} from 'recoil';
 
-import {CodingPrinciple, LanguagesHierarchyState, languagesHierarchyState} from '../state';
-import CodeExampleAccordion from '../components/code/CodeExampleAccordion';
 import {CenteredToolbar} from '../components/Header';
 import Typography from '@mui/material/Typography';
 import SvgIconByName from '../icons/SvgIconByName';
 import {styled} from '@mui/material';
-import {denormalizeLanguageName} from '../utils/language';
+import {loadLanguages} from '../selector';
+import LanguageLoader from '../components/generic/LanguageLoader';
+import ByPrinciplesOrPatterns from './by-language/ByPrinciplesOrPatterns';
 
 type Params = {
   language: string;
@@ -29,14 +28,11 @@ export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
   },
 }));
 
-export const Principle = styled('div')(({theme}) => ({
-  background: theme.palette.primary.light,
-  borderRadius: 10,
-  padding: '10px',
-}));
-
 function ByLanguage() {
-  // let {language = 'javascript'} = useParams<Params>();
+  let {language = 'javascript'} = useParams<Params>();
+
+  // const languages = useRecoilValue(languagesState);
+  const [languageState, setLanguagesState] = useRecoilState(loadLanguages(language));
 
   // const searchLanguage = `${language}`;
 
@@ -88,24 +84,37 @@ function ByLanguage() {
   //   );
   // };
 
-  // return (
-  //   <>
-  //     <CenteredToolbar sx={{justifyContent: 'space-between'}}>
-  //       <Typography variant="h2">
-  //         <i>{languageObject?.languageObject?.language}</i> Coding Principles
-  //       </Typography>
-  //       <Typography variant="h6">
-  //         Here are the <i>{languageObject?.languageObject?.language}</i> Coding Principles explained
-  //       </Typography>
-  //       <StyledSvgIconByName name={languageObject?.languageObject?.code ?? ''} />
-  //     </CenteredToolbar>
-  //     <Page>
-  //       <Box sx={{flexGrow: 1}}>{renderPrinciples()}</Box>
-  //     </Page>
-  //   </>
-  // );
+  const [value, setValue] = React.useState(0);
 
-  return <></>;
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <>
+      <LanguageLoader code={language} setLanguagesState={setLanguagesState} />
+      {languageState?.ready ? (
+        <>
+          <CenteredToolbar sx={{justifyContent: 'space-between'}}>
+            <Typography variant="h2">
+              <i>{languageState.language.name}</i> Coding Principles
+            </Typography>
+            <Typography variant="h6">
+              Here are the <i>{languageState.language.name}</i> Coding Principles explained
+            </Typography>
+            <StyledSvgIconByName name={languageState.language.code ?? ''} />
+          </CenteredToolbar>
+          <Page>
+            <Box sx={{flexGrow: 1}}>
+              <ByPrinciplesOrPatterns language={languageState.language} />
+            </Box>
+          </Page>
+        </>
+      ) : (
+        <>Loading...</>
+      )}
+    </>
+  );
 }
 
 export default ByLanguage;
