@@ -1,10 +1,10 @@
 import React from 'react';
-import {Language} from '../../state';
+import {Language} from '../../../state';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
-import {CodingPrincipleTitles} from '../../constants';
+import {CodingPrincipleTitles} from '../../../constants';
 import ByCodingPrinciples from './ByCodingPrinciples';
 import ByDesignPatterns from './ByDesignPatterns';
 

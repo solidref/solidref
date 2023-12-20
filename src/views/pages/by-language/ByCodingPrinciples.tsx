@@ -1,11 +1,11 @@
 import React from 'react';
-import {CodingPrinciple} from '../../state';
+import {CodingPrinciple} from '../../../state';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import {styled} from '@mui/material/styles';
-import CodeExampleAccordion from '../../components/code/CodeExampleAccordion';
-import {CodingPrincipleTitles} from '../../constants';
+import CodeExampleAccordion from '../../../components/code/CodeExampleAccordion';
+import {CodingPrincipleTitles} from '../../../constants';
 
 export const PrinciplePaper = styled(Paper)(({theme}) => ({
   background: theme.palette.primary.light,

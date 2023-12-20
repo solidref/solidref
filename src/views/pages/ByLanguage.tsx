@@ -1,15 +1,15 @@
 import React from 'react';
-import Page from '../components/Page';
+import Page from '../../components/Page';
 import Box from '@mui/material/Box';
 import {useParams} from 'react-router-dom';
 import {useRecoilState} from 'recoil';
 
-import {CenteredToolbar} from '../components/Header';
+import {CenteredToolbar} from '../../components/Header';
 import Typography from '@mui/material/Typography';
-import SvgIconByName from '../icons/SvgIconByName';
+import SvgIconByName from '../../icons/SvgIconByName';
 import {styled} from '@mui/material';
-import {loadLanguages} from '../selector';
-import LanguageLoader from '../components/generic/LanguageLoader';
+import {loadLanguages} from '../../selector';
+import LanguageLoader from '../../components/generic/LanguageLoader';
 import ByPrinciplesOrPatterns from './by-language/ByPrinciplesOrPatterns';
 
 type Params = {

@@ -1,19 +1,19 @@
-import React, {useMemo, useState} from 'react';
-import {BrowserRouter as Router, Routes, Route, useParams} from 'react-router-dom';
+import React, {useMemo} from 'react';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './views/Home';
-import ByLanguage from './views/ByLanguage';
+import Home from './views/pages/Home';
+import ByLanguage from './views/pages/ByLanguage';
 import './App.css';
 import {useRecoilState} from 'recoil';
 import {createTheme} from '@mui/material/styles';
-import History from './views/History';
+import History from './views/pages/History';
 import {ThemeProvider} from '@emotion/react';
 import {lightTheme, darkTheme, ColorModeContext} from './theme';
-import {languagesHierarchyState, languagesState} from './state';
+import {languagesHierarchyState} from './state';
 import LanguageHierarchyLoader from './components/generic/LanguageHierarchyLoader';
-import LanguageLoader, {LanguageParams} from './components/generic/LanguageLoader';
-import {loadLanguages} from './selector';
+import CodingPrinciplesSolid from './views/pages/CodingPrinciplesSolid';
+import CodingPrinciplesProprietary from './views/pages/CodingPrinciplesProprietary';
 
 const App: React.FC = () => {
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
@@ -56,6 +56,10 @@ const App: React.FC = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/by-language/:language" element={<ByLanguage />} />
                   <Route path="/history" element={<History />} />
+                  <Route path="/coding-principles/solid" element={<CodingPrinciplesSolid />} />
+                  <Route path="/coding-principles/solid/:principle" element={<CodingPrinciplesSolid />} />
+                  <Route path="/coding-principles/proprietary" element={<CodingPrinciplesProprietary />} />
+                  <Route path="/coding-principles/proprietary/:principle" element={<CodingPrinciplesProprietary />} />
                 </Routes>
               </main>
               <Footer />
