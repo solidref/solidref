@@ -8,8 +8,14 @@ import {CenteredToolbar} from '../../components/Header';
 import Page from '../../components/Page';
 import Box from '@mui/material/Box';
 import Code from '../generic/Code';
+import {useParams} from 'react-router-dom';
+import {handleChange} from './coding-principles-design-patterns/utils';
 
 export default function CodingPrinciplesSolid() {
+  const {principle = 'srp'} = useParams<{principle: string}>();
+
+  const [expanded, setExpanded] = React.useState<string[]>([principle]);
+
   return (
     <>
       <CenteredToolbar sx={{justifyContent: 'space-between'}}>
@@ -26,7 +32,7 @@ export default function CodingPrinciplesSolid() {
             create more maintainable, understandable, and flexible software. Here's a deeper dive into each of these
             principles.
           </Typography>
-          <Accordion>
+          <Accordion expanded={expanded.includes('srp')} onChange={handleChange('srp', expanded, setExpanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
               <Typography variant="h5">Single Responsibility Principle (SRP)</Typography>
             </AccordionSummary>
@@ -71,7 +77,7 @@ export default function CodingPrinciplesSolid() {
               </Typography>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion expanded={expanded.includes('ocp')} onChange={handleChange('ocp', expanded, setExpanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
               <Typography variant="h5">Open/Closed Principle (OCP)</Typography>
             </AccordionSummary>
@@ -115,7 +121,7 @@ export default function CodingPrinciplesSolid() {
               </Typography>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion expanded={expanded.includes('lsp')} onChange={handleChange('lsp', expanded, setExpanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel3a-content" id="panel3a-header">
               <Typography variant="h5">Liskov Substitution Principle (LSP)</Typography>
             </AccordionSummary>
@@ -161,7 +167,7 @@ export default function CodingPrinciplesSolid() {
               </Typography>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion expanded={expanded.includes('isp')} onChange={handleChange('isp', expanded, setExpanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel4a-content" id="panel4a-header">
               <Typography variant="h5">Interface Segregation Principle (ISP)</Typography>
             </AccordionSummary>
@@ -205,7 +211,7 @@ export default function CodingPrinciplesSolid() {
               </Typography>
             </AccordionDetails>
           </Accordion>
-          <Accordion>
+          <Accordion expanded={expanded.includes('dip')} onChange={handleChange('dip', expanded, setExpanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel5a-content" id="panel5a-header">
               <Typography variant="h5">Dependency Inversion Principle (DIP)</Typography>
             </AccordionSummary>

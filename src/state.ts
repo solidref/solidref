@@ -95,6 +95,31 @@ export const languagesState = atom<LanguagesState>({
 });
 
 /**
+ * Content State
+ */
+
+export interface ContentType {
+  variant?: string;
+  content?: string;
+}
+
+export interface PrinciplePatternContent {
+  title: string;
+  before?: ContentType[];
+  after?: ContentType[];
+  accordion?: Record<string, ContentType[]>
+}
+
+export type PrinciplePatternContentState = StateReadiness & {
+  content?: PrinciplePatternContent;
+};
+
+export const contentState = atom<PrinciplePatternContentState>({
+  key: 'contentState',
+  default: {},
+});
+
+/**
  * Messages State
  */
 

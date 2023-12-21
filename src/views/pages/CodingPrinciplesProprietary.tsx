@@ -9,21 +9,12 @@ import Page from '../../components/Page';
 import Box from '@mui/material/Box';
 import Code from '../generic/Code';
 import {useParams} from 'react-router-dom';
+import {handleChange} from './coding-principles-design-patterns/utils';
 
 export default function CodingPrinciplesProprietary() {
   const {principle = 'dry'} = useParams<{principle: string}>();
 
   const [expanded, setExpanded] = React.useState<string[]>([principle]);
-
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-    console.log(newExpanded);
-    if (newExpanded) {
-      setExpanded([...new Set([...expanded, panel])]);
-    } else {
-      setExpanded(expanded.filter((x) => x !== panel));
-    }
-    console.log(expanded);
-  };
 
   return (
     <>
@@ -41,7 +32,7 @@ export default function CodingPrinciplesProprietary() {
             create more maintainable, understandable, and flexible software. Here's a deeper dive into each of these
             principles.
           </Typography>
-          <Accordion expanded={expanded.includes('dry')} onChange={handleChange('dry')}>
+          <Accordion expanded={expanded.includes('dry')} onChange={handleChange('dry', expanded, setExpanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
               <Typography variant="h5">DRY (Don't Repeat Yourself)</Typography>
             </AccordionSummary>
@@ -84,7 +75,7 @@ export default function CodingPrinciplesProprietary() {
               </Typography>
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded.includes('kiss')} onChange={handleChange('kiss')}>
+          <Accordion expanded={expanded.includes('kiss')} onChange={handleChange('kiss', expanded, setExpanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
               <Typography variant="h5">KISS (Keep It Simple, Stupid)</Typography>
             </AccordionSummary>
@@ -127,7 +118,7 @@ export default function CodingPrinciplesProprietary() {
               </Typography>
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded.includes('yagni')} onChange={handleChange('yagni')}>
+          <Accordion expanded={expanded.includes('yagni')} onChange={handleChange('yagni', expanded, setExpanded)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel3a-content" id="panel3a-header">
               <Typography variant="h5">YAGNI (You Aren't Gonna Need It)</Typography>
             </AccordionSummary>
