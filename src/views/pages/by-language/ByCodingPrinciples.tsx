@@ -34,21 +34,20 @@ export type ByCodingPrinciplesProps = {
 };
 
 function ByCodingPrinciples({code, principles}: ByCodingPrinciplesProps) {
-  const [value, setValue] = React.useState(0);
 
   return (
     <Box sx={{flexGrow: 1}}>
       <Grid container spacing={2}>
         <Grid xs={6}>
           {principles
-            .filter((_, index) => index % 2 == 0)
+            .filter((_, index) => index % 2 === 0)
             .map((principle) => (
               <CodingPrincipleItem key={principle.abbr} code={code} principle={principle} />
             ))}
         </Grid>
         <Grid xs={6}>
           {principles
-            .filter((_, index) => index % 2 == 1)
+            .filter((_, index) => index % 2 === 1)
             .map((principle) => (
               <CodingPrincipleItem key={principle.abbr} code={code} principle={principle} />
             ))}

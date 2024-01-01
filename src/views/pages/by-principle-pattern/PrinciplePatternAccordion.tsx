@@ -4,9 +4,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {ContentType, PrinciplePatternContent} from '../../../state';
+import {ContentType} from '../../../state';
 import TypographySet from './TypographySet';
-// import SyntaxHighlighter from '../../code/SyntaxHighlighter';
 
 type PrinciplePatternAccordionItemProps = {
   content: ContentType[];

@@ -32,7 +32,6 @@ export type ByDesignPatternsProps = {
 };
 
 function ByDesignPatterns({code, patterns}: ByDesignPatternsProps) {
-  const [value, setValue] = React.useState(0);
 
   return (
     <Box sx={{flexGrow: 1}}>

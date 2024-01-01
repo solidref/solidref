@@ -4,10 +4,7 @@ import {CenteredToolbar} from '../Header';
 import Page from './Page';
 import {PrinciplePatternContent, PrinciplePatternContentState, principlePatternContentState} from '../../state';
 import {useRecoilState} from 'recoil';
-import PrinciplePatternContentLoader, {
-  PrinciplePatternContentParams,
-} from '../../components/PrinciplePatternContentLoader';
-import {useParams} from 'react-router-dom';
+import PrinciplePatternContentLoader from '../../components/PrinciplePatternContentLoader';
 import TypographySet from './by-principle-pattern/TypographySet';
 import Box from '@mui/material/Box';
 import PrinciplePatternAccordion from './by-principle-pattern/PrinciplePatternAccordion';
@@ -22,7 +19,6 @@ function PrinciplePatternContentRender({ppc}: PrinciplePatternContentProps) {
   }
 
   const content = ppc?.content as PrinciplePatternContent;
-  console.log(content);
 
   return (
     <>
@@ -43,8 +39,6 @@ function PrinciplePatternContentRender({ppc}: PrinciplePatternContentProps) {
 }
 
 export default function ByPrinciplePatternType() {
-  const {type = 'solid'} = useParams<PrinciplePatternContentParams>();
-
   const [principlePatternContent, setPrinciplePatternContentState] = useRecoilState(principlePatternContentState);
 
   return (
