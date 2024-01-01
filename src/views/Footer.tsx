@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import {Divider, Grid, IconButton, Paper} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import Logo from './Logo';
-import OpenAI from '../logos/OpenAI';
+import OpenAI from './logos/OpenAI';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import RedditIcon from '@mui/icons-material/Reddit';

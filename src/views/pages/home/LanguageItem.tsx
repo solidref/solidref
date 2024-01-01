@@ -6,7 +6,7 @@ import {styled} from '@mui/material/styles';
 import SvgIconByName from '../../icons/SvgIconByName';
 import {Button, Menu, MenuItem} from '@mui/material';
 import ContentLoader from 'react-content-loader';
-import {Language, languagesHierarchyState} from '../../state';
+import {Language, languagesHierarchyState} from '../../../state';
 import {useRecoilValue} from 'recoil';
 
 const LanguagePaper = styled(Paper)(({theme}) => ({

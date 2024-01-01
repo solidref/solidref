@@ -2,8 +2,8 @@ import React, {useEffect, useMemo} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {SetterOrUpdater, useRecoilState, useRecoilValueLoadable} from 'recoil';
-import {loadLanguage, loadLanguages} from '../../selector';
-import {Language, LanguageState} from '../../state';
+import {loadLanguage, loadLanguages} from '../selector';
+import {Language, LanguageState} from '../state';
 
 export type LanguageParams = {
   language?: string;

@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 
 import {SetterOrUpdater, useRecoilValue} from 'recoil';
-import {loadLanguageHierarchy} from '../../selector';
-import {LanguagesHierarchyState} from '../../state';
+import {loadLanguageHierarchy} from '../selector';
+import {LanguagesHierarchyState} from '../state';
 
 export type LanguageHierarchyLoaderProps = {
   setLanguagesHierarchyState: SetterOrUpdater<LanguagesHierarchyState>;

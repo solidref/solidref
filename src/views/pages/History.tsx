@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 // import {LanguageHierarchy, LanguageHierarchyObject} from '../state';
 import LanguageEvolutionChart from './history/LanguageEvolutionChart';
-import {CenteredToolbar} from '../../components/Header';
+import {CenteredToolbar} from '../Header';
 import Typography from '@mui/material/Typography';
-import Page from '../../components/Page';
+import Page from './Page';
 import {styled, alpha, Divider, Paper} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';

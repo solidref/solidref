@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import {styled} from '@mui/material/styles';
-import CodeExampleAccordion from '../../../components/code/CodeExampleAccordion';
+import CodeExampleAccordion from '../../code/CodeExampleAccordion';
 import {CodingPrincipleTitles} from '../../../constants';
 
 export const PrinciplePaper = styled(Paper)(({theme}) => ({
@@ -35,8 +35,6 @@ export type ByCodingPrinciplesProps = {
 
 function ByCodingPrinciples({code, principles}: ByCodingPrinciplesProps) {
   const [value, setValue] = React.useState(0);
-
-  console.log(principles);
 
   return (
     <Box sx={{flexGrow: 1}}>

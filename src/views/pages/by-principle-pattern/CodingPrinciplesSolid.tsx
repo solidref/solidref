@@ -4,12 +4,12 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {CenteredToolbar} from '../../components/Header';
-import Page from '../../components/Page';
+import {CenteredToolbar} from '../../Header';
+import Page from '../Page';
 import Box from '@mui/material/Box';
-import Code from '../generic/Code';
+import Code from '../../generic/Code';
 import {useParams} from 'react-router-dom';
-import {handleChange} from './coding-principles-design-patterns/utils';
+import {handleChange} from './utils';
 
 export default function CodingPrinciplesSolid() {
   const {principle = 'srp'} = useParams<{principle: string}>();

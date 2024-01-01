@@ -8,7 +8,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import {IconButton} from '@mui/material';
 import Logo from './Logo';
-import ColorModeSwitch from './header/ColorModeSwitch';
+import ColorModeSwitch from '../components/header/ColorModeSwitch';
 
 function AppBar(props: AppBarProps) {
   return <MuiAppBar elevation={0} position="fixed" {...props} />;

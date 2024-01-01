@@ -11,6 +11,8 @@ import {
   MessagesState,
   messagesState,
   LanguageState,
+  PrinciplePatternContentState,
+  PrinciplePatternContent,
 } from './state';
 import {id} from './utils/id';
 
@@ -100,6 +102,32 @@ export const loadLanguage = selectorFamily<LanguageState, string>({
         console.error(`Error fetching '${code}' language:`, error);
         return {
           ...get(languagesState)[code],
+          ready: false,
+        };
+      }
+    },
+});
+
+export const loadPrinciplePatternContent = selectorFamily<PrinciplePatternContentState, string>({
+  key: 'loadPrinciplePatternContent',
+  get:
+    (item) =>
+    async ({get}: any) => {
+      console.log(`Loading ${item} principle/pattern`);
+      try {
+        const response = await fetch(`/generated/principles-patterns/${item}.json`);
+        if (!response.ok) {
+          throw new Error(`Failed to load '${item}' principle/pattern`);
+        }
+
+        const content = (await response.json()) as PrinciplePatternContent;
+        return {
+          ready: true,
+          content,
+        };
+      } catch (error) {
+        console.error(`Error fetching '${item}' principle/pattern:`, error);
+        return {
           ready: false,
         };
       }

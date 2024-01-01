@@ -2,22 +2,17 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import LanguageItem from './LanguageItem';
 import {useRecoilValue} from 'recoil';
-import {Language, languagesHierarchyState} from '../../state';
+import {Language, languagesHierarchyState} from '../../../state';
 
-export type LanguageListProps = {};
-
-function RootLanguages() {
-  const hierarchyState = useRecoilValue(languagesHierarchyState);
-
-  // TODO: add logic to filter and determine root languages
-  const rootLanguages = hierarchyState?.list ?? [];
+function AllLanguages() {
+  const languagesHierarchy = useRecoilValue(languagesHierarchyState);
 
   return (
     <Grid container spacing={2}>
-      {hierarchyState.ready
-        ? rootLanguages.map((language) => (
+      {languagesHierarchy?.list && languagesHierarchy?.list?.length
+        ? languagesHierarchy?.list?.map((language) => (
             <Grid item xs={4} key={language.code}>
-              <LanguageItem language={language} displayChildren={true} />
+              <LanguageItem language={language} />
             </Grid>
           ))
         : [0, 1].map(
@@ -33,4 +28,4 @@ function RootLanguages() {
   );
 }
 
-export default RootLanguages;
+export default AllLanguages;

@@ -1,4 +1,5 @@
 import {atom} from 'recoil';
+import {TypographyProps} from '@mui/material/Typography';
 
 export type CodeExample = {
   code?: string;
@@ -99,22 +100,22 @@ export const languagesState = atom<LanguagesState>({
  */
 
 export interface ContentType {
-  variant?: string;
   content?: string;
+  variant?: TypographyProps['variant'] | 'code';
 }
 
 export interface PrinciplePatternContent {
   title: string;
   before?: ContentType[];
   after?: ContentType[];
-  accordion?: Record<string, ContentType[]>
+  accordion?: Record<string, ContentType[]>;
 }
 
 export type PrinciplePatternContentState = StateReadiness & {
   content?: PrinciplePatternContent;
 };
 
-export const contentState = atom<PrinciplePatternContentState>({
+export const principlePatternContentState = atom<PrinciplePatternContentState>({
   key: 'contentState',
   default: {},
 });

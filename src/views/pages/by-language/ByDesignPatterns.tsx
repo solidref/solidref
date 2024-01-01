@@ -6,7 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SyntaxHighlighter from '../../../components/code/SyntaxHighlighter';
+import SyntaxHighlighter from '../../code/SyntaxHighlighter';
 import {CodingPrincipleTitles} from '../../../constants';
 
 type ExampleListProps = {
@@ -33,8 +33,6 @@ export type ByDesignPatternsProps = {
 
 function ByDesignPatterns({code, patterns}: ByDesignPatternsProps) {
   const [value, setValue] = React.useState(0);
-
-  console.log(patterns);
 
   return (
     <Box sx={{flexGrow: 1}}>

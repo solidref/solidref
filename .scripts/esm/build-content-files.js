@@ -29,16 +29,12 @@ async function main() {
 
     const yamlString = await readFile(file, 'utf-8');
     const yamlObject = yaml.parse(yamlString);
-    const jsonName = basename(file).replace('.yml', '.json')
+    const jsonName = basename(file).replace('.yml', '.json');
 
     const principlesPatternsPath = pathJoin(__dirname, '..', '..', 'public', 'generated', 'principles-patterns');
 
     await fs.mkdir(principlesPatternsPath, {recursive: true});
 
-    await writeFile(
-      pathJoin(principlesPatternsPath, jsonName),
-      JSON.stringify(yamlObject, ...jsonStringifyConfig),
-    );
+    await writeFile(pathJoin(principlesPatternsPath, jsonName), JSON.stringify(yamlObject, ...jsonStringifyConfig));
   }
-
 }
