@@ -31,64 +31,7 @@ export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
 function ByLanguage() {
   let {language = 'javascript'} = useParams<Params>();
 
-  // const languages = useRecoilValue(languagesState);
   const [languageState, setLanguagesState] = useRecoilState(loadLanguages(language));
-
-  // const searchLanguage = `${language}`;
-
-  // const codingPrinciplesObjectLoadable = useRecoilValueLoadable(codingPrinciplesState);
-  // useRecoilState<CodingPrinciplesObject>(codingPrinciplesState);
-
-  // const [languageObject, setLanguageObject] = useRecoilState<LanguageObject>(languageObjectState);
-  // const languageObjectLoadable = useRecoilValueLoadable(loadYamlByLanguage(searchLanguage));
-
-  // useEffect(() => {
-  //   if (languageObjectLoadable.state === 'hasValue' && codingPrinciplesObjectLoadable.state === 'hasValue') {
-  //     setLanguageObject({
-  //       ...languageObject,
-  //       ...languageObjectLoadable.contents,
-  //     });
-  //   }
-  // }, [languageObjectLoadable.state, codingPrinciplesObjectLoadable.state]);
-
-  // const makeKey = (key: string): string => {
-  //   return key.replace(/[^\w]+/gi, '-').toLowerCase();
-  // };
-
-  // const renderCodeSamples = (principle: CodingPrinciple) => {
-  //   return (
-  //     <CodeExampleAccordion
-  //       examples={principle?.examples || []}
-  //       language={languageObject?.languageObject?.code || 'js'}
-  //     />
-  //   );
-  // };
-
-  // const renderPrinciple = (principle: CodingPrinciple) => {
-  //   return (
-  //     <Grid item xs={12} sm={6} key={makeKey(principle.title)} id={makeKey(principle.title)}>
-  //       <Principle>
-  //         <h3>{principle.title}</h3>
-  //         <p>{principle.description}</p>
-  //         {renderCodeSamples(principle)}
-  //       </Principle>
-  //     </Grid>
-  //   );
-  // };
-
-  // const renderPrinciples = () => {
-  //   return (
-  //     <Grid container columns={12} spacing={4}>
-  //       {languageObject?.languageObject?.principles?.map((principle) => renderPrinciple(principle))}
-  //     </Grid>
-  //   );
-  // };
-
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
 
   return (
     <>

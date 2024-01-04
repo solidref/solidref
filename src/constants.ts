@@ -1,7 +1,7 @@
 export const CodingPrincipleTitles: Record<string, string> = {
   solid: 'SOLID Principles',
   proprietary: 'Proprietary Principles',
-  behavioral: 'Behavioral Patterns',
+  behavioural: 'Behavioural Patterns',
   creational: 'Creational Patterns',
   structural: 'Structural Patterns',
   unknownPattern: 'Unknown Pattern',
@@ -21,7 +21,7 @@ export const CodingPrincipleTitles: Record<string, string> = {
   PLK: 'Law of Demeter (Principle of Least Knowledge)',
   SoC: 'Separation of Concerns',
 
-  // Behavioral patterns
+  // Behavioural patterns
   ChainOfResponsibility: 'Chain of Responsibility',
   Command: 'Command',
   Iterator: 'Iterator',

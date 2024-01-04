@@ -1,18 +1,18 @@
 ---
-title: <i>Behavioral</i> Design Patterns <br /> in Software Development
+title: <i>Behavioural</i> Design Patterns <br /> in Software Development
 before:
   - variant: subtitle1
     content: |
-      Behavioral design patterns are fundamental to the structure and organization of software systems. They focus
+      Behavioural design patterns are fundamental to the structure and organization of software systems. They focus
       on how objects interact and communicate with each other, leading to efficient problem-solving and an
-      enhanced understanding of the system's dynamics. Below, we explore several key behavioral design patterns,
+      enhanced understanding of the system's dynamics. Below, we explore several key behavioural design patterns,
       providing insights into their purposes, structures, and applications. To illustrate these patterns, I'll use
       pseudo-code or JavaScript where appropriate.
 accordion:
   Observer:
     - variant: subtitle1
       content: |
-        The Observer pattern is one of the most widely used behavioral patterns. It defines a one-to-many
+        The Observer pattern is one of the most widely used behavioural patterns. It defines a one-to-many
         dependency between objects, allowing an object to notify other objects about changes in its state.
     - variant: h6
       content: Concept

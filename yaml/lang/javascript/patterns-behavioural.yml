@@ -1,0 +1,546 @@
+---
+patterns:
+  - abbr: ChainOfResponsibility
+    examples:
+      - title: Chain Of Responsibility
+        code: |
+          // Chain of Responsibility Pattern in JavaScript
+          class Handler {
+              constructor(nextHandler) {
+                  this.nextHandler = nextHandler;
+              }
+
+              handle(request) {
+                  if (this.nextHandler) {
+                      return this.nextHandler.handle(request);
+                  }
+
+                  return null;
+              }
+          }
+
+          // Concrete Handlers
+          class ConcreteHandler1 extends Handler {
+              handle(request) {
+                  if (request === 'handle1') {
+                      return 'Handled by ConcreteHandler1';
+                  }
+                  return super.handle(request);
+              }
+          }
+
+          class ConcreteHandler2 extends Handler {
+              handle(request) {
+                  if (request === 'handle2') {
+                      return 'Handled by ConcreteHandler2';
+                  }
+                  return super.handle(request);
+              }
+          }
+
+          // Client code
+          const handler1 = new ConcreteHandler1();
+          const handler2 = new ConcreteHandler2(handler1);
+
+          console.log(handler2.handle('handle2'));
+          console.log(handler2.handle('handle1'));
+
+  - abbr: Command
+    examples:
+      - title: Command
+        code: |
+          // Command Pattern in JavaScript
+          class Command {
+              execute() {}
+          }
+
+          class Light {
+              turnOn() {
+                  console.log('Light turned on');
+              }
+
+              turnOff() {
+                  console.log('Light turned off');
+              }
+          }
+
+          class TurnOnCommand extends Command {
+              constructor(light) {
+                  super();
+                  this.light = light;
+              }
+
+              execute() {
+                  this.light.turnOn();
+              }
+          }
+
+          class TurnOffCommand extends Command {
+              constructor(light) {
+                  super();
+                  this.light = light;
+              }
+
+              execute() {
+                  this.light.turnOff();
+              }
+          }
+
+          // Invoker
+          class RemoteControl {
+              submit(command) {
+                  command.execute();
+              }
+          }
+
+          // Client code
+          const light = new Light();
+          const turnOnCommand = new TurnOnCommand(light);
+          const turnOffCommand = new TurnOffCommand(light);
+          const remote = new RemoteControl();
+
+          remote.submit(turnOnCommand);
+          remote.submit(turnOffCommand);
+
+  - abbr: Iterator
+    examples:
+      - title: Iterator
+        code: |
+          // Iterator Pattern in JavaScript
+          class Iterator {
+              constructor(collection) {
+                  this.collection = collection;
+                  this.index = 0;
+              }
+
+              next() {
+                  return this.collection[this.index++];
+              }
+
+              hasNext() {
+                  return this.index < this.collection.length;
+              }
+          }
+
+          // Client code
+          const items = [1, 'two', 3, 'four', 5];
+          const iterator = new Iterator(items);
+
+          while (iterator.hasNext()) {
+              console.log(iterator.next());
+          }
+
+  - abbr: Mediator
+    examples:
+      - title: Mediator
+        code: |
+          // Mediator Pattern in JavaScript
+          class Mediator {
+              constructor() {
+                  this.colleagues = [];
+              }
+
+              register(colleague) {
+                  this.colleagues.push(colleague);
+                  colleague.setMediator(this);
+              }
+
+              send(message, sender) {
+                  this.colleagues.forEach(colleague => {
+                      if (colleague !== sender) {
+                          colleague.receive(message);
+                      }
+                  });
+              }
+          }
+
+          class Colleague {
+              setMediator(mediator) {
+                  this.mediator = mediator;
+              }
+
+              send(message) {
+                  this.mediator.send(message, this);
+              }
+
+              receive(message) {
+                  console.log(`${this.constructor.name} received message: ${message}`);
+              }
+          }
+
+          // Concrete Colleagues
+          class ConcreteColleague1 extends Colleague {}
+          class ConcreteColleague2 extends Colleague {}
+
+          // Client code
+          const mediator = new Mediator();
+          const colleague1 = new ConcreteColleague1();
+          const colleague2 = new ConcreteColleague2();
+
+          mediator.register(colleague1);
+          mediator.register(colleague2);
+
+          colleague1.send('Hello from Colleague 1');
+          colleague2.send('Hello from Colleague 2');
+
+  - abbr: Memento
+    examples:
+      - title: Memento
+        code: |
+          // Memento Pattern in JavaScript
+          class Memento {
+              constructor(state) {
+                  this.state = state;
+              }
+
+              getState() {
+                  return this.state;
+              }
+          }
+
+          class Originator {
+              constructor() {
+                  this.state = '';
+              }
+
+              setState(state) {
+                  this.state = state;
+              }
+
+              getState() {
+                  return this.state;
+              }
+
+              save() {
+                  return new Memento(this.state);
+              }
+
+              restore(memento) {
+                  this.state = memento.getState();
+              }
+          }
+
+          class Caretaker {
+              constructor() {
+                  this.mementos = [];
+              }
+
+              addMemento(memento) {
+                  this.mementos.push(memento);
+              }
+
+              getMemento(index) {
+                  return this.mementos[index];
+              }
+          }
+
+          // Client code
+          const originator = new Originator();
+          const caretaker = new Caretaker();
+
+          originator.setState('State #1');
+          caretaker.addMemento(originator.save());
+
+          originator.setState('State #2');
+          caretaker.addMemento(originator.save());
+
+          originator.restore(caretaker.getMemento(0));
+          console.log(originator.getState());
+
+  - abbr: Observer
+    examples:
+      - title: Observer
+        code: |
+          // Observer Pattern in JavaScript
+          class Subject {
+              constructor() {
+                  this.observers = [];
+              }
+
+              subscribe(observer) {
+                  this.observers.push(observer);
+              }
+
+              unsubscribe(observer) {
+                  const index = this.observers.indexOf(observer);
+                  if (index > -1) {
+                      this.observers.splice(index, 1);
+                  }
+              }
+
+              notify(data) {
+                  this.observers.forEach(observer => observer.update(data));
+              }
+          }
+
+          class Observer {
+              update(data) {
+                  console.log(`Observer received data: ${data}`);
+              }
+          }
+
+          // Client code
+          const subject = new Subject();
+          const observer1 = new Observer();
+          const observer2 = new Observer();
+
+          subject.subscribe(observer1);
+          subject.subscribe(observer2);
+
+          subject.notify('Hello Observers!');
+
+          subject.unsubscribe(observer2);
+          subject.notify('Goodbye Observers!');
+
+  - abbr: State
+    examples:
+      - title: State
+        code: |
+          /**
+          * The Context defines the interface of interest to clients. It also maintains a
+          * reference to an instance of a State subclass, which represents the current
+          * state of the Context.
+          */
+          class Context {
+              /**
+              * @type {State} A reference to the current state of the Context.
+              */
+              private state: State;
+
+              constructor(state: State) {
+                  this.transitionTo(state);
+              }
+
+              /**
+              * The Context allows changing the State object at runtime.
+              */
+              public transitionTo(state: State): void {
+                  console.log(`Context: Transition to ${(<any>state).constructor.name}.`);
+                  this.state = state;
+                  this.state.setContext(this);
+              }
+
+              /**
+              * The Context delegates part of its behavior to the current State object.
+              */
+              public request1(): void {
+                  this.state.handle1();
+              }
+
+              public request2(): void {
+                  this.state.handle2();
+              }
+          }
+
+          /**
+          * The base State class declares methods that all Concrete State should
+          * implement and also provides a backreference to the Context object, associated
+          * with the State. This backreference can be used by States to transition the
+          * Context to another State.
+          */
+          abstract class State {
+              protected context: Context;
+
+              public setContext(context: Context) {
+                  this.context = context;
+              }
+
+              public abstract handle1(): void;
+
+              public abstract handle2(): void;
+          }
+
+          /**
+          * Concrete States implement various behaviors, associated with a state of the
+          * Context.
+          */
+          class ConcreteStateA extends State {
+              public handle1(): void {
+                  console.log('ConcreteStateA handles request1.');
+                  console.log('ConcreteStateA wants to change the state of the context.');
+                  this.context.transitionTo(new ConcreteStateB());
+              }
+
+              public handle2(): void {
+                  console.log('ConcreteStateA handles request2.');
+              }
+          }
+
+          class ConcreteStateB extends State {
+              public handle1(): void {
+                  console.log('ConcreteStateB handles request1.');
+              }
+
+              public handle2(): void {
+                  console.log('ConcreteStateB handles request2.');
+                  console.log('ConcreteStateB wants to change the state of the context.');
+                  this.context.transitionTo(new ConcreteStateA());
+              }
+          }
+
+          /**
+          * The client code.
+          */
+          const context = new Context(new ConcreteStateA());
+          context.request1();
+          context.request2();
+
+  - abbr: Strategy
+    examples:
+      - title: Strategy
+        code: |
+          // Strategy Pattern in JavaScript
+          class Strategy {
+              execute(data) {
+                  throw new Error('Strategy method execute() is not implemented');
+              }
+          }
+
+          class ConcreteStrategyA extends Strategy {
+              execute(data) {
+                  return `Strategy A with data ${data}`;
+              }
+          }
+
+          class ConcreteStrategyB extends Strategy {
+              execute(data) {
+                  return `Strategy B with data ${data}`;
+              }
+          }
+
+          // Context
+          class Context {
+              constructor(strategy) {
+                  this.strategy = strategy;
+              }
+
+              setStrategy(strategy) {
+                  this.strategy = strategy;
+              }
+
+              executeStrategy(data) {
+                  return this.strategy.execute(data);
+              }
+          }
+
+          // Client code
+          const context = new Context(new ConcreteStrategyA());
+          console.log(context.executeStrategy('123'));
+
+          context.setStrategy(new ConcreteStrategyB());
+          console.log(context.executeStrategy('456'));
+
+  - abbr: TemplateMethod
+    examples:
+      - title: Template Method
+        code: |
+          // Template Method Pattern in JavaScript
+          class AbstractClass {
+              templateMethod() {
+                  this.baseOperation1();
+                  this.requiredOperation1();
+                  this.baseOperation2();
+                  this.hook1();
+                  this.requiredOperation2();
+                  this.baseOperation3();
+                  this.hook2();
+              }
+
+              baseOperation1() {
+                  console.log("AbstractClass says: I am doing the bulk of the work");
+              }
+
+              baseOperation2() {
+                  console.log("AbstractClass says: But I let subclasses override some operations");
+              }
+
+              baseOperation3() {
+                  console.log("AbstractClass says: But I am doing the bulk of the work anyway");
+              }
+
+              requiredOperation1() {}
+              requiredOperation2() {}
+
+              hook1() {}
+              hook2() {}
+          }
+
+          class ConcreteClass1 extends AbstractClass {
+              requiredOperation1() {
+                  console.log("ConcreteClass1 says: Implemented Operation1");
+              }
+
+              requiredOperation2() {
+                  console.log("ConcreteClass1 says: Implemented Operation2");
+              }
+          }
+
+          class ConcreteClass2 extends AbstractClass {
+              requiredOperation1() {
+                  console.log("ConcreteClass2 says: Implemented Operation1");
+              }
+
+              requiredOperation2() {
+                  console.log("ConcreteClass2 says: Implemented Operation2");
+              }
+
+              hook1() {
+                  console.log("ConcreteClass2 says: Overridden Hook1");
+              }
+          }
+
+          // Client code
+          console.log('Same client code can work with different subclasses:');
+          new ConcreteClass1().templateMethod();
+          console.log('');
+          new ConcreteClass2().templateMethod();
+
+  - abbr: Visitor
+    examples:
+      - title: Visitor
+        code: |
+          // Visitor Pattern in JavaScript
+          class Visitor {
+              visitConcreteComponentA(element) {}
+              visitConcreteComponentB(element) {}
+          }
+
+          class ConcreteComponentA {
+              accept(visitor) {
+                  visitor.visitConcreteComponentA(this);
+              }
+
+              exclusiveMethodOfConcreteComponentA() {
+                  return 'A';
+              }
+          }
+
+          class ConcreteComponentB {
+              accept(visitor) {
+                  visitor.visitConcreteComponentB(this);
+              }
+
+              specialMethodOfConcreteComponentB() {
+                  return 'B';
+              }
+          }
+
+          class ConcreteVisitor1 extends Visitor {
+              visitConcreteComponentA(element) {
+                  console.log(\`$\{element.exclusiveMethodOfConcreteComponentA()} + ConcreteVisitor1\`);
+              }
+
+              visitConcreteComponentB(element) {
+                  console.log(\`$\{element.specialMethodOfConcreteComponentB()} + ConcreteVisitor1\`);
+              }
+          }
+
+          // Client code
+          const components = [
+              new ConcreteComponentA(),
+              new ConcreteComponentB(),
+          ];
+
+          const visitor1 = new ConcreteVisitor1();
+
+          components.forEach((c) => c.accept(visitor1));

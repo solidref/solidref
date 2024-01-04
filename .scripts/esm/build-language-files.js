@@ -28,7 +28,7 @@ async function yamlParseAndSave(file) {
   const yamlObject = yaml.parse(yamlString);
 
   const names = [
-    'patterns-behavioral',
+    'patterns-behavioural',
     'patterns-creational',
     'patterns-structural',
     'principles-proprietary',

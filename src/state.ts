@@ -24,11 +24,11 @@ export type DesignPattern = {
   description?: string;
   examples: CodeExample[];
   title?: string;
-  type: 'behavioral' | 'creational' | 'structural';
+  type: 'behavioural' | 'creational' | 'structural';
 };
 
 export type DesignPatterns = {
-  behavioral?: DesignPattern[];
+  behavioural?: DesignPattern[];
   creational?: DesignPattern[];
   structural?: DesignPattern[];
 };
