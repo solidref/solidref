@@ -10,7 +10,9 @@ import SvgIconByName from '../icons/SvgIconByName';
 import {styled} from '@mui/material';
 import {loadLanguages} from '../../selector';
 import LanguageLoader from '../../components/LanguageLoader';
-import ByPrinciplesOrPatterns from './by-language/ByPrinciplesOrPatterns';
+import Menu from './by-language/Menu';
+import PrinciplesOrPatterns from './by-language/PrinciplesOrPatterns';
+import { Language } from '../../state';
 
 type Params = {
   language: string;
@@ -28,10 +30,32 @@ export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
   },
 }));
 
+const detectPp = (language: Language) => {
+  if (language.principles) {
+    const type = Object.keys(language.principles)[0];
+    return {
+      type,
+      principlesOrPatterns: (language.principles as any)[type],
+    };
+  }
+  if (language.patterns) {
+    const type = Object.keys(language.patterns)[0];
+    return {
+      type,
+      principlesOrPatterns: (language.patterns as any)[type],
+    };
+  }
+  return {};
+};
+
 function ByLanguage() {
   let {language = 'javascript'} = useParams<Params>();
 
   const [languageState, setLanguagesState] = useRecoilState(loadLanguages(language));
+
+  const [pp, setPp] = React.useState(detectPp(languageState?.language ?? {}));
+
+  console.log('state', languageState, pp);
 
   return (
     <>
@@ -49,7 +73,8 @@ function ByLanguage() {
           </CenteredToolbar>
           <Page>
             <Box sx={{flexGrow: 1}}>
-              <ByPrinciplesOrPatterns language={languageState.language} />
+              {languageState.ready && <Menu language={languageState.language} />}
+              {languageState.ready && <PrinciplesOrPatterns type={pp.type ?? ''} principlesOrPatterns={pp.principlesOrPatterns} />}
             </Box>
           </Page>
         </>

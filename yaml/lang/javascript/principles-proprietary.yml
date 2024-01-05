@@ -1,0 +1,150 @@
+---
+principles:
+  - title: "Dynamic Typing"
+    description:
+      - variant: subtitle1
+        content: |
+          JavaScript is a loosely typed or a dynamic language. Variables are not directly associated with any particular value type, and any variable can be assigned and re-assigned values of all types.
+    examples:
+      - title: "Dynamic Typing Example"
+        code: |
+          let data = 42; // data is now a number
+          data = 'hello'; // data is now a string
+          data = true; // data is now a boolean
+
+  - title: "Prototype-based Object Orientation"
+    description:
+      - variant: subtitle1
+        content: |
+          Instead of classical inheritance, JavaScript uses prototypes. Each object has a private property which holds a link to another object called its prototype.
+    examples:
+      - title: "Prototype-based Inheritance Example"
+        code: |
+          function Person(firstName) {
+            this.firstName = firstName;
+          }
+          Person.prototype.sayHello = function() {
+            return "Hello, I'm " + this.firstName;
+          };
+          const john = new Person("John");
+          console.log(john.sayHello()); // "Hello, I'm John"
+
+  - title: "First-Class Functions"
+    description:
+      - variant: subtitle1
+        content: |
+          In JavaScript, functions are first-class objects. They can be stored in variables, passed as arguments to other functions, returned from those functions, and have their own properties and methods.
+    examples:
+      - title: "First-Class Functions Example"
+        code: |
+          function greet() {
+            return "Hello World!";
+          }
+          let greetMsg = greet; // Assigning function to variable
+          console.log(greetMsg()); // "Hello World!"
+
+  - title: "Event-Driven Programming"
+    description:
+      - variant: subtitle1
+        content: |
+          JavaScript is heavily used in web browsers where the flow of the program is determined by events such as user actions (clicks, keyboard events, etc).
+    examples:
+      - title: "Event-Driven Programming Example"
+        code: |
+          document.getElementById("myBtn").addEventListener("click", displayDate);
+          function displayDate() {
+            document.getElementById("demo").innerHTML = Date();
+          }
+
+  - title: "Asynchronous Programming"
+    description:
+      - variant: subtitle1
+        content: |
+          With features like callbacks, promises, and async/await, JavaScript handles asynchronous operations. This is especially useful for operations like fetching data from a server without blocking the main thread.
+    examples:
+      - title: "Asynchronous Programming Example"
+        code: |
+          async function fetchData() {
+            let response = await fetch('https://api.example.com/data');
+            let data = await response.json();
+            console.log(data);
+          }
+          fetchData();
+
+  - title: "Closure"
+    description:
+      - variant: subtitle1
+        content: |
+          Functions in JavaScript form closures. A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (lexical environment).
+    examples:
+      - title: "Closure Example"
+        code: |
+          function makeAdder(x) {
+            return function(y) {
+              return x + y;
+            };
+          }
+          let add5 = makeAdder(5);
+          console.log(add5(2));  // 7
+
+  - title: "Single-Threaded with Non-blocking I/O"
+    description:
+      - variant: subtitle1
+        content: |
+          JavaScript is single-threaded, but it uses asynchronous callbacks and an event loop to handle concurrency.
+    examples:
+      - title: "Non-blocking I/O Example"
+        code: |
+          console.log('First');
+          setTimeout(function() {
+            console.log('Second');
+          }, 0);
+          console.log('Third');
+          // Output: First, Third, Second
+
+  - title: "Truthy and Falsy Values"
+    description:
+      - variant: subtitle1
+        content: |
+          In JavaScript, values are considered either "truthy" or "falsy", not just true or false. This affects flow control and operations in ways that can be peculiar compared to other languages.
+    examples:
+      - title: "Truthy and Falsy Example"
+        code: |
+          if ('') console.log('Falsy!');
+          if ('hello') console.log('Truthy!');
+          // Output: Truthy!
+
+  - title: "Template Literals"
+    description:
+      - variant: subtitle1
+        content: |
+          JavaScript allows for string interpolation and multi-line strings in a more readable fashion with template literals.
+    examples:
+      - title: "Template Literals Example"
+        code: |
+          const name = "world";
+          console.log(`Hello, ${name}!`); // Hello, world!
+
+  - title: "ES6 and Beyond"
+    description:
+      - variant: subtitle1
+        content: |
+          The ECMAScript 2016 (ES6) and later versions brought many additions and improvements, like classes, enhanced object literals, default parameters, destructuring, spread operator, and more, influencing how JavaScript is written.
+    examples:
+      - title: "ES6 Features Example"
+        code: |
+          class Animal {
+            constructor(name) {
+              this.name = name;
+            }
+            speak() {
+              console.log(`${this.name} makes a noise.`);
+            }
+          }
+          class Dog extends Animal {
+            speak() {
+              console.log(`${this.name} barks.`);
+            }
+          }
+          let dog = new Dog('Rex');
+          dog.speak(); // Rex barks.
