@@ -1,30 +1,42 @@
 import {atom} from 'recoil';
 import {TypographyProps} from '@mui/material/Typography';
 
+/**
+ * Base Types
+ */
+
+export interface ContentType {
+  content?: string;
+  // same variants as Typography MUI
+  variant?: TypographyProps['variant'] | 'code';
+}
+
 export type CodeExample = {
   code?: string;
   title?: string;
 };
 
 export type CodingPrinciple = {
-  abbr: string;
-  description?: string;
+  description?: ContentType[];
   examples?: CodeExample[];
-  title?: string;
-  type: 'solid' | 'proprietary';
+  title: string;
+  // type: 'solid' | 'other' | 'proprietary';
 };
+
+export type DesignPattern = {
+  description?: ContentType[];
+  examples: CodeExample[];
+  title: string;
+  // type: 'behavioural' | 'creational' | 'structural' | 'proprietary';
+};
+
+/**
+ * Complex types for States
+ */
 
 export type CodingPrinciples = {
   proprietary?: CodingPrinciple[];
   solid?: CodingPrinciple[];
-};
-
-export type DesignPattern = {
-  abbr: string;
-  description?: string;
-  examples: CodeExample[];
-  title?: string;
-  type: 'behavioural' | 'creational' | 'structural';
 };
 
 export type DesignPatterns = {
@@ -98,11 +110,6 @@ export const languagesState = atom<LanguagesState>({
 /**
  * Content State
  */
-
-export interface ContentType {
-  content?: string;
-  variant?: TypographyProps['variant'] | 'code';
-}
 
 export interface PrinciplePatternContent {
   title: string;

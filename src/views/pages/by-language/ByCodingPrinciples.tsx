@@ -8,6 +8,7 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import CodeExampleAccordion from '../../code/CodeExampleAccordion';
 import {CodingPrincipleTitles} from '../../../constants';
 import {Link} from 'react-router-dom';
+import TypographySet from '../../generic/TypographySet';
 
 export const PrinciplePaper = styled(Paper)(({theme}) => ({
   background: theme.palette.primary.light,
@@ -22,17 +23,17 @@ type CodingPrincipleItemProps = {
 };
 
 function CodingPrincipleItem({code, principle, type}: CodingPrincipleItemProps) {
-  const to = `/coding-principles/${type}?item=${principle.abbr}`;
+  const to = `/coding-principles/${type}?item=${principle.title}`;
 
   return (
     <PrinciplePaper>
       <h3>
-        {principle.title ?? CodingPrincipleTitles[principle.abbr]}
+        {principle.title}
         <Link to={to}>
           <BookmarksIcon />
         </Link>
       </h3>
-      {principle.description && <p>{principle.description}</p>}
+      {principle.description && <TypographySet content={principle.description} />}
       <CodeExampleAccordion examples={principle?.examples || []} language={code} />
     </PrinciplePaper>
   );
@@ -53,14 +54,14 @@ function ByCodingPrinciples({code, principles, type}: ByCodingPrinciplesProps) {
           {principles
             .filter((_, index) => index % 2 === 0)
             .map((principle) => (
-              <CodingPrincipleItem key={principle.abbr} code={code} principle={principle} type={type} />
+              <CodingPrincipleItem key={principle.title} code={code} principle={principle} type={type} />
             ))}
         </Grid>
         <Grid xs={6}>
           {principles
             .filter((_, index) => index % 2 === 1)
             .map((principle) => (
-              <CodingPrincipleItem key={principle.abbr} code={code} principle={principle} type={type} />
+              <CodingPrincipleItem key={principle.title} code={code} principle={principle} type={type} />
             ))}
         </Grid>
       </Grid>

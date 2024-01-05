@@ -1,0 +1,42 @@
+---
+patterns:
+  - title: Chain Of Responsibility
+    examples:
+      - code: |
+          // code sample here
+  - title: Command
+    examples:
+      - code: |
+          // code sample here
+  - title: Iterator
+    examples:
+      - code: |
+          // code sample here
+  - title: Mediator
+    examples:
+      - code: |
+          // code sample here
+  - title: Memento
+    examples:
+      - code: |
+          // code sample here
+  - title: Observer
+    examples:
+      - code: |
+          // code sample here
+  - title: State
+    examples:
+      - code: |
+          // code sample here
+  - title: Strategy
+    examples:
+      - code: |
+          // code sample here
+  - title: Template Method
+    examples:
+      - code: |
+          // code sample here
+  - title: Visitor
+    examples:
+      - code: |
+          // code sample here

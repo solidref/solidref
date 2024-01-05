@@ -81,12 +81,20 @@ function ByPrinciplesOrPatterns({language}: CodingPrinciplesProps) {
       </Box>
       {Object.keys(language?.principles ?? {}).map((key) => (
         <CustomTabPanel key={`priciples-panel-${key}`} value={value} index={values[key]}>
-          <ByCodingPrinciples type={key} code={language.code} principles={(language?.principles as any)[key]} />
+          <ByCodingPrinciples
+            type={key.replace('principles_', '')}
+            code={language.code}
+            principles={(language?.principles as any)[key]}
+          />
         </CustomTabPanel>
       ))}
       {Object.keys(language?.patterns ?? {}).map((key) => (
         <CustomTabPanel key={`patterns-panel-${key}`} value={value} index={values[key]}>
-          <ByDesignPatterns type={key} code={language.code} patterns={(language?.patterns as any)[key]} />
+          <ByDesignPatterns
+            type={key.replace('patterns_', '')}
+            code={language.code}
+            patterns={(language?.patterns as any)[key]}
+          />
         </CustomTabPanel>
       ))}
     </>

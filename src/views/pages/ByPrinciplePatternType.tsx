@@ -5,7 +5,7 @@ import Page from './Page';
 import {PrinciplePatternContent, PrinciplePatternContentState, principlePatternContentState} from '../../state';
 import {useRecoilState} from 'recoil';
 import PrinciplePatternContentLoader from '../../components/PrinciplePatternContentLoader';
-import TypographySet from './by-principle-pattern/TypographySet';
+import TypographySet from '../generic/TypographySet';
 import Box from '@mui/material/Box';
 import PrinciplePatternAccordion from './by-principle-pattern/PrinciplePatternAccordion';
 

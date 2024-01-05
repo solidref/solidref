@@ -10,6 +10,7 @@ import SyntaxHighlighter from '../../code/SyntaxHighlighter';
 import {CodingPrincipleTitles} from '../../../constants';
 import {Link} from 'react-router-dom';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import TypographySet from '../../generic/TypographySet';
 
 type ExampleListProps = {
   examples: CodeExample[];
@@ -19,8 +20,8 @@ type ExampleListProps = {
 function CodeExamples({examples, language}: ExampleListProps) {
   return (
     <>
-      {examples.map((example) => (
-        <div key={example.title}>
+      {examples.map((example, id) => (
+        <div key={example.title || id}>
           <SyntaxHighlighter code={example.code || '// missing code'} language={language} />
         </div>
       ))}
@@ -39,14 +40,15 @@ function ByDesignPatterns({code, patterns, type}: ByDesignPatternsProps) {
   return (
     <Box sx={{flexGrow: 1}}>
       {patterns.map((pattern) => (
-        <Accordion key={pattern.abbr}>
+        <Accordion key={pattern.title}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-            <Typography>{pattern.title ?? CodingPrincipleTitles[pattern.abbr] ?? pattern.abbr}</Typography>
-            <Link to={`/design-patterns/${type}?item=${pattern.abbr}`}>
+            <Typography>{pattern.title}</Typography>
+            <Link to={`/design-patterns/${type}?item=${pattern.title}`}>
               <BookmarksIcon />
             </Link>
           </AccordionSummary>
           <AccordionDetails>
+            {pattern.description && (<TypographySet content={pattern.description} />)}
             <CodeExamples language={code} examples={pattern.examples} />
           </AccordionDetails>
         </Accordion>

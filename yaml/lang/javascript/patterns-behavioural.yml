@@ -1,9 +1,8 @@
 ---
 patterns:
-  - abbr: ChainOfResponsibility
+  - title: Chain Of Responsibility
     examples:
-      - title: Chain Of Responsibility
-        code: |
+      - code: |
           // Chain of Responsibility Pattern in JavaScript
           class Handler {
               constructor(nextHandler) {
@@ -45,10 +44,9 @@ patterns:
           console.log(handler2.handle('handle2'));
           console.log(handler2.handle('handle1'));
 
-  - abbr: Command
+  - title: Command
     examples:
-      - title: Command
-        code: |
+      - code: |
           // Command Pattern in JavaScript
           class Command {
               execute() {}
@@ -102,10 +100,9 @@ patterns:
           remote.submit(turnOnCommand);
           remote.submit(turnOffCommand);
 
-  - abbr: Iterator
+  - title: Iterator
     examples:
-      - title: Iterator
-        code: |
+      - code: |
           // Iterator Pattern in JavaScript
           class Iterator {
               constructor(collection) {
@@ -130,10 +127,9 @@ patterns:
               console.log(iterator.next());
           }
 
-  - abbr: Mediator
+  - title: Mediator
     examples:
-      - title: Mediator
-        code: |
+      - code: |
           // Mediator Pattern in JavaScript
           class Mediator {
               constructor() {
@@ -183,10 +179,9 @@ patterns:
           colleague1.send('Hello from Colleague 1');
           colleague2.send('Hello from Colleague 2');
 
-  - abbr: Memento
+  - title: Memento
     examples:
-      - title: Memento
-        code: |
+      - code: |
           // Memento Pattern in JavaScript
           class Memento {
               constructor(state) {
@@ -247,10 +242,9 @@ patterns:
           originator.restore(caretaker.getMemento(0));
           console.log(originator.getState());
 
-  - abbr: Observer
+  - title: Observer
     examples:
-      - title: Observer
-        code: |
+      - code: |
           // Observer Pattern in JavaScript
           class Subject {
               constructor() {
@@ -292,10 +286,9 @@ patterns:
           subject.unsubscribe(observer2);
           subject.notify('Goodbye Observers!');
 
-  - abbr: State
+  - title: State
     examples:
-      - title: State
-        code: |
+      - code: |
           /**
           * The Context defines the interface of interest to clients. It also maintains a
           * reference to an instance of a State subclass, which represents the current
@@ -385,10 +378,9 @@ patterns:
           context.request1();
           context.request2();
 
-  - abbr: Strategy
+  - title: Strategy
     examples:
-      - title: Strategy
-        code: |
+      - code: |
           // Strategy Pattern in JavaScript
           class Strategy {
               execute(data) {
@@ -430,10 +422,9 @@ patterns:
           context.setStrategy(new ConcreteStrategyB());
           console.log(context.executeStrategy('456'));
 
-  - abbr: TemplateMethod
+  - title: TemplateMethod
     examples:
-      - title: Template Method
-        code: |
+      - code: |
           // Template Method Pattern in JavaScript
           class AbstractClass {
               templateMethod() {
@@ -495,10 +486,9 @@ patterns:
           console.log('');
           new ConcreteClass2().templateMethod();
 
-  - abbr: Visitor
+  - title: Visitor
     examples:
-      - title: Visitor
-        code: |
+      - code: |
           // Visitor Pattern in JavaScript
           class Visitor {
               visitConcreteComponentA(element) {}

@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography';
 
-import {ContentType} from '../../../state';
-import SyntaxHighlighter from '../../code/SyntaxHighlighter';
+import {ContentType} from '../../state';
+import SyntaxHighlighter from '../code/SyntaxHighlighter';
 
 export type TypographySetProps = {
   content: ContentType[];

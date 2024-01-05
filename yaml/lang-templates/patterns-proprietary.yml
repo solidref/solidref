@@ -1,0 +1,15 @@
+---
+patterns:
+  - title: name of pattern
+    description:
+    - variant: subtitle1
+      content: |
+        paragraph here
+    - variant: h6
+      content: Section Title here
+    - variant: subtitle1
+      content: |
+        paragraph here
+    examples:
+      - code: |
+          // code sample here

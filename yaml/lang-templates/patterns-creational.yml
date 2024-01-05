@@ -1,0 +1,22 @@
+---
+patterns:
+  - title: Factory Method
+    examples:
+      - code: |
+          // code sample here
+  - title: Abstract Factory
+    examples:
+      - code: |
+          // code sample here
+  - title: Builder
+    examples:
+      - code: |
+          // code sample here
+  - title: Prototype
+    examples:
+      - code: |
+          // code sample here
+  - title: Singleton
+    examples:
+      - code: |
+          // code sample here

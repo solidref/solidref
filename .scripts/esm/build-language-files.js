@@ -31,8 +31,10 @@ async function yamlParseAndSave(file) {
     'patterns-behavioural',
     'patterns-creational',
     'patterns-structural',
-    'principles-proprietary',
+    'patterns-proprietary',
     'principles-solid',
+    'principles-other',
+    'principles-proprietary',
   ];
   for (const name of names) {
     const newFile = pathJoin(sourceDirName, name) + '.yml';
@@ -43,7 +45,7 @@ async function yamlParseAndSave(file) {
       const ch = name.split('-');
       yamlObject[ch[0]] = {
         ...(yamlObject[ch[0]] ?? {}),
-        [ch[1]]: newYamlObject[ch[0]] ?? {},
+        [`${ch[0]}_${ch[1]}`]: newYamlObject[ch[0]] ?? {},
       };
     }
   }

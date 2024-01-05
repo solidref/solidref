@@ -1,6 +1,6 @@
 ---
 principles:
-  - abbr: DRY
+  - title: Don't Repeat Yourself (DRY)
     examples:
       - title: Good Example (ES6)
         code: |
@@ -28,7 +28,7 @@ principles:
           function addTaxForElectronics(price) {
               return price + (price * 0.05);
           }
-  - abbr: KISS
+  - title: Keep It Simple Stupid (KISS)
     examples:
       - title: Good Example (ES6)
         code: |
@@ -50,7 +50,7 @@ principles:
           function isEven(num) {
               return num % Math.abs(2) === 0;
           }
-  - abbr: YAGNI
+  - title: You Aren't Gonna Need It (YAGNI)
     examples:
       - title: Good Example (ES6)
         code: |
@@ -76,7 +76,7 @@ principles:
           function Car() {}
           Car.prototype.drive = function() { /* ... */ };
           Car.prototype.fly = function() { /* ... */ };  // Cars don't fly!
-  - abbr: PLK
+  - title: Law of Demeter (Principle of Least Knowledge)
     examples:
       - title: Good Example (ES6)
         code: |
@@ -154,7 +154,7 @@ principles:
           function purchase(item, buyer) {
               if (buyer.wallet.money.amount >= item.price) { /* ... */ }
           }
-  - abbr: SoC
+  - title: Separation of Concerns
     examples:
       - title: Good Example (ES6)
         code: |

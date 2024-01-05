@@ -1,6 +1,6 @@
 ---
 principles:
-  - abbr: SRP
+  - title: Single Responsibility
     examples:
       - title: Good Example (ES6)
         code: |
@@ -36,7 +36,7 @@ principles:
               this.saveUserData = function() { /* ... */ };
               this.sendNotification = function() { /* ... */ };
           }
-  - abbr: OCP
+  - title: Open-Closed
     examples:
       - title: Good Example (ES6)
         code: |
@@ -92,7 +92,7 @@ principles:
                   return 3.14 * shape.radius * shape.radius;
               }
           }
-  - abbr: LSP
+  - title: Liskov Substitution
     examples:
       - title: Good Example (ES6)
         code: |
@@ -135,7 +135,7 @@ principles:
           Ostrich.prototype.fly = function() {
               throw new Error("Can't fly");
           }
-  - abbr: ISP
+  - title: Interface Segregation
     examples:
       - title: Good Example (ES6)
         code: |
@@ -182,7 +182,7 @@ principles:
           function Worker() {}
           Worker.prototype.work = function() { /* ... */ };
           Worker.prototype.eat = function() { /* ... */ };  // This method should not be part of the Worker interface
-  - abbr: DIP
+  - title: Dependency Inversion
     examples:
       - title: Good Example (ES6)
         code: |
