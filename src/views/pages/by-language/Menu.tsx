@@ -8,14 +8,20 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import {CodingPrinciples, DesignPatterns, Language} from '../../../state';
-import { CodingPrincipleTitles } from '../../../constants';
+import {CodingPrincipleTitles} from '../../../constants';
+import {styled} from '@mui/material/styles';
+
+const MenuPopper = styled(Popper)(({theme}) => ({
+  zIndex: 100,
+}));
 
 type PPMenuItemsProps = {
   children: string;
   ppItems: CodingPrinciples | DesignPatterns;
-}
+  setPrincipleOrPattern: any;
+};
 
-function PPMenuItem({children, ppItems}: PPMenuItemsProps) {
+function PPMenuItem({children, ppItems, setPrincipleOrPattern}: PPMenuItemsProps) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
 
@@ -62,7 +68,7 @@ function PPMenuItem({children, ppItems}: PPMenuItemsProps) {
       >
         {children}
       </Button>
-      <Popper
+      <MenuPopper
         open={open}
         anchorEl={anchorRef.current}
         role={undefined}
@@ -86,27 +92,47 @@ function PPMenuItem({children, ppItems}: PPMenuItemsProps) {
                   onKeyDown={handleListKeyDown}
                 >
                   {Object.keys(ppItems).map((key) => (
-                    <MenuItem key={key} onClick={handleClose}>{CodingPrincipleTitles[key] ?? CodingPrincipleTitles.unknownPrinciple}</MenuItem>
+                    <MenuItem
+                      key={key}
+                      onClick={(event) => {
+                        handleClose(event);
+                        setPrincipleOrPattern({
+                          type: key,
+                          principlesOrPatterns: (ppItems as any)[key],
+                        });
+                      }}
+                    >
+                      {CodingPrincipleTitles[key] ?? CodingPrincipleTitles.unknownPrinciple}
+                    </MenuItem>
                   ))}
                 </MenuList>
               </ClickAwayListener>
             </Paper>
           </Grow>
         )}
-      </Popper>
+      </MenuPopper>
     </div>
   );
 }
 
 export type MenuProps = {
   language: Language;
+  setPrincipleOrPattern: any;
 };
 
-export default function Menu({language}: MenuProps) {
+export default function Menu({language, setPrincipleOrPattern}: MenuProps) {
   return (
     <Stack direction="row" spacing={2}>
-      {language.principles && <PPMenuItem ppItems={language.principles}>Principles</PPMenuItem>}
-      {language.patterns && <PPMenuItem ppItems={language.patterns}>Patterns</PPMenuItem>}
+      {language.principles && (
+        <PPMenuItem ppItems={language.principles} setPrincipleOrPattern={setPrincipleOrPattern}>
+          Principles
+        </PPMenuItem>
+      )}
+      {language.patterns && (
+        <PPMenuItem ppItems={language.patterns} setPrincipleOrPattern={setPrincipleOrPattern}>
+          Patterns
+        </PPMenuItem>
+      )}
     </Stack>
   );
 }

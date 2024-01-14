@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Page from './Page';
 import Box from '@mui/material/Box';
 import {useParams} from 'react-router-dom';
@@ -12,7 +12,7 @@ import {loadLanguages} from '../../selector';
 import LanguageLoader from '../../components/LanguageLoader';
 import Menu from './by-language/Menu';
 import PrinciplesOrPatterns from './by-language/PrinciplesOrPatterns';
-import { Language } from '../../state';
+import {CodingPrinciple, DesignPattern, Language, LanguageState} from '../../state';
 
 type Params = {
   language: string;
@@ -30,7 +30,10 @@ export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
   },
 }));
 
-const detectPp = (language: Language) => {
+type DetectedPrincipleOrPattern = {type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[]};
+
+const detectPrincipleOrPattern = (language: Language): DetectedPrincipleOrPattern => {
+  console.log(language);
   if (language.principles) {
     const type = Object.keys(language.principles)[0];
     return {
@@ -51,11 +54,17 @@ const detectPp = (language: Language) => {
 function ByLanguage() {
   let {language = 'javascript'} = useParams<Params>();
 
-  const [languageState, setLanguagesState] = useRecoilState(loadLanguages(language));
+  const [languageState, setLanguagesState] = useRecoilState<LanguageState>(loadLanguages(language));
 
-  const [pp, setPp] = React.useState(detectPp(languageState?.language ?? {}));
+  const [detectedPrincipleOrPattern, setDetectedPrincipleOrPattern] = React.useState<DetectedPrincipleOrPattern>({});
 
-  console.log('state', languageState, pp);
+  console.log(detectedPrincipleOrPattern, 'detectedPrincipleOrPattern');
+
+  useEffect(() => {
+    if (languageState?.ready) {
+      setDetectedPrincipleOrPattern(detectPrincipleOrPattern(languageState?.language ?? []));
+    }
+  }, [languageState, setDetectedPrincipleOrPattern]);
 
   return (
     <>
@@ -73,8 +82,16 @@ function ByLanguage() {
           </CenteredToolbar>
           <Page>
             <Box sx={{flexGrow: 1}}>
-              {languageState.ready && <Menu language={languageState.language} />}
-              {languageState.ready && <PrinciplesOrPatterns type={pp.type ?? ''} principlesOrPatterns={pp.principlesOrPatterns} />}
+              {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
+                <Menu language={languageState.language} setPrincipleOrPattern={setDetectedPrincipleOrPattern} />
+              )}
+              {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
+                <PrinciplesOrPatterns
+                  type={detectedPrincipleOrPattern.type ?? ''}
+                  principlesOrPatterns={detectedPrincipleOrPattern.principlesOrPatterns ?? []}
+                  languageCode={languageState.language.code}
+                />
+              )}
             </Box>
           </Page>
         </>

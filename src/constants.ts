@@ -5,5 +5,5 @@ export const CodingPrincipleTitles: Record<string, string> = {
   patterns_behavioural: 'Behavioural Patterns',
   patterns_creational: 'Creational Patterns',
   patterns_structural: 'Structural Patterns',
-  patterns_proprietary: 'Proprietary Patterns'
+  patterns_proprietary: 'Proprietary Patterns',
 };
