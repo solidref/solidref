@@ -1,18 +1,20 @@
 import React, {useMemo} from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Header from './views/Header';
-import Footer from './views/Footer';
-import Home from './views/pages/Home';
-import ByLanguage from './views/pages/ByLanguage';
-import './App.css';
 import {useRecoilState} from 'recoil';
-import {createTheme} from '@mui/material/styles';
-import History from './views/pages/History';
-import {ThemeProvider} from '@emotion/react';
+
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+// import {ThemeProvider} from '@emotion/react';
+
+// import {languagesHierarchyState} from './state';
 import {lightTheme, darkTheme, ColorModeContext} from './theme';
-import {languagesHierarchyState} from './state';
-import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
-import ByPrinciplePatternType from './views/pages/ByPrinciplePatternType';
+
+// import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
+// import Header from './views/Header';
+// import Footer from './views/Footer';
+// import Home from './views/pages/Home';
+// import ByLanguage from './views/pages/ByLanguage';
+// import History from './views/pages/History';
+// import ByPrinciplePatternType from './views/pages/ByPrinciplePatternType';
 
 const App: React.FC = () => {
   const [mode, setMode] = React.useState<'light' | 'dark'>('light');
@@ -25,7 +27,7 @@ const App: React.FC = () => {
     [],
   );
 
-  const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
+  // const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
 
   // const {language = 'javascript'} = useParams<LanguageParams>();
   // const [, setLanguagesState] = useRecoilState(loadLanguages(language));
@@ -45,7 +47,8 @@ const App: React.FC = () => {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <div className="App">
-          <LanguageHierarchyLoader setLanguagesHierarchyState={setLanguagesHierarchyState} />
+          App
+          {/* <LanguageHierarchyLoader setLanguagesHierarchyState={setLanguagesHierarchyState} />
           <React.Suspense fallback={<div>Loading...</div>}>
             <Router>
               <Header />
@@ -60,7 +63,7 @@ const App: React.FC = () => {
               </main>
               <Footer />
             </Router>
-          </React.Suspense>
+          </React.Suspense> */}
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
