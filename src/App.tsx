@@ -5,12 +5,12 @@ import {useRecoilState} from 'recoil';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 // import {ThemeProvider} from '@emotion/react';
 
-// import {languagesHierarchyState} from './state';
+import {languagesHierarchyState} from './state';
 import {lightTheme, darkTheme, ColorModeContext} from './theme';
 
-// import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
-// import Header from './views/Header';
-// import Footer from './views/Footer';
+import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
+import Header from './views/Header';
+import Footer from './views/Footer';
 // import Home from './views/pages/Home';
 // import ByLanguage from './views/pages/ByLanguage';
 // import History from './views/pages/History';
@@ -27,10 +27,7 @@ const App: React.FC = () => {
     [],
   );
 
-  // const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
-
-  // const {language = 'javascript'} = useParams<LanguageParams>();
-  // const [, setLanguagesState] = useRecoilState(loadLanguages(language));
+  const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
 
   const theme = useMemo(() => {
     const defaultTheme = mode === 'light' ? lightTheme : darkTheme;
@@ -47,12 +44,14 @@ const App: React.FC = () => {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <div className="App">
-          App
-          {/* <LanguageHierarchyLoader setLanguagesHierarchyState={setLanguagesHierarchyState} />
+          <LanguageHierarchyLoader
+            setLanguagesHierarchyState={setLanguagesHierarchyState}
+          />
           <React.Suspense fallback={<div>Loading...</div>}>
+            <div>App</div>
             <Router>
               <Header />
-              <main>
+              {/* <main>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/by-language/:language" element={<ByLanguage />} />
@@ -60,10 +59,10 @@ const App: React.FC = () => {
                   <Route path="/coding-principles/:type" element={<ByPrinciplePatternType />} />
                   <Route path="/design-patterns/:type" element={<ByPrinciplePatternType />} />
                 </Routes>
-              </main>
+              </main> */}
               <Footer />
             </Router>
-          </React.Suspense> */}
+          </React.Suspense>
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>

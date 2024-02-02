@@ -1,0 +1,209 @@
+---
+language: D
+code: d
+parent: c++
+birth: 2001
+description: >
+  The D programming language is a multi-paradigm system programming language that combines a lot of the power of C and C++ but also offers high-level constructs which make it a higher-level language than both C and C++. It's known for its efficiency, expressive syntax, and strong concurrency capabilities.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Separating responsibilities into separate classes
+          class LoginService {
+              void authenticate(User user) {
+                  // authentication logic
+              }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: A class handling both data management and notifications
+          class UserService {
+              void authenticate(User user) {
+                  // authentication logic
+              }
+
+              void logActivity(User user) {
+                  // logging logic
+              }
+          }
+  - title: SOLID / Open/Closed Principle (OCP)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Extending functionality without modifying existing class
+          class Shape {
+              double calculateArea() {
+                  return 0.0;
+              }
+          }
+
+          class Circle : Shape {
+              double radius;
+              override double calculateArea() {
+                  return 3.14 * radius * radius;
+              }
+          }
+
+          class Rectangle : Shape {
+              double width, height;
+              override double calculateArea() {
+                  return width * height;
+              }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Modifying existing class to add new functionality
+          class Shape {
+              string type;
+              double width, height, radius;
+              double calculateArea() {
+                  if(type == "circle") {
+                      return 3.14 * radius * radius;
+                  } else if(type == "rectangle") {
+                      return width * height;
+                  }
+                  return 0.0;
+              }
+          }
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Derived classes maintain the behavior of the base class
+          class Bird {
+              void fly() {
+                  // default flying behavior
+              }
+          }
+
+          class Sparrow : Bird {
+              // Inherits fly behavior from Bird
+          }
+
+          class Ostrich {
+              void walk() {
+                  // walking behavior
+              }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Derived class changes the behavior of the base class
+          class Bird {
+              void fly() {
+                  // default flying behavior
+              }
+          }
+
+          class Ostrich : Bird {
+              override void fly() {
+                  // Ostriches can't fly!
+                  throw new Exception("Can't fly!");
+              }
+          }
+  - title: SOLID / Interface Segregation Principle (ISP)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Smaller, more specific interfaces
+          interface Workable {
+              void work();
+          }
+
+          interface Eatable {
+              void eat();
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: A single interface with multiple methods
+          interface Worker {
+              void work();
+              void eat();
+          }
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Both high-level and low-level classes depend on abstractions
+          interface Device {
+              void turnOn();
+          }
+
+          class LightBulb : Device {
+              void turnOn() {
+                  // Turn on logic
+              }
+          }
+
+          class Switch {
+              Device device;
+              this(Device device) {
+                  this.device = device;
+              }
+
+              void operate() {
+                  device.turnOn();
+              }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: High-level class depending directly on a low-level class
+          class LightBulb {
+              void turnOn() {
+                  // Turn on logic
+              }
+          }
+
+          class Switch {
+              LightBulb bulb;
+              this(LightBulb bulb) {
+                  this.bulb = bulb;
+              }
+
+              void operate() {
+                  bulb.turnOn();
+              }
+          }
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Reusing a single function for logging
+          void logMessage(string msg) {
+              writeln("Log: ", msg);
+          }
+
+          void process() {
+              logMessage("Processing started");
+              // ...
+              logMessage("Processing finished");
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Repeatedly writing log messages
+          void process() {
+              writeln("Log: Processing started");
+              // ...
+              writeln("Log: Processing finished");
+          }
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Simple function to get user by ID
+          User getUserById(int id) {
+              // Get user logic
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Over-complicating with unnecessary features
+          User getUserById(int id, bool includeMetadata=false, bool logAccess=true) {
+              if(logAccess) {
+                  // Log access logic
+              }
+              if(includeMetadata) {
+                  // Include metadata logic
+              }
+              // Get user logic
+          }

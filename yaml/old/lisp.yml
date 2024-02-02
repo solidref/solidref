@@ -1,0 +1,186 @@
+language: Lisp
+code: lisp
+parent: none
+birth: 1958
+description: >
+  Lisp (short for List Processing) is one of the oldest programming languages still in use. It is known for its symbolic expression processing capabilities, making it a popular choice for artificial intelligence research. Its unique features include code-as-data (homoiconicity) and powerful macro systems.
+
+principles:
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Reusing a single function for tax calculation
+          (defun calculate-tax (rate price)
+            (* rate price))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Repeated logic for tax calculation
+          (defun calculate-tax-for-food (price)
+            (* 0.1 price))
+
+          (defun calculate-tax-for-electronics (price)
+            (* 0.1 price))
+
+  - title: Keep It Simple, Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Simplified logic for checking even numbers
+          (defun is-even (num)
+            (zerop (mod num 2)))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Overly complex logic for checking even numbers
+          (defun is-even (num)
+            (if (> num 0)
+                (if (zerop (mod num 2))
+                    t
+                    nil)
+                (if (zerop (mod num -2))
+                    t
+                    nil)))
+
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Implementing only what's needed
+          (defun drive-car ()
+            (print "Car is driving"))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Adding unnecessary features to a function
+          (defun drive-car ()
+            (print "Car is driving"))
+
+          (defun fly-car ()
+            (print "Cars don't fly!"))
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Using functions to encapsulate behavior
+          (defun display-price (item)
+            (format t "The price of the item is: ~A~%" (getf item :price)))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Accessing nested structures directly
+          (defun display-price (buyer)
+            (format t "The price of the item is: ~A~%" (getf (getf buyer :item) :price)))
+
+  - title: Separation of Concerns
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Separating data retrieval and display
+          (defun fetch-data ()
+            "sample data")
+
+          (defun display-data (data)
+            (print data))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Mixing data retrieval and display
+          (defun fetch-data-and-display ()
+            (let ((data "sample data"))
+              (print data)))
+
+  - title: Use Higher-order Functions
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Using `mapcar` to apply a function over a list
+          (mapcar (lambda (x) (* x x)) '(1 2 3 4))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Using explicit loops for the same task
+          (let ((numbers '(1 2 3 4))
+                (squares '()))
+            (dolist (num numbers)
+              (push (* num num) squares))
+            (reverse squares))
+
+  - title: Prefer Recursion Over Iteration
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Recursive factorial function
+          (defun factorial (n)
+            (if (<= n 1)
+                1
+                (* n (factorial (- n 1)))))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Iterative factorial function in a language that embraces recursion
+          (defun factorial (n)
+            (let ((result 1))
+              (dotimes (i n)
+                (setq result (* result (+ i 1))))
+              result))
+  - title: Embrace Homoiconicity
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Leveraging Lisp's homoiconicity for macros
+          (defmacro when-true (test &body body)
+            `(if ,test (progn ,@body)))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Ignoring the homoiconic nature of Lisp
+          (defun when-true (test body)
+            (if test (funcall body)))
+
+  - title: Leverage Lisp Macros Wisely
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: A simple macro to swap values
+          (defmacro swap (a b)
+            `(let ((temp ,a))
+               (setq ,a ,b)
+               (setq ,b temp)))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Using macros where a simple function would suffice
+          (defmacro add (a b)
+            `(+ ,a ,b))
+
+  - title: Consistent Naming Conventions
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Using dashes to separate words in names
+          (defun calculate-total-price (price tax)
+            (+ price (* price tax)))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Using inconsistent naming conventions
+          (defun calculateTotalPrice (price tax)
+            (+ price (* price tax)))
+
+  - title: Use Proper List Manipulation Functions
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Using `car` to get the first element of a list
+          (car '(1 2 3))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Using inefficient or incorrect methods to get elements from a list
+          (last (butlast '(1 2 3)))
+
+  - title: Avoid Excessive Global Variables
+    examples:
+      - title: Good Example
+        code: |
+          ;; Good example: Using local variables
+          (defun compute-area (radius)
+            (let ((pi 3.14159))
+              (* pi radius radius)))
+      - title: Bad Example
+        code: |
+          ;; Bad example: Relying heavily on global variables
+          (setq pi 3.14159)
+          (defun compute-area (radius)
+            (* pi radius radius))

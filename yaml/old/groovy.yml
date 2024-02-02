@@ -1,0 +1,238 @@
+---
+language: Groovy
+code: groovy
+parent: java
+birth: 2003
+description: Groovy is an agile and dynamic language for the Java Virtual Machine. It builds upon the strengths of Java but offers additional features inspired by languages like Python, Ruby, and Smalltalk, making it concise and expressive.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    examples:
+      - title: Good Example
+        code: |
+          class UserAuthentication {
+              def authenticate(userCredentials) {
+                  // authentication logic
+              }
+          }
+      - title: Bad Example
+        code: |
+          class User {
+              def authenticate(credentials) {
+                  // authentication logic
+              }
+              def logLastLoginDate() {
+                  // logging logic
+              }
+          }
+  - title: SOLID / Open/Closed Principle (OCP)
+    examples:
+      - title: Good Example
+        code: |
+          abstract class Shape {
+              def area()
+          }
+          class Circle extends Shape {
+              double radius
+              def area() {
+                  3.14 * radius * radius
+              }
+          }
+      - title: Bad Example
+        code: |
+          class Shape {
+              String type
+              double width
+              double height
+              double radius
+              def area() {
+                  if (type == 'circle') {
+                      return 3.14 * radius * radius
+                  } else if (type == 'rectangle') {
+                      return width * height
+                  }
+              }
+          }
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    examples:
+      - title: Good Example
+        code: |
+          abstract class Bird {
+              def fly()
+          }
+          class Sparrow extends Bird {
+              def fly() {
+                  // Sparrow flying logic
+              }
+          }
+      - title: Bad Example
+        code: |
+          abstract class Bird {
+              def fly()
+          }
+          class Penguin extends Bird {
+              def fly() {
+                  throw new Exception("Penguins can't fly!")
+              }
+          }
+
+  - title: SOLID / Interface Segregation Principle (ISP)
+    examples:
+      - title: Good Example
+        code: |
+          interface Flyable {
+              def fly()
+          }
+          interface Swimmable {
+              def swim()
+          }
+          class Sparrow implements Flyable {
+              def fly() {
+                  // Sparrow flying logic
+              }
+          }
+          class Penguin implements Swimmable {
+              def swim() {
+                  // Penguin swimming logic
+              }
+          }
+      - title: Bad Example
+        code: |
+          interface BirdActions {
+              def fly()
+              def swim()
+          }
+          class Sparrow implements BirdActions {
+              def fly() {
+                  // Sparrow flying logic
+              }
+              def swim() {
+                  // Doesn't make sense for a Sparrow
+              }
+          }
+
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    examples:
+      - title: Good Example
+        code: |
+          interface Storage {
+              def save(data)
+          }
+          class CloudStorage implements Storage {
+              def save(data) {
+                  // save data to the cloud
+              }
+          }
+          class DataManager {
+              Storage storage
+              def store(data) {
+                  storage.save(data)
+              }
+          }
+      - title: Bad Example
+        code: |
+          class HardDriveStorage {
+              def save(data) {
+                  // save data to the hard drive
+              }
+          }
+          class DataManager {
+              HardDriveStorage storage = new HardDriveStorage()
+              def store(data) {
+                  storage.save(data)
+              }
+          }
+
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          def greet(name) {
+              return "Hello, $name"
+          }
+      - title: Bad Example
+        code: |
+          def greetUser(name) {
+              return "Hello, $name"
+          }
+          def greetAdmin(name) {
+              return "Hello, $name"
+          }
+
+  - title: Keep It Simple, Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          def add(a, b) {
+              return a + b
+          }
+      - title: Bad Example
+        code: |
+          def add(a, b, debug=false) {
+              if(debug) {
+                  println("Inputs: $a, $b")
+              }
+              def result = a + b
+              if(debug) {
+                  println("Result: $result")
+              }
+              return result
+          }
+
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          class ShoppingCart {
+              def items = []
+              def addItem(item) {
+                  items << item
+              }
+          }
+      - title: Bad Example
+        code: |
+          class ShoppingCart {
+              def items = []
+              def futureFeatures = []
+              def addItem(item) {
+                  items << item
+              }
+          }
+
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          class Wallet {
+              double balance = 0.0
+              def deductAmount(amount) {
+                  balance -= amount
+              }
+          }
+          class Person {
+              Wallet wallet
+              def pay(amount) {
+                  wallet.deductAmount(amount)
+              }
+          }
+      - title: Bad Example
+        code: |
+          class Wallet {
+              double balance = 0.0
+          }
+          class Person {
+              Wallet wallet
+              def pay(amount) {
+                  wallet.balance -= amount
+              }
+          }
+
+  - title: Separation of Concerns
+    examples:
+      - title: Good Example
+        code: |
+          class UserRepository {
+              def save(user) {
+                  // save user logic
+              }
+          }
+

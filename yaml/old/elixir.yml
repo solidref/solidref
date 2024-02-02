@@ -1,0 +1,341 @@
+---
+language: Elixir
+code: elixir
+birth: 2011
+parent: erlang
+description: Elixir is a functional, concurrent, general-purpose programming language that runs on the Erlang virtual machine (BEAM). Elixir is used for building scalable and maintainable applications, especially known for its use in web development with the Phoenix framework.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Splitting responsibilities using modules
+          defmodule UserData do
+            def fetch_data(user_id) do
+              # ... fetch data logic
+            end
+          end
+
+          defmodule UserNotification do
+            def send_notification(user_id) do
+              # ... send notification logic
+            end
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Combining multiple responsibilities in a single module
+          defmodule User do
+            def fetch_data(user_id) do
+              # ... fetch data logic
+            end
+
+            def send_notification(user_id) do
+              # ... send notification logic
+            end
+          end
+
+  - title: SOLID / Open/Closed Principle (OCP)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Using protocols to extend functionality
+          defprotocol Shape do
+            def area(shape)
+          end
+
+          defmodule Circle do
+            defstruct radius: 0
+
+            defimpl Shape do
+              def area(%Circle{radius: radius}) do
+                3.14 * radius * radius
+              end
+            end
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Modifying existing module to add new functionality
+          defmodule Shape do
+            def area(%{type: "circle", radius: radius}) do
+              3.14 * radius * radius
+            end
+
+            # Adding more shapes would require adding more functions or modifying existing ones
+          end
+
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Using protocols and implementations to ensure substitutability
+          defprotocol Flyable do
+            def fly(entity)
+          end
+
+          defmodule Bird do
+            defstruct type: "generic"
+          end
+
+          defmodule Sparrow do
+            defstruct type: "sparrow"
+            defimpl Flyable, for: Sparrow do
+              def fly(_bird) do
+                "Flapping wings"
+              end
+            end
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Overriding base module behavior in a way that's not consistent
+          defmodule Bird do
+            def fly(_bird), do: "Flapping wings"
+          end
+
+          defmodule Ostrich do
+            def fly(_bird), do: raise "Can't fly"
+          end
+  - title: SOLID / Interface Segregation Principle (ISP)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Creating focused protocols for different functionalities
+          defprotocol Swimmer do
+            def swim(entity)
+          end
+
+          defprotocol Flyer do
+            def fly(entity)
+          end
+
+          defmodule Duck do
+            defstruct type: "duck"
+            defimpl Swimmer, for: Duck do
+              def swim(_duck) do
+                "Duck is swimming"
+              end
+            end
+            defimpl Flyer, for: Duck do
+              def fly(_duck) do
+                "Duck is flying"
+              end
+            end
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: One protocol for multiple unrelated actions
+          defprotocol Actions do
+            def swim(entity)
+            def fly(entity)
+          end
+
+          defmodule Ostrich do
+            defstruct type: "ostrich"
+            defimpl Actions, for: Ostrich do
+              def swim(_ostrich), do: "Ostrich can't swim"
+              def fly(_ostrich), do: "Ostrich can't fly"
+            end
+          end
+
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Depending on abstractions, not concrete implementations
+          defprotocol Logger do
+            def log(message)
+          end
+
+          defmodule ConsoleLogger do
+            defimpl Logger, for: ConsoleLogger do
+              def log(message) do
+                IO.puts(message)
+              end
+            end
+          end
+
+          defmodule App do
+            def run(logger) do
+              Logger.log(logger, "Running the app!")
+            end
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Hardcoding the dependency
+          defmodule App do
+            def run() do
+              IO.puts("Running the app!")
+            end
+          end
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Defining a single function to handle similar operations
+          defmodule MathOperations do
+            def compute(operation, a, b) when operation in [:add, :subtract] do
+              apply(__MODULE__, operation, [a, b])
+            end
+
+            def add(a, b), do: a + b
+            def subtract(a, b), do: a - b
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Writing repetitive code
+          defmodule MathOperations do
+            def add_a_and_b(a, b), do: a + b
+            def subtract_a_from_b(a, b), do: a - b
+          end
+
+  - title: Keep It Simple, Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Straightforward function without unnecessary complexity
+          defmodule Utility do
+            def even?(n), do: rem(n, 2) == 0
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Overcomplicating a simple function
+          defmodule Utility do
+            def even?(n) do
+              if n == 0, do: true
+              else
+                if rem(n, 2) == 0, do: true
+                else, do: false
+              end
+            end
+          end
+
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Just the essentials
+          defmodule Car do
+            def drive, do: "Driving the car"
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Implementing unnecessary features
+          defmodule Car do
+            def drive, do: "Driving the car"
+            def fly, do: "Cars can't fly!"
+          end
+
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Direct interactions without peering into other modules too deeply
+          defmodule Wallet do
+            defstruct balance: 0
+
+            def can_afford?(%Wallet{balance: balance}, amount), do: balance >= amount
+          end
+
+          defmodule Person do
+            defstruct wallet: %Wallet{}
+
+            def can_buy?(%Person{wallet: wallet}, price) do
+              Wallet.can_afford?(wallet, price)
+            end
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Accessing deeply nested structures
+          defmodule Person do
+            defstruct wallet: %Wallet{balance: 0}
+
+            def can_buy?(%Person{wallet: %Wallet{balance: balance}}, price), do: balance >= price
+          end
+  - title: Composition Over Inheritance
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Using composition to enhance functionality
+          defmodule Flyable do
+            def fly, do: "Flying high!"
+          end
+
+          defmodule Bird do
+            defdelegate fly, to: Flyable
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Overcomplicating with unnecessary inheritance
+          defmodule Animal do
+            def move, do: "Moving..."
+          end
+
+          defmodule Bird < Animal do
+            def fly, do: "Flying high!"
+          end
+
+  - title: Favor Pure Functions
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: A pure function without side effects
+          defmodule Math do
+            def add(a, b), do: a + b
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: A function with unnecessary side effects
+          defmodule Math do
+            def add(a, b) do
+              IO.puts("Adding numbers!")
+              a + b
+            end
+          end
+
+  - title: Immutable Data Structures
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Using immutable data structures
+          list = [1, 2, 3]
+          new_list = [0 | list]
+
+      - title: Bad Example
+        code: |
+          # Bad example: Attempting to mutate data directly (though this will result in an error in Elixir)
+          list = [1, 2, 3]
+          list[0] = 0
+
+  - title: Use Pattern Matching
+    examples:
+      - title: Good Example
+        code: |
+          # Good example: Using pattern matching for clarity and concise code
+          defmodule Matcher do
+            def match({:ok, value}), do: "Success: #{value}"
+            def match(:error), do: "Error occurred"
+          end
+
+      - title: Bad Example
+        code: |
+          # Bad example: Not utilizing pattern matching effectively
+          defmodule Matcher do
+            def match(result) do
+              case result do
+                {:ok, value} -> "Success: #{value}"
+                :error -> "Error occurred"
+              end
+            end
+          end
+
+

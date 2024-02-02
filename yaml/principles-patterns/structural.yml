@@ -1,0 +1,395 @@
+---
+title: <i>Structural</i> Design Patterns <br /> in Software Development
+before:
+  - variant: subtitle1
+    content: |
+      Structural design patterns are concerned with how classes and objects are composed to form larger structures.
+      They help ensure that when one part of a system changes, the entire system does not need to change.
+      Below, we explore several key structural design patterns, providing insights into their purposes, structures,
+      and applications, using JavaScript for illustrations.
+accordion:
+  Adapter:
+    - variant: subtitle1
+      content: |
+        The Adapter Pattern allows objects with incompatible interfaces to collaborate.
+    - variant: h6
+      content: Concept
+    - variant: subtitle1
+      content: |
+        This pattern involves a single class which is responsible to join functionalities of independent or incompatible interfaces.
+    - variant: h6
+      content: Structure
+    - variant: subtitle1
+      content: |
+        Target: Defines the domain-specific interface that Client uses.
+        Adapter: Adapts the interface of Adaptee to the Target interface.
+        Adaptee: Defines an existing interface that needs adapting.
+    - variant: h6
+      content: Example
+    - variant: code
+      content: |
+        class Target {
+            request() {
+                return 'Target: The default target\'s behavior.';
+            }
+        }
+
+        class Adaptee {
+            specificRequest() {
+                return '.eetpadA eht fo roivaheb laicepS';
+            }
+        }
+
+        class Adapter extends Target {
+            constructor(adaptee) {
+                super();
+                this.adaptee = adaptee;
+            }
+
+            request() {
+                const result = this.adaptee.specificRequest().split('').reverse().join('');
+                return `Adapter: (TRANSLATED) ${result}`;
+            }
+        }
+
+        // Usage
+        const target = new Target();
+        const adaptee = new Adaptee();
+        console.log(target.request());
+
+        const adapter = new Adapter(adaptee);
+        console.log(adapter.request());
+  Bridge:
+    - variant: subtitle1
+      content: |
+        The Bridge Pattern decouples an abstraction from its implementation so that the two can vary independently.
+    - variant: h6
+      content: Concept
+    - variant: subtitle1
+      content: |
+        This pattern involves an interface which acts as a bridge between the abstraction class and implementer classes and also makes the functionality of implementer class independent from the abstraction class.
+    - variant: h6
+      content: Structure
+    - variant: subtitle1
+      content: |
+        Abstraction: Defines the abstraction's interface.
+        RefinedAbstraction: Extends the interface defined by Abstraction.
+        Implementor: Defines the interface for implementation classes.
+        ConcreteImplementor: Implements the Implementor interface and defines its concrete implementation.
+    - variant: h6
+      content: Example
+    - variant: code
+      content: |
+        class Implementor {
+            operationImp() {}
+        }
+
+        class ConcreteImplementorA extends Implementor {
+            operationImp() {
+                console.log('ConcreteImplementorA Operation');
+            }
+        }
+
+        class ConcreteImplementorB extends Implementor {
+            operationImp() {
+                console.log('ConcreteImplementorB Operation');
+            }
+        }
+
+        class Abstraction {
+            constructor(implementor) {
+                this.implementor = implementor;
+            }
+            operation() {
+                this.implementor.operationImp();
+            }
+        }
+
+        // Usage
+        const implementorA = new ConcreteImplementorA();
+        const abstractionA = new Abstraction(implementorA);
+        abstractionA.operation();
+
+        const implementorB = new ConcreteImplementorB();
+        const abstractionB = new Abstraction(implementorB);
+        abstractionB.operation();
+  Composite:
+    - variant: subtitle1
+      content: |
+        The Composite Pattern composes objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.
+    - variant: h6
+      content: Concept
+    - variant: subtitle1
+      content: |
+        This pattern creates a tree structure of group of objects. This pattern creates a class that contains group of its own objects and also provides ways to modify them.
+    - variant: h6
+      content: Structure
+    - variant: subtitle1
+      content: |
+        Component: Declares the interface for objects in the composition and for accessing and managing its child components.
+        Leaf: Represents leaf objects in the composition. A leaf has no children.
+        Composite: Defines behavior for components having children and stores child components.
+    - variant: h6
+      content: Example
+    - variant: code
+      content: |
+        class Component {
+            constructor(name) {
+                this.name = name;
+            }
+            // methods like add, remove, getChild
+        }
+
+        class Leaf extends Component {
+            constructor(name) {
+                super(name);
+            }
+            operation() {
+                console.log(`Leaf ${this.name} performs operation`);
+            }
+        }
+
+        class Composite extends Component {
+            constructor(name) {
+                super(name);
+                this.children = [];
+            }
+            add(component) {
+                this.children.push(component);
+            }
+            operation() {
+                console.log(`Composite ${this.name}`);
+                for (const child of this.children) {
+                    child.operation();
+                }
+            }
+        }
+
+        // Usage
+        const leaf1 = new Leaf('Leaf 1');
+        const leaf2 = new Leaf('Leaf 2');
+        const composite1 = new Composite('Composite 1');
+        composite1.add(leaf1);
+        composite1.add(leaf2);
+        composite1.operation();
+  Decorator:
+    - variant: subtitle1
+      content: |
+        The Decorator Pattern attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.
+    - variant: h6
+      content: Concept
+    - variant: subtitle1
+      content: |
+        This pattern creates a decorator class which wraps the original class and provides additional functionality keeping class methods signature intact.
+    - variant: h6
+      content: Structure
+    - variant: subtitle1
+      content: |
+        Component: Defines the interface for objects that can have responsibilities added to them dynamically.
+        ConcreteComponent: Defines an object to which additional responsibilities can be attached.
+        Decorator: Maintains a reference to a Component object and defines an interface that conforms to Component's interface.
+        ConcreteDecorator: Adds responsibilities to the component.
+    - variant: h6
+      content: Example
+    - variant: code
+      content: |
+        class Component {
+            operation() {}
+        }
+
+        class ConcreteComponent extends Component {
+            operation() {
+                console.log('ConcreteComponent operation');
+            }
+        }
+
+        class Decorator extends Component {
+            constructor(component) {
+                super();
+                this.component = component;
+            }
+
+            operation() {
+                this.component.operation();
+            }
+        }
+
+        class ConcreteDecoratorA extends Decorator {
+            operation() {
+                super.operation();
+                console.log('ConcreteDecoratorA extra operation');
+            }
+        }
+
+        // Usage
+        const component = new ConcreteComponent();
+        const decoratorA = new ConcreteDecoratorA(component);
+        decoratorA.operation();
+  Facade:
+    - variant: subtitle1
+      content: |
+        The Facade Pattern provides a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.
+    - variant: h6
+      content: Concept
+    - variant: subtitle1
+      content: |
+        This pattern hides the complexities of the system and provides an interface to the client using which the client can access the system.
+    - variant: h6
+      content: Structure
+    - variant: subtitle1
+      content: |
+        Facade: Knows which subsystem classes are responsible for a request. Delegates client requests to appropriate subsystem objects.
+        Subsystem classes: Implement subsystem functionality and handle work assigned by the Facade object. They don't know about the facade and keep no reference to it.
+    - variant: h6
+      content: Example
+    - variant: code
+      content: |
+        class Subsystem1 {
+            operation1() {
+                return 'Subsystem1: Ready!\n';
+            }
+            operationN() {
+                return 'Subsystem1: Go!\n';
+            }
+        }
+
+        class Subsystem2 {
+            operation1() {
+                return 'Subsystem2: Get ready!\n';
+            }
+            operationZ() {
+                return 'Subsystem2: Fire!';
+            }
+        }
+
+        class Facade {
+            constructor(subsystem1, subsystem2) {
+                this.subsystem1 = subsystem1 || new Subsystem1();
+                this.subsystem2 = subsystem2 || new Subsystem2();
+            }
+
+            operation() {
+                let result = 'Facade initializes subsystems:\n';
+                result += this.subsystem1.operation1();
+                result += this.subsystem2.operation1();
+                result += 'Facade orders subsystems to perform the action:\n';
+                result += this.subsystem1.operationN();
+                result += this.subsystem2.operationZ();
+                return result;
+            }
+        }
+
+        // Usage
+        const subsystem1 = new Subsystem1();
+        const subsystem2 = new Subsystem2();
+        const facade = new Facade(subsystem1, subsystem2);
+        console.log(facade.operation());
+  Flyweight:
+    - variant: subtitle1
+      content: |
+        The Flyweight Pattern uses sharing to support large numbers of fine-grained objects efficiently.
+    - variant: h6
+      content: Concept
+    - variant: subtitle1
+      content: |
+        This pattern is primarily used to reduce the number of objects created and to decrease memory footprint and increase performance. This type of design pattern comes under structural pattern as this pattern provides ways to decrease object count thus improving application required objects structure.
+    - variant: h6
+      content: Structure
+    - variant: subtitle1
+      content: |
+        Flyweight: Declares an interface through which flyweights can receive and act on extrinsic state.
+        ConcreteFlyweight: Implements the Flyweight interface and adds storage for intrinsic state. A ConcreteFlyweight object must be sharable.
+        FlyweightFactory: Creates and manages flyweight objects.
+    - variant: h6
+      content: Example
+    - variant: code
+      content: |
+        class Flyweight {
+            operation(extrinsicState) {}
+        }
+
+        class ConcreteFlyweight extends Flyweight {
+            constructor(intrinsicState) {
+                super();
+                this.intrinsicState = intrinsicState;
+            }
+            operation(extrinsicState) {
+                console.log(`ConcreteFlyweight: Intrinsic(${this.intrinsicState}) and Extrinsic(${extrinsicState})`);
+            }
+        }
+
+        class FlyweightFactory {
+            constructor() {
+                this.flyweights = {};
+            }
+            getFlyweight(key) {
+                if (!(key in this.flyweights)) {
+                    this.flyweights[key] = new ConcreteFlyweight(key);
+                }
+                return this.flyweights[key];
+            }
+        }
+
+        // Usage
+        const factory = new FlyweightFactory();
+        const flyweight = factory.getFlyweight('a');
+        flyweight.operation('operation1');
+  Proxy:
+    - variant: subtitle1
+      content: |
+        The Proxy Pattern provides a surrogate or placeholder for another object to control access to it.
+    - variant: h6
+      content: Concept
+    - variant: subtitle1
+      content: |
+        This pattern involves a class which represents the functionality of another class. This type of design pattern comes under structural pattern.
+        In proxy pattern, we create object having original object to interface its functionality to outer world.
+    - variant: h6
+      content: Structure
+    - variant: subtitle1
+      content: |
+        Proxy: Maintains a reference that lets the proxy access the real subject. Proxy may refer to a Subject if the RealSubject and Subject interfaces are the same.
+        Subject: Defines the common interface for RealSubject and Proxy so that a Proxy can be used anywhere a RealSubject is expected.
+        RealSubject: Defines the real object that the proxy represents.
+    - variant: h6
+      content: Example
+    - variant: code
+      content: |
+        class Subject {
+            request() {}
+        }
+
+        class RealSubject extends Subject {
+            request() {
+                console.log('RealSubject: Handling request.');
+            }
+        }
+
+        class Proxy extends Subject {
+            constructor(realSubject) {
+                super();
+                this.realSubject = realSubject;
+            }
+
+            request() {
+                if (this.checkAccess()) {
+                    this.realSubject.request();
+                    this.logAccess();
+                }
+            }
+
+            checkAccess() {
+                // Some real checks should go here.
+                console.log('Proxy: Checking access prior to firing a real request.');
+                return true;
+            }
+
+            logAccess() {
+                console.log('Proxy: Logging the time of request.');
+            }
+        }
+
+        // Usage
+        const realSubject = new RealSubject();
+        const proxy = new Proxy(realSubject);
+        proxy.request();

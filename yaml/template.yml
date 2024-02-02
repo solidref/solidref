@@ -1,0 +1,65 @@
+---
+# name of the programming language we're describing coding principles for
+language: LanguageName
+# code of the programming language as per Markdown syntax hightlighting rules
+code: languageCodeForMarkdown
+# code (as per Markdown syntax) of the programming language that the current
+# described language has been derived from, or that have influenced the described language
+parent: Parent LanguageName
+# year of birth
+birth: BirthYear
+# year of "death" if there is such thing
+# (as in year it stopped being used)
+death: DeathYear
+# description of the language
+description: Language description
+# coding principles as listed in the 2nd yaml bellow;
+# you can also include other coding principles that fit to the language which
+# is subject to this yaml
+principles:
+  - title: Principle Title
+    examples:
+      - title: Good Example
+        code: Code Sample
+      - title: Bad Example
+        code: Code Sample
+      # other examples if necessary
+  # the rest of the coding principles
+
+# this is the list of main coding principles we need to touch
+# when generating the yaml for a programming language
+---
+title: "Coding Principles"
+content:
+  - name: "SOLID / Single Responsibility Principle (SRP)"
+    description: "A class should have only one reason to change. This ensures that a class addresses only one concern, making the system more modular and easier to maintain."
+  - name: "SOLID / Open/Closed Principle (OCP)"
+    description: "Software entities should be open for extension but closed for modification. This allows adding new features without altering existing code."
+  - name: "SOLID / Liskov Substitution Principle (LSP)"
+    description: "Subtypes must be substitutable for their base types. This ensures that a derived class is truly an extension of the base class."
+  - name: "SOLID / Interface Segregation Principle (ISP)"
+    description: "Clients should not be forced to depend on interfaces they do not use. This makes the system more modular and easier to understand."
+  - name: "SOLID / Dependency Inversion Principle (DIP)"
+    description: "High-level modules should not depend on low-level modules; both should depend on abstractions. This decouples software modules."
+  - name: "Don't Repeat Yourself (DRY)"
+    description: "Every piece of knowledge or logic should exist in a single place. This reduces repetition and potential errors."
+  - name: "Keep It Simple, Stupid (KISS)"
+    description: "Systems work best when kept simple. Avoid unnecessary complexity."
+  - name: "You Aren't Gonna Need It (YAGNI)"
+    description: "Avoid adding functionality until it's necessary. Prevents over-engineering."
+  - name: "Law of Demeter (Principle of Least Knowledge)"
+    description: "An object should only communicate with its immediate neighbors. This leads to a more decoupled system."
+  - name: "Separation of Concerns"
+    description: "Different functionalities should be separated into distinct sections or modules. This makes the system more modular."
+
+---
+require: Following the template from above, please generate the yaml content for Groovy language
+TODO: Bash, Powershell, Cold Fusion, CFScript
+TODO: https://refactoring.guru/design-patterns
+urls:
+  - https://en.wikipedia.org/wiki/History_of_programming_languages
+  - https://canvasjs.com/react-charts/
+  - https://apexcharts.com/react-chart-demos/timeline-charts/multi-series/
+  - https://d3js.org/
+  - https://d3-graph-gallery.com/
+  - https://code.tutsplus.com/best-free-javascript-graph-visualization-libraries--cms-41710a

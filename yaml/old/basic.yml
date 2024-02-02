@@ -1,0 +1,230 @@
+language: BASIC
+code: basic
+birth: 1964
+description: BASIC (Beginner's All-purpose Symbolic Instruction Code) is a family of high-level programming languages. It was originally designed for beginners to learn programming and remains a simple yet powerful language.
+principles:
+  - title: SOLID / Single Responsibility Principle (SRP)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: Separating responsibilities into separate subroutines
+          DEF PROC SaveUserData
+              REM ...
+          END PROC
+
+          DEF PROC SendNotification
+              REM ...
+          END PROC
+      - title: Bad Example
+        code: |
+          REM Bad example: A single subroutine handling both user data and notifications
+          DEF PROC User
+              REM Save user data
+              REM Send notifications
+          END PROC
+
+  - title: SOLID / Open/Closed Principle (OCP)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: Using procedures for extensibility without modifying existing code
+          DEF FN ComputeArea(radius)
+              area = 3.14 * radius * radius
+              = area
+          END FN
+      - title: Bad Example
+        code: |
+          REM Bad example: Modifying existing code to add new functionality
+          REM To add new shapes, the existing code needs to be changed
+          REM Instead of using functions for each shape
+          area = FN ComputeArea(radius)
+          IF shape$ = "circle"
+              area = 3.14 * radius * radius
+          ELSE IF shape$ = "rectangle"
+              REM ...
+          END IF
+
+  - title: SOLID / Liskov Substitution Principle (LSP)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: Derived classes maintain the behavior of the base class
+          DEF PROC Fly
+              REM ...
+          END PROC
+
+          DEF PROC Walk
+              REM ...
+          END PROC
+      - title: Bad Example
+        code: |
+          REM Bad example: Derived class changes the behavior of the base class
+          DEF PROC Fly
+              REM ...
+          END PROC
+
+          DEF PROC Walk
+              REM This is different from the base class
+              REM ...
+          END PROC
+
+  - title: SOLID / Interface Segregation Principle (ISP)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: Using separate interfaces for different functionalities
+          INTERFACE Workable
+              PROC Work
+          END INTERFACE
+
+          INTERFACE Eatable
+              PROC Eat
+          END INTERFACE
+      - title: Bad Example
+        code: |
+          REM Bad example: A single interface with multiple responsibilities
+          INTERFACE Worker
+              PROC Work
+              PROC Eat
+          END INTERFACE
+
+  - title: SOLID / Dependency Inversion Principle (DIP)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: High-level module depending on an interface, not on specific implementations
+          DEF FN TurnOn(device)
+              CALL device.TurnOn
+          END FN
+
+          REM Implementations of Device interface
+          DEF PROC Fan.TurnOn
+              REM ...
+          END PROC
+
+          DEF PROC LightBulb.TurnOn
+              REM ...
+          END PROC
+      - title: Bad Example
+        code: |
+          REM Bad example: High-level module depending on low-level modules directly
+          DEF FN TurnOn(device$)
+              IF device$ = "fan"
+                  REM ...
+              ELSE IF device$ = "light bulb"
+                  REM ...
+              END IF
+          END FN
+
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: Reusing a subroutine for repeated logic
+          DEF FN AddTax(price, rate = 0.05)
+              taxedPrice = price + (price * rate)
+              = taxedPrice
+          END FN
+      - title: Bad Example
+        code: |
+          REM Bad example: Repeated logic without reuse
+          DEF FN AddTaxForFood(price)
+              taxedPrice = price + (price * 0.05)
+              = taxedPrice
+          END FN
+
+  - title: Keep It Simple, Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: A simple approach to check if a number is even
+          DEF FN IsEven(num)
+              = (num MOD 2) = 0
+          END FN
+      - title: Bad Example
+        code: |
+          REM Bad example: Overcomplicated way to check even numbers
+          DEF FN IsEven(num)
+              = (num MOD ABS(2)) = 0
+          END FN
+
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: Implementing only the necessary features
+          DEF PROC Drive
+              REM ...
+          END PROC
+      - title: Bad Example
+        code: |
+          REM Bad example: Adding unnecessary features
+          DEF PROC Drive
+              REM ...
+          END PROC
+
+          DEF PROC Fly
+              REM Cars don't fly!
+          END PROC
+
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: Using encapsulation and accessing properties through methods
+          DEF FN GetAmount(wallet)
+              = CALL wallet.GetAmount
+          END FN
+
+          REM Implementations of Wallet
+          DEF FN Wallet.GetAmount
+              = this.money
+          END FN
+
+          DEF FN Person.GetMoneyAmount(buyer)
+              = CALL buyer.GetMoneyAmount
+          END FN
+
+          REM Implementations of Person
+          DEF FN Person.GetMoneyAmount
+              = CALL wallet.GetAmount
+          END FN
+
+          DEF FN Purchase(itemPrice, buyer)
+              IF FN GetMoneyAmount(buyer) >= itemPrice THEN
+                  REM ...
+              END IF
+          END FN
+      - title: Bad Example
+        code: |
+          REM Bad example: Accessing nested structures directly
+          DEF FN Purchase(itemPrice, buyer)
+              IF buyer.wallet.money.amount >= itemPrice THEN
+                  REM ...
+              END IF
+          END FN
+
+  - title: Separation of Concerns
+    examples:
+      - title: Good Example
+        code: |
+          REM Good example: Separating concerns into different modules
+          DEF PROC FetchUserData
+              REM ...
+          END PROC
+
+          DEF PROC CalculateAge
+              REM ...
+          END PROC
+
+          DEF PROC Render
+              REM ...
+          END PROC
+      - title: Bad Example
+        code: |
+          REM Bad example: Mixing data retrieval and presentation in a single module
+          DEF PROC UserComponent
+              REM Fetching user data
+              REM Calculating age
+              REM Rendering
+          END PROC
