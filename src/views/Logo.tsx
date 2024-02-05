@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from '@mui/material/Link';
 import {styled} from '@mui/material/styles';
+import SolidRef from './logos/SolidRef';
 
 export type LogoProps = {
   size?: number;
@@ -29,6 +30,7 @@ function Logo({size = 36, unit = 'rem'}: LogoProps) {
       sx={{fontSize: `${size}${unit}`}}
       style={{fontWeight: 'bold'}}
     >
+      <SolidRef />
       <Solid>{'SOLID'}</Solid>
       <Dot style={{fontSize: `${size + Math.trunc(size * 0.3)}${unit}`}}>{'.'}</Dot>
       <Ref>{'ref'}</Ref>

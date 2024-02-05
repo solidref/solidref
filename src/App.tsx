@@ -11,8 +11,8 @@ import {lightTheme, darkTheme, ColorModeContext} from './theme';
 import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
 import Header from './views/Header';
 import Footer from './views/Footer';
-// import Home from './views/pages/Home';
-// import ByLanguage from './views/pages/ByLanguage';
+import Home from './views/pages/Home';
+import ByLanguage from './components/pages/ByLanguage';
 // import History from './views/pages/History';
 // import ByPrinciplePatternType from './views/pages/ByPrinciplePatternType';
 
@@ -51,15 +51,18 @@ const App: React.FC = () => {
             <div>App</div>
             <Router>
               <Header />
-              {/* <main>
+              <main>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/by-language/:language" element={<ByLanguage />} />
-                  <Route path="/history" element={<History />} />
+                  <Route
+                    path="/by-language/:language"
+                    element={<ByLanguage />}
+                  />
+                  {/* <Route path="/history" element={<History />} />
                   <Route path="/coding-principles/:type" element={<ByPrinciplePatternType />} />
-                  <Route path="/design-patterns/:type" element={<ByPrinciplePatternType />} />
+                  <Route path="/design-patterns/:type" element={<ByPrinciplePatternType />} /> */}
                 </Routes>
-              </main> */}
+              </main>
               <Footer />
             </Router>
           </React.Suspense>
