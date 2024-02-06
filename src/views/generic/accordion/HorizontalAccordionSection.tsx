@@ -1,7 +1,7 @@
 import React from 'react';
 import {styled} from '@mui/material/styles';
 import {Paper, PaperProps} from '@mui/material';
-import {light, dark} from '../../../theme';
+// import {light, dark} from '../../../theme';
 
 export interface HorizontalAccordionSectionProps extends PaperProps {}
 
@@ -11,9 +11,9 @@ const SectionContainer = styled(Paper)(({theme}) => ({
   transition: 'flex 0.3s ease',
   width: '10%',
 
-  '&:hover': {
-    background: theme.palette.mode === 'light' ? light['100'] : dark['100'],
-  },
+  // '&:hover': {
+  //   background: theme.palette.mode === 'light' ? light['100'] : dark['100'],
+  // },
 
   '&.HorizontalAccordionSection-Targeted': {
     background: theme.palette.primary.light,

@@ -1,8 +1,7 @@
 import React, {useMemo, useState, createContext} from 'react';
+import {ThemeProvider} from '@mui/material/styles';
 
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-
-import {lightTheme, darkTheme} from '../theme';
+import getTheme from '../../theme';
 
 export type ThemeWrapperProps = {
   readonly children: React.ReactNode;
@@ -22,16 +21,7 @@ export default function ThemeWrapper({children}: ThemeWrapperProps) {
     [],
   );
 
-  const theme = useMemo(() => {
-    const defaultTheme = mode === 'light' ? lightTheme : darkTheme;
-    return createTheme({
-      ...defaultTheme,
-      palette: {
-        ...defaultTheme.palette,
-        mode,
-      },
-    });
-  }, [mode, lightTheme, darkTheme]);
+  const theme = useMemo(() => getTheme(mode, 'green'), [mode]);
 
   return (
     <ThemeWrapperContext.Provider value={colorMode}>

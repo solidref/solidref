@@ -4,7 +4,7 @@ import {useRecoilState} from 'recoil';
 
 import {languagesHierarchyState} from './state';
 
-import ThemeWrapper from './components/ThemeWrapper';
+import ThemeWrapper from './components/styles/ThemeWrapper';
 import ByLanguage from './components/pages/ByLanguage';
 import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
 
