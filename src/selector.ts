@@ -110,28 +110,26 @@ export const loadLanguage = selectorFamily<LanguageState, string>({
 
 export const loadPrinciplePatternContent = selectorFamily<PrinciplePatternContentState, string>({
   key: 'loadPrinciplePatternContent',
-  get:
-    (item) =>
-    async () => {
-      console.log(`Loading ${item} principle/pattern`);
-      try {
-        const response = await fetch(`/generated/principles-patterns/${item}.json`);
-        if (!response.ok) {
-          throw new Error(`Failed to load '${item}' principle/pattern`);
-        }
-
-        const content = (await response.json()) as PrinciplePatternContent;
-        return {
-          ready: true,
-          content,
-        };
-      } catch (error) {
-        console.error(`Error fetching '${item}' principle/pattern:`, error);
-        return {
-          ready: false,
-        };
+  get: (item) => async () => {
+    console.log(`Loading ${item} principle/pattern`);
+    try {
+      const response = await fetch(`/generated/principles-patterns/${item}.json`);
+      if (!response.ok) {
+        throw new Error(`Failed to load '${item}' principle/pattern`);
       }
-    },
+
+      const content = (await response.json()) as PrinciplePatternContent;
+      return {
+        ready: true,
+        content,
+      };
+    } catch (error) {
+      console.error(`Error fetching '${item}' principle/pattern:`, error);
+      return {
+        ready: false,
+      };
+    }
+  },
 });
 
 // selector for adding messages

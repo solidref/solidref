@@ -26,7 +26,7 @@ export default function PrinciplesOrPatterns({principlesOrPatterns, type, langua
       {principlesOrPatterns.map((pattern) => (
         <Accordion key={pattern.title}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-            <Typography >{pattern.title}</Typography>
+            <Typography>{pattern.title}</Typography>
             <Link to={`/design-patterns/${type}?item=${pattern.title}`}>
               <BookmarksIcon />
             </Link>
