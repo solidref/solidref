@@ -4,7 +4,7 @@ import {useRecoilState} from 'recoil';
 
 import {languagesHierarchyState} from './state';
 
-import ThemeProvider from './components/ThemeProvider';
+import ThemeWrapper from './components/ThemeWrapper';
 import ByLanguage from './components/pages/ByLanguage';
 import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
 
@@ -18,7 +18,7 @@ const App: React.FC = () => {
   const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
 
   return (
-    <ThemeProvider>
+    <ThemeWrapper>
       <div className="App">
         <LanguageHierarchyLoader setLanguagesHierarchyState={setLanguagesHierarchyState} />
         <React.Suspense fallback={<div>Loading...</div>}>
@@ -38,7 +38,7 @@ const App: React.FC = () => {
           </Router>
         </React.Suspense>
       </div>
-    </ThemeProvider>
+    </ThemeWrapper>
   );
 };
 
