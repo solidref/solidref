@@ -1,12 +1,12 @@
 import {createContext} from 'react';
-import { Theme, responsiveFontSizes } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import {Theme, responsiveFontSizes} from '@mui/material';
+import {createTheme} from '@mui/material/styles';
 import shadows from './shadows';
 import palette from './palette';
 
 export const palettes = ['green', 'blue', 'indigo', 'pink', 'orange'];
 
-export type Palettes = typeof palettes[number];
+export type Palettes = (typeof palettes)[number];
 
 const getTheme = (mode: string, paletteType: string): Theme =>
   responsiveFontSizes(
@@ -33,7 +33,7 @@ const getTheme = (mode: string, paletteType: string): Theme =>
             label: {
               fontWeight: 600,
             },
-            containedSecondary: mode === 'light' ? { color: 'white' } : {},
+            containedSecondary: mode === 'light' ? {color: 'white'} : {},
           },
         },
       },

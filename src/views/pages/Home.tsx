@@ -10,7 +10,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import {Paper, useTheme} from '@mui/material';
 import RootLanguages from './home/RootLanguages';
 import AllLanguages from './home/AllLanguages';
-import {CenteredToolbar} from '../Header';
+// import {CenteredToolbar} from '../Header';
 import Typography from '@mui/material/Typography';
 import {languagesHierarchyState} from '../../state';
 import {useRecoilValue} from 'recoil';
@@ -28,11 +28,11 @@ function Home({}: HomeProps) {
 
   return (
     <>
-      <CenteredToolbar sx={{justifyContent: 'space-between'}}>
+      {/* <CenteredToolbar sx={{justifyContent: 'space-between'}}>
         <Typography variant="h2">Coding Principles</Typography>
         <Typography variant="h6">Here are some Coding Principles described for your language</Typography>
-      </CenteredToolbar>
-      <Page>
+      </CenteredToolbar> */}
+      {/* <Page>
         <Box sx={{flexGrow: 1}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -51,7 +51,7 @@ function Home({}: HomeProps) {
           {view === 'list' ? <RootLanguages /> : <></>}
           {view === 'module' ? <AllLanguages /> : <></>}
         </Box>
-      </Page>
+      </Page> */}
     </>
   );
 }

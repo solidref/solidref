@@ -2,6 +2,7 @@ import React, {useMemo, useState, createContext} from 'react';
 import {ThemeProvider} from '@mui/material/styles';
 
 import getTheme from '../../theme';
+import {Paper} from '@mui/material';
 
 export type ThemeWrapperProps = {
   readonly children: React.ReactNode;
@@ -25,7 +26,9 @@ export default function ThemeWrapper({children}: ThemeWrapperProps) {
 
   return (
     <ThemeWrapperContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <Paper elevation={0}>{children}</Paper>
+      </ThemeProvider>
     </ThemeWrapperContext.Provider>
   );
 }

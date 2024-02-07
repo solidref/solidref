@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import {useParams} from 'react-router-dom';
 import {useRecoilState} from 'recoil';
 
-import {CenteredToolbar} from '../../views/Header';
+// import {CenteredToolbar} from '../../views/Header';
 import Typography from '@mui/material/Typography';
 import SvgIconByName from '../../views/icons/SvgIconByName';
 import {styled} from '@mui/material';
@@ -71,7 +71,7 @@ function ByLanguage() {
       <LanguageLoader code={language} setLanguagesState={setLanguagesState} />
       {languageState?.ready ? (
         <>
-          <CenteredToolbar sx={{justifyContent: 'space-between'}}>
+          {/* <CenteredToolbar sx={{justifyContent: 'space-between'}}>
             <Typography variant="h2">
               <i>{languageState.language.name}</i> Coding Principles
             </Typography>
@@ -79,7 +79,7 @@ function ByLanguage() {
               Here are the <i>{languageState.language.name}</i> Coding Principles explained
             </Typography>
             <StyledSvgIconByName name={languageState.language.code ?? ''} />
-          </CenteredToolbar>
+          </CenteredToolbar> */}
           <Page>
             <Box sx={{flexGrow: 1}}>
               {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
