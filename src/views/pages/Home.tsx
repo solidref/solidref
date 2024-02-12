@@ -3,6 +3,7 @@ import {Box, useTheme} from '@mui/material';
 
 import Container from '../generic/Container';
 import HomeHero from './home/HomeHero';
+import LanguagesHighlights from './home/LanguagesHightlights';
 
 export type HomeProps = {};
 
@@ -16,10 +17,10 @@ function Home({}: HomeProps) {
           <HomeHero />
         </Container>
       </Box>
-      {/* <Container>
-        <Highlights />
-      </Container>
       <Container>
+        <LanguagesHighlights />
+      </Container>
+      {/*<Container>
         <Features />
       </Container>
       <Box bgcolor={theme.palette.alternate.main}>

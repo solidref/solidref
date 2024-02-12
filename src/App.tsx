@@ -1,7 +1,7 @@
 import React from 'react';
-import {useRecoilState} from 'recoil';
+import { useRecoilState } from 'recoil';
 
-import {languagesHierarchyState} from './state';
+import { languagesHierarchyState } from './state';
 
 import Routes from './Routes';
 
@@ -21,7 +21,7 @@ const App: React.FC = () => {
         <React.Suspense fallback={<div>Loading...</div>}>
           <Header />
           <Routes />
-          <Footer />
+          {/* <Footer /> */}
         </React.Suspense>
       </div>
     </ThemeWrapper>
