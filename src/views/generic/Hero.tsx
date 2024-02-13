@@ -1,14 +1,19 @@
 import React from 'react';
 
-import {Box, Grid, useMediaQuery, useTheme} from '@mui/material';
+import { Box, Grid, RegularBreakpoints, useMediaQuery, useTheme } from '@mui/material';
 
 export type HeroProps = {
+  readonly breakpoints?: RegularBreakpoints;
   readonly children: React.ReactNode;
-  readonly leftContent?: React.ReactNode | undefined;
-  readonly rightContent?: React.ReactNode | undefined;
+  readonly leftContent?: React.ReactNode;
+  readonly leftContentBreakpoints?: RegularBreakpoints;
+  readonly rightContent?: React.ReactNode;
+  readonly rightContentBreakpoints?: RegularBreakpoints;
 };
 
-export default function Hero({children, leftContent = undefined, rightContent = undefined}: HeroProps) {
+export default function Hero({ children, leftContent = undefined, rightContent = undefined, leftContentBreakpoints = {
+  xs: 12, md: 6
+} }: HeroProps) {
   const theme = useTheme();
 
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
@@ -18,7 +23,7 @@ export default function Hero({children, leftContent = undefined, rightContent = 
   return (
     <Grid container spacing={4}>
       {leftContent && (
-        <Grid item xs={12} md={6}>
+        <Grid item {...leftContentBreakpoints}>
           {leftContent}
         </Grid>
       )}
