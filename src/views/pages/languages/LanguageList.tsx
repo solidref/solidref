@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { HierarchyLanguage, LanguagesHierarchyState, languagesHierarchyState } from '../../../state';
 import GenericCodeIcon from '../../icons/GenericCodeIcon';
 import { LanguageIconStyle } from '../../../styles';
+import { generateLanguagePath } from '../../../utils/url';
 
 export type ListLanguage = {
   language: HierarchyLanguage;
@@ -77,7 +78,7 @@ export default function LanguagesList({
         <Grid item xs={xs} sm={sm} md={md} key={i}>
           <Box component={Card} boxShadow={3} borderRadius={4}>
             {/* TODO: must add dropdown for child languages */}
-            <Link href={`/by-language/${language.code}`} style={{ paddingTop: '1rem', textDecoration: 'none' }}>
+            <Link href={generateLanguagePath(language.code)} style={{ paddingTop: '1rem', textDecoration: 'none' }}>
               <Box
                 component={CardContent}
                 display={'flex'}
