@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, Card, CardContent, Grid, Link, RegularBreakpoints, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
-import { HierarchyLanguage, LanguagesHierarchyState, languagesHierarchyState } from '../../../state';
+import { HierarchyLanguage, languagesHierarchyState } from '../../../state';
 import GenericCodeIcon from '../../icons/GenericCodeIcon';
 import { LanguageIconStyle } from '../../../styles';
 import { generateLanguagePath } from '../../../utils/url';
@@ -12,36 +12,41 @@ export type ListLanguage = {
   logoComponent: React.ElementType | null;
 };
 
-const filters = {
-  allFilter: () => (value: HierarchyLanguage) => true,
-  rootFilter: () => (value: HierarchyLanguage) => {
+type FilterMethod = (...args: unknown[]) => (value: HierarchyLanguage) => boolean;
+
+type Filters = Record<string, FilterMethod>;
+
+const filters: Filters = {
+  allFilter: () => () => true,
+  rootFilter: () => (/*value: HierarchyLanguage*/) => {
     // TODO: make sure you filter out the root languages
     return true;
   },
-  highlightFilter: (highlights?: string[]) => (value: HierarchyLanguage) => {
+  highlightFilter: ((highlights?: string[]) => (value: HierarchyLanguage) => {
     return (highlights ?? ['javascript']).includes(value.code);
-  },
+  }) as FilterMethod,
 };
 
 const filterListLanguages = async (
   hierarchyLanguages: HierarchyLanguage[],
   filterMode: string,
-  filterArgs: any[],
-  setLanguages: (value: ListLanguage[]) => void,
+  filterArgs: unknown[],
+  setLanguages: React.Dispatch<React.SetStateAction<ListLanguage[]>>,
 ) => {
+  const filterCb = (filters[`${filterMode}Filter`] as FilterMethod)(...filterArgs);
   const languages: ListLanguage[] = await Promise.all(
-    hierarchyLanguages.filter(filters[`${filterMode}Filter`](...filterArgs)).map(async (language) => {
+    hierarchyLanguages.filter(filterCb).map(async (language) => {
       let module = null;
       try {
         // console.log(`../../icons/${language.code.replace(/(.)/, ($1) => $1.toUpperCase())}`);
-        module = await import(`../../icons/${language.code.replace(/(.)/, ($1) => $1.toUpperCase())}`);
+        module = null;// await import(`../../icons/${language.code.replace(/(.)/, ($1) => $1.toUpperCase())}`);
       } catch (e) {
         console.error(e);
       }
 
       return {
         language,
-        logoComponent: module ? module.default : null,
+        logoComponent: module !== null ? module.default : null,
       };
     }),
   );
@@ -50,8 +55,8 @@ const filterListLanguages = async (
 };
 
 export type LanguagesListProps = RegularBreakpoints & {
-  filterMode: 'all' | 'root' | 'highlight';
-  filterArgs: any[];
+  readonly filterMode: 'all' | 'root' | 'highlight';
+  readonly filterArgs: unknown[];
 };
 
 export default function LanguagesList({
@@ -70,7 +75,7 @@ export default function LanguagesList({
       return;
     }
     filterListLanguages(languagesHierarchy?.list || [], filterMode, filterArgs, setLanguages);
-  }, [languagesHierarchy]);
+  }, [languagesHierarchy, filterArgs, filterMode]);
 
   return (
     <Grid container spacing={4}>

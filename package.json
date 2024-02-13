@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "rimraf ./node_modules/.vite && vite",
+    "start:dev": "npm start -- --force",
     "build": "tsc && vite build",
     "build:deps": "run-s build:deps:*",
     "build:deps:content": "node .scripts/esm/build-content-files.js",

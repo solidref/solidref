@@ -1,11 +1,11 @@
-import React, {useContext} from 'react';
+import {useContext} from 'react';
 import {IconButton} from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {ThemeWrapperContext} from '../styles/ThemeWrapper';
 import {useTheme} from '@mui/material/styles';
 
-function ColorModeSwitch() {
+export default function ColorModeSwitch() {
   const theme = useTheme();
   const colorMode = useContext(ThemeWrapperContext);
 
@@ -15,5 +15,3 @@ function ColorModeSwitch() {
     </IconButton>
   );
 }
-
-export default ColorModeSwitch;

@@ -29,7 +29,7 @@ export default function HomeHero() {
   });
 
   return (
-    <Hero rightContent=<HomeHeroImage />>
+    <Hero after=<HomeHeroImage />>
       <Box
         maxWidth={'100%'}
         data-aos={isMd ? 'fade-left' : 'fade-up'}

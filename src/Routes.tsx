@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import Language from './components/pages/Language';
 import Home from './views/pages/Home';
 import Languages from './views/pages/Languages';
-import { generateLanguagePath } from './utils/url';
+import {generateLanguagePath} from './utils/url';
 
 // import History from './views/pages/History';
 // import ByPrinciplePatternType from './views/pages/ByPrinciplePatternType';
