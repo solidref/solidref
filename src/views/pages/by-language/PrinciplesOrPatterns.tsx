@@ -1,12 +1,12 @@
 import React from 'react';
-import {CodingPrinciple, DesignPattern} from '../../../state';
+import { CodingPrinciple, DesignPattern } from '../../../state';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import TypographySet from '../../generic/TypographySet';
 import CodeExampleAccordion from '../../code/CodeExampleAccordion';
@@ -18,11 +18,11 @@ type CodingPrinciplesProps = {
   languageCode: string;
 };
 
-export default function PrinciplesOrPatterns({principlesOrPatterns, type, languageCode}: CodingPrinciplesProps) {
-  console.log('PrinciplesOrPatterns', principlesOrPatterns, type);
+export default function PrinciplesOrPatterns({ principlesOrPatterns, type, languageCode }: CodingPrinciplesProps) {
+  // console.log('PrinciplesOrPatterns', principlesOrPatterns, type);
 
   return (
-    <Box sx={{flexGrow: 1}}>
+    <Box sx={{ flexGrow: 1 }}>
       {principlesOrPatterns.map((pattern) => (
         <Accordion key={pattern.title}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">

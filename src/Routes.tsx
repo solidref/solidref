@@ -4,6 +4,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import ByLanguage from './components/pages/ByLanguage';
 
 import Home from './views/pages/Home';
+import Languages from './views/pages/Languages';
 // import History from './views/pages/History';
 // import ByPrinciplePatternType from './views/pages/ByPrinciplePatternType';
 
@@ -13,6 +14,7 @@ export default function LocalRoutes() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/languages" element={<Languages />} />
           <Route path="/by-language/:language" element={<ByLanguage />} />
           {/* <Route path="/history" element={<History />} />
                   <Route path="/coding-principles/:type" element={<ByPrinciplePatternType />} />

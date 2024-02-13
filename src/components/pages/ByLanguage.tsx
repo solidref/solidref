@@ -1,18 +1,18 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import Page from '../../views/pages/Page';
 import Box from '@mui/material/Box';
-import {useParams} from 'react-router-dom';
-import {useRecoilState} from 'recoil';
+import { useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 // import {CenteredToolbar} from '../../views/Header';
 import Typography from '@mui/material/Typography';
 import SvgIconByName from '../../views/icons/SvgIconByName';
-import {styled} from '@mui/material';
-import {loadLanguages} from '../../selector';
+import { styled } from '@mui/material';
+import { loadLanguages } from '../../selector';
 import LanguageLoader from '../LanguageLoader';
 import Menu from '../../views/pages/by-language/Menu';
 import PrinciplesOrPatterns from '../../views/pages/by-language/PrinciplesOrPatterns';
-import {CodingPrinciple, DesignPattern, Language, LanguageState} from '../../state';
+import { CodingPrinciple, DesignPattern, Language, LanguageState } from '../../state';
 
 type Params = {
   language: string;
@@ -20,7 +20,7 @@ type Params = {
 
 export type ByLanguageProps = {};
 
-export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
+export const StyledSvgIconByName = styled(SvgIconByName)(({ theme }) => ({
   width: '100px',
   height: '100px',
   transform: 'rotate(-15deg)',
@@ -30,10 +30,10 @@ export const StyledSvgIconByName = styled(SvgIconByName)(({theme}) => ({
   },
 }));
 
-type DetectedPrincipleOrPattern = {type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[]};
+type DetectedPrincipleOrPattern = { type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[] };
 
 const detectPrincipleOrPattern = (language: Language): DetectedPrincipleOrPattern => {
-  console.log(language);
+  // console.log(language);
   if (language.principles) {
     const type = Object.keys(language.principles)[0];
     return {
@@ -52,13 +52,13 @@ const detectPrincipleOrPattern = (language: Language): DetectedPrincipleOrPatter
 };
 
 function ByLanguage() {
-  let {language = 'javascript'} = useParams<Params>();
+  let { language = 'javascript' } = useParams<Params>();
 
   const [languageState, setLanguagesState] = useRecoilState<LanguageState>(loadLanguages(language));
 
   const [detectedPrincipleOrPattern, setDetectedPrincipleOrPattern] = React.useState<DetectedPrincipleOrPattern>({});
 
-  console.log(detectedPrincipleOrPattern, 'detectedPrincipleOrPattern');
+  // console.log(detectedPrincipleOrPattern, 'detectedPrincipleOrPattern');
 
   useEffect(() => {
     if (languageState?.ready) {
@@ -81,7 +81,7 @@ function ByLanguage() {
             <StyledSvgIconByName name={languageState.language.code ?? ''} />
           </CenteredToolbar> */}
           <Page>
-            <Box sx={{flexGrow: 1}}>
+            <Box sx={{ flexGrow: 1 }}>
               {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
                 <Menu language={languageState.language} setPrincipleOrPattern={setDetectedPrincipleOrPattern} />
               )}

@@ -1,13 +1,14 @@
 import React from 'react';
-import {Box, useTheme} from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 import Container from '../generic/Container';
 import HomeHero from './home/HomeHero';
 import LanguagesHighlights from './home/LanguagesHightlights';
+import LanguagesList from './languages/LanguageList';
 
 export type HomeProps = {};
 
-function Home({}: HomeProps) {
+function Home({ }: HomeProps) {
   const theme = useTheme();
 
   return (
@@ -18,7 +19,7 @@ function Home({}: HomeProps) {
         </Container>
       </Box>
       <Container>
-        <LanguagesHighlights />
+        <LanguagesList filterMode="highlight" filterArgs={[['javascript']]} md={3} />
       </Container>
       {/*<Container>
         <Features />
