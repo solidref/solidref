@@ -1,6 +1,6 @@
 import {SvgIcon, SvgIconProps, styled} from '@mui/material';
 
-const createSvgIcon = (
+export const createSvgIcon = (
   props: SvgIconProps = {
     viewBox: '0 0 24 24',
     // focusable: 'false',
@@ -29,7 +29,5 @@ const createSvgIcon = (
 };
 
 const CustomSvgIcon = createSvgIcon();
-
-export {createSvgIcon};
 
 export default CustomSvgIcon;

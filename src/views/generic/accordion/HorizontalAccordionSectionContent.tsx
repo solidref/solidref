@@ -23,7 +23,11 @@ const ContentContainer = styled('div')({
 });
 
 function HorizontalAccordionSectionContent({children, ...rest}: HorizontalAccordionSectionContentProps) {
-  return <ContentContainer className="HorizontalAccordionSectionContent">{children}</ContentContainer>;
+  return (
+    <ContentContainer className="HorizontalAccordionSectionContent" {...rest}>
+      {children}
+    </ContentContainer>
+  );
 }
 
 export default HorizontalAccordionSectionContent;

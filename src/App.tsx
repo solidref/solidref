@@ -9,7 +9,7 @@ import ThemeWrapper from './components/styles/ThemeWrapper';
 import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
 
 import Header from './views/Header';
-import Footer from './views/Footer';
+// import Footer from './views/Footer';
 
 const App: React.FC = () => {
   const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
@@ -21,7 +21,7 @@ const App: React.FC = () => {
         <React.Suspense fallback={<div>Loading...</div>}>
           <Header />
           <Routes />
-          <Footer />
+          {/* <Footer /> */}
         </React.Suspense>
       </div>
     </ThemeWrapper>

@@ -18,7 +18,7 @@ export default function LanguageHierarchyLoader({setLanguagesHierarchyState}: La
     }
 
     setLanguagesHierarchyState && setLanguagesHierarchyState(languageHierarchy);
-  }, [languageHierarchy]);
+  }, [languageHierarchy, setLanguagesHierarchyState]);
 
   return <></>;
 }

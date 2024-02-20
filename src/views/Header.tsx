@@ -9,11 +9,10 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
-import {IconButton, Slide, useScrollTrigger, useTheme, Box, AppBar, Button} from '@mui/material';
+import {IconButton, Slide, useScrollTrigger, useTheme, Box, AppBar} from '@mui/material';
 import Logo from './Logo';
 
 import {ThemeWrapperContext} from '../components/styles/ThemeWrapper';
-import Link from '@mui/material/Link';
 
 type HideOnScrollProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

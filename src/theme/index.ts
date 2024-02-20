@@ -1,4 +1,3 @@
-import {createContext} from 'react';
 import {Theme, responsiveFontSizes} from '@mui/material';
 import {createTheme} from '@mui/material/styles';
 import shadows from './shadows';

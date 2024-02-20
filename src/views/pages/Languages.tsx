@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Grid, ToggleButton, ToggleButtonGroup, useTheme} from '@mui/material';
+import {Box, ToggleButton, ToggleButtonGroup, useTheme} from '@mui/material';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
@@ -9,7 +9,7 @@ import HomeHero from './home/HomeHero';
 import Container from '../generic/Container';
 // import { CenteredToolbar } from '../Header';
 
-export type LanguagesProps = {};
+// export type LanguagesProps = { };
 
 const toggleStyle = {
   border: '0',
@@ -17,7 +17,7 @@ const toggleStyle = {
   background: 'transparent',
 };
 
-export default function Languages({}: LanguagesProps) {
+export default function Languages(/*{ }: LanguagesProps*/) {
   const theme = useTheme();
 
   const [filterMode, setFilterMode] = useState('all');
