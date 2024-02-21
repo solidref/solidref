@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
-import { Box, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 import { CodingPrinciple, DesignPattern, Language, LanguageState } from '../../state';
 import LanguageLoader, { LanguageParams } from '../LanguageLoader';
 import { loadLanguages } from '../../selector';
 import Container from '../../views/generic/Container';
 import LanguageHero from '../../views/pages/language/LanguageHero';
-// import Menu from '../../views/pages/language/Menu';
 import PrinciplesOrPatterns from '../../views/pages/language/PrinciplesOrPatterns';
+import PrinciplesOrPatternsMenu from '../../views/pages/language/PrinciplesOrPatternsMenu';
+import { CodingPrincipleTitles } from '../../constants';
 
 type DetectedPrincipleOrPattern = { type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[] };
 
 const detectPrincipleOrPattern = (language: Language): DetectedPrincipleOrPattern => {
-  // console.log(language);
   if (language.principles) {
     const type = Object.keys(language.principles)[0];
     return {
@@ -43,7 +43,6 @@ export default function LanguagePage() {
   const { language: languageParam = 'javascript' } = useParams<LanguageParams>();
 
   const [languageState, setLanguagesState] = useRecoilState<LanguageState>(loadLanguages(languageParam));
-  console.log('languageState', languageState);
 
   const [language, setLanguage] = useState<Language | null>(null);
 
@@ -74,10 +73,12 @@ export default function LanguagePage() {
           </Box>
           <Box>
             <Container position="relative" zIndex={2}>
+              <Box sx={{ flexGrow: 1 }} display={'flex'} justifyContent={'center'}>
+                <Typography variant="h4" gutterBottom>
+                  {CodingPrincipleTitles[detectedPrincipleOrPattern.type ?? 'unknown'] ?? 'unknown'}
+                </Typography>
+              </Box>
               <Box sx={{ flexGrow: 1 }}>
-                {/* {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
-                <Menu language={language} setPrincipleOrPattern={setDetectedPrincipleOrPattern} />
-              )} */}
                 {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
                   <PrinciplesOrPatterns
                     type={detectedPrincipleOrPattern.type ?? ''}
@@ -87,6 +88,15 @@ export default function LanguagePage() {
                 )}
               </Box>
             </Container>
+          </Box>
+          <Box>
+            <Box bgcolor={theme.palette.alternate.main} position={'relative'}>
+              <Container position="relative" zIndex={2}>
+                {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
+                  <PrinciplesOrPatternsMenu language={language} setPrincipleOrPattern={setDetectedPrincipleOrPattern} />
+                )}
+              </Container>
+            </Box>
           </Box>
         </Box>
       ) : (

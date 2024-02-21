@@ -1,18 +1,40 @@
 import * as React from 'react';
 
-import { styled } from '@mui/system';
-import { Accordion } from '@mui/material';
+import {styled} from '@mui/system';
+import {Accordion} from '@mui/material';
 
 const HorizontalAccordion = styled(Accordion)(() => ({
-  flex: '1',
+  // border: '1px green solid',
+  borderRadius: '0px',
+  flex: '0 1 auto',
   height: '400px',
   transition: 'flex 0.3s ease',
-  width: '30px',
+  width: '3rem',
+  alignItems: 'start',
+
+  '& + .Mui-expanded': {
+    marginTop: '0px',
+  },
+
+  '&::before': {
+    display: 'none',
+  },
+
+  '&.Mui-expanded': {
+    flexGrow: 10,
+    width: '100%',
+  },
 
   '&.Mui-expanded .MuiAccordionSummary-root': {
+    border: '0px',
     transform: 'rotate(0deg)',
-  }
-}))
+    padding: '0 0 0 1rem',
+  },
+
+  '&.Mui-expanded .MuiAccordionDetails-root': {
+    width: '100%',
+  },
+}));
 
 // export interface HorizontalAccordionProps extends PaperProps { }
 

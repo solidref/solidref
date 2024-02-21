@@ -16,7 +16,8 @@ const getTheme = (mode: string, paletteType: string): Theme =>
       },
       shadows: shadows(mode),
       typography: {
-        fontFamily: '"Inter", sans-serif',
+        // fontFamily: 'Roboto, Inter, sans-serif',
+        fontFamily: 'Inter, sans-serif',
         button: {
           textTransform: 'none',
           fontWeight: 'medium',

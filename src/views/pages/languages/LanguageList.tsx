@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {Box, Card, CardContent, Grid, Link, RegularBreakpoints, Typography} from '@mui/material';
-import {useRecoilValue} from 'recoil';
-import {HierarchyLanguage, languagesHierarchyState} from '../../../state';
+import { Box, Card, CardContent, Grid, Link, RegularBreakpoints, Typography } from '@mui/material';
+import { useRecoilValue } from 'recoil';
+import { HierarchyLanguage, languagesHierarchyState } from '../../../state';
 import GenericCodeIcon from '../../icons/GenericCodeIcon';
-import {LanguageIconStyle} from '../../../styles';
-import {generateLanguagePath} from '../../../utils/url';
+import { LanguageIconStyle } from '../../../styles';
+import { generateLanguagePath } from '../../../utils/url';
 
 export type ListLanguage = {
   language: HierarchyLanguage;
@@ -50,7 +50,6 @@ const filterListLanguages = async (
       };
     }),
   );
-  // console.log(languages);
   setLanguages(languages);
 };
 
@@ -79,20 +78,20 @@ export default function LanguagesList({
 
   return (
     <Grid container spacing={4}>
-      {languages.map(({language, logoComponent}, i) => (
+      {languages.map(({ language, logoComponent }, i) => (
         <Grid item xs={xs} sm={sm} md={md} key={i}>
           <Box component={Card} boxShadow={3} borderRadius={4}>
             {/* TODO: must add dropdown for child languages */}
-            <Link href={generateLanguagePath(language.code)} style={{paddingTop: '1rem', textDecoration: 'none'}}>
+            <Link href={generateLanguagePath(language.code)} style={{ paddingTop: '1rem', textDecoration: 'none' }}>
               <Box
                 component={CardContent}
                 display={'flex'}
                 flexDirection={'column'}
                 alignItems={'center'}
-                padding={{xs: 2, sm: 4, md: 6}}
+                padding={{ xs: 2, sm: 4, md: 6 }}
                 sx={{
                   '&:last-child': {
-                    paddingBottom: {xs: 2, sm: 4, md: 6},
+                    paddingBottom: { xs: 2, sm: 4, md: 6 },
                   },
                 }}
               >
@@ -108,7 +107,7 @@ export default function LanguagesList({
                   gutterBottom
                   fontWeight={500}
                   align={'center'}
-                  style={{paddingTop: '1.5rem'}}
+                  style={{ paddingTop: '1.5rem' }}
                 >
                   {language.name}
                 </Typography>

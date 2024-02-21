@@ -1,13 +1,13 @@
 import React from 'react';
-import { CodingPrinciple, DesignPattern } from '../../../state';
-import { styled } from '@mui/material/styles';
+import {CodingPrinciple, DesignPattern} from '../../../state';
+import {styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import TypographySet from '../../generic/TypographySet';
 import CodeExampleAccordion from '../../code/CodeExampleAccordion';
@@ -20,19 +20,39 @@ type CodingPrinciplesProps = {
 };
 
 const CustomAccordionSummary = styled(AccordionSummary)(() => ({
-  justifyContent: 'space-between',
+  '& .MuiAccordionSummary-content': {
+    justifyContent: 'space-between',
+  },
 }));
 
-export default function PrinciplesOrPatterns({ principlesOrPatterns, type, languageCode }: CodingPrinciplesProps) {
+const CustomLink = styled(Link)(() => ({
+  textDecoration: 'none',
+  color: 'black',
+  padding: '5px 10px 0 0',
+
+  '& *': {
+    fontSize: '0.9rem',
+  },
+
+  '&:hover': {
+    color: 'black',
+  },
+
+  '&:visited': {
+    color: 'black',
+  },
+}));
+
+export default function PrinciplesOrPatterns({principlesOrPatterns, type, languageCode}: CodingPrinciplesProps) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{flexGrow: 1}}>
       {principlesOrPatterns.map((pattern) => (
         <Accordion key={pattern.title} elevation={0}>
           <CustomAccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
             <Typography>{pattern.title}</Typography>
-            <Link to={`/design-patterns/${type}?item=${pattern.title}`}>
+            <CustomLink to={`/design-patterns/${type}?item=${pattern.title}`} title={`${pattern.title} Definition`}>
               <BookmarksIcon />
-            </Link>
+            </CustomLink>
           </CustomAccordionSummary>
           <AccordionDetails>
             {pattern.description && <TypographySet content={pattern.description} />}
