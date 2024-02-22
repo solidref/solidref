@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {useParams} from 'react-router-dom';
 
-import { SetterOrUpdater, useRecoilValueLoadable } from 'recoil';
-import { loadLanguage } from '../selector';
-import { LanguageState } from '../state';
+import {SetterOrUpdater, useRecoilValueLoadable} from 'recoil';
+import {loadLanguage} from '../../../selector';
+import {LanguageState} from '../../../state';
 
 export type LanguageParams = {
   language?: string;
@@ -14,9 +14,9 @@ export type LanguageLoaderProps = {
   setLanguagesState: SetterOrUpdater<LanguageState>;
 };
 
-export default function LanguageLoader({ code, setLanguagesState }: LanguageLoaderProps) {
+export default function LanguageLoader({code, setLanguagesState}: LanguageLoaderProps) {
   // detect languageParam if not provided
-  const { language: languageParam } = useParams<LanguageParams>();
+  const {language: languageParam} = useParams<LanguageParams>();
   code = code ?? languageParam ?? 'javascript';
 
   // load language

@@ -111,19 +111,19 @@ export const languagesState = atom<LanguagesState>({
  * Content State
  */
 
-export interface PrinciplePatternContent {
+export interface PrincipleOrPatternContent {
   title: string;
   before?: ContentType[];
   after?: ContentType[];
   accordion?: Record<string, ContentType[]>;
 }
 
-export type PrinciplePatternContentState = StateReadiness & {
-  content?: PrinciplePatternContent;
+export type PrinciplePatternState = StateReadiness & {
+  content?: PrincipleOrPatternContent;
 };
 
-export const principlePatternContentState = atom<PrinciplePatternContentState>({
-  key: 'contentState',
+export const principleOrPatternState = atom<PrinciplePatternState>({
+  key: 'principleOrPatternState',
   default: {},
 });
 

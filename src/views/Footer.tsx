@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Divider, Grid, IconButton, Link, Typography, useTheme } from '@mui/material';
+import { Box, Divider, Grid, IconButton, Link, Typography, styled } from '@mui/material';
 import Container from './generic/Container';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -15,11 +15,15 @@ import PaypalIcon from './logos/Paypal';
 import PatreonIcon from './logos/Patreon';
 import Logo from './Logo';
 
+const FooterBox = styled(Box)(() => ({
+  marginTop: 'auto',
+}));
+
 export default function Footer() {
   const urlMessage = 'Share%20Coding%20Principles%20Reference%20for%20Developers';
 
   return (
-    <Box>
+    <FooterBox>
       <Divider />
       <Box position={'relative'}>
         <Container position="relative" zIndex={2}>
@@ -34,9 +38,7 @@ export default function Footer() {
               </Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography style={{ textAlign: 'left' }}>
-                You can contribute by
-              </Typography>
+              <Typography style={{ textAlign: 'left' }}>You can contribute by</Typography>
               <Typography style={{ textAlign: 'left', fontSize: '.8rem' }}>
                 - forking us on
                 <IconButton
@@ -47,8 +49,12 @@ export default function Footer() {
                 >
                   <GitHubIcon fontSize="inherit" />
                 </IconButton>
-                <img src="https://img.shields.io/github/forks/dragoscirjan/solidref" style={{ verticalAlign: 'middle' }} />
-              </Typography><Typography style={{ textAlign: 'left', fontSize: '.8rem' }}>
+                <img
+                  src="https://img.shields.io/github/forks/dragoscirjan/solidref"
+                  style={{ verticalAlign: 'middle' }}
+                />
+              </Typography>
+              <Typography style={{ textAlign: 'left', fontSize: '.8rem' }}>
                 - finding <Link href="https://github.com/dragoscirjan/solidref/issues">issues</Link> or fixing our code
               </Typography>
               <Typography style={{ textAlign: 'left', fontSize: '.8rem' }}>
@@ -117,13 +123,14 @@ export default function Footer() {
                 </Typography>
                 <Logo />
                 <Typography variant="body2" align="center" style={{ padding: '0 0 0 7px' }}>
-                  {new Date().getFullYear()}{'. All rights reserved.'}
+                  {new Date().getFullYear()}
+                  {'. All rights reserved.'}
                 </Typography>
               </Box>
             </Grid>
           </Grid>
         </Container>
       </Box>
-    </Box>
+    </FooterBox>
   );
 }

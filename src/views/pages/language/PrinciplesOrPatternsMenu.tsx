@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import { CodingPrincipleTitles } from '../../../constants';
+import { Language } from '../../../state';
 
 const CustomWhiteButton = styled(Button)(() => ({
   color: 'white',
@@ -32,7 +33,6 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
-
 
   return (
     <Box position={'relative'}>
@@ -76,7 +76,12 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
           </Box>
         </Grid>
         <Grid item container xs={12} md={6} alignItems={'center'}>
-          <Box component={Card} bgcolor={theme.palette.primary.main} data-aos={isMd ? 'fade-left' : 'fade-up'} width={'100%'}>
+          <Box
+            component={Card}
+            bgcolor={theme.palette.primary.main}
+            data-aos={isMd ? 'fade-left' : 'fade-up'}
+            width={'100%'}
+          >
             <Box
               component={CardContent}
               padding={{ sm: 4 }}

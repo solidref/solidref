@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {useRecoilState} from 'recoil';
 
-import { Box, Typography, useTheme } from '@mui/material';
+import {Box, Typography, useTheme} from '@mui/material';
 
-import { CodingPrinciple, DesignPattern, Language, LanguageState } from '../../state';
-import LanguageLoader, { LanguageParams } from '../LanguageLoader';
-import { loadLanguages } from '../../selector';
+import LanguageLoader, {LanguageParams} from './language/LanguageLoader';
+
+import {CodingPrinciple, DesignPattern, Language, LanguageState} from '../../state';
+import {loadLanguages} from '../../selector';
 import Container from '../../views/generic/Container';
 import LanguageHero from '../../views/pages/language/LanguageHero';
 import PrinciplesOrPatterns from '../../views/pages/language/PrinciplesOrPatterns';
 import PrinciplesOrPatternsMenu from '../../views/pages/language/PrinciplesOrPatternsMenu';
-import { CodingPrincipleTitles } from '../../constants';
+import {CodingPrincipleTitles} from '../../constants';
 
-type DetectedPrincipleOrPattern = { type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[] };
+type DetectedPrincipleOrPattern = {type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[]};
 
 const detectPrincipleOrPattern = (language: Language): DetectedPrincipleOrPattern => {
   if (language.principles) {
@@ -40,7 +41,7 @@ const detectPrincipleOrPattern = (language: Language): DetectedPrincipleOrPatter
 export default function LanguagePage() {
   const theme = useTheme();
 
-  const { language: languageParam = 'javascript' } = useParams<LanguageParams>();
+  const {language: languageParam = 'javascript'} = useParams<LanguageParams>();
 
   const [languageState, setLanguagesState] = useRecoilState<LanguageState>(loadLanguages(languageParam));
 
@@ -73,12 +74,12 @@ export default function LanguagePage() {
           </Box>
           <Box>
             <Container position="relative" zIndex={2}>
-              <Box sx={{ flexGrow: 1 }} display={'flex'} justifyContent={'center'}>
+              <Box sx={{flexGrow: 1}} display={'flex'} justifyContent={'center'}>
                 <Typography variant="h4" gutterBottom>
                   {CodingPrincipleTitles[detectedPrincipleOrPattern.type ?? 'unknown'] ?? 'unknown'}
                 </Typography>
               </Box>
-              <Box sx={{ flexGrow: 1 }}>
+              <Box sx={{flexGrow: 1}}>
                 {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
                   <PrinciplesOrPatterns
                     type={detectedPrincipleOrPattern.type ?? ''}

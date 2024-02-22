@@ -1,13 +1,13 @@
 import React from 'react';
-import {CodingPrinciple, DesignPattern} from '../../../state';
-import {styled} from '@mui/material/styles';
+import { CodingPrinciple, DesignPattern } from '../../../state';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import TypographySet from '../../generic/TypographySet';
 import CodeExampleAccordion from '../../code/CodeExampleAccordion';
@@ -43,14 +43,14 @@ const CustomLink = styled(Link)(() => ({
   },
 }));
 
-export default function PrinciplesOrPatterns({principlesOrPatterns, type, languageCode}: CodingPrinciplesProps) {
+export default function PrinciplesOrPatterns({ principlesOrPatterns, type, languageCode }: CodingPrinciplesProps) {
   return (
-    <Box sx={{flexGrow: 1}}>
+    <Box sx={{ flexGrow: 1 }}>
       {principlesOrPatterns.map((pattern) => (
         <Accordion key={pattern.title} elevation={0}>
           <CustomAccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
             <Typography>{pattern.title}</Typography>
-            <CustomLink to={`/design-patterns/${type}?item=${pattern.title}`} title={`${pattern.title} Definition`}>
+            <CustomLink to={`/${type.includes('principles') ? 'coding-principles' : 'design-patterns'}/${type.replace(/(principles|patterns)_/, '')}`} title={`${pattern.title} Definition`}>
               <BookmarksIcon />
             </CustomLink>
           </CustomAccordionSummary>

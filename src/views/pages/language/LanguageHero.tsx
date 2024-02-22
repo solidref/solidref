@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
+import React, {useState, useEffect} from 'react';
+import {Box, Typography, useTheme, useMediaQuery} from '@mui/material';
 
 import Hero from '../../generic/Hero';
-import { Language } from '../../../state';
+import {Language} from '../../../state';
 import GenericCodeIcon from '../../icons/GenericCodeIcon';
-import { LanguageIconStyle } from '../../../styles';
+import {LanguageIconStyle} from '../../../styles';
 
 export type LanguageHeroProps = {
   language: Language;
 };
 
-export default function LanguageHero({ language }: LanguageHeroProps) {
+export default function LanguageHero({language}: LanguageHeroProps) {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
@@ -36,7 +36,7 @@ export default function LanguageHero({ language }: LanguageHeroProps) {
   }, [language]);
 
   return (
-    <Hero breakpoints={{ md: 12 }}>
+    <Hero breakpoints={{md: 12}}>
       <Box
         maxWidth={'100%'}
         data-aos={isMd ? 'fade-left' : 'fade-up'}
