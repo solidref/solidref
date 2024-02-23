@@ -93,7 +93,7 @@ export default function LanguagePage() {
           <Box>
             <Box bgcolor={theme.palette.alternate.main} position={'relative'}>
               <Container position="relative" zIndex={2}>
-                {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
+                {language && (
                   <PrinciplesOrPatternsMenu language={language} setPrincipleOrPattern={setDetectedPrincipleOrPattern} />
                 )}
               </Container>

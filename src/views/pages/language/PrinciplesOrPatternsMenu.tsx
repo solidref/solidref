@@ -15,8 +15,8 @@ import {
   useTheme,
 } from '@mui/material';
 import ExtensionIcon from '@mui/icons-material/Extension';
-import { CodingPrincipleTitles } from '../../../constants';
-import { Language } from '../../../state';
+import {CodingPrincipleTitles} from '../../../constants';
+import {Language} from '../../../state';
 
 const CustomWhiteButton = styled(Button)(() => ({
   color: 'white',
@@ -24,21 +24,24 @@ const CustomWhiteButton = styled(Button)(() => ({
 
 export type MenuProps = {
   language: Language;
-  setPrincipleOrPattern: unknown;
+  mode?: 'url' | 'state';
   setDetectedPrincipleOrPatternTitle: string;
+  setPrincipleOrPattern?: (...args: unknown[]) => void;
 };
 
-export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPattern }: MenuProps) {
+export default function PrinciplesOrPatternsMenu({language, setPrincipleOrPattern, mode = 'state'}: MenuProps) {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
 
+  const filter = (key) => (mode === 'state' ? true : !key.includes('other'));
+
   return (
     <Box position={'relative'}>
       <Box display={'flex'} justifyContent={'center'}>
         <Typography variant={'h3'} gutterBottom>
-          <ExtensionIcon style={{ fontSize: '5rem' }} />
+          <ExtensionIcon style={{fontSize: '5rem'}} />
         </Typography>
       </Box>
       <Grid container spacing={isMd ? 0 : 2} alignItems={'center'}>
@@ -46,7 +49,7 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
           <Box component={Card} data-aos={isMd ? 'fade-left' : 'fade-up'}>
             <Box
               component={CardContent}
-              padding={{ sm: 4 }}
+              padding={{sm: 4}}
               display={'flex'}
               flexDirection={'column'}
               alignItems={'center'}
@@ -55,22 +58,28 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
                 Design Patterns
               </Box>
               <List>
-                {Object.keys(language.principles).map((key) => (
-                  <ListItem key={key}>
-                    <ListItemText>
-                      <Button
-                        onClick={() => {
-                          setPrincipleOrPattern({
-                            type: key,
-                            principlesOrPatterns: language.principles[key],
-                          });
-                        }}
-                      >
-                        {CodingPrincipleTitles[key]}
-                      </Button>
-                    </ListItemText>
-                  </ListItem>
-                ))}
+                {Object.keys(language.principles)
+                  .filter(filter)
+                  .map((key) => (
+                    <ListItem key={key}>
+                      <ListItemText>
+                        <Button
+                          onClick={() => {
+                            mode === 'state' &&
+                              setPrincipleOrPattern({
+                                type: key,
+                                principlesOrPatterns: language.principles[key],
+                              });
+                          }}
+                          href={
+                            mode === 'state' ? '#' : `/coding-principles/${key.replace(/(patterns|principles)_/, '')}`
+                          }
+                        >
+                          {CodingPrincipleTitles[key]}
+                        </Button>
+                      </ListItemText>
+                    </ListItem>
+                  ))}
               </List>
             </Box>
           </Box>
@@ -84,7 +93,7 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
           >
             <Box
               component={CardContent}
-              padding={{ sm: 4 }}
+              padding={{sm: 4}}
               display={'flex'}
               flexDirection={'column'}
               alignItems={'center'}
@@ -100,23 +109,28 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
               </Box>
 
               <List>
-                {Object.keys(language.patterns).map((key) => (
-                  <ListItem key={key}>
-                    <ListItemText>
-                      <CustomWhiteButton
-                        // color={theme.palette.common.white}
-                        onClick={() => {
-                          setPrincipleOrPattern({
-                            type: key,
-                            principlesOrPatterns: language.patterns[key],
-                          });
-                        }}
-                      >
-                        {CodingPrincipleTitles[key]}
-                      </CustomWhiteButton>
-                    </ListItemText>
-                  </ListItem>
-                ))}
+                {Object.keys(language.patterns)
+                  .filter(filter)
+                  .map((key) => (
+                    <ListItem key={key}>
+                      <ListItemText>
+                        <CustomWhiteButton
+                          onClick={() => {
+                            mode === 'state' &&
+                              setPrincipleOrPattern({
+                                type: key,
+                                principlesOrPatterns: language.patterns[key],
+                              });
+                          }}
+                          href={
+                            mode === 'state' ? '#' : `/design-patterns/${key.replace(/(patterns|principles)_/, '')}`
+                          }
+                        >
+                          {CodingPrincipleTitles[key]}
+                        </CustomWhiteButton>
+                      </ListItemText>
+                    </ListItem>
+                  ))}
               </List>
             </Box>
           </Box>

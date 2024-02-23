@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Divider, Grid, IconButton, Link, Typography, styled } from '@mui/material';
+import {Box, Divider, Grid, IconButton, Link, Typography, styled} from '@mui/material';
 import Container from './generic/Container';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -29,17 +29,17 @@ export default function Footer() {
         <Container position="relative" zIndex={2}>
           <Grid container spacing={2}>
             <Grid item xs={4}>
-              <Typography style={{ textAlign: 'left' }}>
+              <Typography style={{textAlign: 'left'}}>
                 Built with
                 <a href="https://chat.openai.com/" target="_blank" rel="noreferrer">
-                  <OpenAI style={{ padding: '0 5px', verticalAlign: 'middle', width: '80px' }} />
+                  <OpenAI style={{padding: '0 5px', verticalAlign: 'middle', width: '80px'}} />
                 </a>
                 and proud of it!
               </Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography style={{ textAlign: 'left' }}>You can contribute by</Typography>
-              <Typography style={{ textAlign: 'left', fontSize: '.8rem' }}>
+              <Typography style={{textAlign: 'left'}}>You can contribute by</Typography>
+              <Typography style={{textAlign: 'left', fontSize: '.8rem'}}>
                 - forking us on
                 <IconButton
                   aria-label="delete"
@@ -51,13 +51,13 @@ export default function Footer() {
                 </IconButton>
                 <img
                   src="https://img.shields.io/github/forks/dragoscirjan/solidref"
-                  style={{ verticalAlign: 'middle' }}
+                  style={{verticalAlign: 'middle'}}
                 />
               </Typography>
-              <Typography style={{ textAlign: 'left', fontSize: '.8rem' }}>
+              <Typography style={{textAlign: 'left', fontSize: '.8rem'}}>
                 - finding <Link href="https://github.com/dragoscirjan/solidref/issues">issues</Link> or fixing our code
               </Typography>
-              <Typography style={{ textAlign: 'left', fontSize: '.8rem' }}>
+              <Typography style={{textAlign: 'left', fontSize: '.8rem'}}>
                 - supporting us on
                 <IconButton
                   aria-label="delete"
@@ -122,7 +122,7 @@ export default function Footer() {
                   {'Copyright © '}
                 </Typography>
                 <Logo />
-                <Typography variant="body2" align="center" style={{ padding: '0 0 0 7px' }}>
+                <Typography variant="body2" align="center" style={{padding: '0 0 0 7px'}}>
                   {new Date().getFullYear()}
                   {'. All rights reserved.'}
                 </Typography>

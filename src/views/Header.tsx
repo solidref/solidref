@@ -113,7 +113,7 @@ const TopBar = () => {
           </Link>
         </Box>
         <Box>
-          <Link href={'/design-patterns/factory'} title="Design Patterns">
+          <Link href={'/design-patterns/structural'} title="Design Patterns">
             <Button>Design Patterns</Button>
           </Link>
         </Box>

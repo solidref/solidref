@@ -1,7 +1,7 @@
 // import * as React from 'react';
 
-import { styled } from '@mui/system';
-import { AccordionDetails } from '@mui/material';
+import {styled} from '@mui/system';
+import {AccordionDetails} from '@mui/material';
 
 const HorizontalAccordionDetails = styled(AccordionDetails)(() => ({
   // background: 'red',

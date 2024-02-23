@@ -1,10 +1,10 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import { Typography, Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import {styled} from '@mui/material/styles';
+import {Typography, Accordion, AccordionDetails, AccordionSummary} from '@mui/material';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { ContentType, PrincipleOrPatternContent } from '../../../state';
+import {ContentType, PrincipleOrPatternContent} from '../../../state';
 
 import TypographySet from '../../../views/generic/TypographySet';
 
@@ -24,12 +24,12 @@ const CustomAccordionSummary = styled(AccordionSummary)(() => ({
   background: 'none',
 }));
 
-const CustomAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
+const CustomAccordionDetails = styled(AccordionDetails)(({theme}) => ({
   padding: theme.spacing(2),
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-function PrinciplePatternAccordionItem({ title, content, handleChange, expanded }: PrinciplePatternAccordionItemProps) {
+function PrinciplePatternAccordionItem({title, content, handleChange, expanded}: PrinciplePatternAccordionItemProps) {
   return (
     // <CustomAccordion disableGutters elevation={0} expanded={expanded.includes(title)} onChange={handleChange(title)}>
     <CustomAccordion expanded={expanded.includes(title)} onChange={handleChange(title)} elevation={0}>
@@ -47,14 +47,13 @@ export type PrinciplePatternAccordionProps = {
   principleOrPattern: PrincipleOrPatternContent;
 };
 
-export default function Presentation({ principleOrPattern }: PrinciplePatternAccordionProps) {
-  const { before = [], accordion = {}, after = [] } = principleOrPattern;
-
-  console.log(before, accordion, after);
+export default function Presentation({principleOrPattern}: PrinciplePatternAccordionProps) {
+  const {before = [], accordion = {}, after = []} = principleOrPattern;
 
   const expandedDefault: string[] = Object.keys(principleOrPattern?.accordion ?? {}).length
     ? [Object.keys(principleOrPattern?.accordion)[0]]
     : [];
+
   const [expanded, setExpanded] = React.useState<string[]>(expandedDefault);
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
