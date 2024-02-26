@@ -15,8 +15,8 @@ import {
   useTheme,
 } from '@mui/material';
 import ExtensionIcon from '@mui/icons-material/Extension';
-import { CodingPrincipleTitles } from '../../../constants';
-import { Language } from '../../../state';
+import {CodingPrincipleTitles} from '../../../constants';
+import {Language} from '../../../state';
 
 const CustomWhiteButton = styled(Button)(() => ({
   color: 'white',
@@ -29,7 +29,7 @@ export type MenuProps = {
   setPrincipleOrPattern?: (...args: unknown[]) => void;
 };
 
-export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPattern, mode = 'state' }: MenuProps) {
+export default function PrinciplesOrPatternsMenu({language, setPrincipleOrPattern, mode = 'state'}: MenuProps) {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
@@ -41,7 +41,7 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
     <Box position={'relative'}>
       <Box display={'flex'} justifyContent={'center'}>
         <Typography variant={'h3'} gutterBottom>
-          <ExtensionIcon style={{ fontSize: '5rem' }} />
+          <ExtensionIcon style={{fontSize: '5rem'}} />
         </Typography>
       </Box>
       <Grid container spacing={isMd ? 0 : 2} alignItems={'center'}>
@@ -49,7 +49,7 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
           <Box component={Card} data-aos={isMd ? 'fade-left' : 'fade-up'}>
             <Box
               component={CardContent}
-              padding={{ sm: 4 }}
+              padding={{sm: 4}}
               display={'flex'}
               flexDirection={'column'}
               alignItems={'center'}
@@ -93,7 +93,7 @@ export default function PrinciplesOrPatternsMenu({ language, setPrincipleOrPatte
           >
             <Box
               component={CardContent}
-              padding={{ sm: 4 }}
+              padding={{sm: 4}}
               display={'flex'}
               flexDirection={'column'}
               alignItems={'center'}

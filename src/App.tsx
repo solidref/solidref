@@ -1,7 +1,7 @@
 import React from 'react';
-import {useRecoilState} from 'recoil';
+import { useRecoilState } from 'recoil';
 
-import {languagesHierarchyState} from './state';
+import { languagesHierarchyState } from './state';
 
 import Routes from './Routes';
 
@@ -10,7 +10,7 @@ import LanguageHierarchyLoader from './components/LanguageHierarchyLoader';
 
 import Header from './views/Header';
 import Footer from './views/Footer';
-import {styled} from '@mui/material';
+import { styled } from '@mui/material';
 
 const MyApp = styled('div')(() => ({
   // background: 'red',
@@ -20,12 +20,12 @@ const MyApp = styled('div')(() => ({
 }));
 
 const App: React.FC = () => {
-  const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
+  // const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
 
   return (
     <ThemeWrapper>
       <MyApp>
-        <LanguageHierarchyLoader setLanguagesHierarchyState={setLanguagesHierarchyState} />
+        {/* <LanguageHierarchyLoader setLanguagesHierarchyState={setLanguagesHierarchyState} /> */}
         <React.Suspense fallback={<div>Loading...</div>}>
           <Header />
           <Routes />

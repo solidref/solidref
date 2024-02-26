@@ -1,5 +1,5 @@
-import {atom} from 'recoil';
-import {TypographyProps} from '@mui/material/Typography';
+import { atom } from 'recoil';
+import { TypographyProps } from '@mui/material/Typography';
 
 /**
  * Base Types

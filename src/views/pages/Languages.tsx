@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {Box, ToggleButton, ToggleButtonGroup, useTheme} from '@mui/material';
+import React, { useCallback, useState } from 'react';
+import { Box, ToggleButton, ToggleButtonGroup, useTheme } from '@mui/material';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
-import LanguageList from './languages/LanguageList';
+import LanguagesList, { FilterMode } from './languages/LanguagesList';
 import HomeHero from './home/HomeHero';
 
 import Container from '../generic/Container';
@@ -20,11 +20,11 @@ const toggleStyle = {
 export default function Languages(/*{ }: LanguagesProps*/) {
   const theme = useTheme();
 
-  const [filterMode, setFilterMode] = useState('all');
+  const [filterMode, setFilterMode] = useState<FilterMode>('all');
 
-  const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
-    setFilterMode(nextView);
-  };
+  const handleChange = useCallback((event: React.MouseEvent<HTMLElement>, nextView: string) => {
+    // setFilterMode(nextView);
+  }, []);
 
   return (
     <Box>
@@ -33,8 +33,8 @@ export default function Languages(/*{ }: LanguagesProps*/) {
           <HomeHero />
         </Container>
       </Box>
-      <Box style={{padding: '64px 0 0 0'}}>
-        <Container display={'flex'} justifyContent={'flex-end'} style={{padding: 0}}>
+      <Box style={{ padding: '64px 0 0 0' }}>
+        <Container display={'flex'} justifyContent={'flex-end'} style={{ padding: 0 }}>
           <ToggleButtonGroup value={filterMode} exclusive onChange={handleChange}>
             <ToggleButton value="all" aria-label="all" style={toggleStyle}>
               <ViewListIcon />
@@ -45,9 +45,11 @@ export default function Languages(/*{ }: LanguagesProps*/) {
           </ToggleButtonGroup>
         </Container>
       </Box>
-      <Container>
-        <LanguageList filterMode={filterMode} />
-      </Container>
+      <Box>
+        <Container>
+          <LanguagesList filterMode={filterMode} filterArgs={[]} md={3} />
+        </Container>
+      </Box>
     </Box>
   );
 }
