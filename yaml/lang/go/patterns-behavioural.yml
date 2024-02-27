@@ -1,0 +1,745 @@
+patterns:
+  - title: "Chain Of Responsibility"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Handler interface {
+              Handle(request string) string
+          }
+
+          type BaseHandler struct {
+              next Handler
+          }
+
+          func (h *BaseHandler) SetNext(next Handler) {
+              h.next = next
+          }
+
+          type ConcreteHandler1 struct {
+              BaseHandler
+          }
+
+          func (h *ConcreteHandler1) Handle(request string) string {
+              if request == "handle1" {
+                  return "Handled by ConcreteHandler1"
+              }
+              return h.BaseHandler.Handle(request)
+          }
+
+          type ConcreteHandler2 struct {
+              BaseHandler
+          }
+
+          func (h *ConcreteHandler2) Handle(request string) string {
+              if request == "handle2" {
+                  return "Handled by ConcreteHandler2"
+              }
+              return h.BaseHandler.Handle(request)
+          }
+
+          func main() {
+              handler1 := &ConcreteHandler1{}
+              handler2 := &ConcreteHandler2{}
+              handler1.SetNext(handler2)
+
+              fmt.Println(handler1.Handle("handle2"))
+              fmt.Println(handler1.Handle("handle1"))
+          }
+
+  - title: "Command"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Command interface {
+              Execute()
+          }
+
+          type Light struct{}
+
+          func (l *Light) On() {
+              fmt.Println("Light is on")
+          }
+
+          func (l *Light) Off() {
+              fmt.Println("Light is off")
+          }
+
+          type LightOnCommand struct {
+              light *Light
+          }
+
+          func (c *LightOnCommand) Execute() {
+              c.light.On()
+          }
+
+          type LightOffCommand struct {
+              light *Light
+          }
+
+          func (c *LightOffCommand) Execute() {
+              c.light.Off()
+          }
+
+          type RemoteControl struct {
+              command Command
+          }
+
+          func (r *RemoteControl) SetCommand(command Command) {
+              r.command = command
+          }
+
+          func (r *RemoteControl) PressButton() {
+              r.command.Execute()
+          }
+
+          func main() {
+              light := &Light{}
+              lightOnCommand := &LightOnCommand{light: light}
+              lightOffCommand := &LightOffCommand{light: light}
+              remote := RemoteControl{}
+
+              remote.SetCommand(lightOnCommand)
+              remote.PressButton()
+
+              remote.SetCommand(lightOffCommand)
+              remote.PressButton()
+          }
+
+  - title: "Interpreter"
+    description:
+      - content: "The Interpreter pattern provides a way to evaluate language grammar or expression. This pattern involves implementing an expression interface which tells to interpret a particular context. It is used in SQL parsing, symbol processing engine, etc."
+        variant: "subtitle1"
+    examples:
+      - code: |
+          package main
+
+          import (
+              "fmt"
+              "strings"
+          )
+
+          // Expression interface used to interpret expressions
+          type Expression interface {
+              Interpret(context string) bool
+          }
+
+          // TerminalExpression
+          type TerminalExpression struct {
+              data string
+          }
+
+          func (t *TerminalExpression) Interpret(context string) bool {
+              if strings.Contains(context, t.data) {
+                  return true
+              }
+              return false
+          }
+
+          // OrExpression
+          type OrExpression struct {
+              expr1 Expression
+              expr2 Expression
+          }
+
+          func (o *OrExpression) Interpret(context string) bool {
+              return o.expr1.Interpret(context) || o.expr2.Interpret(context)
+          }
+
+          // AndExpression
+          type AndExpression struct {
+              expr1 Expression
+              expr2 Expression
+          }
+
+          func (a *AndExpression) Interpret(context string) bool {
+              return a.expr1.Interpret(context) && a.expr2.Interpret(context)
+          }
+
+          // main function
+          func main() {
+              // Rule: Robert and John are male
+              isMale := getMaleExpression()
+              // Rule: Julie is a married woman
+              isMarriedWoman := getMarriedWomanExpression()
+
+              fmt.Println("John is male? ", isMale.Interpret("John"))
+              fmt.Println("Julie is a married woman? ", isMarriedWoman.Interpret("Married Julie"))
+          }
+
+          func getMaleExpression() Expression {
+              robert := &TerminalExpression{"Robert"}
+              john := &TerminalExpression{"John"}
+              return &OrExpression{robert, john}
+          }
+
+          func getMarriedWomanExpression() Expression {
+              julie := &TerminalExpression{"Julie"}
+              married := &TerminalExpression{"Married"}
+              return &AndExpression{julie, married}
+          }
+        language: "Go"
+
+
+  - title: "Iterator"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Iterator interface {
+              HasNext() bool
+              Next() interface{}
+          }
+
+          type Collection interface {
+              CreateIterator() Iterator
+          }
+
+          type ConcreteCollection struct {
+              items []interface{}
+          }
+
+          func (c *ConcreteCollection) CreateIterator() Iterator {
+              return &ConcreteIterator{
+                  collection: c,
+                  index:      0,
+              }
+          }
+
+          func (c *ConcreteCollection) Add(item interface{}) {
+              c.items = append(c.items, item)
+          }
+
+          type ConcreteIterator struct {
+              collection *ConcreteCollection
+              index      int
+          }
+
+          func (i *ConcreteIterator) HasNext() bool {
+              return i.index < len(i.collection.items)
+          }
+
+          func (i *ConcreteIterator) Next() interface{} {
+              if i.HasNext() {
+                  item := i.collection.items[i.index]
+                  i.index++
+                  return item
+              }
+              return nil
+          }
+
+          func main() {
+              collection := &ConcreteCollection{}
+              collection.Add("Item 1")
+              collection.Add("Item 2")
+              collection.Add("Item 3")
+
+              iterator := collection.CreateIterator()
+
+              for iterator.HasNext() {
+                  fmt.Println(iterator.Next())
+              }
+          }
+  - title: "Mediator"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Mediator interface {
+              CanArrive(Train) bool
+              NotifyAboutDeparture()
+          }
+
+          type StationManager struct {
+              isPlatformFree bool
+              trainQueue     []Train
+          }
+
+          func NewStationManager() *StationManager {
+              return &StationManager{isPlatformFree: true}
+          }
+
+          func (s *StationManager) CanArrive(train Train) bool {
+              if s.isPlatformFree {
+                  s.isPlatformFree = false
+                  return true
+              }
+              s.trainQueue = append(s.trainQueue, train)
+              return false
+          }
+
+          func (s *StationManager) NotifyAboutDeparture() {
+              if !s.isPlatformFree {
+                  s.isPlatformFree = true
+              }
+              if len(s.trainQueue) > 0 {
+                  firstTrain := s.trainQueue[0]
+                  s.trainQueue = s.trainQueue[1:]
+                  firstTrain.PermitArrival()
+              }
+          }
+
+          type Train interface {
+              Arrive()
+              Depart()
+              PermitArrival()
+          }
+
+          type PassengerTrain struct {
+              mediator Mediator
+          }
+
+          func (p *PassengerTrain) Arrive() {
+              if p.mediator.CanArrive(p) {
+                  fmt.Println("PassengerTrain: Arrival permitted. Arriving")
+              } else {
+                  fmt.Println("PassengerTrain: Arrival blocked. Waiting")
+              }
+          }
+
+          func (p *PassengerTrain) Depart() {
+              fmt.Println("PassengerTrain: Leaving")
+              p.mediator.NotifyAboutDeparture()
+          }
+
+          func (p *PassengerTrain) PermitArrival() {
+              fmt.Println("PassengerTrain: Arrival permitted")
+              p.Arrive()
+          }
+
+          type FreightTrain struct {
+              mediator Mediator
+          }
+
+          func (f *FreightTrain) Arrive() {
+              if f.mediator.CanArrive(f) {
+                  fmt.Println("FreightTrain: Arrival permitted. Arriving")
+              } else {
+                  fmt.Println("FreightTrain: Arrival blocked. Waiting")
+              }
+          }
+
+          func (f *FreightTrain) Depart() {
+              fmt.Println("FreightTrain: Leaving")
+              f.mediator.NotifyAboutDeparture()
+          }
+
+          func (f *FreightTrain) PermitArrival() {
+              fmt.Println("FreightTrain: Arrival permitted")
+              f.Arrive()
+          }
+
+          func main() {
+              stationManager := NewStationManager()
+              passengerTrain := &PassengerTrain{mediator: stationManager}
+              freightTrain := &FreightTrain{mediator: stationManager}
+
+              passengerTrain.Arrive()
+              freightTrain.Arrive()
+              passengerTrain.Depart()
+              freightTrain.Depart()
+          }
+
+  - title: "Memento"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Memento interface {
+              GetName() string
+              GetState() string
+          }
+
+          type ConcreteMemento struct {
+              state string
+              name  string
+          }
+
+          func (c *ConcreteMemento) GetState() string {
+              return c.state
+          }
+
+          func (c *ConcreteMemento) GetName() string {
+              return c.name
+          }
+
+          type Originator struct {
+              state string
+          }
+
+          func (o *Originator) Save() Memento {
+              return &ConcreteMemento{
+                  state: o.state,
+                  name:  "Snapshot_" + o.state,
+              }
+          }
+
+          func (o *Originator) Restore(m Memento) {
+              o.state = m.GetState()
+          }
+
+          func (o *Originator) SetState(state string) {
+              o.state = state
+          }
+
+          func (o *Originator) GetState() string {
+              return o.state
+          }
+
+          type Caretaker struct {
+              mementos []Memento
+              originator *Originator
+          }
+
+          func (c *Caretaker) Backup() {
+              fmt.Println("Caretaker: Saving Originator's state...")
+              c.mementos = append(c.mementos, c.originator.Save())
+          }
+
+          func (c *Caretaker) Undo() {
+              if len(c.mementos) == 0 {
+                  return
+              }
+              memento := c.mementos[len(c.mementos)-1]
+              c.mementos = c.mementos[:len(c.mementos)-1]
+              fmt.Printf("Caretaker: Restoring state to: %s\n", memento.GetName())
+              c.originator.Restore(memento)
+          }
+
+          func main() {
+              originator := &Originator{}
+              caretaker := &Caretaker{originator: originator}
+
+              originator.SetState("State #1")
+              caretaker.Backup()
+
+              originator.SetState("State #2")
+              caretaker.Backup()
+
+              originator.SetState("State #3")
+              caretaker.Undo()
+
+              fmt.Println("Current State:", originator.GetState())
+          }
+  - title: "Observer"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Observer interface {
+              Update(string)
+          }
+
+          type Subject interface {
+              RegisterObserver(Observer)
+              RemoveObserver(Observer)
+              NotifyObservers()
+          }
+
+          type Item struct {
+              observerList []Observer
+              name         string
+              inStock      bool
+          }
+
+          func NewItem(name string) *Item {
+              return &Item{
+                  name: name,
+              }
+          }
+
+          func (i *Item) UpdateAvailability() {
+              fmt.Printf("Item %s is now in stock\n", i.name)
+              i.inStock = true
+              i.NotifyObservers()
+          }
+
+          func (i *Item) RegisterObserver(o Observer) {
+              i.observerList = append(i.observerList, o)
+          }
+
+          func (i *Item) RemoveObserver(o Observer) {
+              i.observerList = removeFromslice(i.observerList, o)
+          }
+
+          func (i *Item) NotifyObservers() {
+              for _, observer := range i.observerList {
+                  observer.Update(i.name)
+              }
+          }
+
+          type Customer struct {
+              id string
+          }
+
+          func (c *Customer) Update(itemName string) {
+              fmt.Printf("Sending email to customer %s for item %s\n", c.id, itemName)
+          }
+
+          func main() {
+              shirtItem := NewItem("Nike Shirt")
+              observer1 := &Customer{id: "abc123"}
+              observer2 := &Customer{id: "xyz987"}
+
+              shirtItem.RegisterObserver(observer1)
+              shirtItem.RegisterObserver(observer2)
+
+              shirtItem.UpdateAvailability()
+          }
+
+          func removeFromslice(observerList []Observer, observerToRemove Observer) []Observer {
+              for i, observer := range observerList {
+                  if observer == observerToRemove {
+                      return append(observerList[:i], observerList[i+1:]...)
+                  }
+              }
+              return observerList
+          }
+
+  - title: "State"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type State interface {
+              DoAction(context *Context)
+          }
+
+          type StartState struct{}
+
+          func (s *StartState) DoAction(context *Context) {
+              fmt.Println("Player is in start state")
+              context.SetState(s)
+          }
+
+          func (s *StartState) ToString() string {
+              return "Start State"
+          }
+
+          type StopState struct{}
+
+          func (s *StopState) DoAction(context *Context) {
+              fmt.Println("Player is in stop state")
+              context.SetState(s)
+          }
+
+          func (s *StopState) ToString() string {
+              return "Stop State"
+          }
+
+          type Context struct {
+              state State
+          }
+
+          func NewContext() *Context {
+              return &Context{}
+          }
+
+          func (c *Context) SetState(state State) {
+              c.state = state
+          }
+
+          func (c *Context) GetState() State {
+              return c.state
+          }
+
+          func main() {
+              context := NewContext()
+
+              startState := &StartState{}
+              startState.DoAction(context)
+
+              fmt.Println(context.GetState().ToString())
+
+              stopState := &StopState{}
+              stopState.DoAction(context)
+
+              fmt.Println(context.GetState().ToString())
+          }
+  - title: "Strategy"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Strategy interface {
+              Execute(int, int) int
+          }
+
+          type Add struct{}
+
+          func (a *Add) Execute(a int, b int) int {
+              return a + b
+          }
+
+          type Subtract struct{}
+
+          func (s *Subtract) Execute(a int, b int) int {
+              return a - b
+          }
+
+          type Multiply struct{}
+
+          func (m *Multiply) Execute(a int, b int) int {
+              return a * b
+          }
+
+          type Context struct {
+              strategy Strategy
+          }
+
+          func NewContext(strategy Strategy) *Context {
+              return &Context{
+                  strategy: strategy,
+              }
+          }
+
+          func (c *Context) ExecuteStrategy(a int, b int) int {
+              return c.strategy.Execute(a, b)
+          }
+
+          func main() {
+              addStrategy := &Add{}
+              context := NewContext(addStrategy)
+              fmt.Println("10 + 5 =", context.ExecuteStrategy(10, 5))
+
+              subtractStrategy := &Subtract{}
+              context.strategy = subtractStrategy
+              fmt.Println("10 - 5 =", context.ExecuteStrategy(10, 5))
+
+              multiplyStrategy := &Multiply{}
+              context.strategy = multiplyStrategy
+              fmt.Println("10 * 5 =", context.ExecuteStrategy(10, 5))
+          }
+
+  - title: "Template Method"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Game interface {
+              Start()
+              Play()
+              End()
+          }
+
+          func PlayGame(g Game) {
+              g.Start()
+              g.Play()
+              g.End()
+          }
+
+          type Football struct{}
+
+          func (f *Football) Start() {
+              fmt.Println("Football Game Started. Welcome to the game!")
+          }
+
+          func (f *Football) Play() {
+              fmt.Println("Football Game Playing. Enjoy the game!")
+          }
+
+          func (f *Football) End() {
+              fmt.Println("Football Game Finished!")
+          }
+
+          type Cricket struct{}
+
+          func (c *Cricket) Start() {
+              fmt.Println("Cricket Game Started. Welcome to the game!")
+          }
+
+          func (c *Cricket) Play() {
+              fmt.Println("Cricket Game Playing. Enjoy the game!")
+          }
+
+          func (c *Cricket) End() {
+              fmt.Println("Cricket Game Finished!")
+          }
+
+          func main() {
+              football := &Football{}
+              PlayGame(football)
+
+              cricket := &Cricket{}
+              PlayGame(cricket)
+          }
+  - title: "Visitor"
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type ComputerPart interface {
+              Accept(ComputerPartVisitor)
+          }
+
+          type ComputerPartVisitor interface {
+              VisitComputer(*Computer)
+              VisitMouse(*Mouse)
+              VisitKeyboard(*Keyboard)
+              VisitMonitor(*Monitor)
+          }
+
+          type Computer struct{}
+          type Mouse struct{}
+          type Keyboard struct{}
+          type Monitor struct{}
+
+          func (c *Computer) Accept(visitor ComputerPartVisitor) {
+              visitor.VisitComputer(c)
+          }
+
+          func (m *Mouse) Accept(visitor ComputerPartVisitor) {
+              visitor.VisitMouse(m)
+          }
+
+          func (k *Keyboard) Accept(visitor ComputerPartVisitor) {
+              visitor.VisitKeyboard(k)
+          }
+
+          func (mo *Monitor) Accept(visitor ComputerPartVisitor) {
+              visitor.VisitMonitor(mo)
+          }
+
+          type ComputerPartDisplayVisitor struct{}
+
+          func (cpdv *ComputerPartDisplayVisitor) VisitComputer(c *Computer) {
+              fmt.Println("Displaying Computer.")
+          }
+
+          func (cpdv *ComputerPartDisplayVisitor) VisitMouse(m *Mouse) {
+              fmt.Println("Displaying Mouse.")
+          }
+
+          func (cpdv *ComputerPartDisplayVisitor) VisitKeyboard(k *Keyboard) {
+              fmt.Println("Displaying Keyboard.")
+          }
+
+          func (cpdv *ComputerPartDisplayVisitor) VisitMonitor(mo *Monitor) {
+              fmt.Println("Displaying Monitor.")
+          }
+
+          func main() {
+              computer := &Computer{}
+              computer.Accept(new(ComputerPartDisplayVisitor))
+          }

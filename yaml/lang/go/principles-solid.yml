@@ -1,42 +1,50 @@
----
 principles:
-  - abbr: SRP
+  - title: Single Responsibility
     examples:
-      - title: Good Example
+      - title: Good Example (Go)
         code: |
-          // Good example: Splitting responsibilities into separate functions
-          func SaveUserData(userData UserData) {
-              // ...
+          package main
+
+          type UserDataManager struct{}
+
+          func (udm *UserDataManager) SaveUserData() {
+              // save user data
           }
 
-          func SendNotification(notification Notification) {
-              // ...
+          type UserNotification struct{}
+
+          func (un *UserNotification) SendNotification() {
+              // send notification
           }
-      - title: Bad Example
+      - title: Bad Example (Go)
         code: |
-          // Bad example: A function handling both user data management and user notifications
-          func SaveUserData(userData UserData) {
-              // ...
+          package main
+
+          type User struct{}
+
+          func (u *User) SaveUserData() {
+              // save user data
           }
-  - abbr: OCP
+
+          func (u *User) SendNotification() {
+              // send notification
+          }
+
+  - title: Open-Closed
     examples:
-      - title: Good Example
+      - title: Good Example (Go)
         code: |
-          // Good example: Using interfaces to allow extension without modification
+          package main
+
           type Shape interface {
-              CalculateArea() float64
-          }
-
-          func CalculateArea(shape Shape) float64 {
-              return shape.CalculateArea()
+              ComputeArea() float64
           }
 
           type Rectangle struct {
-              Width  float64
-              Height float64
+              Width, Height float64
           }
 
-          func (r Rectangle) CalculateArea() float64 {
+          func (r Rectangle) ComputeArea() float64 {
               return r.Width * r.Height
           }
 
@@ -44,97 +52,136 @@ principles:
               Radius float64
           }
 
-          func (c Circle) CalculateArea() float64 {
+          func (c Circle) ComputeArea() float64 {
               return 3.14 * c.Radius * c.Radius
           }
-      - title: Bad Example
+      - title: Bad Example (Go)
         code: |
-          // Bad example: Modifying existing code to add new functionality
-          func CalculateArea(shape Shape) float64 {
-              switch shape.(type) {
-              case Rectangle:
-                  rect := shape.(Rectangle)
-                  return rect.Width * rect.Height
-              case Circle:
-                  circle := shape.(Circle)
-                  return 3.14 * circle.Radius * circle.Radius
-              }
-              return 0.0
+          package main
+
+          type AreaCalculator struct{}
+
+          func (ac *AreaCalculator) ComputeArea(shape interface{}) float64 {
+              // type assertion to determine shape and compute area
+              // violates open-closed principle
           }
-  - abbr: LSP
+
+  - title: Liskov Substitution
     examples:
-        - title: Good Example
-          code: |
-            // Good example: Derived types maintain the behavior of the base type
-            type FlyingBird interface {
-                Fly()
-            }
+      - title: Good Example (Go)
+        code: |
+          package main
 
-            type NonFlyingBird interface {
-                Walk()
-            }
-        - title: Bad Example
-          code: |
-            // Bad example: Derived type changes the behavior of the base type
-            type Ostrich struct{}
+          type Bird interface {
+              Fly()
+          }
 
-            func (o Ostrich) Fly() {
-                panic("Ostrich can't fly")
-            }
-  - abbr: ISP
+          type Sparrow struct{}
+
+          func (s *Sparrow) Fly() {
+              // implementation for sparrow flying
+          }
+
+          type Ostrich struct{}
+
+          func (o *Ostrich) Walk() {
+              // ostrich can't fly, so we don't implement Fly()
+          }
+      - title: Bad Example (Go)
+        code: |
+          package main
+
+          type Bird struct{}
+
+          func (b *Bird) Fly() {
+              // assumed all birds can fly
+          }
+
+          // Ostrich inherits from Bird but can't fly, violating LSP
+
+  - title: Interface Segregation
     examples:
-      - title: Good Example
+      - title: Good Example (Go)
         code: |
-          // Good example: Breaking down the interface into more specific ones
-          type Workable interface {
-              Work()
-          }
+          package main
 
-          type Eatable interface {
-              Eat()
-          }
-      - title: Bad Example
-        code: |
-          // Bad example: A bulky interface
           type Worker interface {
               Work()
+          }
+
+          type Eater interface {
               Eat()
           }
-  - abbr: DIP
-    examples:
-      - title: Good Example
+
+          type Human struct{}
+
+          func (h Human) Work() {
+              // human working
+          }
+
+          func (h Human) Eat() {
+              // human eating
+          }
+
+          type Robot struct{}
+
+          func (r Robot) Work() {
+              // robot working
+          }
+
+          // Robot does not implement Eater, adhering to ISP
+
+      - title: Bad Example (Go)
         code: |
-          // Good example: Both high-level and low-level modules depend on abstractions
-          type Device interface {
+          package main
+
+          type Worker struct{}
+
+          func (w *Worker) Work() {
+              // work implementation
+          }
+
+          func (w *Worker) Eat() {
+              // not all workers eat, violating ISP
+
+  - title: Dependency Inversion
+    examples:
+      - title: Good Example (Go)
+        code: |
+          package main
+
+          type Switchable interface {
               TurnOn()
           }
 
-          type Fan struct{}
-
-          func (f Fan) TurnOn() {
-              // ...
+          type Switch struct {
+              Device Switchable
           }
 
-          type SmartSwitch struct {
-              Device Device
+          func (s *Switch) Operate() {
+              s.Device.TurnOn()
           }
 
-          func (ss SmartSwitch) Operate() {
-              ss.Device.TurnOn()
-          }
-      - title: Bad Example
-        code: |
-          // Bad example: High-level module depending on a low-level module
           type LightBulb struct{}
 
-          func (lb LightBulb) TurnOn() {
-              // ...
+          func (lb *LightBulb) TurnOn() {
+              // light bulb turning on
+          }
+
+      - title: Bad Example (Go)
+        code: |
+          package main
+
+          type LightBulb struct{}
+
+          func (lb *LightBulb) TurnOn() {
+              // light bulb turning on
           }
 
           type Switch struct {
               Bulb LightBulb
           }
 
-          func (s Switch) Operate() {
+          func (s *Switch) Operate() {
               s.Bulb.TurnOn()
           }

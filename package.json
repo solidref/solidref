@@ -6,7 +6,7 @@
   "scripts": {
     "start": "rimraf ./node_modules/.vite && vite",
     "start:dev": "npm start -- --force",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && npm run build:deps",
     "build:deps": "run-s build:deps:*",
     "build:deps:content": "node .scripts/esm/build-content-files.js",
     "build:deps:language": "node .scripts/esm/build-language-files.js",

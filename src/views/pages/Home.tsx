@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, useTheme } from '@mui/material';
+import {Box, useTheme} from '@mui/material';
 
 import HomeHero from './home/HomeHero';
 import LanguagesList from './languages/LanguagesList';

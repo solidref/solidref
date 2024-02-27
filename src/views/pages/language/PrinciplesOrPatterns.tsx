@@ -65,12 +65,14 @@ export default function PrinciplesOrPatterns({principlesOrPatterns, type, langua
         >
           <CustomAccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
             <Typography>{pattern.title}</Typography>
-            <CustomLink
-              to={`/${type.includes('principles') ? 'coding-principles' : 'design-patterns'}/${type.replace(/(principles|patterns)_/, '')}`}
-              title={`${pattern.title} Definition`}
-            >
-              <BookmarksIcon />
-            </CustomLink>
+            {!pattern.description && (
+              <CustomLink
+                to={`/${type.includes('principles') ? 'coding-principles' : 'design-patterns'}/${type.replace(/(principles|patterns)_/, '')}`}
+                title={`${pattern.title} Definition`}
+              >
+                <BookmarksIcon />
+              </CustomLink>
+            )}
           </CustomAccordionSummary>
           <AccordionDetails>
             {pattern.description && <TypographySet content={pattern.description} />}

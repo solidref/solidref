@@ -1,17 +1,17 @@
-import React, { useMemo, useState, createContext } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
+import React, {useMemo, useState, createContext} from 'react';
+import {ThemeProvider} from '@mui/material/styles';
 
 import getTheme from '../../theme';
-import { Paper } from '@mui/material';
-import { ThemeBrightness } from '../../constants';
+import {Paper} from '@mui/material';
+import {ThemeBrightness} from '../../constants';
 
 export type ThemeWrapperProps = {
   readonly children: React.ReactNode;
 };
 
-export const ThemeWrapperContext = createContext({ toggleColorMode: () => { } });
+export const ThemeWrapperContext = createContext({toggleColorMode: () => {}});
 
-export default function ThemeWrapper({ children }: ThemeWrapperProps) {
+export default function ThemeWrapper({children}: ThemeWrapperProps) {
   const [mode, setMode] = useState<'light' | 'dark'>(localStorage.getItem(btoa(ThemeBrightness)) || 'light');
 
   const colorMode = useMemo(

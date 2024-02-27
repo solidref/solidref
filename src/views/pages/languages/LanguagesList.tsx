@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { Box, Card, CardContent, Grid, Link, RegularBreakpoints, Typography } from '@mui/material';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { HierarchyLanguage, languagesHierarchyState } from '../../../state';
+import { useRecoilValue } from 'recoil';
+import { HierarchyLanguage } from '../../../state';
 import GenericCodeIcon from '../../icons/GenericCodeIcon';
-import { LanguageIconStyle } from '../../../styles';
 import { generateLanguagePath } from '../../../utils/url';
 import { loadLanguageHierarchy } from '../../../selector';
 
@@ -50,7 +49,7 @@ export default function LanguagesList({
     if (!languagesHierarchy.list) return [];
 
     const filterCb = filters[`${filterMode}Filter`]; // Assuming this is a function
-    console.log(`${filterMode}Filter`)
+    // console.log(`${filterMode}Filter`);
     return languagesHierarchy.list.filter(filterCb(...filterArgs));
   }, [languagesHierarchy.list, filterMode, filterArgs]);
 
@@ -58,23 +57,30 @@ export default function LanguagesList({
 
   useEffect(() => {
     const loadIcons = async () => {
-      const loadedLanguages = await Promise.all(filteredLanguages.map(async (language) => {
-        let logoComponent = null;
-        try {
-          // Dynamically import icon based on the language code
-          const module = await import(`../../icons/${language.code.charAt(0).toUpperCase() + language.code.slice(1)}`);
-          logoComponent = module !== null ? module.default : null;
-        } catch (error) {
-          console.error(error);
-        }
-        return { language, logoComponent };
-      }));
+      const loadedLanguages = await Promise.all(
+        filteredLanguages.map(async (language) => {
+          const moduleName = language.code.charAt(0).toUpperCase() + language.code.slice(1);
+          try {
+            // Dynamically import icon based on the language code
+            // console.log(`../../icons/${moduleName}`);
+            const module = await import(`../../icons/${moduleName}`);
+            // console.log(module);
+
+            return { language, logoComponent: module.default };
+          } catch (error) {
+            console.error(`Error importing language icon: ${moduleName}`, error);
+          }
+          return { language, logoComponent: null };
+        }),
+      );
 
       setLanguages(loadedLanguages);
     };
 
     loadIcons();
   }, [filteredLanguages]);
+
+  // console.log(languages.map(({ logoComponent }) => logoComponent));
 
   return (
     <Grid container spacing={4}>
@@ -97,7 +103,13 @@ export default function LanguagesList({
               >
                 {logoComponent !== null ? (
                   React.createElement(logoComponent, {
-                    style: LanguageIconStyle,
+                    style: {
+                      width: '8rem',
+                      height: '8rem',
+                      display: 'block',
+                      margin: 'auto',
+                      transform: 'rotate(-15deg)',
+                    },
                   })
                 ) : (
                   <GenericCodeIcon style={LanguageIconStyle} />

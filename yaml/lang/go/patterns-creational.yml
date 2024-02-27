@@ -1,0 +1,323 @@
+---
+patterns:
+  - title: Factory Method
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          // Product defines the interface of objects the factory method creates.
+          type Product interface {
+              Use() string
+          }
+
+          // ConcreteProduct1 represents a concrete product created by the concrete creator.
+          type ConcreteProduct1 struct{}
+
+          func (p *ConcreteProduct1) Use() string {
+              return "Result of ConcreteProduct1"
+          }
+
+          // ConcreteProduct2 represents another concrete product created by the concrete creator.
+          type ConcreteProduct2 struct{}
+
+          func (p *ConcreteProduct2) Use() string {
+              return "Result of ConcreteProduct2"
+          }
+
+          // Creator provides the factory method interface.
+          type Creator interface {
+              FactoryMethod() Product
+          }
+
+          // ConcreteCreator1 implements the Creator interface to create ConcreteProduct1.
+          type ConcreteCreator1 struct{}
+
+          func (c *ConcreteCreator1) FactoryMethod() Product {
+              return &ConcreteProduct1{}
+          }
+
+          // ConcreteCreator2 implements the Creator interface to create ConcreteProduct2.
+          type ConcreteCreator2 struct{}
+
+          func (c *ConcreteCreator2) FactoryMethod() Product {
+              return &ConcreteProduct2{}
+          }
+
+          // Client code function that demonstrates creation of products.
+          func clientCode(creator Creator) {
+              product := creator.FactoryMethod()
+              fmt.Println("Client: I'm not aware of the creator's class, but it still works.", product.Use())
+          }
+
+          func main() {
+              fmt.Println("App: Launched with the ConcreteCreator1.")
+              clientCode(&ConcreteCreator1{})
+              fmt.Println("\nApp: Launched with the ConcreteCreator2.")
+              clientCode(&ConcreteCreator2{})
+          }
+
+  - title: Abstract Factory
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          // AbstractFactory provides an interface for creating families of related or dependent objects.
+          type AbstractFactory interface {
+              CreateProductA() AbstractProductA
+              CreateProductB() AbstractProductB
+          }
+
+          // ConcreteFactory1 implements the AbstractFactory interface.
+          type ConcreteFactory1 struct{}
+
+          func (f *ConcreteFactory1) CreateProductA() AbstractProductA {
+              return &ConcreteProductA1{}
+          }
+
+          func (f *ConcreteFactory1) CreateProductB() AbstractProductB {
+              return &ConcreteProductB1{}
+          }
+
+          // ConcreteFactory2 implements the AbstractFactory interface.
+          type ConcreteFactory2 struct{}
+
+          func (f *ConcreteFactory2) CreateProductA() AbstractProductA {
+              return &ConcreteProductA2{}
+          }
+
+          func (f *ConcreteFactory2) CreateProductB() AbstractProductB {
+              return &ConcreteProductB2{}
+          }
+
+          // AbstractProductA and AbstractProductB declare interfaces for a type of product object.
+          type AbstractProductA interface {
+              UsefulFunctionA() string
+          }
+
+          type AbstractProductB interface {
+              UsefulFunctionB() string
+              AnotherUsefulFunctionB(collaborator AbstractProductA) string
+          }
+
+          // ConcreteProductA1 and ConcreteProductA2 define products to be created by the corresponding factories.
+          type ConcreteProductA1 struct{}
+          func (p *ConcreteProductA1) UsefulFunctionA() string {
+              return "The result of the product A1."
+          }
+
+          type ConcreteProductA2 struct{}
+          func (p *ConcreteProductA2) UsefulFunctionA() string {
+              return "The result of the product A2."
+          }
+
+          // ConcreteProductB1 and ConcreteProductB2 define products to be created by the corresponding factories.
+          type ConcreteProductB1 struct{}
+          func (p *ConcreteProductB1) UsefulFunctionB() string {
+              return "The result of the product B1."
+          }
+          func (p *ConcreteProductB1) AnotherUsefulFunctionB(collaborator AbstractProductA) string {
+              result := collaborator.UsefulFunctionA()
+              return fmt.Sprintf("The result of the B1 collaborating with the (%s)", result)
+          }
+
+          type ConcreteProductB2 struct{}
+          func (p *ConcreteProductB2) UsefulFunctionB() string {
+              return "The result of the product B2."
+          }
+          func (p *ConcreteProductB2) AnotherUsefulFunctionB(collaborator AbstractProductA) string {
+              result := collaborator.UsefulFunctionA()
+              return fmt.Sprintf("The result of the B2 collaborating with the (%s)", result)
+          }
+
+          // Client code
+          func clientCode(factory AbstractFactory) {
+              productA := factory.CreateProductA()
+              productB := factory.CreateProductB()
+
+              fmt.Println(productB.UsefulFunctionB())
+              fmt.Println(productB.AnotherUsefulFunctionB(productA))
+          }
+
+          func main() {
+              fmt.Println("Client: Testing client code with the first factory type:")
+              clientCode(&ConcreteFactory1{})
+
+              fmt.Println()
+
+              fmt.Println("Client: Testing client code with the second factory type:")
+              clientCode(&ConcreteFactory2{})
+          }
+  - title: Builder
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          // Builder interface specifies methods for creating the different parts of Product objects.
+          type Builder interface {
+              ProducePartA()
+              ProducePartB()
+              ProducePartC()
+          }
+
+          // ConcreteBuilder implements the Builder interface.
+          type ConcreteBuilder struct {
+              product *Product
+          }
+
+          func NewConcreteBuilder() *ConcreteBuilder {
+              return &ConcreteBuilder{product: &Product{}}
+          }
+
+          func (b *ConcreteBuilder) ProducePartA() {
+              b.product.Add("PartA")
+          }
+
+          func (b *ConcreteBuilder) ProducePartB() {
+              b.product.Add("PartB")
+          }
+
+          func (b *ConcreteBuilder) ProducePartC() {
+              b.product.Add("PartC")
+          }
+
+          func (b *ConcreteBuilder) GetProduct() *Product {
+              result := b.product
+              b.Reset()
+              return result
+          }
+
+          func (b *ConcreteBuilder) Reset() {
+              b.product = &Product{}
+          }
+
+          // Product represents the complex object being built.
+          type Product struct {
+              parts []string
+          }
+
+          func (p *Product) Add(part string) {
+              p.parts = append(p.parts, part)
+          }
+
+          func (p *Product) ListParts() {
+              fmt.Printf("Product parts: %s\n", p.parts)
+          }
+
+          // Director is responsible for managing the correct sequence of object construction.
+          type Director struct {
+              builder Builder
+          }
+
+          func NewDirector(b Builder) *Director {
+              return &Director{
+                  builder: b,
+              }
+          }
+
+          func (d *Director) Construct() {
+              d.builder.ProducePartA()
+              d.builder.ProducePartB()
+              d.builder.ProducePartC()
+          }
+
+          // Client code
+          func main() {
+              builder := NewConcreteBuilder()
+              director := NewDirector(builder)
+
+              fmt.Println("Standard basic product:")
+              director.Construct()
+              builder.GetProduct().ListParts()
+
+              fmt.Println("Custom product without part C:")
+              builder.ProducePartA()
+              builder.ProducePartB()
+              builder.GetProduct().ListParts()
+          }
+
+  - title: Prototype
+    examples:
+      - code: |
+          package main
+
+          import (
+              "fmt"
+          )
+
+          // Clonable is the prototype interface that declares the cloning method.
+          type Clonable interface {
+              Clone() Clonable
+          }
+
+          // ConcretePrototype struct represents a concrete prototype that can be cloned.
+          type ConcretePrototype struct {
+              Field1 string
+              Field2 int
+          }
+
+          // Clone method creates a new ConcretePrototype based on the current instance.
+          func (p *ConcretePrototype) Clone() Clonable {
+              // Create a shallow copy.
+              // For deep copying complex objects, consider using a library or manually
+              // duplicating nested objects.
+              result := *p
+              return &result
+          }
+
+          func main() {
+              prototype := ConcretePrototype{Field1: "Value1", Field2: 42}
+              clone := prototype.Clone().(*ConcretePrototype)
+
+              fmt.Println("Original object:", prototype)
+              fmt.Println("Cloned object:  ", clone)
+
+              // Modify clone to show that it is independent of the original.
+              clone.Field1 = "Modified Value"
+              fmt.Println("\nAfter modification:")
+              fmt.Println("Original object:", prototype)
+              fmt.Println("Cloned object:  ", clone)
+          }
+
+  - title: Singleton
+    examples:
+    - code: |
+        package main
+
+        import (
+            "fmt"
+            "sync"
+        )
+
+        // Singleton represents the singleton class.
+        type Singleton struct{}
+
+        var (
+            instance *Singleton
+            once     sync.Once
+        )
+
+        // GetInstance uses sync.Once to ensure that only one instance is created,
+        // even in the presence of concurrent access.
+        func GetInstance() *Singleton {
+            once.Do(func() {
+                instance = &Singleton{}
+            })
+            return instance
+        }
+
+        // SomeBusinessLogic is a placeholder for some functionalities of the singleton.
+        func (s *Singleton) SomeBusinessLogic() {}
+
+        // Client code demonstrating the use of the Singleton.
+        func main() {
+            s1 := GetInstance()
+            s2 := GetInstance()
+
+            fmt.Println("Are s1 and s2 the same instance?", s1 == s2)
+        }
