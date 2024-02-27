@@ -1,5 +1,6 @@
 import {SvgIcon, SvgIconProps, styled} from '@mui/material';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const createSvgIcon = (
   props: SvgIconProps = {
     viewBox: '0 0 24 24',

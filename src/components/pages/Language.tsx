@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {useRecoilValue} from 'recoil';
 
-import { Box, Typography, useTheme } from '@mui/material';
+import {Box, Typography, useTheme} from '@mui/material';
 
-import LanguageLoader, { LanguageParams } from './language/LanguageLoader';
+import {LanguageParams} from './language/LanguageLoader';
 
-import { CodingPrinciple, DesignPattern, Language, LanguageState } from '../../state';
-import { loadLanguage, loadLanguages } from '../../selector';
+import {CodingPrinciple, DesignPattern, Language, LanguageState} from '../../state';
+import {loadLanguage} from '../../selector';
 import Container from '../../views/generic/Container';
 import LanguageHero from '../../views/pages/language/LanguageHero';
 import PrinciplesOrPatterns from '../../views/pages/language/PrinciplesOrPatterns';
 import PrinciplesOrPatternsMenu from '../../views/pages/language/PrinciplesOrPatternsMenu';
-import { CodingPrincipleTitles } from '../../constants';
+import {CodingPrincipleTitles} from '../../constants';
 
-type DetectedPrincipleOrPattern = { type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[] };
+type DetectedPrincipleOrPattern = {type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[]};
 
 const detectPrincipleOrPattern = (language: Language): DetectedPrincipleOrPattern => {
   if (language.principles) {
@@ -40,8 +40,10 @@ const detectPrincipleOrPattern = (language: Language): DetectedPrincipleOrPatter
 
 export default function LanguagePage() {
   const theme = useTheme();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const boxBgColor = (theme.palette as any)?.alternate?.main;
 
-  const { language: languageParam = 'javascript' } = useParams<LanguageParams>();
+  const {language: languageParam = 'javascript'} = useParams<LanguageParams>();
 
   const languageState = useRecoilValue<LanguageState>(loadLanguage(languageParam));
 
@@ -60,34 +62,37 @@ export default function LanguagePage() {
     <Box>
       {languageState?.ready && detectedPrincipleOrPattern.type ? (
         <Box>
-          <Box bgcolor={theme.palette.alternate.main} position={'relative'}>
+          <Box bgcolor={boxBgColor} position={'relative'}>
             <Container position="relative" zIndex={2}>
               <LanguageHero language={languageState?.language} />
             </Container>
           </Box>
           <Box>
             <Container position="relative" zIndex={2}>
-              <Box sx={{ flexGrow: 1 }} display={'flex'} justifyContent={'center'}>
+              <Box sx={{flexGrow: 1}} display={'flex'} justifyContent={'center'}>
                 <Typography variant="h4" gutterBottom>
                   {CodingPrincipleTitles[detectedPrincipleOrPattern.type ?? 'unknown'] ?? 'unknown'}
                 </Typography>
               </Box>
-              <Box sx={{ flexGrow: 1 }}>
+              <Box sx={{flexGrow: 1}}>
                 {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
                   <PrinciplesOrPatterns
                     type={detectedPrincipleOrPattern.type ?? ''}
                     principlesOrPatterns={detectedPrincipleOrPattern.principlesOrPatterns ?? []}
-                    languageCode={languageState.code}
+                    languageCode={languageState.language.code}
                   />
                 )}
               </Box>
             </Container>
           </Box>
           <Box>
-            <Box bgcolor={theme.palette.alternate.main} position={'relative'}>
+            <Box bgcolor={boxBgColor} position={'relative'}>
               <Container position="relative" zIndex={2}>
                 {languageState && (
-                  <PrinciplesOrPatternsMenu language={languageState.language} setPrincipleOrPattern={setDetectedPrincipleOrPattern} />
+                  <PrinciplesOrPatternsMenu
+                    language={languageState.language}
+                    setPrincipleOrPattern={setDetectedPrincipleOrPattern}
+                  />
                 )}
               </Container>
             </Box>

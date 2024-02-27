@@ -50,13 +50,11 @@ export type PrinciplePatternAccordionProps = {
 export default function Presentation({principleOrPattern}: PrinciplePatternAccordionProps) {
   const {before = [], accordion = {}, after = []} = principleOrPattern;
 
-  const expandedDefault: string[] = Object.keys(principleOrPattern?.accordion ?? {}).length
-    ? [Object.keys(principleOrPattern?.accordion)[0]]
-    : [];
+  const expandedDefault: string[] = Object.keys(accordion).length ? [Object.keys(accordion)[0]] : [];
 
   const [expanded, setExpanded] = React.useState<string[]>(expandedDefault);
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+  const handleChange = (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
     if (newExpanded) {
       setExpanded([...new Set([...expanded, panel])]);
     } else {

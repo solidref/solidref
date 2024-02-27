@@ -4,10 +4,9 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
 import LanguagesList, {FilterMode} from './languages/LanguagesList';
-import HomeHero from './home/HomeHero';
+import Hero from './home/Hero';
 
 import Container from '../generic/Container';
-// import { CenteredToolbar } from '../Header';
 
 // export type LanguagesProps = { };
 
@@ -19,18 +18,20 @@ const toggleStyle = {
 
 export default function Languages(/*{ }: LanguagesProps*/) {
   const theme = useTheme();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const boxBgColor = (theme.palette as any)?.alternate?.main;
 
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
 
-  const handleChange = useCallback((event: React.MouseEvent<HTMLElement>, nextView: string) => {
-    // setFilterMode(nextView);
+  const handleChange = useCallback((_event: React.MouseEvent<HTMLElement>, nextView: FilterMode) => {
+    setFilterMode(nextView);
   }, []);
 
   return (
     <Box>
-      <Box bgcolor={theme.palette.alternate.main} position={'relative'}>
+      <Box bgcolor={boxBgColor} position={'relative'}>
         <Container position="relative" zIndex={2}>
-          <HomeHero />
+          <Hero />
         </Container>
       </Box>
       <Box style={{padding: '64px 0 0 0'}}>

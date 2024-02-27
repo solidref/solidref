@@ -11,8 +11,10 @@ export type ThemeWrapperProps = {
 
 export const ThemeWrapperContext = createContext({toggleColorMode: () => {}});
 
+type Mode = 'light' | 'dark';
+
 export default function ThemeWrapper({children}: ThemeWrapperProps) {
-  const [mode, setMode] = useState<'light' | 'dark'>(localStorage.getItem(btoa(ThemeBrightness)) || 'light');
+  const [mode, setMode] = useState<'light' | 'dark'>((localStorage.getItem(btoa(ThemeBrightness)) as Mode) || 'light');
 
   const colorMode = useMemo(
     () => ({

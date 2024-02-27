@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 
-import { Box, Card, CardContent, Grid, Link, RegularBreakpoints, Typography } from '@mui/material';
-import { useRecoilValue } from 'recoil';
-import { HierarchyLanguage } from '../../../state';
+import {Box, Card, CardContent, Grid, Link, RegularBreakpoints, Typography} from '@mui/material';
+import {useRecoilValue} from 'recoil';
+import {HierarchyLanguage} from '../../../state';
 import GenericCodeIcon from '../../icons/GenericCodeIcon';
-import { generateLanguagePath } from '../../../utils/url';
-import { loadLanguageHierarchy } from '../../../selector';
+import {generateLanguagePath} from '../../../utils/url';
+import {loadLanguageHierarchy} from '../../../selector';
 
-export type ListLanguage = {
+type PresentableLanguage = {
   language: HierarchyLanguage;
   logoComponent: React.ElementType | null;
 };
@@ -53,7 +53,7 @@ export default function LanguagesList({
     return languagesHierarchy.list.filter(filterCb(...filterArgs));
   }, [languagesHierarchy.list, filterMode, filterArgs]);
 
-  const [languages, setLanguages] = useState([]);
+  const [languages, setLanguages] = useState<PresentableLanguage[]>([]);
 
   useEffect(() => {
     const loadIcons = async () => {
@@ -66,11 +66,11 @@ export default function LanguagesList({
             const module = await import(`../../icons/${moduleName}`);
             // console.log(module);
 
-            return { language, logoComponent: module.default };
+            return {language, logoComponent: module.default};
           } catch (error) {
             console.error(`Error importing language icon: ${moduleName}`, error);
           }
-          return { language, logoComponent: null };
+          return {language, logoComponent: null};
         }),
       );
 
@@ -84,20 +84,20 @@ export default function LanguagesList({
 
   return (
     <Grid container spacing={4}>
-      {languages.map(({ language, logoComponent }) => (
+      {languages.map(({language, logoComponent}) => (
         <Grid item xs={xs} sm={sm} md={md} key={`languages-grid-item-${language.code}`}>
           <Box component={Card} boxShadow={3} borderRadius={4}>
             {/* TODO: must add dropdown for child languages */}
-            <Link href={generateLanguagePath(language.code)} style={{ paddingTop: '1rem', textDecoration: 'none' }}>
+            <Link href={generateLanguagePath(language.code)} style={{paddingTop: '1rem', textDecoration: 'none'}}>
               <Box
                 component={CardContent}
                 display={'flex'}
                 flexDirection={'column'}
                 alignItems={'center'}
-                padding={{ xs: 2, sm: 4, md: 6 }}
+                padding={{xs: 2, sm: 4, md: 6}}
                 sx={{
                   '&:last-child': {
-                    paddingBottom: { xs: 2, sm: 4, md: 6 },
+                    paddingBottom: {xs: 2, sm: 4, md: 6},
                   },
                 }}
               >
@@ -112,14 +112,22 @@ export default function LanguagesList({
                     },
                   })
                 ) : (
-                  <GenericCodeIcon style={LanguageIconStyle} />
+                  <GenericCodeIcon
+                    style={{
+                      width: '8rem',
+                      height: '8rem',
+                      display: 'block',
+                      margin: 'auto',
+                      transform: 'rotate(-15deg)',
+                    }}
+                  />
                 )}
                 <Typography
                   variant={'h6'}
                   gutterBottom
                   fontWeight={500}
                   align={'center'}
-                  style={{ paddingTop: '1.5rem' }}
+                  style={{paddingTop: '1.5rem'}}
                 >
                   {language.name}
                 </Typography>

@@ -1,9 +1,8 @@
-import React from 'react';
 import {useTheme} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Hero from '../../generic/Hero';
-import Quotes from './home-hero/Quotes';
+import Quotes from './hero/Quotes';
 import Rocket from '../../images/Rocket';
 
 function HomeHeroImage() {
@@ -16,7 +15,7 @@ function HomeHeroImage() {
       justifyContent={'center'}
       padding={'2rem 0'}
     >
-      <Rocket width={'100%'} height={'100%'} />
+      <Rocket />
     </Box>
   );
 }

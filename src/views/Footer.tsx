@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {Box, Divider, Grid, IconButton, Link, Typography, styled} from '@mui/material';
 import Container from './generic/Container';
 

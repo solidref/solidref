@@ -9,17 +9,17 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
-import { IconButton, Slide, useScrollTrigger, useTheme, Box, AppBar, Link, Button } from '@mui/material';
+import {IconButton, Slide, useScrollTrigger, useTheme, Box, AppBar, Link, Button} from '@mui/material';
 import Logo from './Logo';
 
-import { ThemeWrapperContext } from '../components/styles/ThemeWrapper';
+import {ThemeWrapperContext} from '../components/styles/ThemeWrapper';
 
 type HideOnScrollProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children: React.ReactElement<any, any>;
 };
 
-const HideOnScroll = ({ children }: HideOnScrollProps) => {
+const HideOnScroll = ({children}: HideOnScrollProps) => {
   const trigger = useScrollTrigger();
 
   return (
@@ -66,7 +66,7 @@ const HeaderLinks = () => {
           iconLabel: 'Post us on Twitter',
           icon: <TwitterIcon />,
         },
-      ].map(({ href, icon, iconLabel, title }) => (
+      ].map(({href, icon, iconLabel, title}) => (
         <Box component="a" href={href} rel="external nofollow noreferrer" target="_blank" title={title} key={href}>
           <IconButton aria-label={iconLabel}>{icon}</IconButton>
         </Box>
@@ -94,9 +94,9 @@ const TopBar = () => {
           component="a"
           href="/"
           title="SOLID.ref"
-          height={{ xs: 28, md: 32 }}
+          height={{xs: 28, md: 32}}
           width={45}
-          style={{ textDecoration: 'none' }}
+          style={{textDecoration: 'none'}}
         >
           <Logo />
         </Box>

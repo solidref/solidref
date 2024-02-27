@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import {Box, useTheme} from '@mui/material';
 import {useRecoilState} from 'recoil';
@@ -15,6 +15,8 @@ import PrinciplesOrPatternsMenu from '../../views/pages/language/PrinciplesOrPat
 
 export default function PrinciplePattern() {
   const theme = useTheme();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const boxBgColor = (theme.palette as any)?.alternate?.main;
 
   const [languageState, setLanguagesState] = useRecoilState<LanguageState>(loadLanguages('javascript'));
 
@@ -47,7 +49,7 @@ export default function PrinciplePattern() {
             <PrincipleOrPatternHero title={principleOrPatternContent?.title} />
           </Box>
           <Box>
-            <Box bgcolor={theme.palette.alternate.main} position={'relative'}>
+            <Box bgcolor={boxBgColor} position={'relative'}>
               <Container position="relative" zIndex={2}>
                 <Presentation principleOrPattern={principleOrPatternContent} />
               </Container>

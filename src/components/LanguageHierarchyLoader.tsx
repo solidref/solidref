@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 
 import {SetterOrUpdater, useRecoilValue} from 'recoil';
 import {loadLanguageHierarchy} from '../selector';

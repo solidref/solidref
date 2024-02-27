@@ -34,16 +34,13 @@ export type DesignPattern = {
  * Complex types for States
  */
 
-export type CodingPrinciples = {
-  proprietary?: CodingPrinciple[];
-  solid?: CodingPrinciple[];
-};
+export type CodingPrincipleType = 'proprietary' | 'other' | 'solid';
 
-export type DesignPatterns = {
-  behavioural?: DesignPattern[];
-  creational?: DesignPattern[];
-  structural?: DesignPattern[];
-};
+export type CodingPrinciples = Record<CodingPrincipleType, CodingPrinciple[]>;
+
+export type DesignPatternType = 'behavioural' | 'creational' | 'structural' | 'proprietary';
+
+export type DesignPatterns = Record<DesignPatternType, DesignPattern[]>;
 
 export type Language = {
   birth?: number;

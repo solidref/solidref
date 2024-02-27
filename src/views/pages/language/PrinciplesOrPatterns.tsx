@@ -44,9 +44,9 @@ const CustomLink = styled(Link)(() => ({
 }));
 
 export default function PrinciplesOrPatterns({principlesOrPatterns, type, languageCode}: CodingPrinciplesProps) {
-  const [expanded, setExpanded] = useState<string>([principlesOrPatterns[0].title]);
+  const [expanded, setExpanded] = useState<string[]>([principlesOrPatterns[0].title]);
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+  const handleChange = (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
     if (newExpanded) {
       setExpanded([...new Set([...expanded, panel])]);
     } else {

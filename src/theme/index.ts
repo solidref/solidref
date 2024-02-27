@@ -1,5 +1,5 @@
 import {Theme, responsiveFontSizes} from '@mui/material';
-import {createTheme} from '@mui/material/styles';
+import {ThemeOptions, createTheme} from '@mui/material/styles';
 import shadows from './shadows';
 import palette from './palette';
 
@@ -37,7 +37,7 @@ const getTheme = (mode: string, paletteType: string): Theme =>
           },
         },
       },
-    }),
+    } as unknown as ThemeOptions),
   );
 
 export default getTheme;

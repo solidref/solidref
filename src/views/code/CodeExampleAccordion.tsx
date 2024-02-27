@@ -23,7 +23,7 @@ const CustomBox = styled(Box)(() => ({
 function CodeExampleAccordion({examples, language = 'js'}: CodeExampleAccordionProps) {
   const [expanded, setExpanded] = React.useState<string | false>('panel0');
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+  const handleChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : 'panel0');
   };
 
