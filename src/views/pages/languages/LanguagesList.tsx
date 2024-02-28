@@ -6,11 +6,12 @@ import {HierarchyLanguage} from '../../../state';
 import GenericCodeIcon from '../../icons/GenericCodeIcon';
 import {generateLanguagePath} from '../../../utils/url';
 import {loadLanguageHierarchy} from '../../../selector';
+import LazyLoadIcon from '../../../components/icons/LazyLoadIcon';
 
-type PresentableLanguage = {
-  language: HierarchyLanguage;
-  logoComponent: React.ElementType | null;
-};
+// type PresentableLanguage = {
+//   language: HierarchyLanguage;
+//   logoComponent: React.ElementType | null;
+// };
 
 type FilterMethod = (...args: unknown[]) => (value: HierarchyLanguage) => boolean;
 
@@ -45,7 +46,7 @@ export default function LanguagesList({
 
   // Assuming `filters` is an object with filtering functions you've defined elsewhere
   // and `FilterMethod` is a function type for these filters
-  const filteredLanguages = useMemo(() => {
+  const languages = useMemo(() => {
     if (!languagesHierarchy.list) return [];
 
     const filterCb = filters[`${filterMode}Filter`]; // Assuming this is a function
@@ -53,38 +54,50 @@ export default function LanguagesList({
     return languagesHierarchy.list.filter(filterCb(...filterArgs));
   }, [languagesHierarchy.list, filterMode, filterArgs]);
 
-  const [languages, setLanguages] = useState<PresentableLanguage[]>([]);
+  // version 1
+  // // Assuming `filters` is an object with filtering functions you've defined elsewhere
+  // // and `FilterMethod` is a function type for these filters
+  // const filteredLanguages = useMemo(() => {
+  //   if (!languagesHierarchy.list) return [];
 
-  useEffect(() => {
-    const loadIcons = async () => {
-      const loadedLanguages = await Promise.all(
-        filteredLanguages.map(async (language) => {
-          const moduleName = language.code.charAt(0).toUpperCase() + language.code.slice(1);
-          try {
-            // Dynamically import icon based on the language code
-            // console.log(`../../icons/${moduleName}`);
-            const module = await import(`../../icons/${moduleName}.js`);
-            // console.log(module);
+  //   const filterCb = filters[`${filterMode}Filter`]; // Assuming this is a function
+  //   // console.log(`${filterMode}Filter`);
+  //   return languagesHierarchy.list.filter(filterCb(...filterArgs));
+  // }, [languagesHierarchy.list, filterMode, filterArgs]);
 
-            return {language, logoComponent: module.default};
-          } catch (error) {
-            console.error(`Error importing language icon: ${moduleName}`, error);
-          }
-          return {language, logoComponent: null};
-        }),
-      );
+  // const [languages, setLanguages] = useState<PresentableLanguage[]>([]);
 
-      setLanguages(loadedLanguages);
-    };
+  // useEffect(() => {
+  //   const loadIcons = async () => {
+  //     const loadedLanguages = await Promise.all(
+  //       filteredLanguages.map(async (language) => {
+  //         const moduleName = language.code.charAt(0).toUpperCase() + language.code.slice(1);
+  //         try {
+  //           // Dynamically import icon based on the language code
+  //           // console.log(`../../icons/${moduleName}`);
+  //           const module = await import(`../../icons/${moduleName}.js`);
+  //           // console.log(module);
 
-    loadIcons();
-  }, [filteredLanguages]);
+  //           return {language, logoComponent: module.default};
+  //         } catch (error) {
+  //           console.error(`Error importing language icon: ${moduleName}`, error);
+  //         }
+  //         return {language, logoComponent: null};
+  //       }),
+  //     );
+
+  //     setLanguages(loadedLanguages);
+  //   };
+
+  //   loadIcons();
+  // }, [filteredLanguages]);
 
   // console.log(languages.map(({ logoComponent }) => logoComponent));
 
   return (
     <Grid container spacing={4}>
-      {languages.map(({language, logoComponent}) => (
+      {languages.map((language) => (
+        // {languages.map(({ language, logoComponent }) => ( // version 1
         <Grid item xs={xs} sm={sm} md={md} key={`languages-grid-item-${language.code}`}>
           <Box component={Card} boxShadow={3} borderRadius={4}>
             {/* TODO: must add dropdown for child languages */}
@@ -101,7 +114,27 @@ export default function LanguagesList({
                   },
                 }}
               >
-                {logoComponent !== null ? (
+                <LazyLoadIcon
+                  icon={language.code.charAt(0).toUpperCase() + language.code.slice(1)}
+                  style={{
+                    width: '8rem',
+                    height: '8rem',
+                    display: 'block',
+                    margin: 'auto',
+                    transform: 'rotate(-15deg)',
+                  }}
+                  fallbackProps={{
+                    style: {
+                      width: '8rem',
+                      height: '8rem',
+                      display: 'block',
+                      margin: 'auto',
+                      transform: 'rotate(-15deg)',
+                    },
+                  }}
+                />
+                {/* version 1 */}
+                {/* {logoComponent !== null ? (
                   React.createElement(logoComponent, {
                     style: {
                       width: '8rem',
@@ -121,7 +154,7 @@ export default function LanguagesList({
                       transform: 'rotate(-15deg)',
                     }}
                   />
-                )}
+                )} */}
                 <Typography
                   variant={'h6'}
                   gutterBottom
