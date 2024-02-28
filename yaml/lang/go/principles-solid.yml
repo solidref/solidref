@@ -1,7 +1,7 @@
 principles:
   - title: Single Responsibility
     examples:
-      - title: Good Example (Go)
+      - title: Good Example
         code: |
           package main
 
@@ -16,7 +16,7 @@ principles:
           func (un *UserNotification) SendNotification() {
               // send notification
           }
-      - title: Bad Example (Go)
+      - title: Bad Example
         code: |
           package main
 
@@ -32,7 +32,7 @@ principles:
 
   - title: Open-Closed
     examples:
-      - title: Good Example (Go)
+      - title: Good Example
         code: |
           package main
 
@@ -55,7 +55,7 @@ principles:
           func (c Circle) ComputeArea() float64 {
               return 3.14 * c.Radius * c.Radius
           }
-      - title: Bad Example (Go)
+      - title: Bad Example
         code: |
           package main
 
@@ -68,7 +68,7 @@ principles:
 
   - title: Liskov Substitution
     examples:
-      - title: Good Example (Go)
+      - title: Good Example
         code: |
           package main
 
@@ -87,7 +87,7 @@ principles:
           func (o *Ostrich) Walk() {
               // ostrich can't fly, so we don't implement Fly()
           }
-      - title: Bad Example (Go)
+      - title: Bad Example
         code: |
           package main
 
@@ -101,7 +101,7 @@ principles:
 
   - title: Interface Segregation
     examples:
-      - title: Good Example (Go)
+      - title: Good Example
         code: |
           package main
 
@@ -131,7 +131,7 @@ principles:
 
           // Robot does not implement Eater, adhering to ISP
 
-      - title: Bad Example (Go)
+      - title: Bad Example
         code: |
           package main
 
@@ -146,7 +146,7 @@ principles:
 
   - title: Dependency Inversion
     examples:
-      - title: Good Example (Go)
+      - title: Good Example
         code: |
           package main
 
@@ -168,7 +168,7 @@ principles:
               // light bulb turning on
           }
 
-      - title: Bad Example (Go)
+      - title: Bad Example
         code: |
           package main
 

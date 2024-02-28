@@ -1,0 +1,266 @@
+---
+patterns:
+  - title: Factory Method
+    examples:
+      - code: |
+          abstract class Creator {
+              abstract factoryMethod(): Product;
+
+              someOperation() {
+                  const product = this.factoryMethod();
+                  return `Creator: The same creator's code has just worked with ${product.operation()}`;
+              }
+          }
+
+          class ConcreteCreator1 extends Creator {
+              factoryMethod(): Product {
+                  return new ConcreteProduct1();
+              }
+          }
+
+          class ConcreteCreator2 extends Creator {
+              factoryMethod(): Product {
+                  return new ConcreteProduct2();
+              }
+          }
+
+          interface Product {
+              operation(): string;
+          }
+
+          class ConcreteProduct1 implements Product {
+              operation(): string {
+                  return '{Result of the ConcreteProduct1}';
+              }
+          }
+
+          class ConcreteProduct2 implements Product {
+              operation(): string {
+                  return '{Result of the ConcreteProduct2}';
+              }
+          }
+
+          // Client code
+          function clientCode(creator: Creator) {
+              console.log("Client: I'm not aware of the creator's class, but it still works.");
+              console.log(creator.someOperation());
+          }
+
+          console.log('App: Launched with the ConcreteCreator1.');
+          clientCode(new ConcreteCreator1());
+          console.log('');
+
+          console.log('App: Launched with the ConcreteCreator2.');
+          clientCode(new ConcreteCreator2());
+
+  - title: Abstract Factory
+    examples:
+      - code: |
+          interface AbstractFactory {
+              createProductA(): AbstractProductA;
+              createProductB(): AbstractProductB;
+          }
+
+          class ConcreteFactory1 implements AbstractFactory {
+              createProductA(): AbstractProductA {
+                  return new ConcreteProductA1();
+              }
+
+              createProductB(): AbstractProductB {
+                  return new ConcreteProductB1();
+              }
+          }
+
+          class ConcreteFactory2 implements AbstractFactory {
+              createProductA(): AbstractProductA {
+                  return new ConcreteProductA2();
+              }
+
+              createProductB(): AbstractProductB {
+                  return new ConcreteProductB2();
+              }
+          }
+
+          interface AbstractProductA {
+              usefulFunctionA(): string;
+          }
+
+          class ConcreteProductA1 implements AbstractProductA {
+              usefulFunctionA(): string {
+                  return 'The result of the product A1.';
+              }
+          }
+
+          class ConcreteProductA2 implements AbstractProductA {
+              usefulFunctionA(): string {
+                  return 'The result of the product A2.';
+              }
+          }
+
+          interface AbstractProductB {
+              usefulFunctionB(): string;
+              anotherUsefulFunctionB(collaborator: AbstractProductA): string;
+          }
+
+          class ConcreteProductB1 implements AbstractProductB {
+              usefulFunctionB(): string {
+                  return 'The result of the product B1.';
+              }
+
+              anotherUsefulFunctionB(collaborator: AbstractProductA): string {
+                  const result = collaborator.usefulFunctionA();
+                  return `The result of the B1 collaborating with the (${result})`;
+              }
+          }
+
+          class ConcreteProductB2 implements AbstractProductB {
+              usefulFunctionB(): string {
+                  return 'The result of the product B2.';
+              }
+
+              anotherUsefulFunctionB(collaborator: AbstractProductA): string {
+                  const result = collaborator.usefulFunctionA();
+                  return `The result of the B2 collaborating with the (${result})`;
+              }
+          }
+
+          // Client code
+          function clientCode(factory: AbstractFactory) {
+              const productA = factory.createProductA();
+              const productB = factory.createProductB();
+
+              console.log(productB.usefulFunctionB());
+              console.log(productB.anotherUsefulFunctionB(productA));
+          }
+
+          clientCode(new ConcreteFactory1());
+          clientCode(new ConcreteFactory2());
+
+  - title: Builder
+    examples:
+      - code: |
+          class Director {
+              private builder: Builder;
+
+              constructor(builder: Builder) {
+                  this.builder = builder;
+              }
+
+              construct() {
+                  this.builder.buildPartA();
+                  this.builder.buildPartB();
+                  this.builder.buildPartC();
+              }
+          }
+
+          interface Builder {
+              buildPartA(): void;
+              buildPartB(): void;
+              buildPartC(): void;
+          }
+
+          class ConcreteBuilder implements Builder {
+              private product: Product;
+
+              constructor() {
+                  this.product = new Product();
+              }
+
+              buildPartA() {
+                  this.product.parts.push('PartA');
+              }
+
+              buildPartB() {
+                  this.product.parts.push('PartB');
+              }
+
+              buildPartC() {
+                  this.product.parts.push('PartC');
+              }
+
+              getResult() {
+                  return this.product;
+              }
+          }
+
+          class Product {
+              parts: string[];
+
+              constructor() {
+                  this.parts = [];
+              }
+          }
+
+          // Client code
+          const builder = new ConcreteBuilder();
+          const director = new Director(builder);
+
+          director.construct();
+          const product = builder.getResult();
+          console.log(product.parts);
+
+  - title: Prototype
+    examples:
+      - code: |
+          class Prototype {
+              primitive: number;
+              component: Date;
+              circularReference: { prototype: Prototype };
+
+              clone(): this {
+                  const clone = Object.create(this);
+                  clone.component = Object.create(this.component);
+
+                  // Clone each property if needed (deep copy)
+                  clone.circularReference = {
+                      ...this.circularReference,
+                      prototype: { ...this },
+                  };
+
+                  return clone;
+              }
+          }
+
+          class ConcretePrototype1 extends Prototype {
+              constructor() {
+                  super();
+                  this.primitive = 245;
+                  this.component = new Date();
+                  this.circularReference = {
+                      prototype: this,
+                  };
+              }
+          }
+
+          // Client code
+          const p1 = new ConcretePrototype1();
+          const p2 = p1.clone();
+
+          console.log('p1:', p1);
+          console.log('p2:', p2);
+          console.log('Same component?', p1.component === p2.component); // false, deep copy
+
+  - title: Singleton
+    examples:
+      - code: |
+          class Singleton {
+              private static instance: Singleton;
+
+              private constructor() {}
+
+              static getInstance(): Singleton {
+                  if (!this.instance) {
+                      this.instance = new Singleton();
+                  }
+                  return this.instance;
+              }
+
+              // Some business logic
+              someBusinessLogic() {}
+          }
+
+          // Client code
+          const instance1 = Singleton.getInstance();
+          const instance2 = Singleton.getInstance();
+
+          console.log('Same instance?', instance1 === instance2); // true

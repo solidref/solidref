@@ -1,0 +1,22 @@
+name: TypeScript
+code: typescript
+birth: 2012
+death: N/A
+inspiredBy:
+  - javascript
+  - c#
+  - java
+  - php
+  - python
+  - ruby
+  - scala
+inspiring:
+  - javascript
+description: |
+  TypeScript is a superset of JavaScript that adds static typing and other features to the language.
+  It was developed by Microsoft and is widely used for building large-scale applications,
+  particularly in the realm of web development. TypeScript compiles to plain JavaScript and can be
+  used in both front-end and back-end development. It offers features like static typing,
+  interfaces, generics, and advanced tooling support through tools like Visual Studio Code.
+  TypeScript provides developers with increased type safety and helps catch errors at compile time,
+  leading to more robust and maintainable codebases.
