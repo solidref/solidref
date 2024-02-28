@@ -63,7 +63,7 @@ export default function LanguagesList({
           try {
             // Dynamically import icon based on the language code
             // console.log(`../../icons/${moduleName}`);
-            const module = await import(`../../icons/${moduleName}`);
+            const module = await import(`../../icons/${moduleName}.js`);
             // console.log(module);
 
             return {language, logoComponent: module.default};
