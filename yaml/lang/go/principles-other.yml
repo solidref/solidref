@@ -1,0 +1,142 @@
+principles:
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Using a function to avoid duplicated logic
+          func addTax(price, rate float64) float64 {
+              if rate == 0 {
+                  rate = 0.05
+              }
+              return price + (price * rate)
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Repeated logic in separate functions
+          func addTaxForFood(price float64) float64 {
+              return price + (price * 0.05)
+          }
+
+          func addTaxForElectronics(price float64) float64 {
+              return price + (price * 0.05)
+          }
+
+  - title: Keep It Simple Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Simplified approach
+          func isEven(num int) bool {
+              return num%2 == 0
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Overcomplicated way to check even numbers
+          func isEven(num int) bool {
+              return num % int(math.Abs(2)) == 0
+          }
+
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Implementing only the needed functionality
+          type Car struct{}
+
+          func (c Car) Drive() {
+              // Driving logic
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Adding unnecessary features
+          type Car struct{}
+
+          func (c Car) Drive() {
+              // Driving logic
+          }
+
+          func (c Car) Fly() {
+              // Flying logic - Cars don't fly!
+          }
+
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Using methods for encapsulation
+          type Wallet struct {
+              money int
+          }
+
+          func (w *Wallet) GetAmount() int {
+              return w.money
+          }
+
+          type Person struct {
+              wallet Wallet
+          }
+
+          func (p *Person) GetMoneyAmount() int {
+              return p.wallet.GetAmount()
+          }
+
+          func purchase(itemPrice int, buyer *Person) {
+              if buyer.GetMoneyAmount() >= itemPrice {
+                  // Purchase logic
+              }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Accessing nested structures directly
+          type Wallet struct {
+              Money int
+          }
+
+          type Person struct {
+              Wallet Wallet
+          }
+
+          func purchase(itemPrice int, buyer *Person) {
+              if buyer.Wallet.Money >= itemPrice {
+                  // Purchase logic
+              }
+          }
+
+  - title: Separation of Concerns
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Separating concerns into different types and functions
+          type UserDataService struct{}
+
+          func (uds *UserDataService) FetchUserData() {
+              // Fetch user data
+          }
+
+          type UserLogic struct{}
+
+          func (ul *UserLogic) CalculateAge() {
+              // Calculate age
+          }
+
+          type UserComponent struct{}
+
+          func (uc *UserComponent) Render() {
+              // Render logic
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Mixing concerns in one type
+          type UserComponent struct{}
+
+          func (uc *UserComponent) FetchUserData() {
+              // Fetch data
+          }
+
+          func (uc *UserComponent) Render() {
+              // Render logic
+          }
+
+          func (uc *UserComponent) CalculateAge() {
+              // Calculate age
+          }

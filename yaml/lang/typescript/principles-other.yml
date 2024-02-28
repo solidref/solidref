@@ -1,0 +1,101 @@
+---
+principles:
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Using default parameters and arrow functions for repeated logic
+          const addTax = (price: number, rate: number = 0.05): number => price + (price * rate);
+      - title: Bad Example
+        code: |
+          const addTaxForFood = (price: number): number => price + (price * 0.05);
+          const addTaxForElectronics = (price: number): number => price + (price * 0.05);
+  - title: Keep It Simple Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          const isEven = (num: number): boolean => num % 2 === 0;
+      - title: Bad Example
+        code: |
+          const isEven = (num: number): boolean => num % Math.abs(2) === 0;
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          class Car {
+              drive() { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          class Car {
+              drive() { /* ... */ }
+              fly() { /* ... */ }  // Cars don't fly!
+          }
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          class Wallet {
+              private _money: number;
+              constructor() {
+                  this._money = 100;
+              }
+              getAmount(): number {
+                  return this._money;
+              }
+          }
+
+          class Person {
+              wallet: Wallet;
+              constructor() {
+                  this.wallet = new Wallet();
+              }
+              getMoneyAmount(): number {
+                  return this.wallet.getAmount();
+              }
+          }
+
+          function purchase(item: { price: number }, buyer: Person) {
+              if (buyer.getMoneyAmount() >= item.price) { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          class Wallet {
+              money: { amount: number };
+              constructor() {
+                  this.money = { amount: 100 };
+              }
+          }
+
+          class Person {
+              wallet: Wallet;
+              constructor() {
+                  this.wallet = new Wallet();
+              }
+          }
+
+          function purchase(item: { price: number }, buyer: Person) {
+              if (buyer.wallet.money.amount >= item.price) { /* ... */ }
+          }
+  - title: Separation of Concerns
+    examples:
+      - title: Good Example
+        code: |
+          class UserDataService {
+              fetchUserData() { /* ... */ }
+          }
+
+          class UserLogic {
+              calculateAge() { /* ... */ }
+          }
+
+          class UserComponent {
+              render() { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          class UserComponent {
+              fetchUserData() { /* ... */ }
+              render() { /* ... */ }
+              calculateAge() { /* ... */ }
+          }

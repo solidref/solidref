@@ -14,10 +14,27 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({code = '', childre
   const theme = useTheme();
 
   // Clone and modify the styles instead of modifying the original
-  const customDocco = {...docco, hljs: {...docco.hljs, background: 'transparent', overflow: 'inherit', padding: '0'}};
+  const customDocco = {
+    ...docco,
+    hljs: {
+      ...docco.hljs,
+      background: 'transparent',
+      overflow: 'inherit',
+      padding: '0',
+      fontSize: '1rem',
+      fontFamily: 'Roboto, Inter, sans-serif !important',
+    },
+  };
   const customDarcula = {
     ...darcula,
-    hljs: {...darcula.hljs, background: 'transparent', overflow: 'inherit', padding: '0'},
+    hljs: {
+      ...darcula.hljs,
+      background: 'transparent',
+      overflow: 'inherit',
+      padding: '0',
+      fontSize: '1rem',
+      fontFamily: 'Roboto, Inter, sans-serif !important',
+    },
   };
 
   const hasContent = language && (code || children);

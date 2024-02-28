@@ -1,76 +1,58 @@
 {
-  "name": "coding-principles-website",
-  "version": "0.1.0",
+  "name": "solidref",
   "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@fontsource/roboto": "^5.0.8",
-    "@mui/icons-material": "^5.14.11",
-    "@mui/material": "^5.14.5",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.41",
-    "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
-    "@types/react-router-dom": "^5.3.3",
-    "node-vibrant": "^3.2.1-alpha.1",
-    "randomcolor": "^0.6.2",
-    "react": "^18.2.0",
-    "react-content-loader": "^6.2.1",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.15.0",
-    "react-scripts": "5.0.1",
-    "react-syntax-highlighter": "^15.5.0",
-    "recharts": "^2.8.0",
-    "recoil": "^0.7.7",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "rimraf ./node_modules/.vite && vite",
+    "start:dev": "npm start -- --force",
+    "build": "tsc && vite build && npm run build:deps",
     "build:deps": "run-s build:deps:*",
     "build:deps:content": "node .scripts/esm/build-content-files.js",
     "build:deps:language": "node .scripts/esm/build-language-files.js",
-    "--postbuild:deps": "npm run prettier",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prebuild:deps": "rimraf ./public/generated",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\" && prettier --write \".scripts/**/*.js\""
+    "preview": "vite preview",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\" && prettier --write \".scripts/**/*.js\"",
+    "prepare": "husky"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/icons-material": "^5.15.8",
+    "@mui/material": "^5.15.6",
+    "react": "^18.2.0",
+    "react-content-loader": "^6.2.1",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.3",
+    "react-slick": "^0.30.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "recoil": "^0.7.7",
+    "slick-carousel": "^1.8.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@types/randomcolor": "^0.5.7",
-    "@types/react-syntax-highlighter": "^15.5.7",
-    "globby": "^13.2.2",
-    "mdast-util-from-markdown": "^2.0.0",
-    "micromark": "^4.0.0",
+    "@types/node": "^20.11.6",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-slick": "^0.23.13",
+    "@types/react-syntax-highlighter": "^15.5.11",
+    "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "globby": "^14.0.0",
+    "husky": "^9.0.11",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.0.2",
-    "react-app-rewired": "^2.2.1",
-    "ts-node": "^10.9.1",
-    "twing": "^6.0.0-alpha.1",
-    "unified": "^11.0.1",
-    "yaml": "^2.3.2"
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
   }
 }

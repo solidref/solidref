@@ -1,18 +1,17 @@
-import {GetRecoilValue, RecoilState, selector, selectorFamily} from 'recoil';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {RecoilState, selector, selectorFamily} from 'recoil';
 import {
   DefaultMessageTtl,
   HierarchyLanguage,
   LanguagesHierarchyState,
   Language,
-  languagesHierarchyState,
-  LanguagesState,
   languagesState,
   Message,
   MessagesState,
   messagesState,
   LanguageState,
-  PrinciplePatternContentState,
-  PrinciplePatternContent,
+  PrinciplePatternState,
+  PrincipleOrPatternContent,
 } from './state';
 import {id} from './utils/id';
 
@@ -43,8 +42,7 @@ function addMessageWithTTL(
 
 export const loadLanguageHierarchy = selector<LanguagesHierarchyState>({
   key: 'loadLanguageHierarchy',
-  get: async ({get, set}: any) => {
-    console.log('Loading language hierarchy');
+  get: async () => {
     try {
       const response = await fetch('/generated/hierarchy.json');
       if (!response.ok) {
@@ -53,13 +51,13 @@ export const loadLanguageHierarchy = selector<LanguagesHierarchyState>({
 
       const list = (await response.json()) as HierarchyLanguage[];
       return {
-        ready: true,
         list,
+        ready: true,
       };
     } catch (error) {
       console.error('Error fetching language hierarchy:', error);
       return {
-        ...get(languagesHierarchyState),
+        list: [],
         ready: false,
       };
     }
@@ -86,7 +84,6 @@ export const loadLanguage = selectorFamily<LanguageState, string>({
   get:
     (code) =>
     async ({get}: any) => {
-      console.log(`Loading ${code} language`);
       try {
         const response = await fetch(`/generated/languages/${code}.json`);
         if (!response.ok) {
@@ -108,30 +105,27 @@ export const loadLanguage = selectorFamily<LanguageState, string>({
     },
 });
 
-export const loadPrinciplePatternContent = selectorFamily<PrinciplePatternContentState, string>({
+export const loadPrinciplePatternContent = selectorFamily<PrinciplePatternState, string>({
   key: 'loadPrinciplePatternContent',
-  get:
-    (item) =>
-    async ({get}: any) => {
-      console.log(`Loading ${item} principle/pattern`);
-      try {
-        const response = await fetch(`/generated/principles-patterns/${item}.json`);
-        if (!response.ok) {
-          throw new Error(`Failed to load '${item}' principle/pattern`);
-        }
-
-        const content = (await response.json()) as PrinciplePatternContent;
-        return {
-          ready: true,
-          content,
-        };
-      } catch (error) {
-        console.error(`Error fetching '${item}' principle/pattern:`, error);
-        return {
-          ready: false,
-        };
+  get: (item) => async () => {
+    try {
+      const response = await fetch(`/generated/principles-patterns/${item}.json`);
+      if (!response.ok) {
+        throw new Error(`Failed to load '${item}' principle/pattern`);
       }
-    },
+
+      const content = (await response.json()) as PrincipleOrPatternContent;
+      return {
+        ready: true,
+        content,
+      };
+    } catch (error) {
+      console.error(`Error fetching '${item}' principle/pattern:`, error);
+      return {
+        ready: false,
+      };
+    }
+  },
 });
 
 // selector for adding messages

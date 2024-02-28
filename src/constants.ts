@@ -7,3 +7,5 @@ export const CodingPrincipleTitles: Record<string, string> = {
   patterns_structural: 'Structural Patterns',
   patterns_proprietary: 'Proprietary Patterns',
 };
+
+export const ThemeBrightness = 'theme-brightness';

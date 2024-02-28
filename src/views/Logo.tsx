@@ -1,38 +1,39 @@
 import React from 'react';
-import Link from '@mui/material/Link';
-import {styled} from '@mui/material/styles';
+
+import CodeOffIcon from '@mui/icons-material/CodeOff';
+
+import {Box, IconButton, Typography, TypographyOwnProps, useTheme} from '@mui/material';
 
 export type LogoProps = {
-  size?: number;
-  unit?: string;
+  readonly variant?: TypographyOwnProps['variant'];
+  readonly component?: React.ElementType;
 };
 
-const Solid = styled('span')(({theme}) => ({
-  color: theme.palette.secondary.main,
-}));
+function Logo({...rest}: LogoProps) {
+  const theme = useTheme();
 
-const Dot = styled('span')(({theme}) => ({
-  color: theme.palette.secondary.dark,
-}));
+  rest.variant = rest.variant ?? 'h6';
+  rest.component = rest.component ?? 'h1';
 
-const Ref = styled('span')(({theme}) => ({
-  color: theme.palette.secondary.light,
-}));
-
-function Logo({size = 36, unit = 'rem'}: LogoProps) {
   return (
-    <Link
-      variant="h6"
-      underline="none"
-      color="inherit"
-      href="/"
-      sx={{fontSize: `${size}${unit}`}}
-      style={{fontWeight: 'bold'}}
-    >
-      <Solid>{'SOLID'}</Solid>
-      <Dot style={{fontSize: `${size + Math.trunc(size * 0.3)}${unit}`}}>{'.'}</Dot>
-      <Ref>{'ref'}</Ref>
-    </Link>
+    <Box display={'flex'} alignItems="center">
+      <Box display={'flex'} alignItems="baseline">
+        <IconButton aria-label="SOLID.ref">
+          <CodeOffIcon height={'100%'} width={'100%'} />
+        </IconButton>
+      </Box>
+      <Box display={'flex'} alignItems="baseline">
+        <Typography {...rest} display={'flex'}>
+          <Typography variant="inherit" color={theme.palette.mode === 'light' ? 'primary' : 'secondary'}>
+            SOLID
+          </Typography>
+          <Typography variant="inherit">.</Typography>
+          <Typography variant="inherit" color={theme.palette.mode === 'light' ? 'secondary' : 'primary'}>
+            ref
+          </Typography>
+        </Typography>
+      </Box>
+    </Box>
   );
 }
 

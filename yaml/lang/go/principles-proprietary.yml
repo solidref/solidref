@@ -1,283 +1,164 @@
----
 principles:
-  - abbr: DRY
+  - title: "Static Typing"
+    description:
+      - variant: subtitle1
+        content: |
+          Go is a statically typed language, meaning variables are explicitly typed, and their types are checked at compile time. This helps catch type-related errors early in the development process.
     examples:
-      - title: Good Example
+      - title: "Static Typing Example"
         code: |
-          // Good example: Single function for repeated logic
-          func AddTax(price, rate float64) float64 {
-              return price + (price * rate)
-          }
-      - title: Bad Example
-        code: |
-          // Bad example: Repeated logic
-          func AddTaxForFood(price float64) float64 {
-              return price + (price * 0.05)
-          }
+          var data int = 42 // data is explicitly typed as an integer
+          // data = 'hello' // This would result in a compile-time error
 
-          func AddTaxForElectronics(price float64) float64 {
-              return price + (price * 0.05)
-          }
-  - abbr: KISS
+  - title: "Structs Instead of Classes"
+    description:
+      - variant: subtitle1
+        content: |
+          Go uses structs instead of classes for structuring code. Methods can be associated with structs to provide behavior.
     examples:
-      - title: Good Example
+      - title: "Structs and Methods Example"
         code: |
-          // Good example: Simplified approach
-          func IsEven(num int) bool {
-              return num % 2 == 0
-          }
-      - title: Bad Example
-        code: |
-          // Bad example: Overcomplicated way to check even numbers
-          func IsEven(num int) bool {
-              return num % 2 == 0
-          }
-  - abbr: YAGNI
-    examples:
-      - title: Good Example
-        code: |
-          // Good example: Only implement what's needed
-          type Car struct{}
-
-          func (c Car) Drive() {
-              // ...
-          }
-      - title: Bad Example
-        code: |
-          // Bad example: Adding unnecessary features
-          type Car struct{}
-
-          func (c Car) Drive() {
-              // ...
-          }
-          func (c Car) Fly() {
-              // ...
-          }
-  - abbr: PLK
-    examples:
-      - title: Good Example
-        code: |
-          // Good example: Using encapsulation
-          type Wallet struct {
-              money float64
-          }
-
-          func NewWallet(initialMoney float64) Wallet {
-              return Wallet{money: initialMoney}
-          }
-
-          func (w Wallet) GetMoney() float64 {
-              return w.money
-          }
-
           type Person struct {
-              wallet Wallet
+              FirstName string
           }
 
-          func NewPerson(initialMoney float64) Person {
-              return Person{wallet: NewWallet(initialMoney)}
+          func (p Person) SayHello() string {
+              return "Hello, I'm " + p.FirstName
           }
 
-          func (p Person) CanPurchase(itemPrice float64) bool {
-              return p.wallet.GetMoney() >= itemPrice
-          }
-      - title: Bad Example
-        code: |
-          // Bad example: Accessing nested structures directly
-          type Wallet struct {
-              Money float64
-          }
+          var john = Person{"John"}
+          fmt.Println(john.SayHello()) // "Hello, I'm John"
 
-          type Person struct {
-              Wallet Wallet
-          }
-
-          func Purchase(itemPrice float64, buyer Person) bool {
-              return buyer.Wallet.Money >= itemPrice
-          }
-  - abbr: SoC
+  - title: "Interfaces for Polymorphism"
+    description:
+      - variant: subtitle1
+        content: |
+          Go uses interfaces to achieve polymorphism. An interface type is defined by a set of method signatures, and any type that implements those methods satisfies the interface.
     examples:
-      - title: Good Example
+      - title: "Interfaces Example"
         code: |
-          // Good example: Separating concerns into different methods or functions
-          type UserDataService struct{}
-
-          func (uds UserDataService) FetchUserData() UserData {
-              // ...
+          type Greeter interface {
+              Greet() string
           }
 
-          type UserLogic struct{}
+          type EnglishSpeaker struct{}
 
-          func (ul UserLogic) CalculateAge(user UserData) {
-              // ...
+          func (EnglishSpeaker) Greet() string {
+              return "Hello!"
           }
 
-          type UserView struct{}
+          type SpanishSpeaker struct{}
 
-          func (uv UserView) Render(user UserData) {
-              // ...
-          }
-      - title: Bad Example
-        code: |
-          // Bad example: Mixing data retrieval and presentation
-          type UserComponent struct{}
-
-          func (uc UserComponent) FetchUserData() UserData {
-              // ...
+          func (SpanishSpeaker) Greet() string {
+              return "¡Hola!"
           }
 
-          func (uc UserComponent) Render(user UserData) {
-              // ...
-          }
-
-          func (uc UserComponent) CalculateAge(user UserData) {
-              // ...
-          }
-  - abbr: EffGo
-    title: Effective Go
-    description: A guide to Go's conventions and best practices, covering aspects like formatting, naming, and patterns for idiomatic Go code.
+  - title: "Concurrency with Goroutines and Channels"
+    description:
+      - variant: subtitle1
+        content: |
+          Go provides built-in support for concurrency with goroutines and channels. Goroutines are functions that can run concurrently, and channels are used for communication between them.
     examples:
-      - title: Good Example
+      - title: "Concurrency Example"
         code: |
-          // Using short, clear names for variables
-          func Sum(a, b int) int {
-              return a + b
-          }
-      - title: Bad Example
-        code: |
-          // Overly verbose and unclear naming
-          func CalculateTheSumOfTwoNumbers(firstNumber, secondNumber int) int {
-              return firstNumber + secondNumber
-          }
-  - abbr: SimpRead
-    title: Simplicity and Readability
-    description: Core principles in Go, emphasizing the importance of writing straightforward, maintainable, and clear code.
-    examples:
-      - title: Good Example
-        code: |
-          // Simple and readable function
-          func Max(x, y int) int {
-              if x > y {
-                  return x
+          func say(s string) {
+              for i := 0; i < 5; i++ {
+                  fmt.Println(s)
               }
-              return y
           }
-      - title: Bad Example
-        code: |
-          // Unnecessarily complex function
-          func Max(x, y int) int {
-              var max int
-              if x > y {
-                  max = x
-              } else {
-                  max = y
-              }
-              return max
-          }
-  - abbr: CompInherit
-    title: Composition Over Inheritance
-    description: A design principle in Go promoting the use of composition and interfaces for flexible and reusable code structures instead of classical inheritance.
-    examples:
-      - title: Good Example
-        code: |
-          // Composition using interfaces and structs
-          type Reader interface {
-              Read(p []byte) (n int, err error)
-          }
-          type FileReader struct {}
-          func (FileReader) Read(p []byte) (n int, err error) {
-              // Implementation
-          }
-      - title: Bad Example
-        code: |
-          // Attempted inheritance-like structure
-          type Reader struct {}
-          type FileReader struct {
-              Reader
-          }
-  - abbr: ConcModel
-    title: Concurrency Model
-    description: Go's unique approach to concurrency, emphasizing communication through channel passing rather than shared memory.
-    examples:
-      - title: Good Example
-        code: |
-          // Using channels for goroutine communication
-          func produce(ch chan<- int) {
-              ch <- 10
-          }
+
           func main() {
-              ch := make(chan int)
-              go produce(ch)
-              value := <-ch
+              go say("world")
+              say("hello")
           }
-      - title: Bad Example
-        code: |
-          // Sharing memory without channels
-          var sharedVar int
-          func produce() {
-              sharedVar = 10
-          }
-          func main() {
-              go produce()
-              // Access sharedVar here
-          }
-  - abbr: InterfBehav
-    title: Interface Satisfaction by Behavior
-    description: In Go, a type satisfies an interface by implementing the methods of the interface, not through explicit declaration.
-    examples:
-      - title: Good Example
-        code: |
-          // Implicitly satisfying an interface
-          type Logger interface {
-              Log(message string)
-          }
-          type ConsoleLogger struct {}
-          func (ConsoleLogger) Log(message string) {
-              fmt.Println(message)
-          }
-      - title: Bad Example
-        code: |
-          // Explicit interface implementation (not a Go practice)
-          // This is not valid in Go but shown for contrast
-          type Logger interface {
-              Log(message string)
-          }
-          type ConsoleLogger struct {
-              Logger
-          }
-          func (ConsoleLogger) Log(message string) {
-              fmt.Println(message)
-          }
-  - abbr: ErrHandle
-    title: Error Handling
-    description: Go's approach to handling errors explicitly, encouraging developers to deal with errors systematically.
-    examples:
-      - title: Good Example
-        code: |
-          // Explicit error checking
-          func ReadFile(name string) ([]byte, error) {
-              data, err := ioutil.ReadFile(name)
-              if err != nil {
-                  return nil, err
-              }
-              return data, nil
-          }
-      - title: Bad Example
-        code: |
-          // Ignoring error handling
-          func ReadFile(name string) []byte {
-              data, _ := ioutil.ReadFile(name)
-              return data
-          }
-  - abbr: PackManage
-    title: Package Management
-    description: Go's approach to organizing and managing packages, emphasizing simplicity and consistency.
-    examples:
-      - title: Good Example
-        code: |
-          // Proper package organization
-          // File: math/operations.go
-          package math
-          func Add(a, b int) int {
-              return a + b
 
+  - title: "Error Handling"
+    description:
+      - variant: subtitle1
+        content: |
+          Go handles errors explicitly using error values, rather than exceptions. Functions often return an error value, and calling code checks this error before proceeding.
+    examples:
+      - title: "Error Handling Example"
+        code: |
+          func divide(a, b float64) (float64, error) {
+              if b == 0.0 {
+                  return 0.0, errors.New("division by zero")
+              }
+              return a / b, nil
+          }
+
+  - title: "Package System"
+    description:
+      - variant: subtitle1
+        content: |
+          Go's package system organizes code into reusable components. Each package serves as a namespace for its identifiers and can be imported by other packages.
+    examples:
+      - title: "Package Example"
+        code: |
+          package main
+
+          import (
+              "fmt"
+              "math"
+          )
+
+          func main() {
+              fmt.Println(math.Sqrt(16))
+          }
+
+  - title: "Composition over Inheritance"
+    description:
+      - variant: subtitle1
+        content: |
+          Go favors composition over inheritance, allowing types to be composed using smaller pieces of functionality.
+    examples:
+      - title: "Composition Example"
+        code: |
+          type Engine interface {
+              Start()
+              Stop()
+          }
+
+          type Car struct {
+              Engine
+          }
+
+  - title: "Type Assertions and Type Switches"
+    description:
+      - variant: subtitle1
+        content: |
+          Go allows for type assertions and type switches to handle dynamic types safely at runtime, particularly when working with interfaces.
+    examples:
+      - title: "Type Assertion Example"
+        code: |
+          var i interface{} = "hello"
+          s := i.(string)
+          fmt.Println(s)
+
+  - title: "Deferred Function Calls"
+    description:
+      - variant: subtitle1
+        content: |
+          Go allows functions to be deferred until the surrounding function completes. This is often used for cleanup activities.
+    examples:
+      - title: "Deferred Calls Example"
+        code: |
+          func main() {
+              defer fmt.Println("world")
+              fmt.Println("hello")
+          }
+
+  - title: "Go Routines and Select Statement"
+    description:
+      - variant: subtitle1
+        content: |
+          Go's select statement lets a goroutine wait on multiple communication operations, facilitating complex concurrency patterns.
+    examples:
+      - title: "Select Statement Example"
+        code: |
+          select {
+          case msg1 := <-channel1:
+              fmt.Println("Received", msg1)
+          case msg2 := <-channel2:
+              fmt.Println("Received", msg2)
+          }

@@ -34,16 +34,13 @@ export type DesignPattern = {
  * Complex types for States
  */
 
-export type CodingPrinciples = {
-  proprietary?: CodingPrinciple[];
-  solid?: CodingPrinciple[];
-};
+export type CodingPrincipleType = 'proprietary' | 'other' | 'solid';
 
-export type DesignPatterns = {
-  behavioural?: DesignPattern[];
-  creational?: DesignPattern[];
-  structural?: DesignPattern[];
-};
+export type CodingPrinciples = Record<CodingPrincipleType, CodingPrinciple[]>;
+
+export type DesignPatternType = 'behavioural' | 'creational' | 'structural' | 'proprietary';
+
+export type DesignPatterns = Record<DesignPatternType, DesignPattern[]>;
 
 export type Language = {
   birth?: number;
@@ -111,19 +108,19 @@ export const languagesState = atom<LanguagesState>({
  * Content State
  */
 
-export interface PrinciplePatternContent {
+export interface PrincipleOrPatternContent {
   title: string;
   before?: ContentType[];
   after?: ContentType[];
   accordion?: Record<string, ContentType[]>;
 }
 
-export type PrinciplePatternContentState = StateReadiness & {
-  content?: PrinciplePatternContent;
+export type PrinciplePatternState = StateReadiness & {
+  content?: PrincipleOrPatternContent;
 };
 
-export const principlePatternContentState = atom<PrinciplePatternContentState>({
-  key: 'contentState',
+export const principleOrPatternState = atom<PrinciplePatternState>({
+  key: 'principleOrPatternState',
   default: {},
 });
 

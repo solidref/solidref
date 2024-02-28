@@ -1,0 +1,515 @@
+---
+patterns:
+  - title: Chain Of Responsibility
+    examples:
+      - code: |
+          abstract class Handler {
+              protected nextHandler: Handler | null = null;
+
+              constructor(nextHandler: Handler | null = null) {
+                  this.nextHandler = nextHandler;
+              }
+
+              handle(request: string): string | null {
+                  if (this.nextHandler) {
+                      return this.nextHandler.handle(request);
+                  }
+
+                  return null;
+              }
+          }
+
+          // Concrete Handlers
+          class ConcreteHandler1 extends Handler {
+              handle(request: string): string | null {
+                  if (request === 'handle1') {
+                      return 'Handled by ConcreteHandler1';
+                  }
+                  return super.handle(request);
+              }
+          }
+
+          class ConcreteHandler2 extends Handler {
+              handle(request: string): string | null {
+                  if (request === 'handle2') {
+                      return 'Handled by ConcreteHandler2';
+                  }
+                  return super.handle(request);
+              }
+          }
+
+          // Client code
+          const handler1 = new ConcreteHandler1();
+          const handler2 = new ConcreteHandler2(handler1);
+
+          console.log(handler2.handle('handle2'));
+          console.log(handler2.handle('handle1'));
+
+  - title: Command
+    examples:
+      - code: |
+          interface Command {
+              execute(): void;
+          }
+
+          class Light {
+              turnOn() {
+                  console.log('Light turned on');
+              }
+
+              turnOff() {
+                  console.log('Light turned off');
+              }
+          }
+
+          class TurnOnCommand implements Command {
+              private light: Light;
+
+              constructor(light: Light) {
+                  this.light = light;
+              }
+
+              execute() {
+                  this.light.turnOn();
+              }
+          }
+
+          class TurnOffCommand implements Command {
+              private light: Light;
+
+              constructor(light: Light) {
+                  this.light = light;
+              }
+
+              execute() {
+                  this.light.turnOff();
+              }
+          }
+
+          // Invoker
+          class RemoteControl {
+              submit(command: Command) {
+                  command.execute();
+              }
+          }
+
+          // Client code
+          const light = new Light();
+          const turnOnCommand = new TurnOnCommand(light);
+          const turnOffCommand = new TurnOffCommand(light);
+          const remote = new RemoteControl();
+
+          remote.submit(turnOnCommand);
+          remote.submit(turnOffCommand);
+
+  - title: Iterator
+    examples:
+      - code: |
+          class Iterator<T> {
+              private collection: T[];
+              private index: number;
+
+              constructor(collection: T[]) {
+                  this.collection = collection;
+                  this.index = 0;
+              }
+
+              next(): T | undefined {
+                  return this.collection[this.index++];
+              }
+
+              hasNext(): boolean {
+                  return this.index < this.collection.length;
+              }
+          }
+
+          // Client code
+          const items = [1, 'two', 3, 'four', 5];
+          const iterator = new Iterator(items);
+
+          while (iterator.hasNext()) {
+              console.log(iterator.next());
+          }
+
+  - title: Mediator
+    examples:
+      - code: |
+          interface Mediator {
+              send(message: string, colleague: Colleague): void;
+          }
+
+          abstract class Colleague {
+              protected mediator: Mediator | null = null;
+
+              setMediator(mediator: Mediator) {
+                  this.mediator = mediator;
+              }
+
+              send(message: string) {
+                  if (this.mediator) {
+                      this.mediator.send(message, this);
+                  }
+              }
+
+              abstract receive(message: string): void;
+          }
+
+          // Concrete Colleagues
+          class ConcreteColleague1 extends Colleague {
+              receive(message: string) {
+                  console.log(`${this.constructor.name} received message: ${message}`);
+              }
+          }
+
+          class ConcreteColleague2 extends Colleague {
+              receive(message: string) {
+                  console.log(`${this.constructor.name} received message: ${message}`);
+              }
+          }
+
+          // Concrete Mediator
+          class ConcreteMediator implements Mediator {
+              private colleagues: Colleague[] = [];
+
+              register(colleague: Colleague) {
+                  this.colleagues.push(colleague);
+                  colleague.setMediator(this);
+              }
+
+              send(message: string, sender: Colleague) {
+                  this.colleagues.forEach(colleague => {
+                      if (colleague !== sender) {
+                          colleague.receive(message);
+                      }
+                  });
+              }
+          }
+
+          // Client code
+          const mediator = new ConcreteMediator();
+          const colleague1 = new ConcreteColleague1();
+          const colleague2 = new ConcreteColleague2();
+
+          mediator.register(colleague1);
+          mediator.register(colleague2);
+
+          colleague1.send('Hello from Colleague 1');
+          colleague2.send('Hello from Colleague 2');
+
+  - title: Memento
+    examples:
+      - code: |
+          class Memento {
+              private state: string;
+
+              constructor(state: string) {
+                  this.state = state;
+              }
+
+              getState(): string {
+                  return this.state;
+              }
+          }
+
+          class Originator {
+              private state: string = '';
+
+              setState(state: string) {
+                  this.state = state;
+              }
+
+              getState(): string {
+                  return this.state;
+              }
+
+              save(): Memento {
+                  return new Memento(this.state);
+              }
+
+              restore(memento: Memento) {
+                  this.state = memento.getState();
+              }
+          }
+
+          class Caretaker {
+              private mementos: Memento[] = [];
+
+              addMemento(memento: Memento) {
+                  this.mementos.push(memento);
+              }
+
+              getMemento(index: number): Memento | undefined {
+                  return this.mementos[index];
+              }
+          }
+
+          // Client code
+          const originator = new Originator();
+          const caretaker = new Caretaker();
+
+          originator.setState('State #1');
+          caretaker.addMemento(originator.save());
+
+          originator.setState('State #2');
+          caretaker.addMemento(originator.save());
+
+          originator.restore(caretaker.getMemento(0)!);
+          console.log(originator.getState());
+
+  - title: Observer
+    examples:
+      - code: |
+          interface Subject {
+              subscribe(observer: Observer): void;
+              unsubscribe(observer: Observer): void;
+              notify(data: any): void;
+          }
+
+          class ConcreteSubject implements Subject {
+              private observers: Observer[] = [];
+
+              subscribe(observer: Observer) {
+                  this.observers.push(observer);
+              }
+
+              unsubscribe(observer: Observer) {
+                  const index = this.observers.indexOf(observer);
+                  if (index > -1) {
+                      this.observers.splice(index, 1);
+                  }
+              }
+
+              notify(data: any) {
+                  this.observers.forEach(observer => observer.update(data));
+              }
+          }
+
+          interface Observer {
+              update(data: any): void;
+          }
+
+          class ConcreteObserver implements Observer {
+              update(data: any) {
+                  console.log(`Observer received data: ${data}`);
+              }
+          }
+
+          // Client code
+          const subject = new ConcreteSubject();
+          const observer1 = new ConcreteObserver();
+          const observer2 = new ConcreteObserver();
+
+          subject.subscribe(observer1);
+          subject.subscribe(observer2);
+
+          subject.notify('Hello Observers!');
+
+          subject.unsubscribe(observer2);
+          subject.notify('Goodbye Observers!');
+
+  - title: State
+    examples:
+      - code: |
+          interface State {
+              handle1(): void;
+              handle2(): void;
+          }
+
+          class Context {
+              private state: State;
+
+              constructor(state: State) {
+                  this.transitionTo(state);
+              }
+
+              transitionTo(state: State) {
+                  console.log(`Context: Transition to ${state.constructor.name}.`);
+                  this.state = state;
+              }
+
+              request1() {
+                  this.state.handle1();
+              }
+
+              request2() {
+                  this.state.handle2();
+              }
+          }
+
+          class ConcreteStateA implements State {
+              handle1() {
+                  console.log('ConcreteStateA handles request1.');
+                  console.log('ConcreteStateA wants to change the state of the context.');
+              }
+
+              handle2() {
+                  console.log('ConcreteStateA handles request2.');
+              }
+          }
+
+          class ConcreteStateB implements State {
+              handle1() {
+                  console.log('ConcreteStateB handles request1.');
+              }
+
+              handle2() {
+                  console.log('ConcreteStateB handles request2.');
+                  console.log('ConcreteStateB wants to change the state of the context.');
+              }
+          }
+
+          // Client code
+          const context = new Context(new ConcreteStateA());
+          context.request1();
+          context.request2();
+
+  - title: Strategy
+    examples:
+      - code: |
+          interface Strategy {
+              execute(data: any): string;
+          }
+
+          class ConcreteStrategyA implements Strategy {
+              execute(data: any): string {
+                  return `Strategy A with data ${data}`;
+              }
+          }
+
+          class ConcreteStrategyB implements Strategy {
+              execute(data: any): string {
+                  return `Strategy B with data ${data}`;
+              }
+          }
+
+          class Context {
+              private strategy: Strategy;
+
+              constructor(strategy: Strategy) {
+                  this.strategy = strategy;
+              }
+
+              setStrategy(strategy: Strategy) {
+                  this.strategy = strategy;
+              }
+
+              executeStrategy(data: any): string {
+                  return this.strategy.execute(data);
+              }
+          }
+
+          // Client code
+          const context = new Context(new ConcreteStrategyA());
+          console.log(context.executeStrategy('123'));
+
+          context.setStrategy(new ConcreteStrategyB());
+          console.log(context.executeStrategy('456'));
+
+  - title: TemplateMethod
+    examples:
+      - code: |
+          abstract class AbstractClass {
+              templateMethod() {
+                  this.baseOperation1();
+                  this.requiredOperation1();
+                  this.baseOperation2();
+                  this.hook1();
+                  this.requiredOperation2();
+                  this.baseOperation3();
+                  this.hook2();
+              }
+
+              baseOperation1() {
+                  console.log("AbstractClass says: I am doing the bulk of the work");
+              }
+
+              baseOperation2() {
+                  console.log("AbstractClass says: But I let subclasses override some operations");
+              }
+
+              baseOperation3() {
+                  console.log("AbstractClass says: But I am doing the bulk of the work anyway");
+              }
+
+              abstract requiredOperation1(): void;
+              abstract requiredOperation2(): void;
+
+              hook1() {}
+              hook2() {}
+          }
+
+          class ConcreteClass1 extends AbstractClass {
+              requiredOperation1() {
+                  console.log("ConcreteClass1 says: Implemented Operation1");
+              }
+
+              requiredOperation2() {
+                  console.log("ConcreteClass1 says: Implemented Operation2");
+              }
+          }
+
+          class ConcreteClass2 extends AbstractClass {
+              requiredOperation1() {
+                  console.log("ConcreteClass2 says: Implemented Operation1");
+              }
+
+              requiredOperation2() {
+                  console.log("ConcreteClass2 says: Implemented Operation2");
+              }
+
+              hook1() {
+                  console.log("ConcreteClass2 says: Overridden Hook1");
+              }
+          }
+
+          // Client code
+          console.log('Same client code can work with different subclasses:');
+          new ConcreteClass1().templateMethod();
+          console.log('');
+          new ConcreteClass2().templateMethod();
+
+  - title: Visitor
+    examples:
+      - code: |
+          interface Visitor {
+              visitConcreteComponentA(element: ConcreteComponentA): void;
+              visitConcreteComponentB(element: ConcreteComponentB): void;
+          }
+
+          class ConcreteVisitor1 implements Visitor {
+              visitConcreteComponentA(element: ConcreteComponentA) {
+                  console.log(`${element.exclusiveMethodOfConcreteComponentA()} + ConcreteVisitor1`);
+              }
+
+              visitConcreteComponentB(element: ConcreteComponentB) {
+                  console.log(`${element.specialMethodOfConcreteComponentB()} + ConcreteVisitor1`);
+              }
+          }
+
+          class Component {
+              accept(visitor: Visitor) {
+                  visitor.visit(this);
+              }
+          }
+
+          class ConcreteComponentA extends Component {
+              exclusiveMethodOfConcreteComponentA() {
+                  return 'A';
+              }
+          }
+
+          class ConcreteComponentB extends Component {
+              specialMethodOfConcreteComponentB() {
+                  return 'B';
+              }
+          }
+
+          // Client code
+          const components = [
+              new ConcreteComponentA(),
+              new ConcreteComponentB(),
+          ];
+
+          const visitor1 = new ConcreteVisitor1();
+
+          components.forEach((c) => c.accept(visitor1));

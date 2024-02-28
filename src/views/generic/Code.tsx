@@ -1,7 +1,6 @@
-import * as React from 'react';
 import {styled} from '@mui/material/styles';
 
-const Code = styled('code')(({theme}) => ({
+const Code = styled('code')(() => ({
   color: 'red',
 }));
 

@@ -1,0 +1,286 @@
+patterns:
+  - title: Adapter
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Target interface {
+              Request() string
+          }
+
+          type Adaptee struct {}
+
+          func (a *Adaptee) SpecificRequest() string {
+              return "Specific request."
+          }
+
+          type Adapter struct {
+              adaptee *Adaptee
+          }
+
+          func NewAdapter(adaptee *Adaptee) *Adapter {
+              return &Adapter{adaptee: adaptee}
+          }
+
+          func (a *Adapter) Request() string {
+              return "Adapter: " + a.adaptee.SpecificRequest()
+          }
+
+          func main() {
+              adaptee := &Adaptee{}
+              adapter := NewAdapter(adaptee)
+              fmt.Println(adapter.Request())
+          }
+
+  - title: Bridge
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Implementor interface {
+              OperationImpl() string
+          }
+
+          type Abstraction struct {
+              implementor Implementor
+          }
+
+          func (a *Abstraction) Operation() string {
+              return "Abstraction: " + a.implementor.OperationImpl()
+          }
+
+          type ConcreteImplementorA struct {}
+          func (c *ConcreteImplementorA) OperationImpl() string {
+              return "ConcreteImplementorA Operation"
+          }
+
+          type ConcreteImplementorB struct {}
+          func (c *ConcreteImplementorB) OperationImpl() string {
+              return "ConcreteImplementorB Operation"
+          }
+
+          func main() {
+              var implementor Implementor = &ConcreteImplementorA{}
+              abstraction := &Abstraction{implementor: implementor}
+              fmt.Println(abstraction.Operation())
+
+              implementor = &ConcreteImplementorB{}
+              abstraction = &Abstraction{implementor: implementor}
+              fmt.Println(abstraction.Operation())
+          }
+
+  - title: Composite
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Component interface {
+              Operation() string
+          }
+
+          type Leaf struct {
+              name string
+          }
+
+          func (l *Leaf) Operation() string {
+              return l.name
+          }
+
+          type Composite struct {
+              children []Component
+          }
+
+          func (c *Composite) Add(child Component) {
+              c.children = append(c.children, child)
+          }
+
+          func (c *Composite) Operation() string {
+              result := "Branch("
+              for _, child := range c.children {
+                  result += child.Operation() + " "
+              }
+              result += ")"
+              return result
+          }
+
+          func main() {
+              leaf1 := &Leaf{"Leaf1"}
+              leaf2 := &Leaf{"Leaf2"}
+              composite := &Composite{}
+              composite.Add(leaf1)
+              composite.Add(leaf2)
+              fmt.Println(composite.Operation())
+          }
+
+  - title: Decorator
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Component interface {
+              Operation() string
+          }
+
+          type ConcreteComponent struct {}
+
+          func (c *ConcreteComponent) Operation() string {
+              return "ConcreteComponent"
+          }
+
+          type Decorator struct {
+              component Component
+          }
+
+          func NewDecorator(component Component) *Decorator {
+              return &Decorator{component: component}
+          }
+
+          func (d *Decorator) Operation() string {
+              return "Decorator(" + d.component.Operation() + ")"
+          }
+
+          func main() {
+              component := &ConcreteComponent{}
+              decorator := NewDecorator(component)
+              fmt.Println(decorator.Operation())
+          }
+
+  - title: Facade
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type SubsystemOne struct {}
+          func (s *SubsystemOne) OperationOne() string {
+              return "SubsystemOne: Operation"
+          }
+
+          type SubsystemTwo struct {}
+          func (s *SubsystemTwo) OperationTwo() string {
+              return "SubsystemTwo: Operation"
+          }
+
+          type Facade struct {
+              one *SubsystemOne
+              two *SubsystemTwo
+          }
+
+          func NewFacade() *Facade {
+              return &Facade{
+                  one: &SubsystemOne{},
+                  two: &SubsystemTwo{},
+              }
+          }
+
+          func (f *Facade) Operation() string {
+              result := "Facade initializes subsystems:\n"
+              result += f.one.OperationOne() + "\n"
+              result += f.two.OperationTwo()
+              return result
+          }
+
+          func main() {
+              facade := NewFacade()
+              fmt.Println(facade.Operation())
+          }
+
+  - title: Flyweight
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Flyweight struct {
+              sharedState string
+          }
+
+          func (f *Flyweight) Operation(uniqueState string) {
+              fmt.Printf("Flyweight with sharedState %s and uniqueState %s.\n", f.sharedState, uniqueState)
+          }
+
+          type FlyweightFactory struct {
+              flyweights map[string]*Flyweight
+          }
+
+          func NewFlyweightFactory(initialStates []string) *FlyweightFactory {
+              factory := &FlyweightFactory{flyweights: make(map[string]*Flyweight)}
+              for _, state := range initialStates {
+                  factory.flyweights[state] = &Flyweight{sharedState: state}
+              }
+              return factory
+          }
+
+          func (f *FlyweightFactory) GetFlyweight(sharedState string) *Flyweight {
+              if _, ok := f.flyweights[sharedState]; !ok {
+                  fmt.Println("FlyweightFactory: Can't find a flyweight, creating new one.")
+                  f.flyweights[sharedState] = &Flyweight{sharedState: sharedState}
+              }
+              return f.flyweights[sharedState]
+          }
+
+          func main() {
+              factory := NewFlyweightFactory([]string{"state1", "state2"})
+              flyweight := factory.GetFlyweight("state1")
+              flyweight.Operation("uniqueState1")
+          }
+
+  - title: Proxy
+    examples:
+      - code: |
+          package main
+
+          import "fmt"
+
+          type Subject interface {
+              Request() string
+          }
+
+          type RealSubject struct {}
+
+          func (r *RealSubject) Request() string {
+              return "RealSubject: Handling request."
+          }
+
+          type Proxy struct {
+              realSubject *RealSubject
+          }
+
+          func NewProxy(realSubject *RealSubject) *Proxy {
+              return &Proxy{realSubject: realSubject}
+          }
+
+          func (p *Proxy) Request() string {
+              if p.checkAccess() {
+                  result := p.realSubject.Request()
+                  p.logAccess()
+                  return "Proxy: Call to " + result
+              }
+              return "Proxy: Access denied"
+          }
+
+          func (p *Proxy) checkAccess() bool {
+              // Suppose there are some real checks here
+              fmt.Println("Proxy: Checking access prior to firing a real request.")
+              return true
+          }
+
+          func (p *Proxy) logAccess() {
+              fmt.Println("Proxy: Logging the time of request.")
+          }
+
+          func main() {
+              realSubject := &RealSubject{}
+              proxy := NewProxy(realSubject)
+              fmt.Println(proxy.Request())
+          }
