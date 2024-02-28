@@ -1,17 +1,11 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import {useMemo} from 'react';
 
 import {Box, Card, CardContent, Grid, Link, RegularBreakpoints, Typography} from '@mui/material';
 import {useRecoilValue} from 'recoil';
 import {HierarchyLanguage} from '../../../state';
-import GenericCodeIcon from '../../icons/GenericCodeIcon';
 import {generateLanguagePath} from '../../../utils/url';
 import {loadLanguageHierarchy} from '../../../selector';
-
-type PresentableLanguage = {
-  language: HierarchyLanguage;
-  logoComponent: React.ElementType | null;
-};
-
+import LazyLoadIcon from '../../../components/icons/LazyLoadIcon';
 type FilterMethod = (...args: unknown[]) => (value: HierarchyLanguage) => boolean;
 
 type Filters = Record<string, FilterMethod>;
@@ -45,7 +39,7 @@ export default function LanguagesList({
 
   // Assuming `filters` is an object with filtering functions you've defined elsewhere
   // and `FilterMethod` is a function type for these filters
-  const filteredLanguages = useMemo(() => {
+  const languages = useMemo(() => {
     if (!languagesHierarchy.list) return [];
 
     const filterCb = filters[`${filterMode}Filter`]; // Assuming this is a function
@@ -53,38 +47,9 @@ export default function LanguagesList({
     return languagesHierarchy.list.filter(filterCb(...filterArgs));
   }, [languagesHierarchy.list, filterMode, filterArgs]);
 
-  const [languages, setLanguages] = useState<PresentableLanguage[]>([]);
-
-  useEffect(() => {
-    const loadIcons = async () => {
-      const loadedLanguages = await Promise.all(
-        filteredLanguages.map(async (language) => {
-          const moduleName = language.code.charAt(0).toUpperCase() + language.code.slice(1);
-          try {
-            // Dynamically import icon based on the language code
-            // console.log(`../../icons/${moduleName}`);
-            const module = await import(`../../icons/${moduleName}`);
-            // console.log(module);
-
-            return {language, logoComponent: module.default};
-          } catch (error) {
-            console.error(`Error importing language icon: ${moduleName}`, error);
-          }
-          return {language, logoComponent: null};
-        }),
-      );
-
-      setLanguages(loadedLanguages);
-    };
-
-    loadIcons();
-  }, [filteredLanguages]);
-
-  // console.log(languages.map(({ logoComponent }) => logoComponent));
-
   return (
     <Grid container spacing={4}>
-      {languages.map(({language, logoComponent}) => (
+      {languages.map((language) => (
         <Grid item xs={xs} sm={sm} md={md} key={`languages-grid-item-${language.code}`}>
           <Box component={Card} boxShadow={3} borderRadius={4}>
             {/* TODO: must add dropdown for child languages */}
@@ -101,8 +66,16 @@ export default function LanguagesList({
                   },
                 }}
               >
-                {logoComponent !== null ? (
-                  React.createElement(logoComponent, {
+                <LazyLoadIcon
+                  icon={language.code.charAt(0).toUpperCase() + language.code.slice(1)}
+                  style={{
+                    width: '8rem',
+                    height: '8rem',
+                    display: 'block',
+                    margin: 'auto',
+                    transform: 'rotate(-15deg)',
+                  }}
+                  fallbackProps={{
                     style: {
                       width: '8rem',
                       height: '8rem',
@@ -110,18 +83,8 @@ export default function LanguagesList({
                       margin: 'auto',
                       transform: 'rotate(-15deg)',
                     },
-                  })
-                ) : (
-                  <GenericCodeIcon
-                    style={{
-                      width: '8rem',
-                      height: '8rem',
-                      display: 'block',
-                      margin: 'auto',
-                      transform: 'rotate(-15deg)',
-                    }}
-                  />
-                )}
+                  }}
+                />
                 <Typography
                   variant={'h6'}
                   gutterBottom
