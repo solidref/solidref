@@ -34,18 +34,20 @@ export default function Languages(/*{ }: LanguagesProps*/) {
           <Hero />
         </Container>
       </Box>
-      <Box style={{padding: '64px 0 0 0'}}>
-        <Container display={'flex'} justifyContent={'flex-end'} style={{padding: 0}}>
-          <ToggleButtonGroup value={filterMode} exclusive onChange={handleChange}>
-            <ToggleButton value="all" aria-label="all" style={toggleStyle}>
-              <ViewListIcon />
-            </ToggleButton>
-            <ToggleButton value="root" aria-label="root" style={toggleStyle}>
-              <ViewModuleIcon />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Container>
-      </Box>
+      {false && (
+        <Box style={{padding: '64px 0 0 0'}}>
+          <Container display={'flex'} justifyContent={'flex-end'} style={{padding: 0}}>
+            <ToggleButtonGroup value={filterMode} exclusive onChange={handleChange}>
+              <ToggleButton value="all" aria-label="all" style={toggleStyle}>
+                <ViewListIcon />
+              </ToggleButton>
+              <ToggleButton value="root" aria-label="root" style={toggleStyle}>
+                <ViewModuleIcon />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Container>
+        </Box>
+      )}
       <Box>
         <Container>
           <LanguagesList filterMode={filterMode} filterArgs={[]} md={3} />
