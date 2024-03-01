@@ -1,0 +1,138 @@
+principles:
+  - title: Single Responsibility
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Splitting responsibilities into separate classes
+          public class UserDataManager {
+              public void SaveUserData() { /* ... */ }
+          }
+
+          public class UserNotificationManager {
+              public void SendNotification() { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: A single class handling both user data management and notifications
+          public class User {
+              public void SaveUserData() { /* ... */ }
+              public void SendNotification() { /* ... */ }
+          }
+  - title: Open-Closed
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Using abstraction and inheritance for the Open/Closed principle
+          public abstract class Shape {
+              public abstract double ComputeArea();
+          }
+
+          public class Rectangle : Shape {
+              public double Width { get; set; }
+              public double Height { get; set; }
+
+              public override double ComputeArea() => Width * Height;
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Modifying an existing class to add new functionality
+          public class AreaCalculator {
+              public double ComputeArea(object shape) {
+                  if (shape is Rectangle rectangle) {
+                      return rectangle.Width * rectangle.Height;
+                  } else if (shape is Circle circle) {
+                      return Math.PI * Math.Pow(circle.Radius, 2);
+                  }
+                  throw new NotImplementedException();
+              }
+          }
+  - title: Liskov Substitution
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Subtypes are substitutable for their base types
+          public class Bird {
+              public virtual void Fly() { /* ... */ }
+          }
+
+          public class Sparrow : Bird {
+              public override void Fly() { /* ... */ } // Sparrow, being a Bird, can fly
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: Subtype changes the expected behavior of the base class
+          public class Bird {
+              public virtual void Fly() { /* ... */ }
+          }
+
+          public class Ostrich : Bird {
+              public override void Fly() {
+                  throw new InvalidOperationException("Can't fly"); // This violates Liskov Substitution Principle
+              }
+          }
+  - title: Interface Segregation
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: Segregating interfaces based on different client requirements
+          public interface IWorker {
+              void Work();
+          }
+
+          public interface IFeeder {
+              void Eat();
+          }
+
+          public class Human : IWorker, IFeeder {
+              public void Work() { /* ... */ }
+              public void Eat() { /* ... */ }
+          }
+
+          public class Robot : IWorker {
+              public void Work() { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: A single interface that does not segregate responsibilities
+          public interface IWorker {
+              void Work();
+              void Eat(); // Not all workers need to eat, e.g., robots
+          }
+  - title: Dependency Inversion
+    examples:
+      - title: Good Example
+        code: |
+          // Good example: High-level modules depend on abstractions, not on low-level modules
+          public interface IDevice {
+              void TurnOn();
+          }
+
+          public class Switch {
+              private IDevice device;
+
+              public Switch(IDevice device) {
+                  this.device = device;
+              }
+
+              public void Operate() {
+                  this.device.TurnOn();
+              }
+          }
+
+          public class Fan : IDevice {
+              public void TurnOn() { /* ... */ }
+          }
+      - title: Bad Example
+        code: |
+          // Bad example: High-level module depends directly on low-level module
+          public class LightBulb {
+              public void TurnOn() { /* ... */ }
+          }
+
+          public class Switch {
+              private LightBulb bulb = new LightBulb();
+
+              public void Operate() {
+                  this.bulb.TurnOn();
+              }
+          }
