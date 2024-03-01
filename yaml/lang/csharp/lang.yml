@@ -1,0 +1,22 @@
+name: C# (C Sharp)
+code: csharp
+birth: 2000
+death: N/A
+inspiredBy:
+  - C++
+  - Java
+  - Delphi
+  - Modula-3
+inspiring:
+  - Swift
+  - Kotlin
+description: |
+  C# is a versatile, multi-paradigm programming language developed by Microsoft as part of its .NET initiative.
+  Designed to be simple yet powerful, C# is widely used for developing desktop applications, web applications (via ASP.NET),
+  and more recently, mobile applications through Xamarin. Since its inception, C# has evolved significantly, with C# 7.0 and
+  above introducing features that enhance the language's functionality and developer productivity. These features include tuples
+  for grouping data, pattern matching for more expressive conditionals, local functions for better encapsulation, and
+  async/await for asynchronous programming. With the introduction of .NET Core and .NET 5+, C# has become a cross-platform
+  language, running on Linux and macOS in addition to Windows. C# 8.0 introduced nullable reference types to improve code safety,
+  and C# 9.0 introduced records for immutable data structures, making it an attractive choice for modern software development
+  practices that emphasize safety, performance, and reliability.

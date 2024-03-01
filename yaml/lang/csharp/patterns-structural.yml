@@ -1,0 +1,366 @@
+---
+patterns:
+  - title: Adapter
+    examples:
+      - code: |
+          // Target interface
+          public interface ITarget {
+              string GetRequest();
+          }
+
+          // Adaptee class
+          public class Adaptee {
+              public string GetSpecificRequest() {
+                  return "Specific request.";
+              }
+          }
+
+          // Adapter class
+          public class Adapter : ITarget {
+              private readonly Adaptee _adaptee;
+
+              public Adapter(Adaptee adaptee) {
+                  _adaptee = adaptee;
+              }
+
+              public string GetRequest() {
+                  return $"This is '{_adaptee.GetSpecificRequest()}'";
+              }
+          }
+
+          // Usage
+          var adaptee = new Adaptee();
+          ITarget target = new Adapter(adaptee);
+
+          Console.WriteLine("Adaptee interface is incompatible with the client.");
+          Console.WriteLine("But with adapter client can call it's method.");
+
+          Console.WriteLine(target.GetRequest());
+
+  - title: Bridge
+    examples:
+      - code: |
+          // Implementor
+          public interface IImplementor {
+              string OperationImpl();
+          }
+
+          // Concrete Implementors
+          public class ConcreteImplementorA : IImplementor {
+              public string OperationImpl() {
+                  return "ConcreteImplementorA Operation";
+              }
+          }
+
+          public class ConcreteImplementorB : IImplementor {
+              public string OperationImpl() {
+                  return "ConcreteImplementorB Operation";
+              }
+          }
+
+          // Abstraction
+          public abstract class Abstraction {
+              protected IImplementor implementor;
+
+              protected Abstraction(IImplementor implementor) {
+                  this.implementor = implementor;
+              }
+
+              public virtual string Operation() {
+                  return "Abstract: Base operation with:\n" +
+                        implementor.OperationImpl();
+              }
+          }
+
+          // RefinedAbstraction
+          public class RefinedAbstraction : Abstraction {
+              public RefinedAbstraction(IImplementor implementor) : base(implementor) {}
+
+              public override string Operation() {
+                  return "RefinedAbstraction: Extended operation with:\n" +
+                        implementor.OperationImpl();
+              }
+          }
+
+          // Usage
+          var implementorA = new ConcreteImplementorA();
+          var abstraction = new RefinedAbstraction(implementorA);
+          Console.WriteLine(abstraction.Operation());
+
+          var implementorB = new ConcreteImplementorB();
+          abstraction = new RefinedAbstraction(implementorB);
+          Console.WriteLine(abstraction.Operation());
+
+  - title: Composite
+    examples:
+      - code: |
+          // Component
+          public abstract class Component {
+              public string Name { get; }
+
+              protected Component(string name) {
+                  Name = name;
+              }
+
+              public abstract void Add(Component component);
+              public abstract void Remove(Component component);
+              public abstract void Display(int depth);
+          }
+
+          // Leaf
+          public class Leaf : Component {
+              public Leaf(string name) : base(name) {}
+
+              public override void Add(Component component) {
+                  throw new NotImplementedException();
+              }
+
+              public override void Remove(Component component) {
+                  throw new NotImplementedException();
+              }
+
+              public override void Display(int depth) {
+                  Console.WriteLine(new String('-', depth) + Name);
+              }
+          }
+
+          // Composite
+          public class Composite : Component {
+              private List<Component> _children = new List<Component>();
+
+              public Composite(string name) : base(name) {}
+
+              public override void Add(Component component) {
+                  _children.Add(component);
+              }
+
+              public override void Remove(Component component) {
+                  _children.Remove(component);
+              }
+
+              public override void Display(int depth) {
+                  Console.WriteLine(new String('-', depth) + Name);
+
+                  foreach (var component in _children) {
+                      component.Display(depth + 2);
+                  }
+              }
+          }
+
+          // Usage
+          var root = new Composite("root");
+          root.Add(new Leaf("Leaf A"));
+          root.Add(new Leaf("Leaf B"));
+
+          var comp = new Composite("Composite X");
+          comp.Add(new Leaf("Leaf XA"));
+          comp.Add(new Leaf("Leaf XB"));
+
+          root.Add(comp);
+          root.Add(new Leaf("Leaf C"));
+
+          var leaf = new Leaf("Leaf D");
+          root.Add(leaf);
+          root.Remove(leaf);
+
+          root.Display(1);
+
+  - title: Decorator
+    examples:
+      - code: |
+          // Component
+          public abstract class Component {
+              public abstract string Operation();
+          }
+
+          // ConcreteComponent
+          public class ConcreteComponent : Component {
+              public override string Operation() {
+                  return "ConcreteComponent";
+              }
+          }
+
+          // Decorator
+          public abstract class Decorator : Component {
+              protected Component component;
+
+              public Decorator(Component component) {
+                  this.component = component;
+              }
+
+              public void SetComponent(Component component) {
+                  this.component = component;
+              }
+
+              public override string Operation() {
+                  if (component != null) {
+                      return component.Operation();
+                  } else {
+                      return string.Empty;
+                  }
+              }
+          }
+
+          // ConcreteDecoratorA
+          public class ConcreteDecoratorA : Decorator {
+              public ConcreteDecoratorA(Component component) : base(component) {}
+
+              public override string Operation() {
+                  return $"ConcreteDecoratorA({base.Operation()})";
+              }
+          }
+
+          // ConcreteDecoratorB
+          public class ConcreteDecoratorB : Decorator {
+              public ConcreteDecoratorB(Component component) : base(component) {}
+
+              public override string Operation() {
+                  return $"ConcreteDecoratorB({base.Operation()})";
+              }
+          }
+
+          // Usage
+          Component component = new ConcreteComponent();
+          var decoratorA = new ConcreteDecoratorA(component);
+          var decoratorB = new ConcreteDecoratorB(decoratorA);
+
+          Console.WriteLine(decoratorB.Operation());
+
+  - title: Facade
+    examples:
+      - code: |
+          // Subsystem Classes
+          public class SubsystemA {
+              public string OperationA1() => "Subsystem A, Method A1\n";
+              public string OperationA2() => "Subsystem A, Method A2\n";
+          }
+
+          public class SubsystemB {
+              public string OperationB1() => "Subsystem B, Method B1\n";
+              public string OperationB2() => "Subsystem B, Method B2\n";
+          }
+
+          public class SubsystemC {
+              public string OperationC1() => "Subsystem C, Method C1\n";
+              public string OperationC2() => "Subsystem C, Method C2\n";
+          }
+
+          // Facade
+          public class Facade {
+              protected SubsystemA _subsystemA;
+              protected SubsystemB _subsystemB;
+              protected SubsystemC _subsystemC;
+
+              public Facade(SubsystemA subsystemA, SubsystemB subsystemB, SubsystemC subsystemC) {
+                  _subsystemA = subsystemA ?? throw new ArgumentNullException(nameof(subsystemA));
+                  _subsystemB = subsystemB ?? throw new ArgumentNullException(nameof(subsystemB));
+                  _subsystemC = subsystemC ?? throw new ArgumentNullException(nameof(subsystemC));
+              }
+
+              public string Operation() {
+                  var result = "Facade initializes subsystems:\n";
+                  result += _subsystemA.OperationA1();
+                  result += _subsystemB.OperationB1();
+                  result += _subsystemC.OperationC1();
+                  result += "Facade orders subsystems to perform the action:\n";
+                  result += _subsystemA.OperationA2();
+                  result += _subsystemB.OperationB2();
+                  result += _subsystemC.OperationC2();
+                  return result;
+              }
+          }
+
+          // Usage
+          var subsystemA = new SubsystemA();
+          var subsystemB = new SubsystemB();
+          var subsystemC = new SubsystemC();
+          var facade = new Facade(subsystemA, subsystemB, subsystemC);
+          Console.WriteLine(facade.Operation());
+
+  - title: Flyweight
+    examples:
+      - code: |
+          // Flyweight
+          public interface IFlyweight {
+              void Operation(string extrinsicState);
+          }
+
+          // ConcreteFlyweight
+          public class ConcreteFlyweight : IFlyweight {
+              private string _intrinsicState;
+
+              public ConcreteFlyweight(string intrinsicState) {
+                  _intrinsicState = intrinsicState;
+              }
+
+              public void Operation(string extrinsicState) {
+                  Console.WriteLine($"Flyweight: Intrinsic '{_intrinsicState}' and Extrinsic '{extrinsicState}'");
+              }
+          }
+
+          // FlyweightFactory
+          public class FlyweightFactory {
+              private Dictionary<string, IFlyweight> _flyweights = new Dictionary<string, IFlyweight>();
+
+              public IFlyweight GetFlyweight(string key) {
+                  if (!_flyweights.ContainsKey(key)) {
+                      _flyweights.Add(key, new ConcreteFlyweight(key));
+                  }
+                  return _flyweights[key];
+              }
+          }
+
+          // Usage
+          var factory = new FlyweightFactory();
+          var flyweight1 = factory.GetFlyweight("A");
+          var flyweight2 = factory.GetFlyweight("B");
+          var flyweight3 = factory.GetFlyweight("A"); // Reuses existing instance
+
+          flyweight1.Operation("Operation1");
+          flyweight2.Operation("Operation2");
+          flyweight3.Operation("Operation3"); // Notice it shares intrinsic state "A" with flyweight1
+
+  - title: Proxy
+    examples:
+      - code: |
+          // Subject Interface
+          public interface ISubject {
+              void Request();
+          }
+
+          // RealSubject Class
+          public class RealSubject : ISubject {
+              public void Request() {
+                  Console.WriteLine("RealSubject: Handling Request.");
+              }
+          }
+
+          // Proxy Class
+          public class Proxy : ISubject {
+              private RealSubject _realSubject;
+
+              public Proxy(RealSubject realSubject) {
+                  _realSubject = realSubject;
+              }
+
+              public void Request() {
+                  if (CheckAccess()) {
+                      _realSubject.Request();
+                      LogAccess();
+                  }
+              }
+
+              public bool CheckAccess() {
+                  // Some real checks should go here.
+                  Console.WriteLine("Proxy: Checking access before firing a real request.");
+                  return true;
+              }
+
+              public void LogAccess() {
+                  Console.WriteLine("Proxy: Logging the time of request.");
+              }
+          }
+
+          // Usage
+          ISubject subject = new Proxy(new RealSubject());
+          subject.Request();
