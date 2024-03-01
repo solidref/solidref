@@ -1,0 +1,26 @@
+name: Python
+code: python
+birth: 1991
+death: N/A
+inspiredBy:
+  - ABC
+  - C
+  - Haskell
+  - Lisp
+  - Modula-3
+  - Perl
+inspiring:
+  - Cobra
+  - Groovy
+  - Ruby
+  - Swift
+  - Go
+description: |
+  Python is a high-level, interpreted programming language known for its emphasis on readability and simplicity.
+  Widely used in scientific computing, data analysis, artificial intelligence, and web development, it supports multiple
+  programming paradigms, including procedural, object-oriented, and functional programming. Python's comprehensive standard
+  library, dynamic typing, and ease of learning make it an ideal language for beginners and experienced developers alike.
+  Significant developments in Python's history include the introduction of Python 3 in 2008, which was not backward-compatible
+  with Python 2, leading to a prolonged transition period for many projects. Python's design philosophy emphasizes code readability
+  and the use of whitespace. It has become one of the most popular programming languages in the world, with a strong community
+  supporting the development of a vast ecosystem of third-party packages for various applications.
