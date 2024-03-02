@@ -58,11 +58,13 @@ jobs:
           # Clone the GitHub Pages repository
           git clone https://${{secrets.GH_TOKEN}}@github.com/${TARGET_REPO}.git gh-pages
 
-          # Copy the build output to the cloned repository
+          # Cleanup repository from old build
           find ./gh-pages -not -iname *CNAME* -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
-          rm -rf gh-pages/*  # Clear existing content
+          ls -la gh-pages/
+
+          # Copy the build output to the cloned repository
           cp -r ${BUILD_DIR}/* gh-pages/
-          ls -la gh-pages
+          ls -la gh-pages/
 
           # Commit and push the changes
           cd gh-pages
