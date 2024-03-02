@@ -52,6 +52,7 @@ jobs:
           COMMIT_MESSAGE: Deploy project to GitHub Pages
           BUILD_DIR: dist
         run: |
+          set -ex
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
 
