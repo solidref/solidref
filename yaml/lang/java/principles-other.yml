@@ -1,0 +1,183 @@
+---
+principles:
+  - title: Don't Repeat Yourself (DRY)
+    examples:
+      - title: Good Example
+        code: |
+          public class MathUtils {
+              // Good: Reusable method for calculating square
+              public static int square(int number) {
+                  return number * number;
+              }
+          }
+
+          public class Calculator {
+              public void calculate() {
+                  int result = MathUtils.square(5);
+                  System.out.println("Square: " + result);
+                  // Use MathUtils.square elsewhere as needed
+              }
+          }
+
+      - title: Bad Example
+        code: |
+          public class Calculator {
+              public void calculate() {
+                  // Bad: Repeating the square calculation logic
+                  int squareOfFive = 5 * 5;
+                  System.out.println("Square: " + squareOfFive);
+                  // Repeating the same calculation elsewhere
+              }
+          }
+
+  - title: Keep It Simple Stupid (KISS)
+    examples:
+      - title: Good Example
+        code: |
+          public class SumCalculator {
+              // Good: Simple and straightforward method
+              public int sum(int a, int b) {
+                  return a + b;
+              }
+          }
+
+      - title: Bad Example
+        code: |
+          public class SumCalculator {
+              // Bad: Unnecessarily complex way to perform a simple sum
+              public int sum(int a, int b) {
+                  // Using an array just to add two numbers
+                  int[] numbers = {a, b};
+                  int sum = 0;
+                  for (int number : numbers) {
+                      sum += number;
+                  }
+                  return sum;
+              }
+          }
+
+  - title: You Aren't Gonna Need It (YAGNI)
+    examples:
+      - title: Good Example
+        code: |
+          public class ProductCatalog {
+              // Good: Only current necessary method
+              public void addProduct(String product) {
+                  // Implementation
+              }
+          }
+
+      - title: Bad Example
+        code: |
+          public class ProductCatalog {
+              // Bad: Unnecessary methods that are not yet required
+              public void addProduct(String product) {
+                  // Implementation
+              }
+
+              public void predictFutureTrends() {
+                  // Complex implementation that is not currently needed
+              }
+
+              public void analyzeSentiment() {
+                  // Another complex and unused implementation
+              }
+          }
+
+  - title: Law of Demeter (Principle of Least Knowledge)
+    examples:
+      - title: Good Example
+        code: |
+          public class Customer {
+              private Wallet wallet;
+
+              public Wallet getWallet() {
+                  return wallet;
+              }
+          }
+
+          public class Wallet {
+              private float amount;
+
+              public float getTotalMoney() {
+                  return amount;
+              }
+
+              public void debit(float debitAmount) {
+                  this.amount -= debitAmount;
+              }
+          }
+
+          public class Payment {
+              public void processPayment(Customer customer, float paymentAmount) {
+                  // Following Law of Demeter by interacting only with the immediate object
+                  if (customer.getWallet().getTotalMoney() >= paymentAmount) {
+                      customer.getWallet().debit(paymentAmount);
+                  }
+              }
+          }
+
+      - title: Good Example (Improved)
+        code: |
+          // A better approach to adhere to the Law of Demeter is to provide a
+          // method in the Customer class that directly performs the required
+          // operation, hiding its internal structure:
+          public class Customer {
+              private Wallet wallet;
+
+              public void makePayment(float paymentAmount) {
+                  if (wallet.getTotalMoney() >= paymentAmount) {
+                      wallet.debit(paymentAmount);
+                  }
+              }
+          }
+
+          public class Payment {
+              public void processPayment(Customer customer, float paymentAmount) {
+                  // Adhering to the Law of Demeter
+                  customer.makePayment(paymentAmount);
+              }
+          }
+
+      - title: Bad Example
+        code: |
+          public class Payment {
+              public void processPayment(Customer customer, float paymentAmount) {
+                  // Violating Law of Demeter by calling method on the object returned by another call
+                  float totalMoney = customer.getWallet().getTotalMoney();
+                  if (totalMoney >= paymentAmount) {
+                      customer.getWallet().debit(paymentAmount);
+                  }
+              }
+          }
+
+  - title: Separation of Concerns
+    examples:
+      - title: Good Example
+        code: |
+          public class UserRepository {
+              // Good: Dedicated to data access operations
+              public void saveUser(User user) {
+                  // Implementation to save user to a database
+              }
+          }
+
+          public class UserService {
+              // Focused on business logic
+              private UserRepository userRepository = new UserRepository();
+
+              public void registerUser(User user) {
+                  // Business logic before saving the user
+                  userRepository.saveUser(user);
+              }
+          }
+
+      - title: Bad Example
+        code: |
+          public class UserService {
+              // Bad: Mixing data access with business logic
+              public void registerUser(User user) {
+                  // Business logic here
+                  // Directly saving user to database here as well
+              }
+          }

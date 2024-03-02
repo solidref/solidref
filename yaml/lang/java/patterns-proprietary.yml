@@ -1,0 +1,80 @@
+---
+patterns:
+  - title: Null Object
+    description:
+      - variant: subtitle1
+        content: |
+          The Null Object pattern is used to provide a non-functional object in place of null. This reduces the need for null check code throughout your application. It's particularly useful when an operation requires an object, but a meaningful object is not available or applicable.
+    examples:
+      - code: |
+          interface Log {
+              void info(String msg);
+              void warn(String msg);
+          }
+
+          class ConsoleLog implements Log {
+              public void info(String msg) {
+                  System.out.println("Info: " + msg);
+              }
+
+              public void warn(String msg) {
+                  System.out.println("Warn: " + msg);
+              }
+          }
+
+          class NullLog implements Log {
+              public void info(String msg) { }
+              public void warn(String msg) { }
+          }
+
+          class Application {
+              private Log log;
+
+              public Application(Log log) {
+                  this.log = log == null ? new NullLog() : log;
+              }
+
+              public void doSomething() {
+                  log.info("Doing something");
+              }
+          }
+
+  - title: Dependency Injection
+    description:
+      - variant: subtitle1
+        content: |
+          Dependency Injection (DI) is a design pattern used to implement IoC (Inversion of Control), allowing for the creation of dependent objects outside of a class and providing those objects to a class in different ways. DI can be implemented in various ways: constructor injection, method injection, or property injection.
+    examples:
+      - code: |
+          interface MessageService {
+              void sendMessage(String message, String receiver);
+          }
+
+          class EmailService implements MessageService {
+              public void sendMessage(String message, String receiver) {
+                  // logic to send email
+                  System.out.println("Email sent to " + receiver + " with message=" + message);
+              }
+          }
+
+          class Consumer {
+              private MessageService messageService;
+
+              // constructor injection
+              public Consumer(MessageService service) {
+                  this.messageService = service;
+              }
+
+              public void processMessages(String msg, String rec) {
+                  // do some msg validation, manipulation logic etc
+                  this.messageService.sendMessage(msg, rec);
+              }
+          }
+
+          class MyApplication {
+              public static void main(String[] args) {
+                  MessageService service = new EmailService();
+                  Consumer app = new Consumer(service);
+                  app.processMessages("Hi Pankaj", "pankaj@abc.com");
+              }
+          }
