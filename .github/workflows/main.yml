@@ -10,6 +10,7 @@ jobs:
   #                          VALIDATE CODE                              #
   #######################################################################
   validate:
+    name: "Validate Code"
     runs-on: ubuntu-latest
 
     steps:
@@ -98,6 +99,7 @@ jobs:
   #######################################################################
   publish:
     if: github.event_name != 'pull_request' && needs.release.outputs.version
+    name: "Publish Build"
     needs: [release]
     uses: solidref/solidref/.github/workflows/publish.yml@main
     secrets: inherit
