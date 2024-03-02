@@ -61,6 +61,7 @@ jobs:
           # Copy the build output to the cloned repository
           rm -rf gh-pages/*  # Clear existing content
           cp -r ${BUILD_DIR}/* gh-pages/
+          ls -la gh-pages
 
           # Commit and push the changes
           cd gh-pages
