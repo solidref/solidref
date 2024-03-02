@@ -1,0 +1,63 @@
+name: Publish to GitHub Pages
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Build Project
+        run: |
+          # Add commands to build your project here
+          # For example, if you're using npm:
+          npm install
+          npm run build
+          cp -rdf ./public/* ./dist
+          cp ./dist/index.html ./dist/404.html
+
+      # - name: Deploy to GitHub Pages
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./dist  # or your build directory
+      #     publish_branch: main  # branch of solidref.github.io
+      #     user_name: 'GitHub Actions'
+      #     user_email: 'actions@github.com'
+      #     commit_message: 'Deploy project to GitHub Pages'
+
+      - name: Deploy to GitHub Pages
+        env:
+          TARGET_REPO: solidref/solidref.github.io
+          TARGET_BRANCH: main
+          COMMIT_MESSAGE: Deploy project to GitHub Pages
+          # Assuming your build output directory is 'dist'
+          BUILD_DIR: dist
+        run: |
+          # Configure git with GitHub Actions' token
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+
+          # Clone the GitHub Pages repository
+          git clone https://github.com/${TARGET_REPO}.git gh-pages
+
+          # Copy the build output to the cloned repository
+          rm -rf gh-pages/*  # Clear existing content
+          cp -r dist/* gh-pages/
+
+          # Commit and push the changes
+          cd gh-pages
+          git add .
+          git commit -m "${COMMIT_MESSAGE}"
+          git push origin ${TARGET_BRANCH}
