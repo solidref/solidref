@@ -102,4 +102,6 @@ jobs:
     name: "Publish Build"
     needs: [release]
     uses: solidref/solidref/.github/workflows/publish.yml@main
+    with:
+      GhReleaseBranch: main
     secrets: inherit

@@ -2,10 +2,20 @@ name: Publish Code to GH Pages
 
 on:
   workflow_call:
+    inputs:
+      GhReleaseBranch:
+        default: main
+        required: true
+        type: string
   workflow_dispatch:
+    inputs:
+      GhReleaseBranch:
+        default: main
+        required: true
+        type: string
 
 jobs:
-  publish:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
