@@ -59,10 +59,7 @@ jobs:
           git clone https://${{secrets.GH_TOKEN}}@github.com/${TARGET_REPO}.git gh-pages
 
           # Copy the build output to the cloned repository
-          find ./dist -maxdepth 1 -mindepth 1 |
-            while read f; do
-              rm -rf ${f/dist/gh-pages};
-            done
+          find ./gh-pages -not -iname *CNAME* -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
           rm -rf gh-pages/*  # Clear existing content
           cp -r ${BUILD_DIR}/* gh-pages/
           ls -la gh-pages
