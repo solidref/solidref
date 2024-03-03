@@ -1,42 +1,68 @@
-abstract class Component {
-  abstract operation(): string;
+// Component: Notification
+interface Notification {
+  send(): string;
 }
 
-class ConcreteComponent extends Component {
-  operation(): string {
-    return 'ConcreteComponent';
+// Concrete Component: Base Notification
+class BaseNotification implements Notification {
+  send(): string {
+    return 'Base notification: You have a new message!';
   }
 }
 
-abstract class Decorator extends Component {
-  protected component: Component;
+// Decorator: Notification Decorator
+abstract class NotificationDecorator implements Notification {
+  protected notification: Notification;
 
-  constructor(component: Component) {
-    super();
-    this.component = component;
+  constructor(notification: Notification) {
+    this.notification = notification;
   }
 
-  operation(): string {
-    return this.component.operation();
-  }
-}
-
-class ConcreteDecoratorA extends Decorator {
-  operation(): string {
-    return `ConcreteDecoratorA(${super.operation()})`;
+  send(): string {
+    return this.notification.send();
   }
 }
 
-class ConcreteDecoratorB extends Decorator {
-  operation(): string {
-    return `ConcreteDecoratorB(${super.operation()})`;
+// Concrete Decorator: Sound Notification
+class SoundNotificationDecorator extends NotificationDecorator {
+  send(): string {
+    return `${super.send()} (Sound notification: Ding!)`;
+  }
+}
+
+// Concrete Decorator: Priority Notification
+class PriorityNotificationDecorator extends NotificationDecorator {
+  send(): string {
+    return `${super.send()} (Priority notification: High priority!)`;
   }
 }
 
 // Client code
-let simple = new ConcreteComponent();
-console.log(`Simple component: ${simple.operation()}`);
+const baseNotification: Notification = new BaseNotification();
+console.log(baseNotification.send());
 
-let decorator1 = new ConcreteDecoratorA(simple);
-let decorator2 = new ConcreteDecoratorB(decorator1);
-console.log(`Decorated component: ${decorator2.operation()}`);
+const soundNotification: Notification = new SoundNotificationDecorator(baseNotification);
+console.log(soundNotification.send());
+
+const priorityNotification: Notification = new PriorityNotificationDecorator(baseNotification);
+console.log(priorityNotification.send());
+
+const soundAndPriorityNotification: Notification = new PriorityNotificationDecorator(new SoundNotificationDecorator(baseNotification));
+console.log(soundAndPriorityNotification.send());
+
+/**
+ * The Notification interface defines the common method for sending notifications.
+ *
+ * BaseNotification represents the base notification without any additional features.
+ *
+ * NotificationDecorator is an abstract class that serves as the base class for concrete decorators.
+ * It holds a reference to the wrapped notification.
+ *
+ * SoundNotificationDecorator adds sound notification functionality to the base notification.
+ *
+ * PriorityNotificationDecorator adds priority notification functionality to the base notification.
+ *
+ * The client code demonstrates how we can dynamically add sound notification, priority notification,
+ * or both to the base notification. Each decorator enhances the behavior of the base notification
+ * without modifying its implementation.
+ */

@@ -1,54 +1,50 @@
-class Flyweight {
-  private sharedState: any;
+// Flyweight: Character
+class Character {
+  constructor(private character: string) { }
 
-  constructor(sharedState: any) {
-    this.sharedState = sharedState;
-  }
-
-  operation(uniqueState: any): void {
-    const s = JSON.stringify(this.sharedState);
-    const u = JSON.stringify(uniqueState);
-    console.log(`Flyweight: Displaying shared (${s}) and unique (${u}) state.`);
+  display(font: string, size: number): string {
+    return `Character: ${this.character}, Font: ${font}, Size: ${size}`;
   }
 }
 
-class FlyweightFactory {
-  private flyweights: { [key: string]: Flyweight };
+// Flyweight Factory: CharacterFactory
+class CharacterFactory {
+  private characters: { [key: string]: Character } = {};
 
-  constructor(initialFlyweights: any[]) {
-    this.flyweights = {};
-    for (const state of initialFlyweights) {
-      this.flyweights[this.getKey(state)] = new Flyweight(state);
+  getCharacter(character: string): Character {
+    if (!this.characters[character]) {
+      this.characters[character] = new Character(character);
     }
-  }
-
-  private getKey(state: any): string {
-    return state.join('_');
-  }
-
-  getFlyweight(sharedState: any): Flyweight {
-    const key = this.getKey(sharedState);
-
-    if (!(key in this.flyweights)) {
-      console.log('FlyweightFactory: Can\'t find a flyweight, creating new one.');
-      this.flyweights[key] = new Flyweight(sharedState);
-    } else {
-      console.log('FlyweightFactory: Reusing existing flyweight.');
-    }
-
-    return this.flyweights[key];
+    return this.characters[character];
   }
 }
 
 // Client code
-const factory = new FlyweightFactory([
-  ['Chevrolet', 'Camaro2018', 'pink'],
-  ['Mercedes Benz', 'C300', 'black'],
-  ['Mercedes Benz', 'C500', 'red'],
-]);
+const characterFactory = new CharacterFactory();
 
-factory.getFlyweight(['Chevrolet', 'Camaro2018', 'pink']).operation(['A001', 'Jul 30, 2020']);
-factory.getFlyweight(['Mercedes Benz', 'C300', 'black']).operation(['B002', 'May 18, 2021']);
+// Text document
+const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 
-console.log('\nAdding new car to pool');
-factory.getFlyweight(['BMW', 'M5', 'red']).operation(['C003', 'Mar 15, 2022']);
+// Rendering text with flyweight characters
+const renderedText: string[] = [];
+
+for (const char of text) {
+  const character = characterFactory.getCharacter(char);
+  renderedText.push(character.display('Arial', 12)); // Assume same font and size for simplicity
+}
+
+// Displaying rendered text
+console.log(renderedText.join('\n'));
+
+
+/**
+ * The Character class represents the flyweight object for a character. It contains intrinsic
+ * state (the character itself).
+ *
+ * The CharacterFactory class acts as a flyweight factory, creating and managing flyweight
+ * objects. It ensures that each character is shared among multiple instances.
+ *
+ * In the client code, we create a text document and render it using flyweight characters.
+ * Instead of creating a new character object for each character in the text, we retrieve
+ * existing flyweight characters from the factory, saving memory and improving performance.
+ */

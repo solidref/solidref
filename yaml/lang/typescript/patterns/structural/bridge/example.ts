@@ -1,44 +1,62 @@
-interface Implementation {
-  operationImplementation(): string;
-}
+// Abstraction: Vehicle
+abstract class Vehicle {
+  protected workshop: Workshop;
 
-class Abstraction {
-  protected implementation: Implementation;
-
-  constructor(implementation: Implementation) {
-    this.implementation = implementation;
+  constructor(workshop: Workshop) {
+    this.workshop = workshop;
   }
 
-  operation(): string {
-    const result = this.implementation.operationImplementation();
-    return `Abstraction: Base operation with:\n${result}`;
-  }
+  abstract manufacture(): void;
 }
 
-class ExtendedAbstraction extends Abstraction {
-  operation(): string {
-    const result = this.implementation.operationImplementation();
-    return `ExtendedAbstraction: Extended operation with:\n${result}`;
-  }
+// Implementor: Workshop
+interface Workshop {
+  work(): void;
 }
 
-class ImplementationA implements Implementation {
-  operationImplementation(): string {
-    return 'ImplementationA: Here\'s the result on the platform A.';
+// Concrete Implementor: Paint Workshop
+class PaintWorkshop implements Workshop {
+  work(): void {
+    console.log('Painting vehicle');
   }
 }
 
-class ImplementationB implements Implementation {
-  operationImplementation(): string {
-    return 'ImplementationB: Here\'s the result on the platform B.';
+// Concrete Implementor: Repair Workshop
+class RepairWorkshop implements Workshop {
+  work(): void {
+    console.log('Repairing vehicle');
+  }
+}
+
+// Refined Abstraction: Car
+class Car extends Vehicle {
+  manufacture(): void {
+    console.log('Manufacturing car.');
+    this.workshop.work();
+  }
+}
+
+// Refined Abstraction: Truck
+class Truck extends Vehicle {
+  manufacture(): void {
+    console.log('Manufacturing truck.');
+    this.workshop.work();
   }
 }
 
 // Client code
-let implementation: Implementation = new ImplementationA();
-let abstraction: Abstraction = new Abstraction(implementation);
-console.log(abstraction.operation());
+const car = new Car(new PaintWorkshop());
+car.manufacture(); // Output: Manufacturing car. Painting vehicle
 
-implementation = new ImplementationB();
-abstraction = new ExtendedAbstraction(implementation);
-console.log(abstraction.operation());
+const truck = new Truck(new RepairWorkshop());
+truck.manufacture(); // Output: Manufacturing truck. Repairing vehicle
+
+/**
+ * The Vehicle class represents the abstraction, which is extended by Car and Truck.
+ *
+ * The Workshop interface represents the implementor, defining the work method.
+ *
+ * PaintWorkshop and RepairWorkshop are concrete implementations of the Workshop interface.
+ *
+ * Each vehicle can be associated with a specific workshop using composition, and it delegates the work to that workshop.
+ */

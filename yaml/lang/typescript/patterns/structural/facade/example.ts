@@ -1,45 +1,57 @@
-class Subsystem1 {
-  operation1(): string {
-    return 'Subsystem1: Ready!';
-  }
-
-  operationN(): string {
-    return 'Subsystem1: Go!';
+// Subsystem: Flight Booking
+class FlightBookingSystem {
+  bookFlight(origin: string, destination: string): string {
+    return `Flight booked from ${origin} to ${destination}`;
   }
 }
 
-class Subsystem2 {
-  operation1(): string {
-    return 'Subsystem2: Get ready!';
-  }
-
-  operationZ(): string {
-    return 'Subsystem2: Fire!';
+// Subsystem: Hotel Booking
+class HotelBookingSystem {
+  bookHotel(location: string, checkInDate: Date, checkOutDate: Date): string {
+    return `Hotel booked at ${location} from ${checkInDate.toDateString()} to ${checkOutDate.toDateString()}`;
   }
 }
 
-class Facade {
-  private subsystem1: Subsystem1;
-  private subsystem2: Subsystem2;
+// Subsystem: Car Rental
+class CarRentalSystem {
+  rentCar(location: string, startDate: Date, endDate: Date): string {
+    return `Car rented at ${location} from ${startDate.toDateString()} to ${endDate.toDateString()}`;
+  }
+}
 
-  constructor(subsystem1?: Subsystem1, subsystem2?: Subsystem2) {
-    this.subsystem1 = subsystem1 || new Subsystem1();
-    this.subsystem2 = subsystem2 || new Subsystem2();
+// Facade: TravelFacade
+class TravelFacade {
+  private flightBookingSystem: FlightBookingSystem;
+  private hotelBookingSystem: HotelBookingSystem;
+  private carRentalSystem: CarRentalSystem;
+
+  constructor() {
+    this.flightBookingSystem = new FlightBookingSystem();
+    this.hotelBookingSystem = new HotelBookingSystem();
+    this.carRentalSystem = new CarRentalSystem();
   }
 
-  operation(): string {
-    let result = 'Facade initializes subsystems:\n';
-    result += this.subsystem1.operation1();
-    result += this.subsystem2.operation1();
-    result += 'Facade orders subsystems to perform the action:\n';
-    result += this.subsystem1.operationN();
-    result += this.subsystem2.operationZ();
-    return result;
+  bookTravel(origin: string, destination: string, location: string, checkInDate: Date, checkOutDate: Date, startDate: Date, endDate: Date): string {
+    const flightDetails = this.flightBookingSystem.bookFlight(origin, destination);
+    const hotelDetails = this.hotelBookingSystem.bookHotel(location, checkInDate, checkOutDate);
+    const carDetails = this.carRentalSystem.rentCar(location, startDate, endDate);
+
+    return `${flightDetails}\n${hotelDetails}\n${carDetails}`;
   }
 }
 
 // Client code
-const subsystem1 = new Subsystem1();
-const subsystem2 = new Subsystem2();
-const facade = new Facade(subsystem1, subsystem2);
-console.log(facade.operation());
+const travelFacade = new TravelFacade();
+const bookingDetails = travelFacade.bookTravel('New York', 'Los Angeles', 'Hilton', new Date('2023-12-15'), new Date('2023-12-20'), new Date('2023-12-15'), new Date('2023-12-20'));
+console.log(bookingDetails);
+
+/**
+ * The FlightBookingSystem, HotelBookingSystem, and CarRentalSystem classes represent the
+ * subsystems of flight booking, hotel booking, and car rental, respectively.
+ *
+ * The TravelFacade class provides a simplified interface for booking a complete travel
+ * package. It encapsulates the complexities of interacting with the subsystems.
+ *
+ * The client code interacts with the TravelFacade to book a complete travel package without
+ * directly interacting with the subsystems.
+ */

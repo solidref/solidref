@@ -1,74 +1,89 @@
-abstract class Component {
-  protected name: string;
+// Component: Department
+interface Department {
+  getName(): string;
+  getEmployees(): string[];
+}
+
+// Leaf: Individual Department
+class IndividualDepartment implements Department {
+  private name: string;
+  private employees: string[];
+
+  constructor(name: string, employees: string[]) {
+    this.name = name;
+    this.employees = employees;
+  }
+
+  getName(): string {
+    return this.name;
+  }
+
+  getEmployees(): string[] {
+    return this.employees;
+  }
+}
+
+// Composite: Composite Department
+class CompositeDepartment implements Department {
+  private name: string;
+  private departments: Department[];
 
   constructor(name: string) {
     this.name = name;
+    this.departments = [];
   }
 
-  abstract add(component: Component): void;
-  abstract remove(component: Component): void;
-  abstract display(depth: number): void;
-}
-
-class Leaf extends Component {
-  constructor(name: string) {
-    super(name);
+  getName(): string {
+    return this.name;
   }
 
-  display(depth: number): void {
-    console.log('-'.repeat(depth) + this.name);
+  addDepartment(department: Department): void {
+    this.departments.push(department);
   }
 
-  add(component: Component): void {
-    console.log('Cannot add to a leaf.');
-  }
-
-  remove(component: Component): void {
-    console.log('Cannot remove from a leaf.');
-  }
-}
-
-class Composite extends Component {
-  private children: Component[];
-
-  constructor(name: string) {
-    super(name);
-    this.children = [];
-  }
-
-  add(component: Component): void {
-    this.children.push(component);
-  }
-
-  remove(component: Component): void {
-    const index = this.children.indexOf(component);
-    if (index > -1) {
-      this.children.splice(index, 1);
+  removeDepartment(department: Department): void {
+    const index = this.departments.indexOf(department);
+    if (index !== -1) {
+      this.departments.splice(index, 1);
     }
   }
 
-  display(depth: number): void {
-    console.log('-'.repeat(depth) + this.name);
-    for (const child of this.children) {
-      child.display(depth + 2);
+  getEmployees(): string[] {
+    let employees: string[] = [];
+    for (const department of this.departments) {
+      employees = employees.concat(department.getEmployees());
     }
+    return employees;
   }
 }
 
 // Client code
-const root = new Composite('root');
-root.add(new Leaf('Leaf A'));
-root.add(new Leaf('Leaf B'));
+const salesDepartment = new IndividualDepartment('Sales Department', ['John', 'Alice', 'Bob']);
+const marketingDepartment = new IndividualDepartment('Marketing Department', ['Emily', 'David']);
+const engineeringDepartment = new IndividualDepartment('Engineering Department', ['Michael', 'Sarah', 'Chris']);
 
-const comp = new Composite('Composite X');
-comp.add(new Leaf('Leaf XA'));
-comp.add(new Leaf('Leaf XB'));
+const headDepartment = new CompositeDepartment('Head Department');
+headDepartment.addDepartment(salesDepartment);
+headDepartment.addDepartment(marketingDepartment);
 
-root.add(comp);
-root.add(new Leaf('Leaf C'));
+const parentEngineeringDepartment = new CompositeDepartment('Parent Engineering Department');
+parentEngineeringDepartment.addDepartment(engineeringDepartment);
 
-const leaf = new Leaf('Leaf D');
-root.add(leaf);
-root.remove(leaf);
+const rootDepartment = new CompositeDepartment('Root Department');
+rootDepartment.addDepartment(headDepartment);
+rootDepartment.addDepartment(parentEngineeringDepartment);
 
-root.display(1);
+// Get all employees in the root department
+console.log('Employees in the root department:');
+console.log(rootDepartment.getEmployees());
+
+/**
+ * The Department interface defines the common methods for both individual departments and composite departments.
+ *
+ * IndividualDepartment represents an individual department with a name and a list of employees.
+ *
+ * CompositeDepartment represents a composite department that can contain sub-departments. It maintains a
+ * list of departments and delegates the getEmployees method to its sub-departments recursively.
+ *
+ * The client code creates a hierarchical structure of departments and retrieves all employees from the root department.
+ */
