@@ -1,89 +1,98 @@
+#include <iostream>
+#include <memory>
+#include <string>
+
 // Define the interface for a support handler
-interface SupportHandler {
-  setNextHandler(handler: SupportHandler): void;
-  handleRequest(request: string): string | null;
-}
+class SupportHandler {
+public:
+  virtual void setNextHandler(std::shared_ptr<SupportHandler> handler) = 0;
+  virtual std::string handleRequest(const std::string &request) = 0;
+  virtual ~SupportHandler() {}
+};
 
 // Concrete implementation of the SupportHandler interface for Level 1 support
-class Level1Support implements SupportHandler {
-  private nextHandler: SupportHandler | null = null;
+class Level1Support : public SupportHandler {
+private:
+  std::shared_ptr<SupportHandler> nextHandler = nullptr;
 
-  setNextHandler(handler: SupportHandler): void {
-    this.nextHandler = handler;
+public:
+  void setNextHandler(std::shared_ptr<SupportHandler> handler) override {
+    nextHandler = handler;
   }
 
-  handleRequest(request: string): string | null {
-    if (request.includes('basic')) {
-      return 'Level 1 Support: Issue resolved at basic level.';
-    } else if (this.nextHandler) {
-      return this.nextHandler.handleRequest(request);
+  std::string handleRequest(const std::string &request) override {
+    if (request.find("basic") != std::string::npos) {
+      return "Level 1 Support: Issue resolved at basic level.";
+    } else if (nextHandler != nullptr) {
+      return nextHandler->handleRequest(request);
     } else {
-      return null; // No more handlers in the chain
+      return "No more handlers in the chain";
     }
   }
-}
+};
 
 // Concrete implementation of the SupportHandler interface for Level 2 support
-class Level2Support implements SupportHandler {
-  private nextHandler: SupportHandler | null = null;
+class Level2Support : public SupportHandler {
+private:
+  std::shared_ptr<SupportHandler> nextHandler = nullptr;
 
-  setNextHandler(handler: SupportHandler): void {
-    this.nextHandler = handler;
+public:
+  void setNextHandler(std::shared_ptr<SupportHandler> handler) override {
+    nextHandler = handler;
   }
 
-  handleRequest(request: string): string | null {
-    if (request.includes('advanced')) {
-      return 'Level 2 Support: Issue resolved at advanced level.';
-    } else if (this.nextHandler) {
-      return this.nextHandler.handleRequest(request);
+  std::string handleRequest(const std::string &request) override {
+    if (request.find("advanced") != std::string::npos) {
+      return "Level 2 Support: Issue resolved at advanced level.";
+    } else if (nextHandler != nullptr) {
+      return nextHandler->handleRequest(request);
     } else {
-      return null; // No more handlers in the chain
+      return "No more handlers in the chain";
     }
   }
-}
+};
 
 // Concrete implementation of the SupportHandler interface for Level 3 support
-class Level3Support implements SupportHandler {
-  handleRequest(request: string): string | null {
-    if (request.includes('bug')) {
-      return 'Level 3 Support: Issue resolved at development level.';
+class Level3Support : public SupportHandler {
+public:
+  std::string handleRequest(const std::string &request) override {
+    if (request.find("bug") != std::string::npos) {
+      return "Level 3 Support: Issue resolved at development level.";
     } else {
-      return 'Level 3 Support: Unable to resolve the issue.';
+      return "Level 3 Support: Unable to resolve the issue.";
     }
   }
 
-  // Level 3 support does not have a next handler
-  setNextHandler(handler: SupportHandler): void {
-    throw new Error('Level 3 Support is the highest level and does not have a next handler.');
+  void setNextHandler(std::shared_ptr<SupportHandler> /*handler*/) override {
+    throw std::runtime_error("Level 3 Support is the highest level and does "
+                             "not have a next handler.");
   }
-}
+};
 
-// Client code
-function main() {
-  // Create instances of support handlers
-  const level1 = new Level1Support();
-  const level2 = new Level2Support();
-  const level3 = new Level3Support();
+// Example usage
+int main() {
+  auto level1 = std::make_shared<Level1Support>();
+  auto level2 = std::make_shared<Level2Support>();
+  auto level3 = std::make_shared<Level3Support>();
 
-  // Chain the handlers together
-  level1.setNextHandler(level2);
-  level2.setNextHandler(level3);
+  level1->setNextHandler(level2);
+  level2->setNextHandler(level3);
 
-  // Simulate support requests
-  const request1 = 'Fix basic login issue';
-  const request2 = 'Debug advanced performance problem';
-  const request3 = 'Investigate bug causing application crash';
+  std::cout << level1->handleRequest("Fix basic login issue") << std::endl;
+  std::cout << level1->handleRequest("Debug advanced performance problem")
+            << std::endl;
+  std::cout << level1->handleRequest(
+                   "Investigate bug causing application crash")
+            << std::endl;
 
-  // Process requests through the chain of responsibility
-  console.log(level1.handleRequest(request1)); // Output: Level 1 Support: Issue resolved at basic level.
-  console.log(level1.handleRequest(request2)); // Output: Level 2 Support: Issue resolved at advanced level.
-  console.log(level1.handleRequest(request3)); // Output: Level 3 Support: Issue resolved at development level.
+  return 0;
 }
 
 /**
- * This code demonstrates how the Chain of Responsibility pattern can be used in a support
- * ticket system. The SupportHandler interface defines the contract for handling support
- * requests, and concrete implementations (Level1Support, Level2Support, and Level3Support)
- * represent different levels of support. Each handler decides whether it can handle a
- * request or should pass it to the next handler in the chain.
+ * This code demonstrates how the Chain of Responsibility pattern can be used in
+ * a support ticket system. The SupportHandler interface defines the contract
+ * for handling support requests, and concrete implementations (Level1Support,
+ * Level2Support, and Level3Support) represent different levels of support. Each
+ * handler decides whether it can handle a request or should pass it to the next
+ * handler in the chain.
  */

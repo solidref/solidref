@@ -1,22 +1,21 @@
+#include <exception>
+#include <iostream>
+#include <stdexcept>
+
 class Calculator {
-  add(a: number, b: number): number {
-    return a + b;
-  }
+public:
+  double add(double a, double b) { return a + b; }
 
   // Do not define methods unless they are used
 
-  multiply(a: number, b: number): number {
-    return a * b;
-  }
+  double multiply(double a, double b) { return a * b; }
 
-  divide(a: number, b: number): number {
-    if (b === 0) {
-      throw new Error("Division by zero is not allowed.");
+  double divide(double a, double b) {
+    if (b == 0) {
+      throw new std::runtime_error("Division by zero is not allowed.");
     }
     return a / b;
   }
 
-  subtract(a: number, b: number): number {
-    return a - b;
-  }
+  double subtract(double a, double b) { return a - b; }
 }

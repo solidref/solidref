@@ -1,73 +1,88 @@
+#include <iostream>
+#include <string>
+
+// Forward declaration
+class User;
+
 // Define the Mediator interface
-interface ChatMediator {
-  sendMessage(message: string, user: User): void;
-}
+class ChatMediator {
+public:
+  virtual void sendMessage(const std::string &message, User *user) = 0;
+  virtual ~ChatMediator() {}
+};
 
 // Concrete Mediator implementation for a chat room
-class ChatRoom implements ChatMediator {
-  sendMessage(message: string, user: User): void {
-    console.log(`[${user.getName()}] sends message: ${message}`);
-  }
-}
+class ChatRoom : public ChatMediator {
+public:
+  void sendMessage(const std::string &message, User *user) override;
+};
 
-// Define the Colleague interface
-interface User {
-  send(message: string): void;
-  receive(message: string): void;
-  getName(): string;
+// Define the Colleague (User) interface
+class User {
+protected:
+  std::string name;
+  ChatMediator *mediator;
+
+public:
+  User(const std::string &name, ChatMediator *mediator)
+      : name(name), mediator(mediator) {}
+  virtual void send(const std::string &message) = 0;
+  virtual void receive(const std::string &message) = 0;
+  std::string getName() const { return name; }
+  virtual ~User() {}
+};
+
+// Implement sendMessage to avoid incomplete type error
+void ChatRoom::sendMessage(const std::string &message, User *user) {
+  std::cout << "[" << user->getName() << "] sends message: " << message
+            << std::endl;
 }
 
 // Concrete Colleague implementation for a chat user
-class ChatUser implements User {
-  private name: string;
-  private mediator: ChatMediator;
+class ChatUser : public User {
+public:
+  ChatUser(const std::string &name, ChatMediator *mediator)
+      : User(name, mediator) {}
 
-  constructor(name: string, mediator: ChatMediator) {
-    this.name = name;
-    this.mediator = mediator;
+  void send(const std::string &message) override {
+    std::cout << "[" << this->name << "] sends message: " << message
+              << std::endl;
+    mediator->sendMessage(message, this);
   }
 
-  send(message: string): void {
-    console.log(`[${this.name}] sends message: ${message}`);
-    this.mediator.sendMessage(message, this);
+  void receive(const std::string &message) override {
+    std::cout << "[" << this->name << "] received message: " << message
+              << std::endl;
   }
-
-  receive(message: string): void {
-    console.log(`[${this.name}] received message: ${message}`);
-  }
-
-  getName(): string {
-    return this.name;
-  }
-}
+};
 
 // Client code
-function main() {
-  // Create a chat room mediator
-  const chatMediator: ChatMediator = new ChatRoom();
+int main() {
+  ChatRoom chatMediator;
 
-  // Create chat users
-  const user1: User = new ChatUser('User1', chatMediator);
-  const user2: User = new ChatUser('User2', chatMediator);
+  ChatUser user1("User1", &chatMediator);
+  ChatUser user2("User2", &chatMediator);
 
-  // Send messages between users
-  user1.send('Hello, User2!');
-  user2.send('Hi, User1!');
+  user1.send("Hello, User2!");
+  user2.send("Hi, User1!");
+
+  return 0;
 }
 
 /**
- * In this example, the Mediator pattern is used to facilitate communication between
- * users in a chat room. The ChatMediator interface defines a method sendMessage for
- * sending messages to users. The ChatRoom class provides a concrete implementation
- * of the mediator for managing communication between users in the chat room.
+ * In this example, the Mediator pattern is used to facilitate communication
+ * between users in a chat room. The ChatMediator interface defines a method
+ * sendMessage for sending messages to users. The ChatRoom class provides a
+ * concrete implementation of the mediator for managing communication between
+ * users in the chat room.
  *
- * The User interface defines methods send and receive for sending and receiving messages,
- * respectively, as well as a method getName for getting the user's name. The ChatUser
- * class implements the User interface and interacts with the mediator to send and
- * receive messages.
+ * The User interface defines methods send and receive for sending and receiving
+ * messages, respectively, as well as a method getName for getting the user's
+ * name. The ChatUser class implements the User interface and interacts with the
+ * mediator to send and receive messages.
  *
- * In the client code, we create a chat room mediator and two chat users. Users can send
- * messages to each other by calling the send method, which delegates the message sending
- * to the mediator. When a message is received, the mediator distributes it to the
- * appropriate user's receive method.
+ * In the client code, we create a chat room mediator and two chat users. Users
+ * can send messages to each other by calling the send method, which delegates
+ * the message sending to the mediator. When a message is received, the mediator
+ * distributes it to the appropriate user's receive method.
  */

@@ -1,2 +1,2 @@
-const addTaxForFood = (price: number): number => price + (price * 0.05);
-const addTaxForElectronics = (price: number): number => price + (price * 0.05);
+float addTaxForFood(float price) { return price + (price * 0.05); };
+float addTaxForElectronics(float price) { return price + (price * 0.05); };

@@ -60,15 +60,17 @@ async function yamlParseAndSave(file) {
     }
 
     (ppYamlObject[key] || []).forEach((item) => {
-      const defaultItem = defaultPPYamlObject[key].find((defaultItem) => defaultItem.title === item.title);
+      const defaultItem = (defaultPPYamlObject[key] ?? []).find((defaultItem) => defaultItem.title === item.title);
       if (defaultItem) {
-        defaultItem.examples = item.examples
+        defaultItem.examples = [...defaultItem.examples ?? [], ...item.examples]
+        defaultItem.examples = [... new Set(defaultItem.examples)] // make'em unique
       } else {
+        defaultPPYamlObject[key] = defaultPPYamlObject[key] ?? []
         defaultPPYamlObject[key].push(item);
       }
     });
 
-    for (const item of defaultPPYamlObject[key]) {
+    for (const item of defaultPPYamlObject[key] ?? []) {
       for (const example of item.examples) {
         if (example.codeFile) {
           const codeFile = pathJoin(langPath, langYamlObject.code, example.codeFile) + `.${langYamlObject.ext}`;
@@ -79,13 +81,19 @@ async function yamlParseAndSave(file) {
           }
         }
       }
+      item.examples = item.examples.filter((example) => example.code);
+      if (item.examples.length === 1) {
+        delete item.examples[0].title
+      }
     }
 
-    const ch = name.split('-');
-    langYamlObject[ch[0]] = {
-      ...(langYamlObject[ch[0]] ?? {}),
-      [`${ch[0]}_${ch[1]}`]: defaultPPYamlObject[ch[0]] ?? {},
-    };
+    const [pp, ppType] = name.split('-');
+    if (defaultPPYamlObject[pp] && defaultPPYamlObject[pp].length) {
+      langYamlObject[pp] = {
+        ...(langYamlObject[pp] ?? {}),
+        [`${pp}_${ppType}`]: defaultPPYamlObject[pp] ?? [],
+      };
+    }
   }
 
   const generatedDirName = pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages');

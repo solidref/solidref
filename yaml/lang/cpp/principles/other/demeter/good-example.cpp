@@ -1,27 +1,45 @@
+#include <iostream>
+
 class Wallet {
-  private money: number;
+private:
+  int money;
 
-  constructor() {
-    this.money = 100;
-  }
+public:
+  Wallet() : money(100) {}
 
-  getAmount(): number {
-    return this.money;
-  }
-}
+  int getAmount() const { return money; }
+};
 
 class Person {
-  wallet: Wallet;
+private:
+  Wallet wallet;
 
-  constructor() {
-    this.wallet = new Wallet();
-  }
+public:
+  Person() : wallet() {}
 
-  getMoneyAmount(): number {
-    return this.wallet.getAmount();
+  int getMoneyAmount() const { return wallet.getAmount(); }
+};
+
+// Assuming we have a struct or class for items to purchase
+class Item {
+public:
+  int price;
+
+  Item(int price) : price(price) {}
+};
+
+void purchase(const Item &item, const Person &buyer) {
+  if (buyer.getMoneyAmount() >= item.price) {
+    // Implement the purchase logic here...
   }
 }
 
-function purchase(item: { price: number }, buyer: Person) {
-  if (buyer.getMoneyAmount() >= item.price) { /* ... */ }
+// Example usage
+int main() {
+  Person buyer;
+  Item item(50); // Assume an item costs 50
+
+  purchase(item, buyer);
+
+  return 0;
 }

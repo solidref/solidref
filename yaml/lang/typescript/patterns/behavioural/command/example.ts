@@ -1,77 +1,82 @@
-// Define the Iterator interface
-interface Iterator<T> {
-  hasNext(): boolean;
-  next(): T;
+// Define the command interface
+interface Command {
+  execute(): void;
 }
 
-// Concrete Iterator implementation for an array
-class ArrayIterator<T> implements Iterator<T> {
-  private array: T[];
-  private index: number;
-
-  constructor(array: T[]) {
-    this.array = array;
-    this.index = 0;
+// Receiver class that performs the actual actions
+class Light {
+  turnOn(): void {
+    console.log('Light is on');
   }
 
-  hasNext(): boolean {
-    return this.index < this.array.length;
-  }
-
-  next(): T {
-    if (this.hasNext()) {
-      const item = this.array[this.index];
-      this.index++;
-      return item;
-    } else {
-      throw new Error('No more elements in the array');
-    }
+  turnOff(): void {
+    console.log('Light is off');
   }
 }
 
-// Define the Iterable interface
-interface Iterable<T> {
-  createIterator(): Iterator<T>;
+// Concrete command to turn on the light
+class TurnOnCommand implements Command {
+  private light: Light;
+
+  constructor(light: Light) {
+    this.light = light;
+  }
+
+  execute(): void {
+    this.light.turnOn();
+  }
 }
 
-// Concrete Iterable implementation for a collection of books
-class BookCollection implements Iterable<string> {
-  private books: string[];
+// Concrete command to turn off the light
+class TurnOffCommand implements Command {
+  private light: Light;
 
-  constructor() {
-    this.books = [];
+  constructor(light: Light) {
+    this.light = light;
   }
 
-  addBook(book: string): void {
-    this.books.push(book);
+  execute(): void {
+    this.light.turnOff();
+  }
+}
+
+// Invoker class that triggers the commands
+class RemoteControl {
+  private commands: Command[] = [];
+
+  addCommand(command: Command): void {
+    this.commands.push(command);
   }
 
-  createIterator(): Iterator<string> {
-    return new ArrayIterator(this.books);
+  executeCommands(): void {
+    this.commands.forEach(command => command.execute());
   }
 }
 
 // Client code
 function main() {
-  // Create a collection of books
-  const bookCollection = new BookCollection();
-  bookCollection.addBook('Book 1');
-  bookCollection.addBook('Book 2');
-  bookCollection.addBook('Book 3');
+  // Create a light
+  const light = new Light();
 
-  // Iterate over the collection using the iterator
-  const iterator = bookCollection.createIterator();
-  while (iterator.hasNext()) {
-    const book = iterator.next();
-    console.log(`Book: ${book}`);
-  }
+  // Create commands for turning the light on and off
+  const turnOnCommand = new TurnOnCommand(light);
+  const turnOffCommand = new TurnOffCommand(light);
+
+  // Create a remote control and add the commands
+  const remoteControl = new RemoteControl();
+  remoteControl.addCommand(turnOnCommand);
+  remoteControl.addCommand(turnOffCommand);
+
+  // Press the buttons on the remote control to execute the commands
+  remoteControl.executeCommands();
 }
 
 /**
- * This code demonstrates how the Command pattern can be used in a remote control system
- * to control a light. The Command interface defines the contract for executing commands,
- * and concrete command classes (TurnOnCommand and TurnOffCommand) encapsulate the actions
- * to be performed on the Light receiver object. The RemoteControl acts as the invoker,
- * which holds and triggers the commands. Pressing buttons on the remote control executes
- * the corresponding commands, resulting in the light being turned on and off.
+ * This code demonstrates how the Command pattern can be used in a remote control
+ * system to control a light. The Command interface defines the contract for executing
+ * commands, and concrete command classes (TurnOnCommand and TurnOffCommand) encapsulate
+ * the actions to be performed on the Light receiver object. The RemoteControl acts as
+ * the invoker, which holds and triggers the commands. Pressing buttons on the remote
+ * control executes the corresponding commands, resulting in the light being turned on
+ * and off.
  */

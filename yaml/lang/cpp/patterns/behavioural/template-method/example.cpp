@@ -1,63 +1,81 @@
-abstract class Breakfast {
+#include <iostream>
+
+// Abstract Base Class with Template Method
+
+class Breakfast {
+public:
   // Template method
-  prepare(): void {
-    this.boilWater();
-    this.addIngredients();
-    this.cook();
-    this.serve();
+  void prepare() {
+    boilWater();
+    addIngredients();
+    cook();
+    serve();
   }
 
+  // Destructor
+  virtual ~Breakfast() {}
+
+protected:
   // Abstract methods to be implemented by subclasses
-  abstract addIngredients(): void;
-  abstract cook(): void;
+  virtual void addIngredients() = 0;
+  virtual void cook() = 0;
 
   // Concrete methods
-  boilWater(): void {
-    console.log("Boiling water...");
+  void boilWater() { std::cout << "Boiling water..." << std::endl; }
+
+  void serve() { std::cout << "Breakfast is served!" << std::endl; }
+};
+
+// Concrete Subclasses Implementing the Specific Steps
+
+class OmeletteBreakfast : public Breakfast {
+protected:
+  void addIngredients() override {
+    std::cout << "Adding eggs, cheese, and vegetables to the pan." << std::endl;
   }
 
-  serve(): void {
-    console.log("Breakfast is served!");
+  void cook() override {
+    std::cout << "Cooking the omelette until golden brown." << std::endl;
   }
+};
+
+class PancakeBreakfast : public Breakfast {
+protected:
+  void addIngredients() override {
+    std::cout << "Mixing flour, eggs, milk, and sugar to make the batter."
+              << std::endl;
+  }
+
+  void cook() override {
+    std::cout
+        << "Pouring the batter onto the griddle and flipping until cooked."
+        << std::endl;
+  }
+};
+
+int main() {
+  std::cout << "Preparing Omelette Breakfast:" << std::endl;
+  OmeletteBreakfast omeletteBreakfast;
+  omeletteBreakfast.prepare();
+
+  std::cout << "\nPreparing Pancake Breakfast:" << std::endl;
+  PancakeBreakfast pancakeBreakfast;
+  pancakeBreakfast.prepare();
+
+  return 0;
 }
-
-class OmeletteBreakfast extends Breakfast {
-  addIngredients(): void {
-    console.log("Adding eggs, cheese, and vegetables to the pan.");
-  }
-
-  cook(): void {
-    console.log("Cooking the omelette until golden brown.");
-  }
-}
-
-class PancakeBreakfast extends Breakfast {
-  addIngredients(): void {
-    console.log("Mixing flour, eggs, milk, and sugar to make the batter.");
-  }
-
-  cook(): void {
-    console.log("Pouring the batter onto the griddle and flipping until cooked.");
-  }
-}
-
-// Client code
-console.log("Preparing Omelette Breakfast:");
-const omeletteBreakfast = new OmeletteBreakfast();
-omeletteBreakfast.prepare();
-
-console.log("\nPreparing Pancake Breakfast:");
-const pancakeBreakfast = new PancakeBreakfast();
-pancakeBreakfast.prepare();
 
 /**
- * In this example, we have an abstract class Breakfast representing the template method pattern. It defines
- * the steps of preparing breakfast in the prepare() method, which serves as the template method. The abstract
- * methods addIngredients() and cook() are placeholders for the specific steps that vary between different
- * types of breakfasts.
+ * In this example, we have an abstract class Breakfast representing the
+ * template method pattern. It defines the steps of preparing breakfast in the
+ * prepare() method, which serves as the template method. The abstract methods
+ * addIngredients() and cook() are placeholders for the specific steps that vary
+ * between different types of breakfasts.
  *
- * Subclasses such as OmeletteBreakfast and PancakeBreakfast extend the Breakfast class and implement the
- * abstract methods to provide specific implementations for adding ingredients and cooking. The template
- * method prepare() orchestrates the sequence of steps required to prepare each type of breakfast.
+ * Subclasses such as OmeletteBreakfast and PancakeBreakfast extend the
+ * Breakfast class and implement the abstract methods to provide specific
+ * implementations for adding ingredients and cooking. The template method
+ * prepare() orchestrates the sequence of steps required to prepare each type of
+ * breakfast.
  *
  */

@@ -2,31 +2,61 @@
 patterns:
   - title: Chain Of Responsibility
     examples:
-      - codeFile: patterns/behavioural/chain-of-responsibility/example
+      - title: Example
+        codeFile: patterns/behavioural/chain-of-responsibility/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/chain-of-responsibility/example-refined
   - title: Command
     examples:
-      - codeFile: patterns/behavioural/command/example
+      - title: Example
+        codeFile: patterns/behavioural/command/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/command/example-refined
   - title: Iterator
     examples:
-      - codeFile: patterns/behavioural/iterator/example
+      - title: Example
+        codeFile: patterns/behavioural/iterator/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/iterator/example-refined
   - title: Mediator
     examples:
-      - codeFile: patterns/behavioural/mediator/example
+      - title: Example
+        codeFile: patterns/behavioural/mediator/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/mediator/example-refined
   - title: Memento
     examples:
-      - codeFile: patterns/behavioural/memento/example
+      - title: Example
+        codeFile: patterns/behavioural/memento/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/memento/example-refined
   - title: Observer
     examples:
-      - codeFile: patterns/behavioural/observer/example
+      - title: Example
+        codeFile: patterns/behavioural/observer/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/observer/example-refined
   - title: State
     examples:
-      - codeFile: patterns/behavioural/state/example
+      - title: Example
+        codeFile: patterns/behavioural/state/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/state/example-refined
   - title: Strategy
     examples:
-      - codeFile: patterns/behavioural/strategy/example
+      - title: Example
+        codeFile: patterns/behavioural/strategy/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/strategy/example-refined
   - title: Template Method
     examples:
-      - codeFile: patterns/behavioural/template-method/example
+      - title: Example
+        codeFile: patterns/behavioural/template-method/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/template-method/example-refined
   - title: Visitor
     examples:
-      - codeFile: patterns/behavioural/visitor/example
+      - title: Example
+        codeFile: patterns/behavioural/visitor/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/visitor/example-refined

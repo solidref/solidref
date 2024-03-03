@@ -1,61 +1,76 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
 // Authentication service
 class AuthenticationService {
-  login(username: string, password: string): boolean {
+public:
+  bool login(const std::string &username, const std::string &password) {
     // Authentication logic here
     return true; // Dummy implementation
   }
 
-  logout(): void {
+  void logout() {
     // Logout logic here
   }
-}
+};
 
 // Data service
 class DataService {
-  fetchData(): any[] {
+public:
+  std::vector<int>
+  fetchData() { // Using std::vector<int> as a placeholder for any data type
     // Data retrieval logic here
-    return []; // Dummy implementation
+    return {}; // Dummy implementation
   }
-}
+};
 
-/**
- * - The `CombinedController` class is responsible for both user authentication and data retrieval.
- * - The loginUser method not only handles authentication but also retrieves user data directly
- *   from the `DataService`, violating the Single Responsibility Principle and mixing concerns.
- * - This violates the principle of Separation of Concerns and makes the code harder to maintain, test, and understand.
- */
+// CombinedController class is responsible for both user authentication and data
+// retrieval
 class CombinedController {
-  private authService: AuthenticationService;
-  private dataService: DataService;
+private:
+  AuthenticationService &authService;
+  DataService &dataService;
 
-  constructor(authService: AuthenticationService, dataService: DataService) {
-    this.authService = authService;
-    this.dataService = dataService;
-  }
+public:
+  CombinedController(AuthenticationService &authService,
+                     DataService &dataService)
+      : authService(authService), dataService(dataService) {}
 
-  loginUser(username: string, password: string): boolean {
+  bool loginUser(const std::string &username, const std::string &password) {
     // Authentication logic here
-    const isAuthenticated = this.authService.login(username, password);
+    const bool isAuthenticated = authService.login(username, password);
     if (isAuthenticated) {
       // Retrieve user data (mixing concerns)
-      const userData = this.dataService.fetchData();
-      console.log(userData);
+      auto userData = dataService.fetchData();
+      std::cout << "User data fetched. Size: " << userData.size() << std::endl;
     }
     return isAuthenticated;
   }
 
-  logoutUser(): void {
+  void logoutUser() {
     // Logout logic here
-    this.authService.logout();
+    authService.logout();
   }
+};
+
+// Example usage
+int main() {
+  AuthenticationService authService;
+  DataService dataService;
+
+  CombinedController combinedController(authService, dataService);
+
+  // Simulate user login/logout
+  combinedController.loginUser("username", "password");
+  combinedController.logoutUser();
+
+  return 0;
 }
 
-// Usage
-const authService = new AuthenticationService();
-const dataService = new DataService();
-
-const combinedController = new CombinedController(authService, dataService);
-
-// Simulate user login/logout
-combinedController.loginUser("username", "password");
-combinedController.logoutUser();
+/**
+ * The usage of std::vector<int> as a placeholder for fetched data illustrates
+ * how to work with collections in C++, though in a real-world scenario, the
+ * type and contents of the collection would depend on the specific
+ * application's requirements.
+ */

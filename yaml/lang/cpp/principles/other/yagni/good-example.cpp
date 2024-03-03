@@ -1,5 +1,6 @@
+#include <iostream>
+
 class Calculator {
-  add(a: number, b: number): number {
-    return a + b;
-  }
+public:
+  double add(double a, double b) { return a + b; }
 }

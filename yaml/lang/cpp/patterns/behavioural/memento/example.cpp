@@ -1,94 +1,95 @@
-// Originator class represents the object whose state needs to be saved and restored
+#include <iostream>
+#include <memory> // For smart pointers
+#include <vector>
+
+// Forward declaration
+class Memento;
+
+// Originator class
 class Editor {
-  private text: string;
+  std::string text;
 
-  constructor(text: string) {
-    this.text = text;
-  }
+public:
+  Editor(const std::string &text) : text(text) {}
 
-  setText(text: string): void {
-    this.text = text;
-  }
+  void setText(const std::string &newText) { text = newText; }
 
-  getText(): string {
-    return this.text;
-  }
+  std::string getText() const { return text; }
 
-  // Creates a memento containing the current state of the editor
-  save(): Memento {
-    return new Memento(this.text);
-  }
+  std::shared_ptr<Memento> save() const;
+  void restore(const std::shared_ptr<Memento> &memento);
+};
 
-  // Restores the editor's state from a memento
-  restore(memento: Memento): void {
-    this.text = memento.getState();
-  }
-}
-
-// Memento class represents the stored state of the editor
+// Memento class
 class Memento {
-  private state: string;
+  std::string state;
 
-  constructor(state: string) {
-    this.state = state;
-  }
+  // Make Editor a friend class to allow it to access the private constructor
+  friend class Editor;
 
-  getState(): string {
-    return this.state;
-  }
+  Memento(const std::string &state) : state(state) {}
+
+public:
+  std::string getState() const { return state; }
+};
+
+// Implementations of Editor's methods that depend on Memento
+std::shared_ptr<Memento> Editor::save() const {
+  return std::make_shared<Memento>(text);
 }
 
-// Caretaker class is responsible for keeping track of multiple mementos
+void Editor::restore(const std::shared_ptr<Memento> &memento) {
+  text = memento->getState();
+}
+
+// Caretaker class
 class History {
-  private mementos: Memento[] = [];
+  std::vector<std::shared_ptr<Memento>> mementos;
 
-  // Adds a memento to the history
-  addMemento(memento: Memento): void {
-    this.mementos.push(memento);
+public:
+  void addMemento(const std::shared_ptr<Memento> &memento) {
+    mementos.push_back(memento);
   }
 
-  // Retrieves the most recent memento from the history
-  getLatestMemento(): Memento {
-    if (this.mementos.length === 0) {
-      throw new Error("No mementos available");
+  std::shared_ptr<Memento> getLatestMemento() const {
+    if (mementos.empty()) {
+      throw std::runtime_error("No mementos available");
     }
-    return this.mementos[this.mementos.length - 1];
+    return mementos.back();
   }
-}
+};
 
 // Client code
-function main() {
-  const editor = new Editor("Initial text");
+int main() {
+  Editor editor("Initial text");
+  History history;
 
-  // Create a history to store mementos
-  const history = new History();
+  history.addMemento(editor.save()); // Save initial state
 
-  // Add a memento to the history
-  history.addMemento(editor.save());
-
-  // Modify the text
   editor.setText("Modified text");
+  history.addMemento(editor.save()); // Save modified state
 
-  // Add another memento to the history
-  history.addMemento(editor.save());
-
-  // Restore the editor's state to a previous memento
+  // Restore the editor's state to the most recent memento
   editor.restore(history.getLatestMemento());
+  std::cout << editor.getText() << std::endl; // Output: Modified text
 
-  console.log(editor.getText()); // Output: Modified text (restored from the previous state)
+  return 0;
 }
 
 /**
- * In this example, the Editor class represents an object whose state can be modified. The save
- * method creates a memento containing the current state of the editor, and the restore method
- * restores the editor's state from a given memento.
+ * In this example, the Editor class represents an object whose state can be
+ * modified. The save method creates a memento containing the current state of
+ * the editor, and the restore method restores the editor's state from a given
+ * memento.
  *
- * The Memento class represents the stored state of the editor at a particular point in time.
+ * The Memento class represents the stored state of the editor at a particular
+ * point in time.
  *
- * The History class is responsible for maintaining a list of mementos. It provides methods
- * to add a memento to the history and retrieve the most recent memento.
+ * The History class is responsible for maintaining a list of mementos. It
+ * provides methods to add a memento to the history and retrieve the most recent
+ * memento.
  *
- * In the client code, we create an editor object and a history object. We modify the editor's
- * state, save it to a memento, modify it again, and then restore it to the previous state using
- * the memento stored in the history.
+ * In the client code, we create an editor object and a history object. We
+ * modify the editor's state, save it to a memento, modify it again, and then
+ * restore it to the previous state using the memento stored in the history.
  */

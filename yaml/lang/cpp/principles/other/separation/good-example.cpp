@@ -1,71 +1,72 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
 // Authentication service
 class AuthenticationService {
-  login(username: string, password: string): boolean {
+public:
+  bool login(const std::string &username, const std::string &password) {
     // Authentication logic here
     return true; // Dummy implementation
   }
 
-  logout(): void {
+  void logout() {
     // Logout logic here
   }
-}
+};
 
 // Data service
 class DataService {
-  fetchData(): any[] {
+public:
+  std::vector<int>
+  fetchData() { // Using std::vector<int> as a placeholder for any data type
     // Data retrieval logic here
-    return []; // Dummy implementation
+    return {}; // Dummy implementation
   }
-}
-
-/**
- * - `AuthenticationService` and `DataService` are responsible for handling authentication and data retrieval, respectively.
- * - `UserController` and `DataController` serve as intermediaries between the HTTP layer (not shown) and the services.
- * - Each component has a single responsibility, promoting modularity, testability, and maintainability.
- *
- */
+};
 
 // User controller
 class UserController {
-  private authService: AuthenticationService;
+private:
+  AuthenticationService &authService;
 
-  constructor(authService: AuthenticationService) {
-    this.authService = authService;
+public:
+  UserController(AuthenticationService &authService)
+      : authService(authService) {}
+
+  bool loginUser(const std::string &username, const std::string &password) {
+    return authService.login(username, password);
   }
 
-  loginUser(username: string, password: string): boolean {
-    return this.authService.login(username, password);
-  }
-
-  logoutUser(): void {
-    this.authService.logout();
-  }
-}
+  void logoutUser() { authService.logout(); }
+};
 
 // Data controller
 class DataController {
-  private dataService: DataService;
+private:
+  DataService &dataService;
 
-  constructor(dataService: DataService) {
-    this.dataService = dataService;
-  }
+public:
+  DataController(DataService &dataService) : dataService(dataService) {}
 
-  getData(): any[] {
-    return this.dataService.fetchData();
-  }
+  std::vector<int> getData() { return dataService.fetchData(); }
+};
+
+// Example usage
+int main() {
+  AuthenticationService authService;
+  DataService dataService;
+
+  UserController userController(authService);
+  DataController dataController(dataService);
+
+  // Simulate user login/logout
+  userController.loginUser("username", "password");
+  userController.logoutUser();
+
+  // Retrieve data
+  auto data = dataController.getData();
+  std::cout << "Data fetched. Size: " << data.size() << std::endl;
+
+  return 0;
 }
-
-// Usage
-const authService = new AuthenticationService();
-const dataService = new DataService();
-
-const userController = new UserController(authService);
-const dataController = new DataController(dataService);
-
-// Simulate user login/logout
-userController.loginUser("username", "password");
-userController.logoutUser();
-
-// Retrieve data
-const data = dataController.getData();
-console.log(data);
