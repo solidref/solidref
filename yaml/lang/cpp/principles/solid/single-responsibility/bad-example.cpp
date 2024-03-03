@@ -1,14 +1,31 @@
+#include <iostream>
+#include <string>
+
+// Employee class responsible for both storing employee data and printing
+// employee information
 class Employee {
-  constructor(private name: string, private position: string, private salary: number) { }
+private:
+  std::string name;
+  std::string position;
+  double salary;
 
-  // Method responsible for storing employee data and printing employee information
-  print(): void {
-    console.log(`Name: ${this.name}`);
-    console.log(`Position: ${this.position}`);
-    console.log(`Salary: ${this.salary}`);
+public:
+  Employee(const std::string &name, const std::string &position, double salary)
+      : name(name), position(position), salary(salary) {}
+
+  // Method that violates SRP by including printing functionality
+  void print() const {
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Position: " << position << std::endl;
+    std::cout << "Salary: $" << salary << std::endl;
   }
-}
+};
 
-// Usage
-const employee = new Employee("John Doe", "Software Engineer", 50000);
-employee.print();
+// Example usage
+int main() {
+  Employee employee("John Doe", "Software Engineer", 50000);
+  employee
+      .print(); // The employee object handles both data storage and printing
+
+  return 0;
+}

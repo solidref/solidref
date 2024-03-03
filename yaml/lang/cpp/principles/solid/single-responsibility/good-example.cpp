@@ -1,30 +1,39 @@
+#include <iostream>
+#include <string>
+
 // Employee class responsible only for storing employee data
 class Employee {
-  constructor(private name: string, private position: string, private salary: number) { }
+private:
+  std::string name;
+  std::string position;
+  double salary;
 
-  getName(): string {
-    return this.name;
-  }
+public:
+  Employee(const std::string &name, const std::string &position, double salary)
+      : name(name), position(position), salary(salary) {}
 
-  getPosition(): string {
-    return this.position;
-  }
+  std::string getName() const { return name; }
 
-  getSalary(): number {
-    return this.salary;
-  }
-}
+  std::string getPosition() const { return position; }
+
+  double getSalary() const { return salary; }
+};
 
 // Printer class responsible only for printing employee information
 class EmployeePrinter {
-  print(employee: Employee): void {
-    console.log(`Name: ${employee.getName()}`);
-    console.log(`Position: ${employee.getPosition()}`);
-    console.log(`Salary: ${employee.getSalary()}`);
+public:
+  void print(const Employee &employee) const {
+    std::cout << "Name: " << employee.getName() << std::endl;
+    std::cout << "Position: " << employee.getPosition() << std::endl;
+    std::cout << "Salary: $" << employee.getSalary() << std::endl;
   }
-}
+};
 
-// Usage
-const employee = new Employee("John Doe", "Software Engineer", 50000);
-const printer = new EmployeePrinter();
-printer.print(employee);
+// Example usage
+int main() {
+  Employee employee("John Doe", "Software Engineer", 50000);
+  EmployeePrinter printer;
+  printer.print(employee);
+
+  return 0;
+}
