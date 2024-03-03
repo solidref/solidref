@@ -1,61 +1,73 @@
-interface Mediator {
-  send(message: string, colleague: Colleague): void;
+// Define the Mediator interface
+interface ChatMediator {
+  sendMessage(message: string, user: User): void;
 }
 
-abstract class Colleague {
-  protected mediator: Mediator | null = null;
+// Concrete Mediator implementation for a chat room
+class ChatRoom implements ChatMediator {
+  sendMessage(message: string, user: User): void {
+    console.log(`[${user.getName()}] sends message: ${message}`);
+  }
+}
 
-  setMediator(mediator: Mediator) {
+// Define the Colleague interface
+interface User {
+  send(message: string): void;
+  receive(message: string): void;
+  getName(): string;
+}
+
+// Concrete Colleague implementation for a chat user
+class ChatUser implements User {
+  private name: string;
+  private mediator: ChatMediator;
+
+  constructor(name: string, mediator: ChatMediator) {
+    this.name = name;
     this.mediator = mediator;
   }
 
-  send(message: string) {
-    if (this.mediator) {
-      this.mediator.send(message, this);
-    }
+  send(message: string): void {
+    console.log(`[${this.name}] sends message: ${message}`);
+    this.mediator.sendMessage(message, this);
   }
 
-  abstract receive(message: string): void;
-}
-
-// Concrete Colleagues
-class ConcreteColleague1 extends Colleague {
-  receive(message: string) {
-    console.log(`${this.constructor.name} received message: ${message}`);
-  }
-}
-
-class ConcreteColleague2 extends Colleague {
-  receive(message: string) {
-    console.log(`${this.constructor.name} received message: ${message}`);
-  }
-}
-
-// Concrete Mediator
-class ConcreteMediator implements Mediator {
-  private colleagues: Colleague[] = [];
-
-  register(colleague: Colleague) {
-    this.colleagues.push(colleague);
-    colleague.setMediator(this);
+  receive(message: string): void {
+    console.log(`[${this.name}] received message: ${message}`);
   }
 
-  send(message: string, sender: Colleague) {
-    this.colleagues.forEach(colleague => {
-      if (colleague !== sender) {
-        colleague.receive(message);
-      }
-    });
+  getName(): string {
+    return this.name;
   }
 }
 
 // Client code
-const mediator = new ConcreteMediator();
-const colleague1 = new ConcreteColleague1();
-const colleague2 = new ConcreteColleague2();
+function main() {
+  // Create a chat room mediator
+  const chatMediator: ChatMediator = new ChatRoom();
 
-mediator.register(colleague1);
-mediator.register(colleague2);
+  // Create chat users
+  const user1: User = new ChatUser('User1', chatMediator);
+  const user2: User = new ChatUser('User2', chatMediator);
 
-colleague1.send('Hello from Colleague 1');
-colleague2.send('Hello from Colleague 2');
+  // Send messages between users
+  user1.send('Hello, User2!');
+  user2.send('Hi, User1!');
+}
+
+/**
+ * In this example, the Mediator pattern is used to facilitate communication between
+ * users in a chat room. The ChatMediator interface defines a method sendMessage for
+ * sending messages to users. The ChatRoom class provides a concrete implementation
+ * of the mediator for managing communication between users in the chat room.
+ *
+ * The User interface defines methods send and receive for sending and receiving messages,
+ * respectively, as well as a method getName for getting the user's name. The ChatUser
+ * class implements the User interface and interacts with the mediator to send and
+ * receive messages.
+ *
+ * In the client code, we create a chat room mediator and two chat users. Users can send
+ * messages to each other by calling the send method, which delegates the message sending
+ * to the mediator. When a message is received, the mediator distributes it to the
+ * appropriate user's receive method.
+ */

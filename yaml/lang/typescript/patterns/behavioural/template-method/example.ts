@@ -1,59 +1,63 @@
-abstract class AbstractClass {
-  templateMethod() {
-    this.baseOperation1();
-    this.requiredOperation1();
-    this.baseOperation2();
-    this.hook1();
-    this.requiredOperation2();
-    this.baseOperation3();
-    this.hook2();
+abstract class Breakfast {
+  // Template method
+  prepare(): void {
+    this.boilWater();
+    this.addIngredients();
+    this.cook();
+    this.serve();
   }
 
-  baseOperation1() {
-    console.log("AbstractClass says: I am doing the bulk of the work");
+  // Abstract methods to be implemented by subclasses
+  abstract addIngredients(): void;
+  abstract cook(): void;
+
+  // Concrete methods
+  boilWater(): void {
+    console.log("Boiling water...");
   }
 
-  baseOperation2() {
-    console.log("AbstractClass says: But I let subclasses override some operations");
-  }
-
-  baseOperation3() {
-    console.log("AbstractClass says: But I am doing the bulk of the work anyway");
-  }
-
-  abstract requiredOperation1(): void;
-  abstract requiredOperation2(): void;
-
-  hook1() { }
-  hook2() { }
-}
-
-class ConcreteClass1 extends AbstractClass {
-  requiredOperation1() {
-    console.log("ConcreteClass1 says: Implemented Operation1");
-  }
-
-  requiredOperation2() {
-    console.log("ConcreteClass1 says: Implemented Operation2");
+  serve(): void {
+    console.log("Breakfast is served!");
   }
 }
 
-class ConcreteClass2 extends AbstractClass {
-  requiredOperation1() {
-    console.log("ConcreteClass2 says: Implemented Operation1");
+class OmeletteBreakfast extends Breakfast {
+  addIngredients(): void {
+    console.log("Adding eggs, cheese, and vegetables to the pan.");
   }
 
-  requiredOperation2() {
-    console.log("ConcreteClass2 says: Implemented Operation2");
+  cook(): void {
+    console.log("Cooking the omelette until golden brown.");
+  }
+}
+
+class PancakeBreakfast extends Breakfast {
+  addIngredients(): void {
+    console.log("Mixing flour, eggs, milk, and sugar to make the batter.");
   }
 
-  hook1() {
-    console.log("ConcreteClass2 says: Overridden Hook1");
+  cook(): void {
+    console.log("Pouring the batter onto the griddle and flipping until cooked.");
   }
 }
 
 // Client code
-console.log('Same client code can work with different subclasses:');
-new ConcreteClass1().templateMethod();
-console.log('');
-new ConcreteClass2().templateMethod();
+console.log("Preparing Omelette Breakfast:");
+const omeletteBreakfast = new OmeletteBreakfast();
+omeletteBreakfast.prepare();
+
+console.log("\nPreparing Pancake Breakfast:");
+const pancakeBreakfast = new PancakeBreakfast();
+pancakeBreakfast.prepare();
+
+/**
+ * In this example, we have an abstract class Breakfast representing the template method pattern. It defines
+ * the steps of preparing breakfast in the prepare() method, which serves as the template method. The abstract
+ * methods addIngredients() and cook() are placeholders for the specific steps that vary between different
+ * types of breakfasts.
+ *
+ * Subclasses such as OmeletteBreakfast and PancakeBreakfast extend the Breakfast class and implement the
+ * abstract methods to provide specific implementations for adding ingredients and cooking. The template
+ * method prepare() orchestrates the sequence of steps required to prepare each type of breakfast.
+ *
+ */

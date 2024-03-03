@@ -1,79 +1,99 @@
-interface AbstractFactory {
-  createProductA(): AbstractProductA;
-  createProductB(): AbstractProductB;
+// Abstract Factory interface
+interface FurnitureFactory {
+  createChair(): Chair;
+  createTable(): Table;
 }
 
-class ConcreteFactory1 implements AbstractFactory {
-  createProductA(): AbstractProductA {
-    return new ConcreteProductA1();
+// Concrete Factory 1: Modern Furniture Factory
+class ModernFurnitureFactory implements FurnitureFactory {
+  createChair(): Chair {
+    return new ModernChair();
   }
 
-  createProductB(): AbstractProductB {
-    return new ConcreteProductB1();
-  }
-}
-
-class ConcreteFactory2 implements AbstractFactory {
-  createProductA(): AbstractProductA {
-    return new ConcreteProductA2();
-  }
-
-  createProductB(): AbstractProductB {
-    return new ConcreteProductB2();
+  createTable(): Table {
+    return new ModernTable();
   }
 }
 
-interface AbstractProductA {
-  usefulFunctionA(): string;
-}
+// Concrete Factory 2: Vintage Furniture Factory
+class VintageFurnitureFactory implements FurnitureFactory {
+  createChair(): Chair {
+    return new VintageChair();
+  }
 
-class ConcreteProductA1 implements AbstractProductA {
-  usefulFunctionA(): string {
-    return 'The result of the product A1.';
+  createTable(): Table {
+    return new VintageTable();
   }
 }
 
-class ConcreteProductA2 implements AbstractProductA {
-  usefulFunctionA(): string {
-    return 'The result of the product A2.';
+// Abstract Product: Chair
+interface Chair {
+  sitOn(): void;
+}
+
+// Concrete Product: Modern Chair
+class ModernChair implements Chair {
+  sitOn(): void {
+    console.log("Sitting on a modern chair.");
   }
 }
 
-interface AbstractProductB {
-  usefulFunctionB(): string;
-  anotherUsefulFunctionB(collaborator: AbstractProductA): string;
-}
-
-class ConcreteProductB1 implements AbstractProductB {
-  usefulFunctionB(): string {
-    return 'The result of the product B1.';
-  }
-
-  anotherUsefulFunctionB(collaborator: AbstractProductA): string {
-    const result = collaborator.usefulFunctionA();
-    return `The result of the B1 collaborating with the (${result})`;
+// Concrete Product: Vintage Chair
+class VintageChair implements Chair {
+  sitOn(): void {
+    console.log("Sitting on a vintage chair.");
   }
 }
 
-class ConcreteProductB2 implements AbstractProductB {
-  usefulFunctionB(): string {
-    return 'The result of the product B2.';
-  }
+// Abstract Product: Table
+interface Table {
+  putOn(): void;
+}
 
-  anotherUsefulFunctionB(collaborator: AbstractProductA): string {
-    const result = collaborator.usefulFunctionA();
-    return `The result of the B2 collaborating with the (${result})`;
+// Concrete Product: Modern Table
+class ModernTable implements Table {
+  putOn(): void {
+    console.log("Putting something on a modern table.");
+  }
+}
+
+// Concrete Product: Vintage Table
+class VintageTable implements Table {
+  putOn(): void {
+    console.log("Putting something on a vintage table.");
   }
 }
 
 // Client code
-function clientCode(factory: AbstractFactory) {
-  const productA = factory.createProductA();
-  const productB = factory.createProductB();
+function createFurniture(factory: FurnitureFactory): void {
+  const chair = factory.createChair();
+  const table = factory.createTable();
 
-  console.log(productB.usefulFunctionB());
-  console.log(productB.anotherUsefulFunctionB(productA));
+  console.log("Created furniture:");
+  chair.sitOn();
+  table.putOn();
 }
 
-clientCode(new ConcreteFactory1());
-clientCode(new ConcreteFactory2());
+// Creating modern furniture
+console.log("Creating modern furniture:");
+createFurniture(new ModernFurnitureFactory());
+
+// Creating vintage furniture
+console.log("\nCreating vintage furniture:");
+createFurniture(new VintageFurnitureFactory());
+
+/**
+ * The FurnitureFactory interface declares methods for creating chairs and tables.
+ *
+ * Concrete factories (ModernFurnitureFactory and VintageFurnitureFactory) implement the
+ * FurnitureFactory interface to produce modern and vintage furniture, respectively.
+ *
+ * The Chair interface declares a method for sitting on a chair, and concrete chair classes
+ * (ModernChair and VintageChair) implement this interface.
+ *
+ * The Table interface declares a method for putting something on a table, and concrete table
+ * classes (ModernTable and VintageTable) implement this interface.
+ * The createFurniture function acts as a client and receives a FurnitureFactory as a parameter.
+ * It creates a chair and a table using the factory and then performs actions on the created furniture.
+ *
+ */

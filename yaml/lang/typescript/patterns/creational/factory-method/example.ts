@@ -1,49 +1,68 @@
-abstract class Creator {
-  abstract factoryMethod(): Product;
+// Product interface: Vehicle
+interface Vehicle {
+  drive(): void;
+}
 
-  someOperation() {
-    const product = this.factoryMethod();
-    return `Creator: The same creator's code has just worked with ${product.operation()}`;
+// Concrete Products: Car and Truck
+class Car implements Vehicle {
+  drive(): void {
+    console.log("Driving a car...");
   }
 }
 
-class ConcreteCreator1 extends Creator {
-  factoryMethod(): Product {
-    return new ConcreteProduct1();
+class Truck implements Vehicle {
+  drive(): void {
+    console.log("Driving a truck...");
   }
 }
 
-class ConcreteCreator2 extends Creator {
-  factoryMethod(): Product {
-    return new ConcreteProduct2();
+// Creator: VehicleFactory
+abstract class VehicleFactory {
+  // Factory Method
+  abstract createVehicle(): Vehicle;
+
+  // An operation that uses the factory method
+  deliverVehicle(): void {
+    const vehicle = this.createVehicle();
+    console.log("Delivering the vehicle...");
+    vehicle.drive();
   }
 }
 
-interface Product {
-  operation(): string;
-}
-
-class ConcreteProduct1 implements Product {
-  operation(): string {
-    return '{Result of the ConcreteProduct1}';
+// Concrete Creators: CarFactory and TruckFactory
+class CarFactory extends VehicleFactory {
+  // Factory Method implementation for creating a car
+  createVehicle(): Vehicle {
+    console.log("Creating a car...");
+    return new Car();
   }
 }
 
-class ConcreteProduct2 implements Product {
-  operation(): string {
-    return '{Result of the ConcreteProduct2}';
+class TruckFactory extends VehicleFactory {
+  // Factory Method implementation for creating a truck
+  createVehicle(): Vehicle {
+    console.log("Creating a truck...");
+    return new Truck();
   }
 }
 
 // Client code
-function clientCode(creator: Creator) {
-  console.log("Client: I'm not aware of the creator's class, but it still works.");
-  console.log(creator.someOperation());
-}
+const carFactory = new CarFactory();
+carFactory.deliverVehicle();
 
-console.log('App: Launched with the ConcreteCreator1.');
-clientCode(new ConcreteCreator1());
-console.log('');
+const truckFactory = new TruckFactory();
+truckFactory.deliverVehicle();
 
-console.log('App: Launched with the ConcreteCreator2.');
-clientCode(new ConcreteCreator2());
+/**
+ * The Vehicle interface defines a common interface for all vehicles, which includes a drive() method.
+ *
+ * The Car and Truck classes are concrete implementations of the Vehicle interface.
+ *
+ * The VehicleFactory class is an abstract class representing a creator. It declares the createVehicle()
+ * method, which serves as the Factory Method for creating vehicles. The deliverVehicle() method is a
+ * common operation that uses the Factory Method to create and deliver a vehicle.
+ *
+ * The CarFactory and TruckFactory classes are concrete implementations of the VehicleFactory class.
+ * They override the createVehicle() method to create specific types of vehicles (i.e., cars and trucks).
+ *
+ */
