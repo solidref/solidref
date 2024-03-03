@@ -1,13 +1,13 @@
 // import * as React from 'react';
 
-import {styled} from '@mui/system';
-import {Accordion} from '@mui/material';
+import { styled } from '@mui/system';
+import { Accordion } from '@mui/material';
 
 const HorizontalAccordion = styled(Accordion)(() => ({
   // border: '1px green solid',
   borderRadius: '0px',
   flex: '0 1 auto',
-  height: '400px',
+  minHeight: '400px',
   transition: 'flex 0.3s ease',
   width: '3rem',
   alignItems: 'start',
