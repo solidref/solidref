@@ -1,7 +1,19 @@
-class Worker {
-public:
-  void work() { /* ... */
+interface Machine {
+  printDocument(): void;
+  faxDocument(): void;
+  scanDocument(): void;
+}
+
+class OldPrinter implements Machine {
+  printDocument(): void {
+    console.log("Printing document...");
   }
-  void eat() { /* ... */
-  }            // This method should not be part of the Worker interface
-};
+
+  faxDocument(): void {
+    throw new Error("This printer cannot fax documents.");
+  }
+
+  scanDocument(): void {
+    throw new Error("This printer cannot scan documents.");
+  }
+}

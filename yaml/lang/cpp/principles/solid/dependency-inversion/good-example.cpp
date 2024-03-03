@@ -1,32 +1,49 @@
 #include <iostream>
+#include <string>
 
-class Device {
+// Interface equivalent in C++
+class MessageSender {
 public:
-  virtual void turnOn() = 0;
-  virtual ~Device() {} // Virtual destructor for safe polymorphic use
+  virtual void sendMessage(const std::string &message) = 0;
+  virtual ~MessageSender() {} // Virtual destructor for proper cleanup
 };
 
-class Fan : public Device { // Fan now properly inherits from Device
+class EmailSender : public MessageSender {
 public:
-  void turnOn() override { // Ensure we are overriding a base class method
-    std::cout << "Fan turned on.\n";
+  void sendMessage(const std::string &message) override {
+    std::cout << "Sending email: " << message << std::endl;
   }
 };
 
-class Switch {
+class SMSSender : public MessageSender {
 public:
-  Device *device;
-
-  Switch(Device *device) : device(device) {} // Use initializer list
-
-  void operate() { device->turnOn(); }
+  void sendMessage(const std::string &message) override {
+    std::cout << "Sending SMS: " << message << std::endl;
+  }
 };
 
-int main() {
-  Fan fan;                 // Stack allocation to avoid manual memory management
-  Switch wallSwitch(&fan); // Pass address of fan
-  wallSwitch.operate();    // This should now work correctly
+class NotificationService {
+private:
+  MessageSender *messageSender; // Using pointer to interface
 
-  // No need to delete anything since we're not using 'new'
-  return 0; // Return type of main should be int
+public:
+  // Constructor to initialize messageSender - using initializer list
+  NotificationService(MessageSender *sender) : messageSender(sender) {}
+
+  void sendNotification(const std::string &message) {
+    messageSender->sendMessage(message);
+  }
+};
+
+// Example usage
+int main() {
+  EmailSender emailSender;
+  NotificationService emailService(&emailSender);
+  emailService.sendNotification("Hello via Email");
+
+  SMSSender smsSender;
+  NotificationService smsService(&smsSender);
+  smsService.sendNotification("Hello via SMS");
+
+  return 0;
 }

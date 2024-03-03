@@ -1,16 +1,31 @@
-class Worker {
-public:
-  void work() { /* ... */
+interface Printer {
+  printDocument(): void;
+}
+
+interface Fax {
+  faxDocument(): void;
+}
+
+interface Scanner {
+  scanDocument(): void;
+}
+
+class SimplePrinter implements Printer {
+  printDocument(): void {
+    console.log("Printing document...");
   }
-};
+}
 
-class Feeder {
-public:
-  void eat() { /* ... */
+class MultifunctionalPrinter implements Printer, Fax, Scanner {
+  printDocument(): void {
+    console.log("Printing document...");
   }
-};
 
-class Human : Worker {};
-class Robot : Worker {};
+  faxDocument(): void {
+    console.log("Faxing document...");
+  }
 
-class Animal : Feeder {};
+  scanDocument(): void {
+    console.log("Scanning document...");
+  }
+}

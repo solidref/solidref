@@ -1,24 +1,42 @@
-class LightBulb {
+#include <iostream>
+#include <string>
+
+class EmailSender {
 public:
-  void turnOn() {
-    // Implementation...
+  void sendEmail(const std::string &message) {
+    std::cout << "Sending email: " << message << std::endl;
   }
 };
 
-class Switch {
+class SMSSender {
+public:
+  void sendSMS(const std::string &message) {
+    std::cout << "Sending SMS: " << message << std::endl;
+  }
+};
+
+class NotificationService {
 private:
-  LightBulb *bulb; // Declare bulb as a pointer to LightBulb
+  EmailSender emailSender; // Instance of EmailSender
+  SMSSender smsSender;     // Instance of SMSSender
 
 public:
-  Switch() {
-    this->bulb = new LightBulb(); // Allocate a new LightBulb
+  NotificationService() = default; // Default constructor
+
+  void sendNotificationByEmail(const std::string &message) {
+    emailSender.sendEmail(message);
   }
 
-  ~Switch() {
-    delete this->bulb; // Clean up the allocated LightBulb
-  }
-
-  void operate() {
-    this->bulb->turnOn(); // Correct syntax for accessing members via pointer
+  void sendNotificationBySMS(const std::string &message) {
+    smsSender.sendSMS(message);
   }
 };
+
+// Example usage
+int main() {
+  NotificationService service;
+  service.sendNotificationByEmail("Hello World via Email");
+  service.sendNotificationBySMS("Hello World via SMS");
+
+  return 0;
+}

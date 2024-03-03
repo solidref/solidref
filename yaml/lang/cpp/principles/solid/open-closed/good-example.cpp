@@ -1,28 +1,17 @@
-#include <cmath> // Required for M_PI
-
 class Shape {
-public:
-  virtual double computeArea() const = 0;
-  virtual ~Shape() {}
-};
+  computeArea(): number {
+    throw new Error('Must be implemented in subclasses');
+  }
+}
 
-class Rectangle : public Shape {
-public:
-  Rectangle(double width, double height) : width(width), height(height) {}
+class Rectangle extends Shape {
+  constructor(private width: number, private height: number) { super(); }
 
-  double computeArea() const override { return width * height; }
+  computeArea(): number { return this.width * this.height; }
+}
 
-private:
-  double width;
-  double height;
-};
+class Circle extends Shape {
+  constructor(private radius: number) { super(); }
 
-class Circle : public Shape {
-public:
-  Circle(double radius) : radius(radius) {}
-
-  double computeArea() const override { return M_PI * radius * radius; }
-
-private:
-  double radius;
-};
+  computeArea(): number { return Math.PI * Math.pow(this.radius, 2); }
+}
