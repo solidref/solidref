@@ -1,0 +1,28 @@
+---
+principles:
+  - title: Liskov Substitution
+    examples:
+      - title: Good Example
+        codeFile: principles/solid/liskov-substitution/good-example
+      - title: Bad Example
+        codeFile: principles/solid/liskov-substitution/bad-example
+  - title: Interface Segregation
+    examples:
+      - title: Good Example
+        codeFile: principles/solid/interface-segregation/good-example
+      - title: Bad Example
+        codeFile: principles/solid/interface-segregation/bad-example
+      - title: Good Example 2
+        codeFile: principles/solid/interface-segregation/good-example-2
+      - title: Bad Example 2
+        codeFile: principles/solid/interface-segregation/bad-example-2
+  - title: Dependency Inversion
+    examples:
+      - title: Good Example
+        codeFile: principles/solid/interface-segregation/good-example
+      - title: Bad Example
+        codeFile: principles/solid/interface-segregation/bad-example
+      - title: Good Example
+        codeFile: principles/solid/interface-segregation/good-example-2
+      - title: Bad Example
+        codeFile: principles/solid/interface-segregation/bad-example-2

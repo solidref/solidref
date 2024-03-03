@@ -1,0 +1,32 @@
+---
+patterns:
+  - title: Chain Of Responsibility
+    examples:
+      - codeFile: patterns/behavioural/chain-of-responsibility/example
+  - title: Command
+    examples:
+      - codeFile: patterns/behavioural/command/example
+  - title: Iterator
+    examples:
+      - codeFile: patterns/behavioural/iterator/example
+  - title: Mediator
+    examples:
+      - codeFile: patterns/behavioural/mediator/example
+  - title: Memento
+    examples:
+      - codeFile: patterns/behavioural/memento/example
+  - title: Observer
+    examples:
+      - codeFile: patterns/behavioural/observer/example
+  - title: State
+    examples:
+      - codeFile: patterns/behavioural/state/example
+  - title: Strategy
+    examples:
+      - codeFile: patterns/behavioural/strategy/example
+  - title: Template Method
+    examples:
+      - codeFile: patterns/behavioural/template-method/example
+  - title: Visitor
+    examples:
+      - codeFile: patterns/behavioural/visitor/example
