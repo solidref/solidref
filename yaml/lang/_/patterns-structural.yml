@@ -1,0 +1,23 @@
+---
+patterns:
+  - title: Adapter
+    examples:
+      - codeFile: patterns/structural/adapter/example
+  - title: Bridge
+    examples:
+      - codeFile: patterns/structural/bridge/example
+  - title: Composite
+    examples:
+      - codeFile: patterns/structural/composite/example
+  - title: Decorator
+    examples:
+      - codeFile: patterns/structural/decorator/example
+  - title: Facade
+    examples:
+      - codeFile: patterns/structural/facade/example
+  - title: Flyweight
+    examples:
+      - codeFile: patterns/structural/flyweight/example
+  - title: Proxy
+    examples:
+      - codeFile: patterns/structural/proxy/example

@@ -1,0 +1,32 @@
+---
+principles:
+  - title: Single Responsibility
+    examples:
+      - title: Good Example
+        codeFile: principles/solid/single-responsibility/good-example
+      - title: Bad Example
+        codeFile: principles/solid/single-responsibility/bad-example
+  - title: Open-Closed
+    examples:
+      - title: Good Example
+        codeFile: principles/solid/open-closed/good-example
+      - title: Bad Example
+        codeFile: principles/solid/open-closed/bad-example
+  - title: Liskov Substitution
+    examples:
+      - title: Good Example
+        codeFile: principles/solid/liskov-substitution/good-example
+      - title: Bad Example
+        codeFile: principles/solid/liskov-substitution/bad-example
+  - title: Interface Segregation
+    examples:
+      - title: Good Example
+        codeFile: principles/solid/interface-segregation/good-example
+      - title: Bad Example
+        codeFile: principles/solid/interface-segregation/bad-example
+  - title: Dependency Inversion
+    examples:
+      - title: Good Example
+        codeFile: principles/solid/interface-segregation/good-example
+      - title: Bad Example
+        codeFile: principles/solid/interface-segregation/bad-example

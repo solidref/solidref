@@ -1,0 +1,62 @@
+---
+patterns:
+  - title: Chain Of Responsibility
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/chain-of-responsibility/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/chain-of-responsibility/example-refined
+  - title: Command
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/command/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/command/example-refined
+  - title: Iterator
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/iterator/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/iterator/example-refined
+  - title: Mediator
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/mediator/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/mediator/example-refined
+  - title: Memento
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/memento/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/memento/example-refined
+  - title: Observer
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/observer/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/observer/example-refined
+  - title: State
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/state/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/state/example-refined
+  - title: Strategy
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/strategy/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/strategy/example-refined
+  - title: Template Method
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/template-method/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/template-method/example-refined
+  - title: Visitor
+    examples:
+      - title: Example
+        codeFile: patterns/behavioural/visitor/example
+      - title: Refined Example
+        codeFile: patterns/behavioural/visitor/example-refined

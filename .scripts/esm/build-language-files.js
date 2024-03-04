@@ -11,6 +11,8 @@ const __dirname = dirname(__filename);
 
 const jsonStringifyConfig = process.env.NODE_ENV === 'development' ? [null, 2] : [];
 
+const langPath = pathJoin(__dirname, '..', '..', 'yaml', 'lang');
+
 const {readFile, writeFile, mkdir} = fs;
 
 main();
@@ -22,10 +24,9 @@ function ofUnix(file) {
 async function yamlParseAndSave(file) {
   file = file.replace(ofUnix(pathJoin(__dirname, '..', '..')) + '/', '');
   console.log(file);
-  const sourceDirName = dirname(file);
 
-  const yamlString = await readFile(file, 'utf-8');
-  const yamlObject = yaml.parse(yamlString);
+  const langYamlString = await readFile(file, 'utf-8');
+  const langYamlObject = yaml.parse(langYamlString);
 
   const names = [
     'patterns-behavioural',
@@ -37,15 +38,60 @@ async function yamlParseAndSave(file) {
     'principles-proprietary',
   ];
   for (const name of names) {
-    const newFile = pathJoin(sourceDirName, name) + '.yml';
-    if (existsSync(newFile)) {
-      console.log(newFile);
-      const yamlString = await readFile(newFile, 'utf-8');
-      const newYamlObject = yaml.parse(yamlString);
-      const ch = name.split('-');
-      yamlObject[ch[0]] = {
-        ...(yamlObject[ch[0]] ?? {}),
-        [`${ch[0]}_${ch[1]}`]: newYamlObject[ch[0]] ?? {},
+    let defaultPPYamlObject = {};
+    let key;
+
+    const defaultPPFile = pathJoin(langPath, '_', name) + '.yml';
+    if (existsSync(defaultPPFile)) {
+      const defaultPPYamlString = await readFile(defaultPPFile, 'utf-8');
+      defaultPPYamlObject = yaml.parse(defaultPPYamlString);
+      key = Object.keys(defaultPPYamlObject)[0];
+    }
+
+    const ppFile = pathJoin(langPath, langYamlObject.code, name) + '.yml';
+    let ppYamlObject = {};
+    if (existsSync(ppFile)) {
+      console.log(ppFile);
+      const ppYamlString = await readFile(ppFile, 'utf-8');
+      ppYamlObject = yaml.parse(ppYamlString);
+      if (!key) {
+        key = Object.keys(ppYamlObject)[0];
+      }
+    }
+
+    (ppYamlObject[key] || []).forEach((item) => {
+      const defaultItem = (defaultPPYamlObject[key] ?? []).find((defaultItem) => defaultItem.title === item.title);
+      if (defaultItem) {
+        defaultItem.examples = [...(defaultItem.examples ?? []), ...item.examples];
+        defaultItem.examples = [...new Set(defaultItem.examples)]; // make'em unique
+      } else {
+        defaultPPYamlObject[key] = defaultPPYamlObject[key] ?? [];
+        defaultPPYamlObject[key].push(item);
+      }
+    });
+
+    for (const item of defaultPPYamlObject[key] ?? []) {
+      for (const example of item.examples) {
+        if (example.codeFile) {
+          const codeFile = pathJoin(langPath, langYamlObject.code, example.codeFile) + `.${langYamlObject.ext}`;
+          if (existsSync(codeFile)) {
+            example.code = await readFile(codeFile, 'utf-8');
+          } else {
+            console.error(`File not found: ${codeFile}`);
+          }
+        }
+      }
+      item.examples = item.examples.filter((example) => example.code);
+      if (item.examples.length === 1) {
+        delete item.examples[0].title;
+      }
+    }
+
+    const [pp, ppType] = name.split('-');
+    if (defaultPPYamlObject[pp] && defaultPPYamlObject[pp].length) {
+      langYamlObject[pp] = {
+        ...(langYamlObject[pp] ?? {}),
+        [`${pp}_${ppType}`]: defaultPPYamlObject[pp] ?? [],
       };
     }
   }
@@ -53,15 +99,22 @@ async function yamlParseAndSave(file) {
   const generatedDirName = pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages');
   await mkdir(generatedDirName, {recursive: true});
 
-  const fileName = pathJoin(generatedDirName, yamlObject.code + '.json');
-  await writeFile(fileName, JSON.stringify(yamlObject, ...jsonStringifyConfig));
+  const fileName = pathJoin(generatedDirName, langYamlObject.code + '.json');
+  await writeFile(fileName, JSON.stringify(langYamlObject, ...jsonStringifyConfig));
 }
 
 async function main() {
-  const search = ofUnix(pathJoin(__dirname, '..', '..', 'yaml', 'lang', '**', 'lang.yml'));
+  const search = ofUnix(pathJoin(langPath, '**', 'lang.yml'));
 
   const yamlFiles = await globby([search]);
-  await Promise.all(yamlFiles.map((file) => yamlParseAndSave(file)));
+  await Promise.all(
+    yamlFiles
+      .filter(
+        // (file) => file.includes('typescript'),
+        (file) => true,
+      )
+      .map((file) => yamlParseAndSave(file)),
+  );
 
   const languageHierarchy = [];
   for (const file of yamlFiles) {
