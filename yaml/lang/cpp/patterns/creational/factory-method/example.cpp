@@ -1,68 +1,83 @@
-// Product interface: Vehicle
-interface Vehicle {
-  drive(): void;
-}
+#include <iostream>
+#include <memory>
 
-// Concrete Products: Car and Truck
-class Car implements Vehicle {
-  drive(): void {
-    console.log("Driving a car...");
-  }
-}
+class Vehicle {
+public:
+  virtual void drive() const = 0;
+  virtual ~Vehicle() {}
+};
 
-class Truck implements Vehicle {
-  drive(): void {
-    console.log("Driving a truck...");
+class Car : public Vehicle {
+public:
+  void drive() const override { std::cout << "Driving a car..." << std::endl; }
+};
+
+class Truck : public Vehicle {
+public:
+  void drive() const override {
+    std::cout << "Driving a truck..." << std::endl;
   }
-}
+};
 
 // Creator: VehicleFactory
-abstract class VehicleFactory {
-  // Factory Method
-  abstract createVehicle(): Vehicle;
 
-  // An operation that uses the factory method
-  deliverVehicle(): void {
-    const vehicle = this.createVehicle();
-    console.log("Delivering the vehicle...");
-    vehicle.drive();
+class VehicleFactory {
+public:
+  virtual std::unique_ptr<Vehicle> createVehicle() const = 0;
+
+  void deliverVehicle() const {
+    auto vehicle = createVehicle();
+    std::cout << "Delivering the vehicle..." << std::endl;
+    vehicle->drive();
   }
-}
+
+  virtual ~VehicleFactory() {}
+};
 
 // Concrete Creators: CarFactory and TruckFactory
-class CarFactory extends VehicleFactory {
-  // Factory Method implementation for creating a car
-  createVehicle(): Vehicle {
-    console.log("Creating a car...");
-    return new Car();
+
+class CarFactory : public VehicleFactory {
+public:
+  std::unique_ptr<Vehicle> createVehicle() const override {
+    std::cout << "Creating a car..." << std::endl;
+    return std::make_unique<Car>();
   }
-}
+};
 
-class TruckFactory extends VehicleFactory {
-  // Factory Method implementation for creating a truck
-  createVehicle(): Vehicle {
-    console.log("Creating a truck...");
-    return new Truck();
+class TruckFactory : public VehicleFactory {
+public:
+  std::unique_ptr<Vehicle> createVehicle() const override {
+    std::cout << "Creating a truck..." << std::endl;
+    return std::make_unique<Truck>();
   }
+};
+
+// Client Code
+
+int main() {
+  CarFactory carFactory;
+  carFactory.deliverVehicle();
+
+  TruckFactory truckFactory;
+  truckFactory.deliverVehicle();
+
+  return 0;
 }
-
-// Client code
-const carFactory = new CarFactory();
-carFactory.deliverVehicle();
-
-const truckFactory = new TruckFactory();
-truckFactory.deliverVehicle();
 
 /**
- * The Vehicle interface defines a common interface for all vehicles, which includes a drive() method.
+ * The Vehicle interface defines a common interface for all vehicles, which
+ * includes a drive() method.
  *
- * The Car and Truck classes are concrete implementations of the Vehicle interface.
+ * The Car and Truck classes are concrete implementations of the Vehicle
+ * interface.
  *
- * The VehicleFactory class is an abstract class representing a creator. It declares the createVehicle()
- * method, which serves as the Factory Method for creating vehicles. The deliverVehicle() method is a
- * common operation that uses the Factory Method to create and deliver a vehicle.
+ * The VehicleFactory class is an abstract class representing a creator. It
+ * declares the createVehicle() method, which serves as the Factory Method for
+ * creating vehicles. The deliverVehicle() method is a common operation that
+ * uses the Factory Method to create and deliver a vehicle.
  *
- * The CarFactory and TruckFactory classes are concrete implementations of the VehicleFactory class.
- * They override the createVehicle() method to create specific types of vehicles (i.e., cars and trucks).
+ * The CarFactory and TruckFactory classes are concrete implementations of the
+ * VehicleFactory class. They override the createVehicle() method to create
+ * specific types of vehicles (i.e., cars and trucks).
  *
  */

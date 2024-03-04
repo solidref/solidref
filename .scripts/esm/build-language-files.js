@@ -1,8 +1,8 @@
-import { promises as fs } from 'fs';
-import { existsSync } from 'fs';
-import { join as pathJoin, dirname, basename } from 'path';
-import { fileURLToPath } from 'url';
-import { globby } from 'globby';
+import {promises as fs} from 'fs';
+import {existsSync} from 'fs';
+import {join as pathJoin, dirname, basename} from 'path';
+import {fileURLToPath} from 'url';
+import {globby} from 'globby';
 
 import yaml from 'yaml';
 
@@ -11,9 +11,9 @@ const __dirname = dirname(__filename);
 
 const jsonStringifyConfig = process.env.NODE_ENV === 'development' ? [null, 2] : [];
 
-const langPath = pathJoin(__dirname, '..', '..', 'yaml', 'lang')
+const langPath = pathJoin(__dirname, '..', '..', 'yaml', 'lang');
 
-const { readFile, writeFile, mkdir } = fs;
+const {readFile, writeFile, mkdir} = fs;
 
 main();
 
@@ -43,7 +43,7 @@ async function yamlParseAndSave(file) {
 
     const defaultPPFile = pathJoin(langPath, '_', name) + '.yml';
     if (existsSync(defaultPPFile)) {
-      const defaultPPYamlString = await readFile(defaultPPFile, 'utf-8')
+      const defaultPPYamlString = await readFile(defaultPPFile, 'utf-8');
       defaultPPYamlObject = yaml.parse(defaultPPYamlString);
       key = Object.keys(defaultPPYamlObject)[0];
     }
@@ -62,10 +62,10 @@ async function yamlParseAndSave(file) {
     (ppYamlObject[key] || []).forEach((item) => {
       const defaultItem = (defaultPPYamlObject[key] ?? []).find((defaultItem) => defaultItem.title === item.title);
       if (defaultItem) {
-        defaultItem.examples = [...defaultItem.examples ?? [], ...item.examples]
-        defaultItem.examples = [... new Set(defaultItem.examples)] // make'em unique
+        defaultItem.examples = [...(defaultItem.examples ?? []), ...item.examples];
+        defaultItem.examples = [...new Set(defaultItem.examples)]; // make'em unique
       } else {
-        defaultPPYamlObject[key] = defaultPPYamlObject[key] ?? []
+        defaultPPYamlObject[key] = defaultPPYamlObject[key] ?? [];
         defaultPPYamlObject[key].push(item);
       }
     });
@@ -77,13 +77,13 @@ async function yamlParseAndSave(file) {
           if (existsSync(codeFile)) {
             example.code = await readFile(codeFile, 'utf-8');
           } else {
-            console.error(`File not found: ${codeFile}`)
+            console.error(`File not found: ${codeFile}`);
           }
         }
       }
       item.examples = item.examples.filter((example) => example.code);
       if (item.examples.length === 1) {
-        delete item.examples[0].title
+        delete item.examples[0].title;
       }
     }
 
@@ -97,7 +97,7 @@ async function yamlParseAndSave(file) {
   }
 
   const generatedDirName = pathJoin(__dirname, '..', '..', 'public', 'generated', 'languages');
-  await mkdir(generatedDirName, { recursive: true });
+  await mkdir(generatedDirName, {recursive: true});
 
   const fileName = pathJoin(generatedDirName, langYamlObject.code + '.json');
   await writeFile(fileName, JSON.stringify(langYamlObject, ...jsonStringifyConfig));
@@ -107,10 +107,14 @@ async function main() {
   const search = ofUnix(pathJoin(langPath, '**', 'lang.yml'));
 
   const yamlFiles = await globby([search]);
-  await Promise.all(yamlFiles.filter(
-    // (file) => file.includes('typescript'),
-    (file) => true,
-  ).map((file) => yamlParseAndSave(file)));
+  await Promise.all(
+    yamlFiles
+      .filter(
+        // (file) => file.includes('typescript'),
+        (file) => true,
+      )
+      .map((file) => yamlParseAndSave(file)),
+  );
 
   const languageHierarchy = [];
   for (const file of yamlFiles) {

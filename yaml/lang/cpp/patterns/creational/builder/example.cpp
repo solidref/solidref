@@ -1,111 +1,107 @@
-// Product: Computer
+#include <iostream>
+#include <string>
+
 class Computer {
-  private cpu: string;
-  private ram: number;
-  private storage: number;
-  private gpu: string;
-  private screenSize: number;
+  std::string cpu;
+  int ram;
+  int storage;
+  std::string gpu;
+  double screenSize;
 
-  constructor(cpu: string, ram: number, storage: number, gpu: string, screenSize: number) {
-    this.cpu = cpu;
-    this.ram = ram;
-    this.storage = storage;
-    this.gpu = gpu;
-    this.screenSize = screenSize;
+public:
+  Computer(const std::string &cpu, int ram, int storage, const std::string &gpu,
+           double screenSize)
+      : cpu(cpu), ram(ram), storage(storage), gpu(gpu), screenSize(screenSize) {
   }
 
-  displaySpecs(): void {
-    console.log(`CPU: ${this.cpu}`);
-    console.log(`RAM: ${this.ram} GB`);
-    console.log(`Storage: ${this.storage} GB`);
-    console.log(`GPU: ${this.gpu}`);
-    console.log(`Screen Size: ${this.screenSize} inches`);
+  void displaySpecs() const {
+    std::cout << "CPU: " << cpu << std::endl;
+    std::cout << "RAM: " << ram << " GB" << std::endl;
+    std::cout << "Storage: " << storage << " GB" << std::endl;
+    std::cout << "GPU: " << gpu << std::endl;
+    std::cout << "Screen Size: " << screenSize << " inches" << std::endl;
   }
-}
+};
 
-// Builder interface
-interface ComputerBuilder {
-  setCPU(cpu: string): void;
-  setRAM(ram: number): void;
-  setStorage(storage: number): void;
-  setGPU(gpu: string): void;
-  setScreenSize(screenSize: number): void;
-  getResult(): Computer;
-}
+class ComputerBuilder {
+public:
+  virtual void setCPU(const std::string &cpu) = 0;
+  virtual void setRAM(int ram) = 0;
+  virtual void setStorage(int storage) = 0;
+  virtual void setGPU(const std::string &gpu) = 0;
+  virtual void setScreenSize(double screenSize) = 0;
+  virtual Computer getResult() const = 0;
+  virtual ~ComputerBuilder() {}
+};
 
-// Concrete Builder: Gaming Computer Builder
-class GamingComputerBuilder implements ComputerBuilder {
-  private computer: Computer;
+class GamingComputerBuilder : public ComputerBuilder {
+  std::string cpu;
+  int ram = 0;
+  int storage = 0;
+  std::string gpu;
+  double screenSize = 0.0;
 
-  constructor() {
-    this.computer = new Computer("", 0, 0, "", 0);
-  }
+public:
+  void setCPU(const std::string &cpu) override { this->cpu = cpu; }
 
-  setCPU(cpu: string): void {
-    this.computer = new Computer(cpu, this.computer.ram, this.computer.storage, this.computer.gpu, this.computer.screenSize);
-  }
+  void setRAM(int ram) override { this->ram = ram; }
 
-  setRAM(ram: number): void {
-    this.computer = new Computer(this.computer.cpu, ram, this.computer.storage, this.computer.gpu, this.computer.screenSize);
-  }
+  void setStorage(int storage) override { this->storage = storage; }
 
-  setStorage(storage: number): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, storage, this.computer.gpu, this.computer.screenSize);
-  }
+  void setGPU(const std::string &gpu) override { this->gpu = gpu; }
 
-  setGPU(gpu: string): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, this.computer.storage, gpu, this.computer.screenSize);
+  void setScreenSize(double screenSize) override {
+    this->screenSize = screenSize;
   }
 
-  setScreenSize(screenSize: number): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, this.computer.storage, this.computer.gpu, screenSize);
+  Computer getResult() const override {
+    return Computer(cpu, ram, storage, gpu, screenSize);
   }
+};
 
-  getResult(): Computer {
-    return this.computer;
-  }
-}
-
-// Director
 class ComputerBuilderDirector {
-  private builder: ComputerBuilder;
+  ComputerBuilder *builder;
 
-  constructor(builder: ComputerBuilder) {
-    this.builder = builder;
-  }
+public:
+  ComputerBuilderDirector(ComputerBuilder *builder) : builder(builder) {}
 
-  constructGamingComputer(): void {
-    this.builder.setCPU("Intel Core i9");
-    this.builder.setRAM(32);
-    this.builder.setStorage(1000);
-    this.builder.setGPU("NVIDIA GeForce RTX 3080");
-    this.builder.setScreenSize(27);
+  void constructGamingComputer() {
+    builder->setCPU("Intel Core i9");
+    builder->setRAM(32);
+    builder->setStorage(1000);
+    builder->setGPU("NVIDIA GeForce RTX 3080");
+    builder->setScreenSize(27);
   }
+};
+
+int main() {
+  GamingComputerBuilder builder;
+  ComputerBuilderDirector director(&builder);
+  director.constructGamingComputer();
+  Computer gamingComputer = builder.getResult();
+  std::cout << "Gaming Computer Specifications:" << std::endl;
+  gamingComputer.displaySpecs();
+
+  return 0;
 }
-
-// Client code
-const gamingComputerBuilder = new GamingComputerBuilder();
-const director = new ComputerBuilderDirector(gamingComputerBuilder);
-director.constructGamingComputer();
-const gamingComputer = gamingComputerBuilder.getResult();
-console.log("Gaming Computer Specifications:");
-gamingComputer.displaySpecs();
-
 
 /**
- * The Computer class represents the product we want to build, which is a custom computer with
- * various specifications like CPU, RAM, storage, GPU, and screen size.
+ * The Computer class represents the product we want to build, which is a custom
+ * computer with various specifications like CPU, RAM, storage, GPU, and screen
+ * size.
  *
- * The ComputerBuilder interface defines methods for setting each component of the computer.
+ * The ComputerBuilder interface defines methods for setting each component of
+ * the computer.
  *
- * The GamingComputerBuilder class is a concrete builder that implements the ComputerBuilder
- * interface to construct a gaming computer with specific configurations.
+ * The GamingComputerBuilder class is a concrete builder that implements the
+ * ComputerBuilder interface to construct a gaming computer with specific
+ * configurations.
  *
- * The ComputerBuilderDirector class is responsible for directing the construction process using
- * a builder.
+ * The ComputerBuilderDirector class is responsible for directing the
+ * construction process using a builder.
  *
- * The client code creates a GamingComputerBuilder, passes it to the director, and instructs the
- * director to construct a gaming computer. Finally, it retrieves the constructed gaming computer
- * and displays its specifications.
+ * The client code creates a GamingComputerBuilder, passes it to the director,
+ * and instructs the director to construct a gaming computer. Finally, it
+ * retrieves the constructed gaming computer and displays its specifications.
  *
  */

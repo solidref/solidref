@@ -1,5 +1,5 @@
-import { SvgIconProps } from '@mui/material';
-import { createSvgIcon } from './SvgIcon';
+import {SvgIconProps} from '@mui/material';
+import {createSvgIcon} from './SvgIcon';
 
 const SvgIcon = createSvgIcon({
   viewBox: '0 0 256 288',
@@ -7,7 +7,7 @@ const SvgIcon = createSvgIcon({
   width: '2222',
 });
 
-export default function(props: SvgIconProps): SvgIconProps {
+export default function Cpp(props: SvgIconProps): SvgIconProps {
   return (
     <SvgIcon {...props}>
       <path
@@ -36,4 +36,4 @@ export default function(props: SvgIconProps): SvgIconProps {
       ></path>
     </SvgIcon>
   );
-};
+}

@@ -1,11 +1,11 @@
-import { SvgIconProps } from '@mui/material';
-import { createSvgIcon } from './SvgIcon';
+import {SvgIconProps} from '@mui/material';
+import {createSvgIcon} from './SvgIcon';
 
 const SvgIcon = createSvgIcon({
   viewBox: '0 0 128 128',
 });
 
-export default function(props: SvgIconProps): SvgIconProps {
+export default function C(props: SvgIconProps): SvgIconProps {
   return (
     <SvgIcon {...props}>
       <path

@@ -1,3 +1,5 @@
+// es-lint-disable
+
 // Define the interface for a support handler
 interface SupportHandler {
   setNextHandler(handler: SupportHandler): void;
