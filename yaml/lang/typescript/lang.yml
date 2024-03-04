@@ -1,5 +1,6 @@
 name: TypeScript
 code: typescript
+ext: ts
 birth: 2012
 death: N/A
 inspiredBy:

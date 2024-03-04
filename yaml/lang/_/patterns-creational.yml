@@ -1,0 +1,17 @@
+---
+patterns:
+  - title: Factory Method
+    examples:
+      - codeFile: patterns/creational/factory-method/example
+  - title: Abstract Factory
+    examples:
+      - codeFile: patterns/creational/abstract-factory/example
+  - title: Builder
+    examples:
+      - codeFile: patterns/creational/builder/example
+  - title: Prototype
+    examples:
+      - codeFile: patterns/creational/prototype/example
+  - title: Singleton
+    examples:
+      - codeFile: patterns/creational/singleton/example
