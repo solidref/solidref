@@ -41,6 +41,7 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./dist  # or your build directory
           publish_branch: main  # branch of solidref.github.io
+          external_repository: solidref/solidref.github.io
           user_name: 'GitHub Actions'
           user_email: 'actions@github.com'
           commit_message: 'Deploy project to GitHub Pages'
