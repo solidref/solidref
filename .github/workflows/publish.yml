@@ -61,7 +61,7 @@ jobs:
           git clone https://${{secrets.GH_TOKEN}}@github.com/${TARGET_REPO}.git /tmp/gh-pages
 
           # Cleanup repository from old build
-          find /tmp/gh-pages -not -iname *CNAME* -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+          find /tmp/gh-pages -not -iname "*CNAME*" -not -iname ".git" -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
           ls -la /tmp/gh-pages/
 
           # Copy the build output to the cloned repository
