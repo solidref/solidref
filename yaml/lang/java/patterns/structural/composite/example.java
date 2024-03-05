@@ -1,81 +1,92 @@
-// Component: Department
+import java.util.ArrayList;
+import java.util.List;
+
+// Department.java (Component)
 interface Department {
-  getName(): string;
-  getEmployees(): string[];
+  String getName();
+  List<String> getEmployees();
 }
 
-// Leaf: Individual Department
+// IndividualDepartment.java (Leaf)
 class IndividualDepartment implements Department {
-  private name: string;
-  private employees: string[];
+  private String name;
+  private List<String> employees;
 
-  constructor(name: string, employees: string[]) {
+  public IndividualDepartment(String name, List<String> employees) {
     this.name = name;
     this.employees = employees;
   }
 
-  getName(): string {
-    return this.name;
+  @Override
+  public String getName() {
+    return name;
   }
 
-  getEmployees(): string[] {
-    return this.employees;
+  @Override
+  public List<String> getEmployees() {
+    return employees;
   }
 }
 
-// Composite: Composite Department
+// CompositeDepartment.java (Composite)
 class CompositeDepartment implements Department {
-  private name: string;
-  private departments: Department[];
+  private String name;
+  private List<Department> departments;
 
-  constructor(name: string) {
+  public CompositeDepartment(String name) {
     this.name = name;
-    this.departments = [];
+    this.departments = new ArrayList<>();
   }
 
-  getName(): string {
-    return this.name;
+  public void addDepartment(Department department) {
+    departments.add(department);
   }
 
-  addDepartment(department: Department): void {
-    this.departments.push(department);
+  public void removeDepartment(Department department) {
+    departments.remove(department);
   }
 
-  removeDepartment(department: Department): void {
-    const index = this.departments.indexOf(department);
-    if (index !== -1) {
-      this.departments.splice(index, 1);
-    }
+  @Override
+  public String getName() {
+    return name;
   }
 
-  getEmployees(): string[] {
-    let employees: string[] = [];
-    for (const department of this.departments) {
-      employees = employees.concat(department.getEmployees());
+  @Override
+  public List<String> getEmployees() {
+    List<String> employees = new ArrayList<>();
+    for (Department department : departments) {
+      employees.addAll(department.getEmployees());
     }
     return employees;
   }
 }
 
-// Client code
-const salesDepartment = new IndividualDepartment('Sales Department', ['John', 'Alice', 'Bob']);
-const marketingDepartment = new IndividualDepartment('Marketing Department', ['Emily', 'David']);
-const engineeringDepartment = new IndividualDepartment('Engineering Department', ['Michael', 'Sarah', 'Chris']);
+public class Main {
+  public static void main(String[] args) {
+    IndividualDepartment salesDepartment = new IndividualDepartment("Sales Department", List.of("John", "Alice", "Bob"));
+    IndividualDepartment marketingDepartment = new IndividualDepartment("Marketing Department", List.of("Emily", "David"));
+    IndividualDepartment engineeringDepartment = new IndividualDepartment("Engineering Department", List.of("Michael", "Sarah", "Chris"));
 
-const headDepartment = new CompositeDepartment('Head Department');
-headDepartment.addDepartment(salesDepartment);
-headDepartment.addDepartment(marketingDepartment);
+    CompositeDepartment headDepartment = new CompositeDepartment("Head Department");
+    headDepartment.addDepartment(salesDepartment);
+    headDepartment.addDepartment(marketingDepartment);
 
-const parentEngineeringDepartment = new CompositeDepartment('Parent Engineering Department');
-parentEngineeringDepartment.addDepartment(engineeringDepartment);
+    CompositeDepartment parentEngineeringDepartment = new CompositeDepartment("Parent Engineering Department");
+    parentEngineeringDepartment.addDepartment(engineeringDepartment);
 
-const rootDepartment = new CompositeDepartment('Root Department');
-rootDepartment.addDepartment(headDepartment);
-rootDepartment.addDepartment(parentEngineeringDepartment);
+    CompositeDepartment rootDepartment = new CompositeDepartment("Root Department");
+    rootDepartment.addDepartment(headDepartment);
+    rootDepartment.addDepartment(parentEngineeringDepartment);
 
-// Get all employees in the root department
-console.log('Employees in the root department:');
-console.log(rootDepartment.getEmployees());
+    // Get all employees in the root department
+    System.out.println("Employees in the root department:");
+    List<String> employees = rootDepartment.getEmployees();
+    for (String employee : employees) {
+      System.out.println(employee);
+    }
+  }
+}
+
 
 /**
  * The Department interface defines the common methods for both individual departments and composite departments.

@@ -1,65 +1,79 @@
-// Prototype interface: UserProfile
+// UserProfile.java
 interface UserProfile {
-  clone(): UserProfile;
-  customizeProfile(settings: UserProfileSettings): void;
-  displayProfile(): void;
+  UserProfile clone();
+  void customizeProfile(UserProfileSettings settings);
+  void displayProfile();
 }
 
-// Concrete Prototype: DefaultUserProfile
+// DefaultUserProfile.java
 class DefaultUserProfile implements UserProfile {
-  private username: string;
-  private bio: string;
-  private profilePicture: string;
+  private String username;
+  private String bio;
+  private String profilePicture;
 
-  constructor(username: string, bio: string, profilePicture: string) {
+  public DefaultUserProfile(String username, String bio, String profilePicture) {
     this.username = username;
     this.bio = bio;
     this.profilePicture = profilePicture;
   }
 
-  clone(): UserProfile {
+  @Override
+  public UserProfile clone() {
     return new DefaultUserProfile(this.username, this.bio, this.profilePicture);
   }
 
-  customizeProfile(settings: UserProfileSettings): void {
-    if (settings.username) {
+  @Override
+  public void customizeProfile(UserProfileSettings settings) {
+    if (settings.username != null) {
       this.username = settings.username;
     }
-    if (settings.bio) {
+    if (settings.bio != null) {
       this.bio = settings.bio;
     }
-    if (settings.profilePicture) {
+    if (settings.profilePicture != null) {
       this.profilePicture = settings.profilePicture;
     }
   }
 
-  displayProfile(): void {
-    console.log("Username:", this.username);
-    console.log("Bio:", this.bio);
-    console.log("Profile Picture:", this.profilePicture);
+  @Override
+  public void displayProfile() {
+    System.out.println("Username: " + this.username);
+    System.out.println("Bio: " + this.bio);
+    System.out.println("Profile Picture: " + this.profilePicture);
   }
 }
 
-// Prototype settings: UserProfileSettings
-interface UserProfileSettings {
-  username?: string;
-  bio?: string;
-  profilePicture?: string;
+// UserProfileSettings.java
+class UserProfileSettings {
+  String username;
+  String bio;
+  String profilePicture;
+
+  public UserProfileSettings(String username, String bio, String profilePicture) {
+    this.username = username;
+    this.bio = bio;
+    this.profilePicture = profilePicture;
+  }
 }
 
-// Client code
-const defaultProfile = new DefaultUserProfile("user123", "Welcome to my profile!", "default.jpg");
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    DefaultUserProfile defaultProfile = new DefaultUserProfile("user123", "Welcome to my profile!", "default.jpg");
 
-// Clone the default profile to create a customized profile
-const customizedProfile = defaultProfile.clone();
-customizedProfile.customizeProfile({ bio: "I'm a software developer.", profilePicture: "avatar.jpg" });
+    // Clone the default profile to create a customized profile
+    UserProfile customizedProfile = defaultProfile.clone();
+    customizedProfile.customizeProfile(new UserProfileSettings(null, "I'm a software developer.", "avatar.jpg"));
 
-// Display both profiles
-console.log("Default Profile:");
-defaultProfile.displayProfile();
+    // Display both profiles
+    System.out.println("Default Profile:");
+    defaultProfile.displayProfile();
 
-console.log("\nCustomized Profile:");
-customizedProfile.displayProfile();
+    System.out.println("\nCustomized Profile:");
+    customizedProfile.displayProfile();
+  }
+}
+
 
 /**
  * The UserProfile interface defines methods for cloning a profile, customizing profile settings, and

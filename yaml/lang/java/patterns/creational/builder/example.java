@@ -1,12 +1,12 @@
-// Product: Computer
+// Computer.java (Product)
 class Computer {
-  private cpu: string;
-  private ram: number;
-  private storage: number;
-  private gpu: string;
-  private screenSize: number;
+  private String cpu;
+  private int ram;
+  private int storage;
+  private String gpu;
+  private int screenSize;
 
-  constructor(cpu: string, ram: number, storage: number, gpu: string, screenSize: number) {
+  public Computer(String cpu, int ram, int storage, String gpu, int screenSize) {
     this.cpu = cpu;
     this.ram = ram;
     this.storage = storage;
@@ -14,83 +14,83 @@ class Computer {
     this.screenSize = screenSize;
   }
 
-  displaySpecs(): void {
-    console.log(`CPU: ${this.cpu}`);
-    console.log(`RAM: ${this.ram} GB`);
-    console.log(`Storage: ${this.storage} GB`);
-    console.log(`GPU: ${this.gpu}`);
-    console.log(`Screen Size: ${this.screenSize} inches`);
+  public void displaySpecs() {
+    System.out.println("CPU: " + this.cpu);
+    System.out.println("RAM: " + this.ram + " GB");
+    System.out.println("Storage: " + this.storage + " GB");
+    System.out.println("GPU: " + this.gpu);
+    System.out.println("Screen Size: " + this.screenSize + " inches");
   }
 }
 
-// Builder interface
+// ComputerBuilder.java (Builder interface)
 interface ComputerBuilder {
-  setCPU(cpu: string): void;
-  setRAM(ram: number): void;
-  setStorage(storage: number): void;
-  setGPU(gpu: string): void;
-  setScreenSize(screenSize: number): void;
-  getResult(): Computer;
+  void setCPU(String cpu);
+  void setRAM(int ram);
+  void setStorage(int storage);
+  void setGPU(String gpu);
+  void setScreenSize(int screenSize);
+  Computer getResult();
 }
 
-// Concrete Builder: Gaming Computer Builder
+// GamingComputerBuilder.java (Concrete Builder)
 class GamingComputerBuilder implements ComputerBuilder {
-  private computer: Computer;
+  private Computer computer;
 
-  constructor() {
-    this.computer = new Computer("", 0, 0, "", 0);
+  public GamingComputerBuilder() {
+    // Initialize with default values
+    computer = new Computer("", 0, 0, "", 0);
   }
 
-  setCPU(cpu: string): void {
-    this.computer = new Computer(cpu, this.computer.ram, this.computer.storage, this.computer.gpu, this.computer.screenSize);
-  }
+  @Override
+  public void setCPU(String cpu) { this.computer = new Computer(cpu, computer.getRam(), computer.getStorage(), computer.getGpu(), computer.getScreenSize()); }
 
-  setRAM(ram: number): void {
-    this.computer = new Computer(this.computer.cpu, ram, this.computer.storage, this.computer.gpu, this.computer.screenSize);
-  }
+  @Override
+  public void setRAM(int ram) { this.computer = new Computer(computer.getCpu(), ram, computer.getStorage(), computer.getGpu(), computer.getScreenSize()); }
 
-  setStorage(storage: number): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, storage, this.computer.gpu, this.computer.screenSize);
-  }
+  @Override
+  public void setStorage(int storage) { this.computer = new Computer(computer.getCpu(), computer.getRam(), storage, computer.getGpu(), computer.getScreenSize()); }
 
-  setGPU(gpu: string): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, this.computer.storage, gpu, this.computer.screenSize);
-  }
+  @Override
+  public void setGPU(String gpu) { this.computer = new Computer(computer.getCpu(), computer.getRam(), computer.getStorage(), gpu, computer.getScreenSize()); }
 
-  setScreenSize(screenSize: number): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, this.computer.storage, this.computer.gpu, screenSize);
-  }
+  @Override
+  public void setScreenSize(int screenSize) { this.computer = new Computer(computer.getCpu(), computer.getRam(), computer.getStorage(), computer.getGpu(), screenSize); }
 
-  getResult(): Computer {
-    return this.computer;
+  @Override
+  public Computer getResult() {
+    return computer;
   }
 }
 
-// Director
+// ComputerBuilderDirector.java (Director)
 class ComputerBuilderDirector {
-  private builder: ComputerBuilder;
+  private ComputerBuilder builder;
 
-  constructor(builder: ComputerBuilder) {
+  public ComputerBuilderDirector(ComputerBuilder builder) {
     this.builder = builder;
   }
 
-  constructGamingComputer(): void {
-    this.builder.setCPU("Intel Core i9");
-    this.builder.setRAM(32);
-    this.builder.setStorage(1000);
-    this.builder.setGPU("NVIDIA GeForce RTX 3080");
-    this.builder.setScreenSize(27);
+  public void constructGamingComputer() {
+    builder.setCPU("Intel Core i9");
+    builder.setRAM(32);
+    builder.setStorage(1000);
+    builder.setGPU("NVIDIA GeForce RTX 3080");
+    builder.setScreenSize(27);
   }
 }
 
-// Client code
-const gamingComputerBuilder = new GamingComputerBuilder();
-const director = new ComputerBuilderDirector(gamingComputerBuilder);
-director.constructGamingComputer();
-const gamingComputer = gamingComputerBuilder.getResult();
-console.log("Gaming Computer Specifications:");
-gamingComputer.displaySpecs();
-
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    ComputerBuilder builder = new GamingComputerBuilder();
+    ComputerBuilderDirector director = new ComputerBuilderDirector(builder);
+    director.constructGamingComputer();
+    Computer gamingComputer = builder.getResult();
+    System.out.println("Gaming Computer Specifications:");
+    gamingComputer.displaySpecs();
+  }
+}
 
 /**
  * The Computer class represents the product we want to build, which is a custom computer with

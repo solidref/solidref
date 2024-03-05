@@ -1,57 +1,63 @@
-// Product interface: Vehicle
+// Vehicle.java
 interface Vehicle {
-  drive(): void;
+  void drive();
 }
 
-// Concrete Products: Car and Truck
+// Car.java
 class Car implements Vehicle {
-  drive(): void {
-    console.log("Driving a car...");
+  @Override
+  public void drive() {
+    System.out.println("Driving a car...");
   }
 }
 
+// Truck.java
 class Truck implements Vehicle {
-  drive(): void {
-    console.log("Driving a truck...");
+  @Override
+  public void drive() {
+    System.out.println("Driving a truck...");
   }
 }
 
-// Creator: VehicleFactory
+// VehicleFactory.java
 abstract class VehicleFactory {
-  // Factory Method
-  abstract createVehicle(): Vehicle;
+  abstract Vehicle createVehicle();
 
-  // An operation that uses the factory method
-  deliverVehicle(): void {
-    const vehicle = this.createVehicle();
-    console.log("Delivering the vehicle...");
+  public void deliverVehicle() {
+    Vehicle vehicle = createVehicle();
+    System.out.println("Delivering the vehicle...");
     vehicle.drive();
   }
 }
 
-// Concrete Creators: CarFactory and TruckFactory
+// CarFactory.java
 class CarFactory extends VehicleFactory {
-  // Factory Method implementation for creating a car
-  createVehicle(): Vehicle {
-    console.log("Creating a car...");
+  @Override
+  Vehicle createVehicle() {
+    System.out.println("Creating a car...");
     return new Car();
   }
 }
 
+// TruckFactory.java
 class TruckFactory extends VehicleFactory {
-  // Factory Method implementation for creating a truck
-  createVehicle(): Vehicle {
-    console.log("Creating a truck...");
+  @Override
+  Vehicle createVehicle() {
+    System.out.println("Creating a truck...");
     return new Truck();
   }
 }
 
-// Client code
-const carFactory = new CarFactory();
-carFactory.deliverVehicle();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    VehicleFactory carFactory = new CarFactory();
+    carFactory.deliverVehicle();
 
-const truckFactory = new TruckFactory();
-truckFactory.deliverVehicle();
+    VehicleFactory truckFactory = new TruckFactory();
+    truckFactory.deliverVehicle();
+  }
+}
 
 /**
  * The Vehicle interface defines a common interface for all vehicles, which includes a drive() method.

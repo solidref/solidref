@@ -1,44 +1,49 @@
-// Adaptee: Existing MP3 player
+// Mp3Player.java (Adaptee)
 class Mp3Player {
-  playMp3(fileName: string): void {
-    console.log(`Playing MP3 file: ${fileName}`);
+  public void playMp3(String fileName) {
+    System.out.println("Playing MP3 file: " + fileName);
   }
 }
 
-// Target: Interface expected by the client (unified interface)
+// AudioPlayer.java (Target interface)
 interface AudioPlayer {
-  play(fileName: string): void;
+  void play(String fileName);
 }
 
-// Adapter: Converts OGG audio files to MP3 format
+// OggToMp3Adapter.java (Adapter)
 class OggToMp3Adapter implements AudioPlayer {
-  private mp3Player: Mp3Player;
+  private Mp3Player mp3Player;
 
-  constructor() {
+  public OggToMp3Adapter() {
     this.mp3Player = new Mp3Player();
   }
 
-  play(fileName: string): void {
+  @Override
+  public void play(String fileName) {
     // Convert OGG to MP3 and play using the MP3 player
-    console.log(`Converting OGG file '${fileName}' to MP3 format`);
-    const mp3FileName = this.convertToMp3(fileName);
-    this.mp3Player.playMp3(mp3FileName);
+    System.out.println("Converting OGG file '" + fileName + "' to MP3 format");
+    String mp3FileName = convertToMp3(fileName);
+    mp3Player.playMp3(mp3FileName);
   }
 
-  private convertToMp3(fileName: string): string {
+  private String convertToMp3(String fileName) {
     // Simulate conversion process (replace extension)
-    return fileName.replace('.ogg', '.mp3');
+    return fileName.replace(".ogg", ".mp3");
   }
 }
 
-// Client code
-const audioPlayer: AudioPlayer = new OggToMp3Adapter();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    AudioPlayer audioPlayer = new OggToMp3Adapter();
 
-// Play MP3 file
-audioPlayer.play('audio1.mp3');
+    // Play MP3 file
+    audioPlayer.play("audio1.mp3");
 
-// Play OGG file (automatically converted to MP3)
-audioPlayer.play('audio2.ogg');
+    // Play OGG file (automatically converted to MP3)
+    audioPlayer.play("audio2.ogg");
+  }
+}
 
 /**
  * Mp3Player represents the existing audio player that can play MP3 files.

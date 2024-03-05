@@ -1,54 +1,70 @@
-// Component: Notification
+// Notification.java (Component)
 interface Notification {
-  send(): string;
+  String send();
 }
 
-// Concrete Component: Base Notification
+// BaseNotification.java (Concrete Component)
 class BaseNotification implements Notification {
-  send(): string {
-    return 'Base notification: You have a new message!';
+  @Override
+  public String send() {
+    return "Base notification: You have a new message!";
   }
 }
 
-// Decorator: Notification Decorator
+// NotificationDecorator.java (Decorator)
 abstract class NotificationDecorator implements Notification {
-  protected notification: Notification;
+  protected Notification notification;
 
-  constructor(notification: Notification) {
+  protected NotificationDecorator(Notification notification) {
     this.notification = notification;
   }
 
-  send(): string {
-    return this.notification.send();
+  @Override
+  public String send() {
+    return notification.send();
   }
 }
 
-// Concrete Decorator: Sound Notification
+// SoundNotificationDecorator.java (Concrete Decorator)
 class SoundNotificationDecorator extends NotificationDecorator {
-  send(): string {
-    return `${super.send()} (Sound notification: Ding!)`;
+  public SoundNotificationDecorator(Notification notification) {
+    super(notification);
+  }
+
+  @Override
+  public String send() {
+    return super.send() + " (Sound notification: Ding!)";
   }
 }
 
-// Concrete Decorator: Priority Notification
+// PriorityNotificationDecorator.java (Concrete Decorator)
 class PriorityNotificationDecorator extends NotificationDecorator {
-  send(): string {
-    return `${super.send()} (Priority notification: High priority!)`;
+  public PriorityNotificationDecorator(Notification notification) {
+    super(notification);
+  }
+
+  @Override
+  public String send() {
+    return super.send() + " (Priority notification: High priority!)";
   }
 }
 
-// Client code
-const baseNotification: Notification = new BaseNotification();
-console.log(baseNotification.send());
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    Notification baseNotification = new BaseNotification();
+    System.out.println(baseNotification.send());
 
-const soundNotification: Notification = new SoundNotificationDecorator(baseNotification);
-console.log(soundNotification.send());
+    Notification soundNotification = new SoundNotificationDecorator(baseNotification);
+    System.out.println(soundNotification.send());
 
-const priorityNotification: Notification = new PriorityNotificationDecorator(baseNotification);
-console.log(priorityNotification.send());
+    Notification priorityNotification = new PriorityNotificationDecorator(baseNotification);
+    System.out.println(priorityNotification.send());
 
-const soundAndPriorityNotification: Notification = new PriorityNotificationDecorator(new SoundNotificationDecorator(baseNotification));
-console.log(soundAndPriorityNotification.send());
+    Notification soundAndPriorityNotification = new PriorityNotificationDecorator(new SoundNotificationDecorator(baseNotification));
+    System.out.println(soundAndPriorityNotification.send());
+  }
+}
 
 /**
  * The Notification interface defines the common method for sending notifications.

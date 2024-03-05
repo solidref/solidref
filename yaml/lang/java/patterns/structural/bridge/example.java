@@ -1,55 +1,72 @@
 // Abstraction: Vehicle
-abstract class Vehicle {
-  protected workshop: Workshop;
+// Workshop.java (Implementor)
+interface Workshop {
+  void work();
+}
 
-  constructor(workshop: Workshop) {
+// PaintWorkshop.java (Concrete Implementor)
+class PaintWorkshop implements Workshop {
+  @Override
+  public void work() {
+    System.out.println("Painting vehicle");
+  }
+}
+
+// RepairWorkshop.java (Concrete Implementor)
+class RepairWorkshop implements Workshop {
+  @Override
+  public void work() {
+    System.out.println("Repairing vehicle");
+  }
+}
+
+// Vehicle.java (Abstraction)
+abstract class Vehicle {
+  protected Workshop workshop;
+
+  protected Vehicle(Workshop workshop) {
     this.workshop = workshop;
   }
 
-  abstract manufacture(): void;
+  abstract void manufacture();
 }
 
-// Implementor: Workshop
-interface Workshop {
-  work(): void;
-}
-
-// Concrete Implementor: Paint Workshop
-class PaintWorkshop implements Workshop {
-  work(): void {
-    console.log('Painting vehicle');
-  }
-}
-
-// Concrete Implementor: Repair Workshop
-class RepairWorkshop implements Workshop {
-  work(): void {
-    console.log('Repairing vehicle');
-  }
-}
-
-// Refined Abstraction: Car
+// Car.java (Refined Abstraction)
 class Car extends Vehicle {
-  manufacture(): void {
-    console.log('Manufacturing car.');
-    this.workshop.work();
+  public Car(Workshop workshop) {
+    super(workshop);
+  }
+
+  @Override
+  void manufacture() {
+    System.out.print("Manufacturing car. ");
+    workshop.work();
   }
 }
 
-// Refined Abstraction: Truck
+// Truck.java (Refined Abstraction)
 class Truck extends Vehicle {
-  manufacture(): void {
-    console.log('Manufacturing truck.');
-    this.workshop.work();
+  public Truck(Workshop workshop) {
+    super(workshop);
+  }
+
+  @Override
+  void manufacture() {
+    System.out.print("Manufacturing truck. ");
+    workshop.work();
   }
 }
 
-// Client code
-const car = new Car(new PaintWorkshop());
-car.manufacture(); // Output: Manufacturing car. Painting vehicle
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    Vehicle car = new Car(new PaintWorkshop());
+    car.manufacture(); // Output: Manufacturing car. Painting vehicle
 
-const truck = new Truck(new RepairWorkshop());
-truck.manufacture(); // Output: Manufacturing truck. Repairing vehicle
+    Vehicle truck = new Truck(new RepairWorkshop());
+    truck.manufacture(); // Output: Manufacturing truck. Repairing vehicle
+  }
+}
 
 /**
  * The Vehicle class represents the abstraction, which is extended by Car and Truck.

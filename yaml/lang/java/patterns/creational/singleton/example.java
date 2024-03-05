@@ -1,42 +1,46 @@
-class Logger {
-  private static instance: Logger;
-  private logHistory: string[] = [];
+public class Logger {
+  private static Logger instance;
+  private java.util.List<String> logHistory = new java.util.ArrayList<>();
 
   // Private constructor to prevent instantiation from outside the class
-  private constructor() { }
+  private Logger() { }
 
   // Static method to retrieve the singleton instance
-  static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
+  public static Logger getInstance() {
+    if (instance == null) {
+      instance = new Logger();
     }
-    return Logger.instance;
+    return instance;
   }
 
   // Method to log messages
-  log(message: string): void {
-    const timestamp = new Date().toISOString();
-    const logEntry = `[${timestamp}] ${message}`;
-    this.logHistory.push(logEntry);
-    console.log(logEntry);
+  public void log(String message) {
+    String timestamp = java.time.LocalDateTime.now().toString();
+    String logEntry = "[" + timestamp + "] " + message;
+    logHistory.add(logEntry);
+    System.out.println(logEntry);
   }
 
   // Method to retrieve log history
-  getLogHistory(): string[] {
-    return this.logHistory;
+  public java.util.List<String> getLogHistory() {
+    return logHistory;
   }
 }
 
-// Client code
-const logger1 = Logger.getInstance();
-const logger2 = Logger.getInstance();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    Logger logger1 = Logger.getInstance();
+    Logger logger2 = Logger.getInstance();
 
-console.log(logger1 === logger2); // Output: true, both references point to the same instance
+    System.out.println(logger1 == logger2); // Output: true, both references point to the same instance
 
-logger1.log("User logged in");
-logger2.log("Data saved to database");
+    logger1.log("User logged in");
+    logger2.log("Data saved to database");
 
-console.log(logger1.getLogHistory());
+    System.out.println(logger1.getLogHistory());
+  }
+}
 
 /**
  * The Logger class has a private static instance property that holds the single instance of the logger.
