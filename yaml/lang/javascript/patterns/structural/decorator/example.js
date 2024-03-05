@@ -1,53 +1,46 @@
-// Component: Notification
-interface Notification {
-  send(): string;
-}
-
 // Concrete Component: Base Notification
-class BaseNotification implements Notification {
-  send(): string {
+class BaseNotification {
+  send() {
     return 'Base notification: You have a new message!';
   }
 }
 
 // Decorator: Notification Decorator
-abstract class NotificationDecorator implements Notification {
-  protected notification: Notification;
-
-  constructor(notification: Notification) {
+class NotificationDecorator {
+  constructor(notification) {
     this.notification = notification;
   }
 
-  send(): string {
+  send() {
     return this.notification.send();
   }
 }
 
 // Concrete Decorator: Sound Notification
 class SoundNotificationDecorator extends NotificationDecorator {
-  send(): string {
+  send() {
     return `${super.send()} (Sound notification: Ding!)`;
   }
 }
 
 // Concrete Decorator: Priority Notification
 class PriorityNotificationDecorator extends NotificationDecorator {
-  send(): string {
+  send() {
     return `${super.send()} (Priority notification: High priority!)`;
   }
 }
 
 // Client code
-const baseNotification: Notification = new BaseNotification();
+const baseNotification = new BaseNotification();
 console.log(baseNotification.send());
 
-const soundNotification: Notification = new SoundNotificationDecorator(baseNotification);
+const soundNotification = new SoundNotificationDecorator(baseNotification);
 console.log(soundNotification.send());
 
-const priorityNotification: Notification = new PriorityNotificationDecorator(baseNotification);
+const priorityNotification = new PriorityNotificationDecorator(baseNotification);
 console.log(priorityNotification.send());
 
-const soundAndPriorityNotification: Notification = new PriorityNotificationDecorator(new SoundNotificationDecorator(baseNotification));
+const soundAndPriorityNotification = new PriorityNotificationDecorator(new SoundNotificationDecorator(baseNotification));
 console.log(soundAndPriorityNotification.send());
 
 /**

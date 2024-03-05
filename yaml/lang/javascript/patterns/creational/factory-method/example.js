@@ -1,28 +1,25 @@
-// Product interface: Vehicle
-interface Vehicle {
-  drive(): void;
-}
-
 // Concrete Products: Car and Truck
-class Car implements Vehicle {
-  drive(): void {
+class Car {
+  drive() {
     console.log("Driving a car...");
   }
 }
 
-class Truck implements Vehicle {
-  drive(): void {
+class Truck {
+  drive() {
     console.log("Driving a truck...");
   }
 }
 
 // Creator: VehicleFactory
-abstract class VehicleFactory {
+class VehicleFactory {
   // Factory Method
-  abstract createVehicle(): Vehicle;
+  createVehicle() {
+    throw new Error("This method should be overridden.");
+  }
 
   // An operation that uses the factory method
-  deliverVehicle(): void {
+  deliverVehicle() {
     const vehicle = this.createVehicle();
     console.log("Delivering the vehicle...");
     vehicle.drive();
@@ -32,7 +29,7 @@ abstract class VehicleFactory {
 // Concrete Creators: CarFactory and TruckFactory
 class CarFactory extends VehicleFactory {
   // Factory Method implementation for creating a car
-  createVehicle(): Vehicle {
+  createVehicle() {
     console.log("Creating a car...");
     return new Car();
   }
@@ -40,7 +37,7 @@ class CarFactory extends VehicleFactory {
 
 class TruckFactory extends VehicleFactory {
   // Factory Method implementation for creating a truck
-  createVehicle(): Vehicle {
+  createVehicle() {
     console.log("Creating a truck...");
     return new Truck();
   }

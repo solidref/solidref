@@ -1,52 +1,37 @@
-// Interface defining the common behavior for all traffic light states
-interface TrafficLightState {
-  changeState(trafficLight: TrafficLight): void;
-}
-
-// Concrete state representing the "Red" state of the traffic light
-class RedState implements TrafficLightState {
-  changeState(trafficLight: TrafficLight): void {
+class RedState {
+  changeState(trafficLight) {
     console.log("Traffic light is now RED. Stop!");
-    // Transition to the next state (Yellow) after a certain duration
     setTimeout(() => {
       trafficLight.setState(new YellowState());
     }, 3000);
   }
 }
 
-// Concrete state representing the "Yellow" state of the traffic light
-class YellowState implements TrafficLightState {
-  changeState(trafficLight: TrafficLight): void {
+class YellowState {
+  changeState(trafficLight) {
     console.log("Traffic light is now YELLOW. Prepare to stop or proceed with caution.");
-    // Transition to the next state (Green) after a certain duration
     setTimeout(() => {
       trafficLight.setState(new GreenState());
     }, 2000);
   }
 }
 
-// Concrete state representing the "Green" state of the traffic light
-class GreenState implements TrafficLightState {
-  changeState(trafficLight: TrafficLight): void {
+class GreenState {
+  changeState(trafficLight) {
     console.log("Traffic light is now GREEN. Go!");
-    // Transition to the next state (Red) after a certain duration
     setTimeout(() => {
       trafficLight.setState(new RedState());
     }, 4000);
   }
 }
 
-// Context class representing the traffic light
 class TrafficLight {
-  private state: TrafficLightState;
-
   constructor() {
-    // Initial state is Red
     this.state = new RedState();
+    this.state.changeState(this); // Start with the initial state
   }
 
-  // Method to change the state of the traffic light
-  setState(state: TrafficLightState): void {
+  setState(state) {
     this.state = state;
     this.state.changeState(this);
   }
@@ -55,10 +40,10 @@ class TrafficLight {
 // Client code
 function main() {
   const trafficLight = new TrafficLight();
-
-  // Simulate traffic light behavior by changing its state
-  trafficLight.setState(new GreenState());
+  // The initial state will automatically transition due to the state behavior
 }
+
+main();
 
 /**
  * The TrafficLightState interface defines the common behavior for all traffic light states.

@@ -1,17 +1,21 @@
 // Flyweight: Character
 class Character {
-  constructor(private character: string) { }
+  constructor(character) {
+    this.character = character;
+  }
 
-  display(font: string, size: number): string {
+  display(font, size) {
     return `Character: ${this.character}, Font: ${font}, Size: ${size}`;
   }
 }
 
 // Flyweight Factory: CharacterFactory
 class CharacterFactory {
-  private characters: { [key: string]: Character } = {};
+  constructor() {
+    this.characters = {};
+  }
 
-  getCharacter(character: string): Character {
+  getCharacter(character) {
     if (!this.characters[character]) {
       this.characters[character] = new Character(character);
     }
@@ -26,7 +30,7 @@ const characterFactory = new CharacterFactory();
 const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 
 // Rendering text with flyweight characters
-const renderedText: string[] = [];
+const renderedText = [];
 
 for (const char of text) {
   const character = characterFactory.getCharacter(char);
@@ -35,7 +39,6 @@ for (const char of text) {
 
 // Displaying rendered text
 console.log(renderedText.join('\n'));
-
 
 /**
  * The Character class represents the flyweight object for a character. It contains intrinsic

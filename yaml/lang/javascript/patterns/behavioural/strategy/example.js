@@ -1,23 +1,25 @@
-// Interface defining the common behavior for all payment strategies
-interface PaymentStrategy {
-  pay(amount: number): void;
-}
-
 // Concrete strategy for processing payments via credit card
-class CreditCardPaymentStrategy implements PaymentStrategy {
-  constructor(private cardNumber: string, private expiryDate: string, private cvv: string) { }
+class CreditCardPaymentStrategy {
+  constructor(cardNumber, expiryDate, cvv) {
+    this.cardNumber = cardNumber;
+    this.expiryDate = expiryDate;
+    this.cvv = cvv;
+  }
 
-  pay(amount: number): void {
+  pay(amount) {
     console.log(`Processing credit card payment of $${amount} with card number ${this.cardNumber}`);
     // Logic to process payment via credit card
   }
 }
 
 // Concrete strategy for processing payments via PayPal
-class PayPalPaymentStrategy implements PaymentStrategy {
-  constructor(private email: string, private password: string) { }
+class PayPalPaymentStrategy {
+  constructor(email, password) {
+    this.email = email;
+    this.password = password;
+  }
 
-  pay(amount: number): void {
+  pay(amount) {
     console.log(`Processing PayPal payment of $${amount} with email ${this.email}`);
     // Logic to process payment via PayPal
   }
@@ -25,15 +27,11 @@ class PayPalPaymentStrategy implements PaymentStrategy {
 
 // Context class representing the payment processor
 class PaymentProcessor {
-  private paymentStrategy: PaymentStrategy;
-
-  // Setter method to set the payment strategy dynamically
-  setPaymentStrategy(paymentStrategy: PaymentStrategy): void {
+  setPaymentStrategy(paymentStrategy) {
     this.paymentStrategy = paymentStrategy;
   }
 
-  // Method to process payment using the selected strategy
-  processPayment(amount: number): void {
+  processPayment(amount) {
     if (this.paymentStrategy) {
       this.paymentStrategy.pay(amount);
     } else {
@@ -56,6 +54,8 @@ function main() {
   paymentProcessor.setPaymentStrategy(payPalStrategy);
   paymentProcessor.processPayment(50);
 }
+
+main();
 
 /**
  * The PaymentStrategy interface defines the common behavior for all payment strategies. Each concrete payment

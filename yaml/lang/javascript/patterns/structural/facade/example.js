@@ -1,37 +1,33 @@
 // Subsystem: Flight Booking
 class FlightBookingSystem {
-  bookFlight(origin: string, destination: string): string {
+  bookFlight(origin, destination) {
     return `Flight booked from ${origin} to ${destination}`;
   }
 }
 
 // Subsystem: Hotel Booking
 class HotelBookingSystem {
-  bookHotel(location: string, checkInDate: Date, checkOutDate: Date): string {
+  bookHotel(location, checkInDate, checkOutDate) {
     return `Hotel booked at ${location} from ${checkInDate.toDateString()} to ${checkOutDate.toDateString()}`;
   }
 }
 
 // Subsystem: Car Rental
 class CarRentalSystem {
-  rentCar(location: string, startDate: Date, endDate: Date): string {
+  rentCar(location, startDate, endDate) {
     return `Car rented at ${location} from ${startDate.toDateString()} to ${endDate.toDateString()}`;
   }
 }
 
 // Facade: TravelFacade
 class TravelFacade {
-  private flightBookingSystem: FlightBookingSystem;
-  private hotelBookingSystem: HotelBookingSystem;
-  private carRentalSystem: CarRentalSystem;
-
   constructor() {
     this.flightBookingSystem = new FlightBookingSystem();
     this.hotelBookingSystem = new HotelBookingSystem();
     this.carRentalSystem = new CarRentalSystem();
   }
 
-  bookTravel(origin: string, destination: string, location: string, checkInDate: Date, checkOutDate: Date, startDate: Date, endDate: Date): string {
+  bookTravel(origin, destination, location, checkInDate, checkOutDate, startDate, endDate) {
     const flightDetails = this.flightBookingSystem.bookFlight(origin, destination);
     const hotelDetails = this.hotelBookingSystem.bookHotel(location, checkInDate, checkOutDate);
     const carDetails = this.carRentalSystem.rentCar(location, startDate, endDate);

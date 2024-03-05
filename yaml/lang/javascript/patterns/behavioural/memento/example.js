@@ -1,54 +1,52 @@
 // Originator class represents the object whose state needs to be saved and restored
 class Editor {
-  private text: string;
-
-  constructor(text: string) {
+  constructor(text) {
     this.text = text;
   }
 
-  setText(text: string): void {
+  setText(text) {
     this.text = text;
   }
 
-  getText(): string {
+  getText() {
     return this.text;
   }
 
   // Creates a memento containing the current state of the editor
-  save(): Memento {
+  save() {
     return new Memento(this.text);
   }
 
   // Restores the editor's state from a memento
-  restore(memento: Memento): void {
+  restore(memento) {
     this.text = memento.getState();
   }
 }
 
 // Memento class represents the stored state of the editor
 class Memento {
-  private state: string;
-
-  constructor(state: string) {
+  constructor(state) {
     this.state = state;
   }
 
-  getState(): string {
+  getState() {
     return this.state;
   }
 }
 
 // Caretaker class is responsible for keeping track of multiple mementos
 class History {
-  private mementos: Memento[] = [];
+  constructor() {
+    this.mementos = [];
+  }
 
   // Adds a memento to the history
-  addMemento(memento: Memento): void {
+  addMemento(memento) {
     this.mementos.push(memento);
   }
 
   // Retrieves the most recent memento from the history
-  getLatestMemento(): Memento {
+  getLatestMemento() {
     if (this.mementos.length === 0) {
       throw new Error("No mementos available");
     }
@@ -77,6 +75,8 @@ function main() {
 
   console.log(editor.getText()); // Output: Modified text (restored from the previous state)
 }
+
+main();
 
 /**
  * In this example, the Editor class represents an object whose state can be modified. The save

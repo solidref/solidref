@@ -1,25 +1,26 @@
 // Subject: Interface representing the common behavior of RealSubject and Proxy
-interface IHttpServer {
-  request(url: string): Promise<string>;
+class IHttpServer {
+  async request(url) {
+    throw new Error("Method not implemented.");
+  }
 }
 
 // RealSubject: The actual HTTP server implementation
-class HttpServer implements IHttpServer {
-  async request(url: string): Promise<string> {
+class HttpServer extends IHttpServer {
+  async request(url) {
     // Simulating HTTP request to the actual server
     return `Response from server for URL: ${url}`;
   }
 }
 
 // Proxy: Proxy server that intercepts requests before forwarding them to the real server
-class ProxyServer implements IHttpServer {
-  private httpServer: HttpServer;
-
+class ProxyServer extends IHttpServer {
   constructor() {
+    super();
     this.httpServer = new HttpServer();
   }
 
-  async request(url: string): Promise<string> {
+  async request(url) {
     // Additional logic can be added here, e.g., caching, access control, logging
     console.log(`Proxy: Intercepted request for URL: ${url}`);
 

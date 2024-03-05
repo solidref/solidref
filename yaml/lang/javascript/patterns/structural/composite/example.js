@@ -1,55 +1,43 @@
-// Component: Department
-interface Department {
-  getName(): string;
-  getEmployees(): string[];
-}
-
 // Leaf: Individual Department
-class IndividualDepartment implements Department {
-  private name: string;
-  private employees: string[];
-
-  constructor(name: string, employees: string[]) {
+class IndividualDepartment {
+  constructor(name, employees) {
     this.name = name;
     this.employees = employees;
   }
 
-  getName(): string {
+  getName() {
     return this.name;
   }
 
-  getEmployees(): string[] {
+  getEmployees() {
     return this.employees;
   }
 }
 
 // Composite: Composite Department
-class CompositeDepartment implements Department {
-  private name: string;
-  private departments: Department[];
-
-  constructor(name: string) {
+class CompositeDepartment {
+  constructor(name) {
     this.name = name;
     this.departments = [];
   }
 
-  getName(): string {
+  getName() {
     return this.name;
   }
 
-  addDepartment(department: Department): void {
+  addDepartment(department) {
     this.departments.push(department);
   }
 
-  removeDepartment(department: Department): void {
+  removeDepartment(department) {
     const index = this.departments.indexOf(department);
     if (index !== -1) {
       this.departments.splice(index, 1);
     }
   }
 
-  getEmployees(): string[] {
-    let employees: string[] = [];
+  getEmployees() {
+    let employees = [];
     for (const department of this.departments) {
       employees = employees.concat(department.getEmployees());
     }
@@ -76,6 +64,7 @@ rootDepartment.addDepartment(parentEngineeringDepartment);
 // Get all employees in the root department
 console.log('Employees in the root department:');
 console.log(rootDepartment.getEmployees());
+
 
 /**
  * The Department interface defines the common methods for both individual departments and composite departments.

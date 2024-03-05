@@ -1,12 +1,5 @@
-// Product: Computer
 class Computer {
-  private cpu: string;
-  private ram: number;
-  private storage: number;
-  private gpu: string;
-  private screenSize: number;
-
-  constructor(cpu: string, ram: number, storage: number, gpu: string, screenSize: number) {
+  constructor(cpu = "", ram = 0, storage = 0, gpu = "", screenSize = 0) {
     this.cpu = cpu;
     this.ram = ram;
     this.storage = storage;
@@ -14,7 +7,7 @@ class Computer {
     this.screenSize = screenSize;
   }
 
-  displaySpecs(): void {
+  displaySpecs() {
     console.log(`CPU: ${this.cpu}`);
     console.log(`RAM: ${this.ram} GB`);
     console.log(`Storage: ${this.storage} GB`);
@@ -23,63 +16,56 @@ class Computer {
   }
 }
 
-// Builder interface
-interface ComputerBuilder {
-  setCPU(cpu: string): void;
-  setRAM(ram: number): void;
-  setStorage(storage: number): void;
-  setGPU(gpu: string): void;
-  setScreenSize(screenSize: number): void;
-  getResult(): Computer;
-}
-
-// Concrete Builder: Gaming Computer Builder
-class GamingComputerBuilder implements ComputerBuilder {
-  private computer: Computer;
-
+class GamingComputerBuilder {
   constructor() {
-    this.computer = new Computer("", 0, 0, "", 0);
+    this.reset();
   }
 
-  setCPU(cpu: string): void {
-    this.computer = new Computer(cpu, this.computer.ram, this.computer.storage, this.computer.gpu, this.computer.screenSize);
+  reset() {
+    this.computer = new Computer();
   }
 
-  setRAM(ram: number): void {
-    this.computer = new Computer(this.computer.cpu, ram, this.computer.storage, this.computer.gpu, this.computer.screenSize);
+  setCPU(cpu) {
+    this.computer.cpu = cpu;
+    return this;
   }
 
-  setStorage(storage: number): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, storage, this.computer.gpu, this.computer.screenSize);
+  setRAM(ram) {
+    this.computer.ram = ram;
+    return this;
   }
 
-  setGPU(gpu: string): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, this.computer.storage, gpu, this.computer.screenSize);
+  setStorage(storage) {
+    this.computer.storage = storage;
+    return this;
   }
 
-  setScreenSize(screenSize: number): void {
-    this.computer = new Computer(this.computer.cpu, this.computer.ram, this.computer.storage, this.computer.gpu, screenSize);
+  setGPU(gpu) {
+    this.computer.gpu = gpu;
+    return this;
   }
 
-  getResult(): Computer {
+  setScreenSize(screenSize) {
+    this.computer.screenSize = screenSize;
+    return this;
+  }
+
+  getResult() {
     return this.computer;
   }
 }
 
-// Director
 class ComputerBuilderDirector {
-  private builder: ComputerBuilder;
-
-  constructor(builder: ComputerBuilder) {
+  constructor(builder) {
     this.builder = builder;
   }
 
-  constructGamingComputer(): void {
-    this.builder.setCPU("Intel Core i9");
-    this.builder.setRAM(32);
-    this.builder.setStorage(1000);
-    this.builder.setGPU("NVIDIA GeForce RTX 3080");
-    this.builder.setScreenSize(27);
+  constructGamingComputer() {
+    this.builder.setCPU("Intel Core i9")
+      .setRAM(32)
+      .setStorage(1000)
+      .setGPU("NVIDIA GeForce RTX 3080")
+      .setScreenSize(27);
   }
 }
 
@@ -90,7 +76,6 @@ director.constructGamingComputer();
 const gamingComputer = gamingComputerBuilder.getResult();
 console.log("Gaming Computer Specifications:");
 gamingComputer.displaySpecs();
-
 
 /**
  * The Computer class represents the product we want to build, which is a custom computer with

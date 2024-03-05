@@ -1,35 +1,32 @@
 class Logger {
-  private static instance: Logger;
-  private logHistory: string[] = [];
-
-  // Private constructor to prevent instantiation from outside the class
-  private constructor() { }
-
-  // Static method to retrieve the singleton instance
-  static getInstance(): Logger {
+  constructor() {
     if (!Logger.instance) {
-      Logger.instance = new Logger();
+      Logger.instance = this;
+      this.logHistory = [];
     }
     return Logger.instance;
   }
 
-  // Method to log messages
-  log(message: string): void {
+  log(message) {
     const timestamp = new Date().toISOString();
     const logEntry = `[${timestamp}] ${message}`;
     this.logHistory.push(logEntry);
     console.log(logEntry);
   }
 
-  // Method to retrieve log history
-  getLogHistory(): string[] {
+  getLogHistory() {
     return this.logHistory;
   }
 }
 
+// Ensuring the constructor is not callable from outside. In JavaScript, this approach
+// replaces the private constructor concept. The static method or property belongs
+// to the class itself, not to the object of the class.
+Logger.instance = null;
+
 // Client code
-const logger1 = Logger.getInstance();
-const logger2 = Logger.getInstance();
+const logger1 = new Logger();
+const logger2 = new Logger();
 
 console.log(logger1 === logger2); // Output: true, both references point to the same instance
 

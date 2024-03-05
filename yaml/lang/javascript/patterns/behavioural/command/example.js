@@ -1,75 +1,57 @@
-// Define the command interface
-interface Command {
-  execute(): void;
+// Command interface
+class Command {
+  execute() { }
 }
 
-// Receiver class that performs the actual actions
+// Concrete Command
+class TurnOnCommand extends Command {
+  constructor(receiver) {
+    super();
+    this.receiver = receiver;
+  }
+
+  execute() {
+    this.receiver.turnOn();
+  }
+}
+
+class TurnOffCommand extends Command {
+  constructor(receiver) {
+    super();
+    this.receiver = receiver;
+  }
+
+  execute() {
+    this.receiver.turnOff();
+  }
+}
+
+// Receiver
 class Light {
-  turnOn(): void {
-    console.log('Light is on');
+  turnOn() {
+    console.log("The light is on");
   }
 
-  turnOff(): void {
-    console.log('Light is off');
-  }
-}
-
-// Concrete command to turn on the light
-class TurnOnCommand implements Command {
-  private light: Light;
-
-  constructor(light: Light) {
-    this.light = light;
-  }
-
-  execute(): void {
-    this.light.turnOn();
+  turnOff() {
+    console.log("The light is off");
   }
 }
 
-// Concrete command to turn off the light
-class TurnOffCommand implements Command {
-  private light: Light;
-
-  constructor(light: Light) {
-    this.light = light;
-  }
-
-  execute(): void {
-    this.light.turnOff();
-  }
-}
-
-// Invoker class that triggers the commands
+// Invoker
 class RemoteControl {
-  private commands: Command[] = [];
-
-  addCommand(command: Command): void {
-    this.commands.push(command);
-  }
-
-  executeCommands(): void {
-    this.commands.forEach(command => command.execute());
+  submit(command) {
+    command.execute();
   }
 }
 
 // Client code
-function main() {
-  // Create a light
-  const light = new Light();
+const light = new Light();
+const turnOnCommand = new TurnOnCommand(light);
+const turnOffCommand = new TurnOffCommand(light);
 
-  // Create commands for turning the light on and off
-  const turnOnCommand = new TurnOnCommand(light);
-  const turnOffCommand = new TurnOffCommand(light);
-
-  // Create a remote control and add the commands
-  const remoteControl = new RemoteControl();
-  remoteControl.addCommand(turnOnCommand);
-  remoteControl.addCommand(turnOffCommand);
-
-  // Press the buttons on the remote control to execute the commands
-  remoteControl.executeCommands();
-}
+const remote = new RemoteControl();
+remote.submit(turnOnCommand); // The light is on
+remote.submit(turnOffCommand); // The light is off
 
 /**
  * This code demonstrates how the Command pattern can be used in a remote control

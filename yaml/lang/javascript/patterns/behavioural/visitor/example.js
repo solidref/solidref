@@ -1,80 +1,74 @@
-// Visitor interface
-interface AnimalVisitor {
-  visitLion(lion: Lion): void;
-  visitElephant(elephant: Elephant): void;
-  visitGiraffe(giraffe: Giraffe): void;
-}
-
 // Concrete visitor implementing the operations on animals
-class AnimalFeeder implements AnimalVisitor {
-  visitLion(lion: Lion): void {
+class AnimalFeeder {
+  visitLion(lion) {
     console.log(`Feeding meat to ${lion.getName()}.`);
   }
 
-  visitElephant(elephant: Elephant): void {
+  visitElephant(elephant) {
     console.log(`Feeding hay to ${elephant.getName()}.`);
   }
 
-  visitGiraffe(giraffe: Giraffe): void {
+  visitGiraffe(giraffe) {
     console.log(`Feeding leaves to ${giraffe.getName()}.`);
   }
 }
 
-// Element interface representing animals
-interface Animal {
-  accept(visitor: AnimalVisitor): void;
-}
-
 // Concrete elements representing different types of animals
-class Lion implements Animal {
-  constructor(private name: string) { }
+class Lion {
+  constructor(name) {
+    this.name = name;
+  }
 
-  getName(): string {
+  getName() {
     return this.name;
   }
 
-  accept(visitor: AnimalVisitor): void {
+  accept(visitor) {
     visitor.visitLion(this);
   }
 }
 
-class Elephant implements Animal {
-  constructor(private name: string) { }
+class Elephant {
+  constructor(name) {
+    this.name = name;
+  }
 
-  getName(): string {
+  getName() {
     return this.name;
   }
 
-  accept(visitor: AnimalVisitor): void {
+  accept(visitor) {
     visitor.visitElephant(this);
   }
 }
 
-class Giraffe implements Animal {
-  constructor(private name: string) { }
+class Giraffe {
+  constructor(name) {
+    this.name = name;
+  }
 
-  getName(): string {
+  getName() {
     return this.name;
   }
 
-  accept(visitor: AnimalVisitor): void {
+  accept(visitor) {
     visitor.visitGiraffe(this);
   }
 }
 
 // Object structure containing the collection of animals
 class Zoo {
-  private animals: Animal[] = [];
+  constructor() {
+    this.animals = [];
+  }
 
-  addAnimal(animal: Animal): void {
+  addAnimal(animal) {
     this.animals.push(animal);
   }
 
   // Perform the operation defined by the visitor on each animal
-  performOperation(visitor: AnimalVisitor): void {
-    this.animals.forEach(animal => {
-      animal.accept(visitor);
-    });
+  performOperation(visitor) {
+    this.animals.forEach(animal => animal.accept(visitor));
   }
 }
 

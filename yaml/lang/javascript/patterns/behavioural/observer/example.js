@@ -1,34 +1,26 @@
-interface Subject {
-  subscribe(observer: Observer): void;
-  unsubscribe(observer: Observer): void;
-  notify(data: any): void;
-}
+class ConcreteSubject {
+  constructor() {
+    this.observers = [];
+  }
 
-class ConcreteSubject implements Subject {
-  private observers: Observer[] = [];
-
-  subscribe(observer: Observer) {
+  subscribe(observer) {
     this.observers.push(observer);
   }
 
-  unsubscribe(observer: Observer) {
+  unsubscribe(observer) {
     const index = this.observers.indexOf(observer);
     if (index > -1) {
       this.observers.splice(index, 1);
     }
   }
 
-  notify(data: any) {
+  notify(data) {
     this.observers.forEach(observer => observer.update(data));
   }
 }
 
-interface Observer {
-  update(data: any): void;
-}
-
-class ConcreteObserver implements Observer {
-  update(data: any) {
+class ConcreteObserver {
+  update(data) {
     console.log(`Observer received data: ${data}`);
   }
 }

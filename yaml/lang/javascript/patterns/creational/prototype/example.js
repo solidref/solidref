@@ -1,27 +1,18 @@
-// Prototype interface: UserProfile
-interface UserProfile {
-  clone(): UserProfile;
-  customizeProfile(settings: UserProfileSettings): void;
-  displayProfile(): void;
-}
-
 // Concrete Prototype: DefaultUserProfile
-class DefaultUserProfile implements UserProfile {
-  private username: string;
-  private bio: string;
-  private profilePicture: string;
-
-  constructor(username: string, bio: string, profilePicture: string) {
+class DefaultUserProfile {
+  constructor(username, bio, profilePicture) {
     this.username = username;
     this.bio = bio;
     this.profilePicture = profilePicture;
   }
 
-  clone(): UserProfile {
+  clone() {
+    // Using Object.assign for a shallow copy, which is sufficient for primitive properties.
+    // For deep cloning, consider using a library or implementing a deeper clone logic.
     return new DefaultUserProfile(this.username, this.bio, this.profilePicture);
   }
 
-  customizeProfile(settings: UserProfileSettings): void {
+  customizeProfile(settings) {
     if (settings.username) {
       this.username = settings.username;
     }
@@ -33,18 +24,11 @@ class DefaultUserProfile implements UserProfile {
     }
   }
 
-  displayProfile(): void {
+  displayProfile() {
     console.log("Username:", this.username);
     console.log("Bio:", this.bio);
     console.log("Profile Picture:", this.profilePicture);
   }
-}
-
-// Prototype settings: UserProfileSettings
-interface UserProfileSettings {
-  username?: string;
-  bio?: string;
-  profilePicture?: string;
 }
 
 // Client code

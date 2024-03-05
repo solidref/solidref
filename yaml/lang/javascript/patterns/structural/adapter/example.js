@@ -1,44 +1,39 @@
 // Adaptee: Existing MP3 player
 class Mp3Player {
-  playMp3(fileName: string): void {
+  playMp3(fileName) {
     console.log(`Playing MP3 file: ${fileName}`);
   }
 }
 
-// Target: Interface expected by the client (unified interface)
-interface AudioPlayer {
-  play(fileName: string): void;
-}
-
 // Adapter: Converts OGG audio files to MP3 format
-class OggToMp3Adapter implements AudioPlayer {
-  private mp3Player: Mp3Player;
-
+class OggToMp3Adapter {
   constructor() {
     this.mp3Player = new Mp3Player();
   }
 
-  play(fileName: string): void {
-    // Convert OGG to MP3 and play using the MP3 player
-    console.log(`Converting OGG file '${fileName}' to MP3 format`);
-    const mp3FileName = this.convertToMp3(fileName);
-    this.mp3Player.playMp3(mp3FileName);
+  play(fileName) {
+    if (fileName.endsWith('.ogg')) {
+      console.log(`Converting OGG file '${fileName}' to MP3 format`);
+      fileName = this.convertToMp3(fileName);
+    }
+    this.mp3Player.playMp3(fileName);
   }
 
-  private convertToMp3(fileName: string): string {
+  private convertToMp3(fileName) {
     // Simulate conversion process (replace extension)
     return fileName.replace('.ogg', '.mp3');
   }
 }
 
 // Client code
-const audioPlayer: AudioPlayer = new OggToMp3Adapter();
+const audioPlayer = new OggToMp3Adapter();
 
 // Play MP3 file
 audioPlayer.play('audio1.mp3');
 
 // Play OGG file (automatically converted to MP3)
 audioPlayer.play('audio2.ogg');
+
 
 /**
  * Mp3Player represents the existing audio player that can play MP3 files.

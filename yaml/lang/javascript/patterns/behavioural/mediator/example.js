@@ -1,42 +1,27 @@
-// Define the Mediator interface
-interface ChatMediator {
-  sendMessage(message: string, user: User): void;
-}
-
 // Concrete Mediator implementation for a chat room
-class ChatRoom implements ChatMediator {
-  sendMessage(message: string, user: User): void {
+class ChatRoom {
+  sendMessage(message, user) {
     console.log(`[${user.getName()}] sends message: ${message}`);
   }
 }
 
-// Define the Colleague interface
-interface User {
-  send(message: string): void;
-  receive(message: string): void;
-  getName(): string;
-}
-
 // Concrete Colleague implementation for a chat user
-class ChatUser implements User {
-  private name: string;
-  private mediator: ChatMediator;
-
-  constructor(name: string, mediator: ChatMediator) {
+class ChatUser {
+  constructor(name, mediator) {
     this.name = name;
     this.mediator = mediator;
   }
 
-  send(message: string): void {
+  send(message) {
     console.log(`[${this.name}] sends message: ${message}`);
     this.mediator.sendMessage(message, this);
   }
 
-  receive(message: string): void {
+  receive(message) {
     console.log(`[${this.name}] received message: ${message}`);
   }
 
-  getName(): string {
+  getName() {
     return this.name;
   }
 }
@@ -44,16 +29,18 @@ class ChatUser implements User {
 // Client code
 function main() {
   // Create a chat room mediator
-  const chatMediator: ChatMediator = new ChatRoom();
+  const chatMediator = new ChatRoom();
 
   // Create chat users
-  const user1: User = new ChatUser('User1', chatMediator);
-  const user2: User = new ChatUser('User2', chatMediator);
+  const user1 = new ChatUser('User1', chatMediator);
+  const user2 = new ChatUser('User2', chatMediator);
 
   // Send messages between users
   user1.send('Hello, User2!');
   user2.send('Hi, User1!');
 }
+
+main();
 
 /**
  * In this example, the Mediator pattern is used to facilitate communication between

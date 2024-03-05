@@ -1,55 +1,38 @@
-// Abstraction: Vehicle
-abstract class Vehicle {
-  protected workshop: Workshop;
-
-  constructor(workshop: Workshop) {
-    this.workshop = workshop;
-  }
-
-  abstract manufacture(): void;
-}
-
-// Implementor: Workshop
-interface Workshop {
-  work(): void;
-}
-
-// Concrete Implementor: Paint Workshop
-class PaintWorkshop implements Workshop {
-  work(): void {
-    console.log('Painting vehicle');
+// Adaptee: Existing MP3 player
+class Mp3Player {
+  playMp3(fileName) {
+    console.log(`Playing MP3 file: ${fileName}`);
   }
 }
 
-// Concrete Implementor: Repair Workshop
-class RepairWorkshop implements Workshop {
-  work(): void {
-    console.log('Repairing vehicle');
+// Adapter: Converts OGG audio files to MP3 format
+class OggToMp3Adapter {
+  constructor() {
+    this.mp3Player = new Mp3Player();
   }
-}
 
-// Refined Abstraction: Car
-class Car extends Vehicle {
-  manufacture(): void {
-    console.log('Manufacturing car.');
-    this.workshop.work();
+  play(fileName) {
+    if (fileName.endsWith('.ogg')) {
+      console.log(`Converting OGG file '${fileName}' to MP3 format`);
+      fileName = this.convertToMp3(fileName);
+    }
+    this.mp3Player.playMp3(fileName);
   }
-}
 
-// Refined Abstraction: Truck
-class Truck extends Vehicle {
-  manufacture(): void {
-    console.log('Manufacturing truck.');
-    this.workshop.work();
+  private convertToMp3(fileName) {
+    // Simulate conversion process (replace extension)
+    return fileName.replace('.ogg', '.mp3');
   }
 }
 
 // Client code
-const car = new Car(new PaintWorkshop());
-car.manufacture(); // Output: Manufacturing car. Painting vehicle
+const audioPlayer = new OggToMp3Adapter();
 
-const truck = new Truck(new RepairWorkshop());
-truck.manufacture(); // Output: Manufacturing truck. Repairing vehicle
+// Play MP3 file
+audioPlayer.play('audio1.mp3');
+
+// Play OGG file (automatically converted to MP3)
+audioPlayer.play('audio2.ogg');
 
 /**
  * The Vehicle class represents the abstraction, which is extended by Car and Truck.

@@ -1,17 +1,18 @@
-class Iterator<T> {
-  private collection: T[];
-  private index: number;
-
-  constructor(collection: T[]) {
+class Iterator {
+  constructor(collection) {
     this.collection = collection;
     this.index = 0;
   }
 
-  next(): T | undefined {
-    return this.collection[this.index++];
+  next() {
+    if (this.hasNext()) {
+      return this.collection[this.index++];
+    } else {
+      return undefined;
+    }
   }
 
-  hasNext(): boolean {
+  hasNext() {
     return this.index < this.collection.length;
   }
 }

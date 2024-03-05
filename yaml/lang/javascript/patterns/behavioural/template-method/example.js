@@ -1,42 +1,47 @@
-abstract class Breakfast {
+class Breakfast {
   // Template method
-  prepare(): void {
+  prepare() {
     this.boilWater();
     this.addIngredients();
     this.cook();
     this.serve();
   }
 
-  // Abstract methods to be implemented by subclasses
-  abstract addIngredients(): void;
-  abstract cook(): void;
+  // Placeholder methods for steps that will vary
+  addIngredients() {
+    throw new Error('Method "addIngredients()" must be implemented.');
+  }
+
+  cook() {
+    throw new Error('Method "cook()" must be implemented.');
+  }
 
   // Concrete methods
-  boilWater(): void {
+  boilWater() {
     console.log("Boiling water...");
   }
 
-  serve(): void {
+  serve() {
     console.log("Breakfast is served!");
   }
 }
 
 class OmeletteBreakfast extends Breakfast {
-  addIngredients(): void {
+  addIngredients() {
     console.log("Adding eggs, cheese, and vegetables to the pan.");
   }
 
-  cook(): void {
+  cook() {
     console.log("Cooking the omelette until golden brown.");
   }
 }
 
 class PancakeBreakfast extends Breakfast {
-  addIngredients(): void {
+  addIngredients() {
     console.log("Mixing flour, eggs, milk, and sugar to make the batter.");
   }
 
-  cook(): void {
+  cook() {
     console.log("Pouring the batter onto the griddle and flipping until cooked.");
   }
 }
