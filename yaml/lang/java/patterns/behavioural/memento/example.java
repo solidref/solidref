@@ -1,81 +1,70 @@
-// Originator class represents the object whose state needs to be saved and restored
-class Editor {
-  private text: string;
+// Editor.java (Originator)
+public class Editor {
+  private String text;
 
-  constructor(text: string) {
+  public Editor(String text) {
     this.text = text;
   }
 
-  setText(text: string): void {
+  public void setText(String text) {
     this.text = text;
   }
 
-  getText(): string {
-    return this.text;
+  public String getText() {
+    return text;
   }
 
-  // Creates a memento containing the current state of the editor
-  save(): Memento {
+  public Memento save() {
     return new Memento(this.text);
   }
 
-  // Restores the editor's state from a memento
-  restore(memento: Memento): void {
+  public void restore(Memento memento) {
     this.text = memento.getState();
   }
 }
 
-// Memento class represents the stored state of the editor
-class Memento {
-  private state: string;
+// Memento.java
+public class Memento {
+  private final String state;
 
-  constructor(state: string) {
+  public Memento(String state) {
     this.state = state;
   }
 
-  getState(): string {
-    return this.state;
+  public String getState() {
+    return state;
   }
 }
 
-// Caretaker class is responsible for keeping track of multiple mementos
-class History {
-  private mementos: Memento[] = [];
+// History.java (Caretaker)
+public class History {
+  private java.util.List<Memento> mementos = new java.util.ArrayList<>();
 
-  // Adds a memento to the history
-  addMemento(memento: Memento): void {
-    this.mementos.push(memento);
+  public void addMemento(Memento memento) {
+    mementos.add(memento);
   }
 
-  // Retrieves the most recent memento from the history
-  getLatestMemento(): Memento {
-    if (this.mementos.length === 0) {
-      throw new Error("No mementos available");
+  public Memento getLatestMemento() {
+    if (mementos.isEmpty()) {
+      throw new IllegalStateException("No mementos available");
     }
-    return this.mementos[this.mementos.length - 1];
+    return mementos.get(mementos.size() - 1);
   }
 }
 
-// Client code
-function main() {
-  const editor = new Editor("Initial text");
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    Editor editor = new Editor("Initial text");
+    History history = new History();
 
-  // Create a history to store mementos
-  const history = new History();
+    history.addMemento(editor.save());
+    editor.setText("Modified text");
+    history.addMemento(editor.save());
 
-  // Add a memento to the history
-  history.addMemento(editor.save());
-
-  // Modify the text
-  editor.setText("Modified text");
-
-  // Add another memento to the history
-  history.addMemento(editor.save());
-
-  // Restore the editor's state to a previous memento
-  editor.restore(history.getLatestMemento());
-
-  console.log(editor.getText()); // Output: Modified text (restored from the previous state)
+    editor.restore(history.getLatestMemento());
+    System.out.println(editor.getText()); // Output: Modified text
+  }
 }
 
 /**

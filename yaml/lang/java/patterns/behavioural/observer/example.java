@@ -1,50 +1,62 @@
+// Subject.java
 interface Subject {
-  subscribe(observer: Observer): void;
-  unsubscribe(observer: Observer): void;
-  notify(data: any): void;
+    void subscribe(Observer observer);
+    void unsubscribe(Observer observer);
+    void notifyObservers(String data);
 }
 
+// ConcreteSubject.java
 class ConcreteSubject implements Subject {
-  private observers: Observer[] = [];
+    private java.util.List<Observer> observers = new java.util.ArrayList<>();
 
-  subscribe(observer: Observer) {
-    this.observers.push(observer);
-  }
-
-  unsubscribe(observer: Observer) {
-    const index = this.observers.indexOf(observer);
-    if (index > -1) {
-      this.observers.splice(index, 1);
+    @Override
+    public void subscribe(Observer observer) {
+        observers.add(observer);
     }
-  }
 
-  notify(data: any) {
-    this.observers.forEach(observer => observer.update(data));
-  }
+    @Override
+    public void unsubscribe(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(String data) {
+        for (Observer observer : observers) {
+            observer.update(data);
+        }
+    }
 }
 
+// Observer.java
 interface Observer {
-  update(data: any): void;
+    void update(String data);
 }
 
+// ConcreteObserver.java
 class ConcreteObserver implements Observer {
-  update(data: any) {
-    console.log(`Observer received data: ${data}`);
-  }
+    @Override
+    public void update(String data) {
+        System.out.println("Observer received data: " + data);
+    }
 }
 
-// Client code
-const subject = new ConcreteSubject();
-const observer1 = new ConcreteObserver();
-const observer2 = new ConcreteObserver();
+// Main.java (Client code)
+public class Main {
+    public static void main(String[] args) {
+        ConcreteSubject subject = new ConcreteSubject();
+        Observer observer1 = new ConcreteObserver();
+        Observer observer2 = new ConcreteObserver();
 
-subject.subscribe(observer1);
-subject.subscribe(observer2);
+        subject.subscribe(observer1);
+        subject.subscribe(observer2);
 
-subject.notify('Hello Observers!');
+        subject.notifyObservers("Hello Observers!");
 
-subject.unsubscribe(observer2);
-subject.notify('Goodbye Observers!');
+        subject.unsubscribe(observer2);
+        subject.notifyObservers("Goodbye Observers!");
+    }
+}
+
 
 /**
  * In this example, the Editor class represents an object whose state can be modified.

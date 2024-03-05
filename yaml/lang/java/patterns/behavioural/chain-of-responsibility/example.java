@@ -1,23 +1,23 @@
-// es-lint-disable
-
-// Define the interface for a support handler
+// SupportHandler.java
 interface SupportHandler {
-  setNextHandler(handler: SupportHandler): void;
-  handleRequest(request: string): string | null;
+  void setNextHandler(SupportHandler handler);
+  String handleRequest(String request);
 }
 
-// Concrete implementation of the SupportHandler interface for Level 1 support
+// Level1Support.java
 class Level1Support implements SupportHandler {
-  private nextHandler: SupportHandler | null = null;
+  private SupportHandler nextHandler;
 
-  setNextHandler(handler: SupportHandler): void {
+  @Override
+  public void setNextHandler(SupportHandler handler) {
     this.nextHandler = handler;
   }
 
-  handleRequest(request: string): string | null {
-    if (request.includes('basic')) {
-      return 'Level 1 Support: Issue resolved at basic level.';
-    } else if (this.nextHandler) {
+  @Override
+  public String handleRequest(String request) {
+    if (request.contains("basic")) {
+      return "Level 1 Support: Issue resolved at basic level.";
+    } else if (this.nextHandler != null) {
       return this.nextHandler.handleRequest(request);
     } else {
       return null; // No more handlers in the chain
@@ -25,18 +25,20 @@ class Level1Support implements SupportHandler {
   }
 }
 
-// Concrete implementation of the SupportHandler interface for Level 2 support
+// Level2Support.java
 class Level2Support implements SupportHandler {
-  private nextHandler: SupportHandler | null = null;
+  private SupportHandler nextHandler;
 
-  setNextHandler(handler: SupportHandler): void {
+  @Override
+  public void setNextHandler(SupportHandler handler) {
     this.nextHandler = handler;
   }
 
-  handleRequest(request: string): string | null {
-    if (request.includes('advanced')) {
-      return 'Level 2 Support: Issue resolved at advanced level.';
-    } else if (this.nextHandler) {
+  @Override
+  public String handleRequest(String request) {
+    if (request.contains("advanced")) {
+      return "Level 2 Support: Issue resolved at advanced level.";
+    } else if (this.nextHandler != null) {
       return this.nextHandler.handleRequest(request);
     } else {
       return null; // No more handlers in the chain
@@ -44,43 +46,47 @@ class Level2Support implements SupportHandler {
   }
 }
 
-// Concrete implementation of the SupportHandler interface for Level 3 support
+// Level3Support.java
 class Level3Support implements SupportHandler {
-  handleRequest(request: string): string | null {
-    if (request.includes('bug')) {
-      return 'Level 3 Support: Issue resolved at development level.';
+  @Override
+  public String handleRequest(String request) {
+    if (request.contains("bug")) {
+      return "Level 3 Support: Issue resolved at development level.";
     } else {
-      return 'Level 3 Support: Unable to resolve the issue.';
+      return "Level 3 Support: Unable to resolve the issue.";
     }
   }
 
-  // Level 3 support does not have a next handler
-  setNextHandler(handler: SupportHandler): void {
-    throw new Error('Level 3 Support is the highest level and does not have a next handler.');
+  @Override
+  public void setNextHandler(SupportHandler handler) {
+    throw new UnsupportedOperationException("Level 3 Support is the highest level and does not have a next handler.");
   }
 }
 
-// Client code
-function main() {
-  // Create instances of support handlers
-  const level1 = new Level1Support();
-  const level2 = new Level2Support();
-  const level3 = new Level3Support();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    // Create instances of support handlers
+    Level1Support level1 = new Level1Support();
+    Level2Support level2 = new Level2Support();
+    Level3Support level3 = new Level3Support();
 
-  // Chain the handlers together
-  level1.setNextHandler(level2);
-  level2.setNextHandler(level3);
+    // Chain the handlers together
+    level1.setNextHandler(level2);
+    level2.setNextHandler(level3);
 
-  // Simulate support requests
-  const request1 = 'Fix basic login issue';
-  const request2 = 'Debug advanced performance problem';
-  const request3 = 'Investigate bug causing application crash';
+    // Simulate support requests
+    String request1 = "Fix basic login issue";
+    String request2 = "Debug advanced performance problem";
+    String request3 = "Investigate bug causing application crash";
 
-  // Process requests through the chain of responsibility
-  console.log(level1.handleRequest(request1)); // Output: Level 1 Support: Issue resolved at basic level.
-  console.log(level1.handleRequest(request2)); // Output: Level 2 Support: Issue resolved at advanced level.
-  console.log(level1.handleRequest(request3)); // Output: Level 3 Support: Issue resolved at development level.
+    // Process requests through the chain of responsibility
+    System.out.println(level1.handleRequest(request1)); // Output: Level 1 Support: Issue resolved at basic level.
+    System.out.println(level1.handleRequest(request2)); // Output: Level 2 Support: Issue resolved at advanced level.
+    System.out.println(level1.handleRequest(request3)); // Output: Level 3 Support: Issue resolved at development level.
+  }
 }
+
 
 /**
  * This code demonstrates how the Chain of Responsibility pattern can be used in a support

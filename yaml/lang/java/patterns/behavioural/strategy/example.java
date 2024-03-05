@@ -1,60 +1,76 @@
-// Interface defining the common behavior for all payment strategies
+// PaymentStrategy.java
 interface PaymentStrategy {
-  pay(amount: number): void;
+  void pay(int amount);
 }
 
-// Concrete strategy for processing payments via credit card
+// CreditCardPaymentStrategy.java
 class CreditCardPaymentStrategy implements PaymentStrategy {
-  constructor(private cardNumber: string, private expiryDate: string, private cvv: string) { }
+  private String cardNumber;
+  private String expiryDate;
+  private String cvv;
 
-  pay(amount: number): void {
-    console.log(`Processing credit card payment of $${amount} with card number ${this.cardNumber}`);
+  public CreditCardPaymentStrategy(String cardNumber, String expiryDate, String cvv) {
+    this.cardNumber = cardNumber;
+    this.expiryDate = expiryDate;
+    this.cvv = cvv;
+  }
+
+  @Override
+  public void pay(int amount) {
+    System.out.println("Processing credit card payment of $" + amount + " with card number " + this.cardNumber);
     // Logic to process payment via credit card
   }
 }
 
-// Concrete strategy for processing payments via PayPal
+// PayPalPaymentStrategy.java
 class PayPalPaymentStrategy implements PaymentStrategy {
-  constructor(private email: string, private password: string) { }
+  private String email;
+  private String password;
 
-  pay(amount: number): void {
-    console.log(`Processing PayPal payment of $${amount} with email ${this.email}`);
+  public PayPalPaymentStrategy(String email, String password) {
+    this.email = email;
+    this.password = password;
+  }
+
+  @Override
+  public void pay(int amount) {
+    System.out.println("Processing PayPal payment of $" + amount + " with email " + this.email);
     // Logic to process payment via PayPal
   }
 }
 
-// Context class representing the payment processor
+// PaymentProcessor.java (Context)
 class PaymentProcessor {
-  private paymentStrategy: PaymentStrategy;
+  private PaymentStrategy paymentStrategy;
 
-  // Setter method to set the payment strategy dynamically
-  setPaymentStrategy(paymentStrategy: PaymentStrategy): void {
+  public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
     this.paymentStrategy = paymentStrategy;
   }
 
-  // Method to process payment using the selected strategy
-  processPayment(amount: number): void {
-    if (this.paymentStrategy) {
+  public void processPayment(int amount) {
+    if (this.paymentStrategy != null) {
       this.paymentStrategy.pay(amount);
     } else {
-      console.log("Payment strategy not set. Please select a payment method.");
+      System.out.println("Payment strategy not set. Please select a payment method.");
     }
   }
 }
 
-// Client code
-function main() {
-  const paymentProcessor = new PaymentProcessor();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    PaymentProcessor paymentProcessor = new PaymentProcessor();
 
-  // Select a payment method (strategy) dynamically
-  const creditCardStrategy = new CreditCardPaymentStrategy("1234 5678 9012 3456", "12/25", "123");
-  paymentProcessor.setPaymentStrategy(creditCardStrategy);
-  paymentProcessor.processPayment(100);
+    // Select a payment method (strategy) dynamically
+    PaymentStrategy creditCardStrategy = new CreditCardPaymentStrategy("1234 5678 9012 3456", "12/25", "123");
+    paymentProcessor.setPaymentStrategy(creditCardStrategy);
+    paymentProcessor.processPayment(100);
 
-  // Change payment method (strategy)
-  const payPalStrategy = new PayPalPaymentStrategy("example@example.com", "password");
-  paymentProcessor.setPaymentStrategy(payPalStrategy);
-  paymentProcessor.processPayment(50);
+    // Change payment method (strategy)
+    PaymentStrategy payPalStrategy = new PayPalPaymentStrategy("example@example.com", "password");
+    paymentProcessor.setPaymentStrategy(payPalStrategy);
+    paymentProcessor.processPayment(50);
+  }
 }
 
 /**

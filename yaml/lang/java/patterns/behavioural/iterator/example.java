@@ -1,28 +1,35 @@
-class Iterator<T> {
-  private collection: T[];
-  private index: number;
+// CustomIterator.java
+public class CustomIterator<T> {
+  private T[] collection;
+  private int index;
 
-  constructor(collection: T[]) {
+  public CustomIterator(T[] collection) {
     this.collection = collection;
     this.index = 0;
   }
 
-  next(): T | undefined {
-    return this.collection[this.index++];
+  public T next() {
+    return collection[index++];
   }
 
-  hasNext(): boolean {
-    return this.index < this.collection.length;
+  public boolean hasNext() {
+    return index < collection.length;
   }
 }
 
-// Client code
-const items = [1, 'two', 3, 'four', 5];
-const iterator = new Iterator(items);
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    // Using an array of Object to mix integers and strings, similar to the TypeScript example
+    Object[] items = {1, "two", 3, "four", 5};
+    CustomIterator<Object> iterator = new CustomIterator<>(items);
 
-while (iterator.hasNext()) {
-  console.log(iterator.next());
+    while (iterator.hasNext()) {
+      System.out.println(iterator.next());
+    }
+  }
 }
+
 
 /**
  * In this example, the Iterator pattern is used to iterate over a collection of books

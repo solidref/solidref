@@ -1,75 +1,79 @@
-// Define the command interface
+// Command.java
 interface Command {
-  execute(): void;
+  void execute();
 }
 
-// Receiver class that performs the actual actions
+// Light.java (Receiver)
 class Light {
-  turnOn(): void {
-    console.log('Light is on');
+  public void turnOn() {
+    System.out.println("Light is on");
   }
 
-  turnOff(): void {
-    console.log('Light is off');
+  public void turnOff() {
+    System.out.println("Light is off");
   }
 }
 
-// Concrete command to turn on the light
+// TurnOnCommand.java (Concrete Command)
 class TurnOnCommand implements Command {
-  private light: Light;
+  private Light light;
 
-  constructor(light: Light) {
+  public TurnOnCommand(Light light) {
     this.light = light;
   }
 
-  execute(): void {
+  @Override
+  public void execute() {
     this.light.turnOn();
   }
 }
 
-// Concrete command to turn off the light
+// TurnOffCommand.java (Concrete Command)
 class TurnOffCommand implements Command {
-  private light: Light;
+  private Light light;
 
-  constructor(light: Light) {
+  public TurnOffCommand(Light light) {
     this.light = light;
   }
 
-  execute(): void {
+  @Override
+  public void execute() {
     this.light.turnOff();
   }
 }
 
-// Invoker class that triggers the commands
+// RemoteControl.java (Invoker)
 class RemoteControl {
-  private commands: Command[] = [];
+  private Command[] commands = new Command[2]; // Assuming one slot for each command for simplicity
 
-  addCommand(command: Command): void {
-    this.commands.push(command);
+  public void setCommand(int slot, Command command) {
+    this.commands[slot] = command;
   }
 
-  executeCommands(): void {
-    this.commands.forEach(command => command.execute());
+  public void executeCommand(int slot) {
+    if (commands[slot] != null) {
+      commands[slot].execute();
+    }
   }
 }
 
-// Client code
-function main() {
-  // Create a light
-  const light = new Light();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    Light light = new Light(); // Receiver
 
-  // Create commands for turning the light on and off
-  const turnOnCommand = new TurnOnCommand(light);
-  const turnOffCommand = new TurnOffCommand(light);
+    Command turnOnCommand = new TurnOnCommand(light); // Concrete Command
+    Command turnOffCommand = new TurnOffCommand(light); // Concrete Command
 
-  // Create a remote control and add the commands
-  const remoteControl = new RemoteControl();
-  remoteControl.addCommand(turnOnCommand);
-  remoteControl.addCommand(turnOffCommand);
+    RemoteControl remoteControl = new RemoteControl(); // Invoker
+    remoteControl.setCommand(0, turnOnCommand);
+    remoteControl.setCommand(1, turnOffCommand);
 
-  // Press the buttons on the remote control to execute the commands
-  remoteControl.executeCommands();
+    remoteControl.executeCommand(0); // Executes TurnOnCommand
+    remoteControl.executeCommand(1); // Executes TurnOffCommand
+  }
 }
+
 
 /**
  * This code demonstrates how the Command pattern can be used in a remote control

@@ -1,63 +1,61 @@
-// Interface defining the common behavior for all traffic light states
+// TrafficLightState.java
 interface TrafficLightState {
-  changeState(trafficLight: TrafficLight): void;
+  void changeState(TrafficLight trafficLight);
 }
 
-// Concrete state representing the "Red" state of the traffic light
+// RedState.java
 class RedState implements TrafficLightState {
-  changeState(trafficLight: TrafficLight): void {
-    console.log("Traffic light is now RED. Stop!");
-    // Transition to the next state (Yellow) after a certain duration
-    setTimeout(() => {
-      trafficLight.setState(new YellowState());
-    }, 3000);
+  @Override
+  public void changeState(TrafficLight trafficLight) {
+    System.out.println("Traffic light is now RED. Stop!");
+    // In a real application, consider using a Timer for state transition
   }
 }
 
-// Concrete state representing the "Yellow" state of the traffic light
+// YellowState.java
 class YellowState implements TrafficLightState {
-  changeState(trafficLight: TrafficLight): void {
-    console.log("Traffic light is now YELLOW. Prepare to stop or proceed with caution.");
-    // Transition to the next state (Green) after a certain duration
-    setTimeout(() => {
-      trafficLight.setState(new GreenState());
-    }, 2000);
+  @Override
+  public void changeState(TrafficLight trafficLight) {
+    System.out.println("Traffic light is now YELLOW. Prepare to stop or proceed with caution.");
+    // In a real application, consider using a Timer for state transition
   }
 }
 
-// Concrete state representing the "Green" state of the traffic light
+// GreenState.java
 class GreenState implements TrafficLightState {
-  changeState(trafficLight: TrafficLight): void {
-    console.log("Traffic light is now GREEN. Go!");
-    // Transition to the next state (Red) after a certain duration
-    setTimeout(() => {
-      trafficLight.setState(new RedState());
-    }, 4000);
+  @Override
+  public void changeState(TrafficLight trafficLight) {
+    System.out.println("Traffic light is now GREEN. Go!");
+    // In a real application, consider using a Timer for state transition
   }
 }
 
-// Context class representing the traffic light
+// TrafficLight.java
 class TrafficLight {
-  private state: TrafficLightState;
+  private TrafficLightState state;
 
-  constructor() {
+  public TrafficLight() {
     // Initial state is Red
     this.state = new RedState();
+    this.state.changeState(this);
   }
 
-  // Method to change the state of the traffic light
-  setState(state: TrafficLightState): void {
+  public void setState(TrafficLightState state) {
     this.state = state;
     this.state.changeState(this);
   }
 }
 
-// Client code
-function main() {
-  const trafficLight = new TrafficLight();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    TrafficLight trafficLight = new TrafficLight();
 
-  // Simulate traffic light behavior by changing its state
-  trafficLight.setState(new GreenState());
+    // Manually trigger state transitions
+    trafficLight.setState(new GreenState());
+    trafficLight.setState(new YellowState());
+    trafficLight.setState(new RedState());
+  }
 }
 
 /**

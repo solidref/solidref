@@ -1,54 +1,65 @@
+// Breakfast.java
 abstract class Breakfast {
   // Template method
-  prepare(): void {
-    this.boilWater();
-    this.addIngredients();
-    this.cook();
-    this.serve();
+  public final void prepare() {
+    boilWater();
+    addIngredients();
+    cook();
+    serve();
   }
 
   // Abstract methods to be implemented by subclasses
-  abstract addIngredients(): void;
-  abstract cook(): void;
+  abstract void addIngredients();
+  abstract void cook();
 
   // Concrete methods
-  boilWater(): void {
-    console.log("Boiling water...");
+  void boilWater() {
+    System.out.println("Boiling water...");
   }
 
-  serve(): void {
-    console.log("Breakfast is served!");
+  void serve() {
+    System.out.println("Breakfast is served!");
   }
 }
 
+// OmeletteBreakfast.java
 class OmeletteBreakfast extends Breakfast {
-  addIngredients(): void {
-    console.log("Adding eggs, cheese, and vegetables to the pan.");
+  @Override
+  void addIngredients() {
+    System.out.println("Adding eggs, cheese, and vegetables to the pan.");
   }
 
-  cook(): void {
-    console.log("Cooking the omelette until golden brown.");
+  @Override
+  void cook() {
+    System.out.println("Cooking the omelette until golden brown.");
   }
 }
 
+// PancakeBreakfast.java
 class PancakeBreakfast extends Breakfast {
-  addIngredients(): void {
-    console.log("Mixing flour, eggs, milk, and sugar to make the batter.");
+  @Override
+  void addIngredients() {
+    System.out.println("Mixing flour, eggs, milk, and sugar to make the batter.");
   }
 
-  cook(): void {
-    console.log("Pouring the batter onto the griddle and flipping until cooked.");
+  @Override
+  void cook() {
+    System.out.println("Pouring the batter onto the griddle and flipping until cooked.");
   }
 }
 
-// Client code
-console.log("Preparing Omelette Breakfast:");
-const omeletteBreakfast = new OmeletteBreakfast();
-omeletteBreakfast.prepare();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    System.out.println("Preparing Omelette Breakfast:");
+    Breakfast omeletteBreakfast = new OmeletteBreakfast();
+    omeletteBreakfast.prepare();
 
-console.log("\nPreparing Pancake Breakfast:");
-const pancakeBreakfast = new PancakeBreakfast();
-pancakeBreakfast.prepare();
+    System.out.println("\nPreparing Pancake Breakfast:");
+    Breakfast pancakeBreakfast = new PancakeBreakfast();
+    pancakeBreakfast.prepare();
+  }
+}
 
 /**
  * In this example, we have an abstract class Breakfast representing the template method pattern. It defines

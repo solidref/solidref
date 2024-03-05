@@ -1,91 +1,119 @@
-// Visitor interface
+// AnimalVisitor.java
 interface AnimalVisitor {
-  visitLion(lion: Lion): void;
-  visitElephant(elephant: Elephant): void;
-  visitGiraffe(giraffe: Giraffe): void;
+  void visitLion(Lion lion);
+  void visitElephant(Elephant elephant);
+  void visitGiraffe(Giraffe giraffe);
 }
 
-// Concrete visitor implementing the operations on animals
+// AnimalFeeder.java
 class AnimalFeeder implements AnimalVisitor {
-  visitLion(lion: Lion): void {
-    console.log(`Feeding meat to ${lion.getName()}.`);
+  @Override
+  public void visitLion(Lion lion) {
+    System.out.println("Feeding meat to " + lion.getName() + ".");
   }
 
-  visitElephant(elephant: Elephant): void {
-    console.log(`Feeding hay to ${elephant.getName()}.`);
+  @Override
+  public void visitElephant(Elephant elephant) {
+    System.out.println("Feeding hay to " + elephant.getName() + ".");
   }
 
-  visitGiraffe(giraffe: Giraffe): void {
-    console.log(`Feeding leaves to ${giraffe.getName()}.`);
+  @Override
+  public void visitGiraffe(Giraffe giraffe) {
+    System.out.println("Feeding leaves to " + giraffe.getName() + ".");
   }
 }
 
-// Element interface representing animals
+// Animal.java
 interface Animal {
-  accept(visitor: AnimalVisitor): void;
+  void accept(AnimalVisitor visitor);
+  String getName();
 }
 
-// Concrete elements representing different types of animals
+// Lion.java
 class Lion implements Animal {
-  constructor(private name: string) { }
+  private String name;
 
-  getName(): string {
+  public Lion(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public String getName() {
     return this.name;
   }
 
-  accept(visitor: AnimalVisitor): void {
+  @Override
+  public void accept(AnimalVisitor visitor) {
     visitor.visitLion(this);
   }
 }
 
+// Elephant.java
 class Elephant implements Animal {
-  constructor(private name: string) { }
+  private String name;
 
-  getName(): string {
+  public Elephant(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public String getName() {
     return this.name;
   }
 
-  accept(visitor: AnimalVisitor): void {
+  @Override
+  public void accept(AnimalVisitor visitor) {
     visitor.visitElephant(this);
   }
 }
 
+// Giraffe.java
 class Giraffe implements Animal {
-  constructor(private name: string) { }
+  private String name;
 
-  getName(): string {
+  public Giraffe(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public String getName() {
     return this.name;
   }
 
-  accept(visitor: AnimalVisitor): void {
+  @Override
+  public void accept(AnimalVisitor visitor) {
     visitor.visitGiraffe(this);
   }
 }
 
-// Object structure containing the collection of animals
+// Zoo.java
 class Zoo {
-  private animals: Animal[] = [];
+  private java.util.List<Animal> animals = new java.util.ArrayList<>();
 
-  addAnimal(animal: Animal): void {
-    this.animals.push(animal);
+  public void addAnimal(Animal animal) {
+    animals.add(animal);
   }
 
-  // Perform the operation defined by the visitor on each animal
-  performOperation(visitor: AnimalVisitor): void {
-    this.animals.forEach(animal => {
+  public void performOperation(AnimalVisitor visitor) {
+    for (Animal animal : animals) {
       animal.accept(visitor);
-    });
+    }
   }
 }
 
-// Client code
-const zoo = new Zoo();
-zoo.addAnimal(new Lion("Simba"));
-zoo.addAnimal(new Elephant("Dumbo"));
-zoo.addAnimal(new Giraffe("Melman"));
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    Zoo zoo = new Zoo();
+    zoo.addAnimal(new Lion("Simba"));
+    zoo.addAnimal(new Elephant("Dumbo"));
+    zoo.addAnimal(new Giraffe("Melman"));
 
-const feeder = new AnimalFeeder();
-zoo.performOperation(feeder);
+    AnimalFeeder feeder = new AnimalFeeder();
+    zoo.performOperation(feeder);
+  }
+}
+
 
 /**
  * The AnimalVisitor interface defines the operations that can be performed on different types of animals.

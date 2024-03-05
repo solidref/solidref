@@ -1,58 +1,61 @@
-// Define the Mediator interface
+// ChatMediator.java
 interface ChatMediator {
-  sendMessage(message: string, user: User): void;
+  void sendMessage(String message, User user);
 }
 
-// Concrete Mediator implementation for a chat room
+// ChatRoom.java
 class ChatRoom implements ChatMediator {
-  sendMessage(message: string, user: User): void {
-    console.log(`[${user.getName()}] sends message: ${message}`);
+  @Override
+  public void sendMessage(String message, User user) {
+    System.out.println("[" + user.getName() + "] sends message: " + message);
   }
 }
 
-// Define the Colleague interface
+// User.java
 interface User {
-  send(message: string): void;
-  receive(message: string): void;
-  getName(): string;
+  void send(String message);
+  void receive(String message);
+  String getName();
 }
 
-// Concrete Colleague implementation for a chat user
+// ChatUser.java
 class ChatUser implements User {
-  private name: string;
-  private mediator: ChatMediator;
+  private String name;
+  private ChatMediator mediator;
 
-  constructor(name: string, mediator: ChatMediator) {
+  public ChatUser(String name, ChatMediator mediator) {
     this.name = name;
     this.mediator = mediator;
   }
 
-  send(message: string): void {
-    console.log(`[${this.name}] sends message: ${message}`);
+  @Override
+  public void send(String message) {
+    System.out.println("[" + this.name + "] sends message: " + message);
     this.mediator.sendMessage(message, this);
   }
 
-  receive(message: string): void {
-    console.log(`[${this.name}] received message: ${message}`);
+  @Override
+  public void receive(String message) {
+    System.out.println("[" + this.name + "] received message: " + message);
   }
 
-  getName(): string {
+  @Override
+  public String getName() {
     return this.name;
   }
 }
 
-// Client code
-function main() {
-  // Create a chat room mediator
-  const chatMediator: ChatMediator = new ChatRoom();
+// Main.java (Client code)
+public class Main {
+  public static void main(String[] args) {
+    ChatMediator chatMediator = new ChatRoom();
 
-  // Create chat users
-  const user1: User = new ChatUser('User1', chatMediator);
-  const user2: User = new ChatUser('User2', chatMediator);
+    User user1 = new ChatUser("User1", chatMediator);
+    User user2 = new ChatUser("User2", chatMediator);
 
-  // Send messages between users
-  user1.send('Hello, User2!');
-  user2.send('Hi, User1!');
+    user1.send("Hello, User2!");
+    user2.send("Hi, User1!");
+  }
 }
 
 /**
