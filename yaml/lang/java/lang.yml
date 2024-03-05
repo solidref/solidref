@@ -1,0 +1,28 @@
+name: Java
+code: java
+ext: java
+birth: 1995
+death: N/A
+inspiredBy:
+  - C++
+  - Simula67
+  - Smalltalk
+  - Ada 83
+  - Mesa
+  - Eiffel
+inspiring:
+  - Scala
+  - Kotlin
+  - Groovy
+  - Clojure
+  - J#
+description: |
+  Java is a widely used object-oriented programming language and computing platform first released by Sun Microsystems in 1995.
+  It follows the Write Once, Run Anywhere (WORA) principle, meaning that Java code compiled on one platform can run on any platform
+  that supports Java without the need for recompilation. Java applications are compiled to bytecode, which can run on any Java Virtual Machine (JVM).
+  Java is used in a variety of computing platforms, from embedded devices and mobile phones to enterprise servers and supercomputers.
+  Java's syntax is similar to C and C++, but it has fewer low-level facilities. Java is designed to be easy to use and is widely taught in
+  educational institutions as an introductory programming language. It is also known for its strong security features, portability, and an extensive standard library
+  (the Java Standard Edition (SE) API). Over the years, Java has evolved to support functional programming features such as lambda expressions and streams.
+  The language's architecture-neutral and garbage-collected environment, along with its robustness and scalability, have made it a popular choice for building
+  enterprise-level applications, Android apps, and large systems.

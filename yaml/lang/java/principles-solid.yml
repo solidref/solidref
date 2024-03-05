@@ -1,0 +1,8 @@
+---
+principles:
+  - title: Liskov Substitution
+    examples:
+      - title: Good Example (Refined)
+        codeFile: principles/solid/liskov-substitution/good-example-refined
+      - title: Bad Example (Refined)
+        codeFile: principles/solid/liskov-substitution/bad-example-refined

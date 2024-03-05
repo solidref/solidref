@@ -1,0 +1,167 @@
+---
+principles:
+  - title: Effective Java by Joshua Bloch
+    description:
+      - variant: subtitle1
+        content: |
+          While not a single principle, "Effective Java" is a seminal book by Joshua Bloch that outlines numerous best practices for writing robust, performant, and readable Java code. Some key takeaways include:
+          <ul>
+            <li>Consider static factory methods instead of constructors. This can lead to more readable code and more flexible object creation strategies.</li>
+            <li>Favor composition over inheritance. This encourages better encapsulation and avoids issues related to inheritance breaking encapsulation.</li>
+            <li>Use Enums instead of int constants. Enums provide a more robust, type-safe way of representing fixed sets of constants.</li>
+          </ul>
+    examples:
+      - title: Static Factory Methods Instead of Constructors
+        code: |
+          // A static factory method valueOf is provided to create instances of BooleanValue.
+          // This approach offers several advantages over public constructors, such as the
+          // ability to return cached instances, return instances of a subclass, and the
+          // clarity of method names over overloaded constructors.
+          public class BooleanValue {
+              private final boolean value;
+
+              private BooleanValue(boolean value) {
+                  this.value = value;
+              }
+
+              public static BooleanValue valueOf(boolean value) {
+                  return new BooleanValue(value);
+              }
+          }
+      - title: Favor Composition Over Inheritance
+        code: |
+          // The Animal class uses composition to delegate the makeNoise behavior to a NoiseMaker
+          // object, rather than inheriting from different animal classes. This approach is more
+          // flexible and avoids the tight coupling and fragility associated with inheritance.
+          public class Animal {
+              private final NoiseMaker noiseMaker;
+
+              public Animal(NoiseMaker noiseMaker) {
+                  this.noiseMaker = noiseMaker;
+              }
+
+              public void makeNoise() {
+                  noiseMaker.makeNoise();
+              }
+          }
+
+          interface NoiseMaker {
+              void makeNoise();
+          }
+
+          class Bark implements NoiseMaker {
+              public void makeNoise() {
+                  System.out.println("Bark");
+              }
+          }
+
+          class Meow implements NoiseMaker {
+              public void makeNoise() {
+                  System.out.println("Meow");
+              }
+          }
+
+      - title: Use Enums Instead of int Constants
+        code: |
+          public enum Day {
+              MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+          }
+
+  - title: Java Concurrency Practices
+    description:
+      - variant: subtitle1
+        content: |
+          Given Java's strong emphasis on concurrent and multi-threaded programming, following best practices in this area is crucial:
+          <ul>
+            <li>Prefer immutability for shared objects in a concurrent context. Immutable objects are thread-safe by design.</li>
+            <li>Use existing concurrency utilities over 'low-level' thread management. Java's java.util.concurrent package provides high-level concurrency utilities that are safer and more expressive than manual synchronization and thread management.</li>
+          </ul>
+    examples:
+      - title: "Prototype-based Inheritance Example"
+        code: |
+          function Person(firstName) {
+            this.firstName = firstName;
+          }
+          Person.prototype.sayHello = function() {
+            return "Hello, I'm " + this.firstName;
+          };
+          const john = new Person("John");
+          console.log(john.sayHello()); // "Hello, I'm John"
+
+  - title: Java Memory Management
+    description:
+      - variant: subtitle1
+        content: |
+          Understanding and applying best practices related to Java's garbage collection and memory management can significantly impact application performance:
+          <ul>
+            <li>Minimize unnecessary object creation. While Java's garbage collection simplifies memory management, unnecessary object creation can lead to memory bloat and increased GC overhead.</li>
+            <li>Be mindful of memory leaks. Even in a garbage-collected language like Java, it's possible to create memory leaks through unintended object references.</li>
+          </ul>
+    examples:
+      - title: Minimize Unnecessary Object Creation
+        code: |
+          // Avoid creating unnecessary objects (like wrapping a string with a new String object)
+          // when you can use the existing object's methods directly.
+          public class StringUtilities {
+              public static String toUpperCase(String input) {
+                  // Bad: Creates a new String object unnecessarily
+                  // return new String(input).toUpperCase();
+
+                  // Good: Avoids unnecessary object creation
+                  return input.toUpperCase();
+              }
+          }
+
+
+  - title: Java Collections Framework (JCF) Best Practices
+    description:
+      - variant: subtitle1
+        content: |
+          The JCF is a cornerstone of Java programming, and using it effectively is key to efficient Java code:
+          <ul>
+            <li>Choose the right collection type for the job. Different types of collections (Lists, Sets, Maps, etc.) are optimized for different types of operations; choosing the right one can lead to more efficient code.</li>
+            <li>Prefer interfaces to concrete implementations in APIs. This makes your code more flexible and able to work with different concrete implementations.</li>
+          </ul>
+    examples: []
+
+  - title: Java 8 and Beyond Features
+    description:
+      - variant: subtitle1
+        content: |
+          Java 8 introduced several significant features that encourage a more functional programming style. Best practices around these features can lead to more concise and expressive code:
+          <ul>
+            <li>Leverage lambda expressions and streams for clear, concise code. These features can greatly reduce boilerplate, especially when processing collections.</li>
+            <li>Use Optional to represent optional values. This can help avoid null checks and NullPointerExceptions.</li>
+          </ul>
+    examples:
+      - title: Use Lambda Expressions and Streams
+        code: |
+          // This example uses a stream to transform a list of names to uppercase and then print them.
+          // It showcases the concise and expressive capabilities of lambda expressions and streams
+          // in Java 8 and beyond.
+          List<String> names = Arrays.asList("John", "Jane", "Doe", "Sarah");
+          List<String> uppercaseNames = names.stream()
+                                              .map(String::toUpperCase)
+                                              .collect(Collectors.toList());
+
+          uppercaseNames.forEach(System.out::println);
+      - title: Use Optional to Represent Optional Values
+        code: |
+          // The Optional class is used to represent a name value that may or may not be present.
+          // This approach avoids null checks and makes the code more expressive and safer by explicitly
+          // handling the case where the value might be absent.
+          public class User {
+              private final String name;
+
+              public User(String name) {
+                  this.name = name;
+              }
+
+              public Optional<String> getName() {
+                  return Optional.ofNullable(name);
+              }
+          }
+
+          // Usage
+          User user = new User(null);
+          user.getName().ifPresent(System.out::println); // Does nothing if name is null
