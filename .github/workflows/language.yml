@@ -60,7 +60,7 @@ jobs:
         run: |
           npm install
 
-          node ./.scripts/esm/build-language-examples.js -l ${{ inputs.Language }} -g ${{ inputs.Generate }} -e ${{ inputs.Extension }}
+          node ./.scripts/esm/build-language-examples.js -l ${{ inputs.Language }} -g ${{ inputs.Generate }} -e ${{ inputs.Extension }} --dry-run
 
       - name: Push Language Branch
         env:
