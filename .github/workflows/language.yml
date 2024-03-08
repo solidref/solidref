@@ -41,7 +41,7 @@ on:
         type: string
 
 jobs:
-  build-and-deploy:
+  generate-language:
     runs-on: ubuntu-latest
 
     steps:
@@ -60,7 +60,7 @@ jobs:
         run: |
           npm install
 
-          node ./.scripts/esm/build-language-examples.js -l ${{ inputs.Language }} -g ${{ inputs.Generate }} -e ${{ inputs.Extension }} --dry-run
+          node ./.scripts/esm/build-language-examples.js -l ${{ inputs.Language }} -g ${{ inputs.Generate }} -e ${{ inputs.Extension }}
 
       - name: Push Language Branch
         env:
