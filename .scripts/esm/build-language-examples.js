@@ -26,6 +26,38 @@ const askGpt = async (messages) => {
   return completion.choices[0].message.content;
 };
 
+async function translateExample(tsExampleFile, itemTitle, example, type, language, extension) {
+  const tsExampleType = basename(tsExampleFile).replace('-example.ts');
+  if (!existsSync(tsExampleFile)) {
+    return;
+  }
+
+  console.log(`Generating ${language} example (${example.title ?? 'generic'}) for ${itemTitle}...`);
+  const code = await readFile(tsExampleFile).then((buf) => buf.toString('utf-8'));
+
+  const message =
+    type === 'patterns'
+      ? `Please convert the following ${itemTitle.toLowerCase()} design pattern example to ${language} programming language by benefiting all the capabilities of this specific langauge.`
+      : `Please convert the following ${itemTitle.toLowerCase()} coding principle ${tsExampleType} example to ${language} programming language by benefiting all the capabilities of this specific langauge.`;
+
+  const response = await askGpt([
+    `${message}
+Please provide only code, without the markdown formatting.
+Please make the code as simple as possible and make sure it is easy to understand.
+Inside the translated code, please also keep (and format properly) the comments from the original example (if they fit in).
+
+${code}`,
+  ]);
+
+  const exampleFile = pathJoin(langPath, language, `${example.codeFile}.${extension}`);
+  const exampleFolder = dirname(exampleFile);
+  console.log(`Writing ${exampleFile}...`);
+  await mkdir(exampleFolder, {recursive: true});
+  await writeFile(exampleFile, response);
+
+  return response;
+}
+
 async function generateExamples(type, language, extension) {
   const patternTypes = type === 'patterns' ? ['behavioural', 'creational', 'structural'] : ['solid', 'other'];
   for (const patternType of patternTypes) {
@@ -33,42 +65,43 @@ async function generateExamples(type, language, extension) {
       buf.toString('utf-8'),
     );
     const patternObject = yaml.parse(patternYaml);
-    for (const pattern of patternObject[type]) {
-      for (const example of pattern.examples) {
+    for (const item of patternObject[type]) {
+      for (const example of item.examples) {
         if (!example.codeFile) {
           continue;
         }
         const tsExampleFile = pathJoin(langPath, 'typescript', `${example.codeFile}.ts`);
-        const tsExampleType = basename(tsExampleFile).replace('-example.ts');
-        if (!existsSync(tsExampleFile)) {
-          continue;
-        }
+        await translateExample(tsExampleFile, item.title, example, type, language, extension);
 
-        console.log(`Generating ${language} example (${example.title ?? 'generic'}) for ${pattern.title}...`);
-        const code = await readFile(tsExampleFile).then((buf) => buf.toString('utf-8'));
-
-        const message =
-          type === 'patterns'
-            ? `Please convert the following ${pattern.title.toLowerCase()} design pattern example to ${language} programming language by benefiting all the capabilities of this specific langauge.`
-            : `Please convert the following ${pattern.title.toLowerCase()} coding principle ${tsExampleType} example to ${language} programming language by benefiting all the capabilities of this specific langauge.`;
-
-        const response = await askGpt([
-          `${message}
-Please provide only code, without the markdown formatting.
-Please make the code as simple as possible and make sure it is easy to understand.
-Inside the translated code, please also keep the comments from the original example (if they fit in) and format them properly.
-
-${code}`,
-        ]);
-
-        const exampleFile = pathJoin(langPath, language, `${example.codeFile}.${extension}`);
-        const exampleFolder = dirname(exampleFile);
-        console.log(`Writing ${exampleFile}...`);
-        await mkdir(exampleFolder, {recursive: true});
-        await writeFile(exampleFile, response);
+        // TODO: add refined example
       }
+      process.exit(0);
     }
   }
+}
+
+async function buildLanguageFile(language) {
+  const languageYaml = pathJoin(langPath, language, `lang.yml`);
+  if (existsSync(languageYaml)) {
+    return;
+  }
+
+  console.log(`Generating language description for ${language}...`);
+  const tsLanguageYaml = await readFile(pathJoin(langPath, 'typescript', `lang.yml`)).then((buf) =>
+    buf.toString('utf-8'),
+  );
+
+  const response = await askGpt([
+    `Please provide a similar yaml content for the ${language} language.
+Please provide only code, without the markdown formatting.
+
+${tsLanguageYaml}`,
+  ]);
+
+  const languageFolder = dirname(languageYaml);
+  console.log(`Writing ${languageYaml}...`);
+  await mkdir(languageFolder, {recursive: true});
+  await writeFile(languageYaml, response);
 }
 
 async function main() {
@@ -79,6 +112,8 @@ async function main() {
     .option('--extension, -e', 'Language files extension...')
     .option('--generate, -g', 'Generating... (all, principles, patterns)', 'all')
     .action(async (_, {language, generate, extension}) => {
+      await buildLanguageFile(language);
+
       if (generate === 'all' || generate === 'patterns') {
         await generateExamples('patterns', language, extension);
       }
