@@ -16,26 +16,27 @@ on:
         required: true
         type: string
   workflow_dispatch:
-    OpenAIKey:
-      description: 'OpenAI API Key'
-      required: true
-      type: string
-    Language:
-      description: 'Language to generate examples for'
-      required: true
-      type: string
-    Generate:
-      description: 'Generate examples for the language'
-      options:
-        - all
-        - patterns
-        - principles
-      required: true
-      type: choice
-    Extension:
-      description: 'File extension for the generated examples'
-      required: true
-      type: string
+    inputs:
+      OpenAIKey:
+        description: 'OpenAI API Key'
+        required: true
+        type: string
+      Language:
+        description: 'Language to generate examples for'
+        required: true
+        type: string
+      Generate:
+        description: 'Generate examples for the language'
+        options:
+          - all
+          - patterns
+          - principles
+        required: true
+        type: choice
+      Extension:
+        description: 'File extension for the generated examples'
+        required: true
+        type: string
 
 jobs:
   build-and-deploy:
