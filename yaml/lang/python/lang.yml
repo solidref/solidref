@@ -1,5 +1,6 @@
 name: Python
 code: python
+ext: py
 birth: 1991
 death: N/A
 inspiredBy:
