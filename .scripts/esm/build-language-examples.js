@@ -88,7 +88,7 @@ async function generateExamples(options) {
 
         // TODO: add refined example
       }
-      process.exit(0);
+      // process.exit(0);
     }
   }
 }
@@ -148,10 +148,16 @@ async function main() {
 
       const {generate} = options;
       if (generate === 'all' || generate === 'patterns') {
-        await generateExamples(options);
+        await generateExamples({
+          ...options,
+          generate: 'patterns',
+        });
       }
       if (generate === 'all' || generate === 'principles') {
-        await generateExamples(options);
+        await generateExamples({
+          ...options,
+          generate: 'principles',
+        });
       }
     })
     .parse(process.argv);
