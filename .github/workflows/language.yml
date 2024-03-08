@@ -1,0 +1,71 @@
+name: Generate Language
+
+on:
+  workflow_call:
+    inputs:
+      OpenAIKey:
+        required: true
+        type: string
+      Language:
+        required: true
+        type: string
+      Generate:
+        required: true
+        type: string
+      Extension:
+        required: true
+        type: string
+  workflow_dispatch:
+    OpenAIKey:
+      description: 'OpenAI API Key'
+      required: true
+      type: string
+    Language:
+      description: 'Language to generate examples for'
+      required: true
+      type: string
+    Generate:
+      description: 'Generate examples for the language'
+      options:
+        - all
+        - patterns
+        - principles
+      required: true
+      type: choice
+    Extension:
+      description: 'File extension for the generated examples'
+      required: true
+      type: string
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Build Language
+        run: |
+          npm install
+
+          export OPENAI_API_KEY=${{ inputs.OpenAIKey }}
+          node ./.scripts/esm/build-language-examples.js -l ${{ inputs.Language }} -g ${{ inputs.Generate }} -e ${{ inputs.Extension }}
+
+      - name: Push Language Branch
+        run: |
+          set -ex
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+
+          git checkout -b ${{ inputs.Language }}_lang
+
+          git add .
+          git commit -m "${{ inputs.Language }} language"
+          git push origin ${{ inputs.Language }}_lang

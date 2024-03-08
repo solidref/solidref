@@ -20,7 +20,7 @@ function Home(/*{ }: HomeProps*/) {
         </Container>
       </Box>
       <Container>
-        <LanguagesList filterMode="highlight" filterArgs={[['javascript']]} md={3} />
+        <LanguagesList filterMode="highlight" filterArgs={[['typescript', 'python', 'go', 'csharp']]} md={3} />
       </Container>
     </Box>
   );
