@@ -63,11 +63,18 @@ jobs:
           node ./.scripts/esm/build-language-examples.js -l ${{ inputs.Language }} -g ${{ inputs.Generate }} -e ${{ inputs.Extension }}
 
       - name: Push Language Branch
+        env:
+          TARGET_REPO: solidref/solidref
         run: |
           set -ex
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
 
+          # Clone the GitHub Pages repository
+          git clone https://${{secrets.GH_TOKEN}}@github.com/${TARGET_REPO}.git /tmp/solidref
+          cp -rdf ./yaml/lang/${{ inputs.Language }} /tmp/solidref/yaml/lang
+
+          cd /tmp/solidref/yaml/lang
           git checkout -b ${{ inputs.Language }}_lang
 
           git add .
