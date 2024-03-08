@@ -15,7 +15,11 @@ const langPath = pathJoin(__dirname, '..', '..', 'yaml', 'lang');
 const {readFile, writeFile, mkdir} = fs;
 
 const askGpt = async (messages, options) => {
-  const {gptModel: model} = options;
+  const {gptModel: model, dryRun} = options;
+
+  if (dryRun) {
+    return '// dry run';
+  }
 
   const completion = await openai.chat.completions.create({
     messages: [
@@ -125,13 +129,14 @@ ${tsLanguageYaml}`,
 
 async function main() {
   sade('build-language-examples [options]')
-    .version('1.0.5')
+    .version('0.0.0')
     .describe('Building language examples...')
     .option('--language, -l', 'Generating for language...')
     .option('--extension, -e', 'Language files extension...')
     .option('--generate, -g', 'Generating... (all, principles, patterns)', 'all')
     .option('--regen-existing', 'Regenerate existing examples')
     .option('--gpt-model', 'GPT Model', 'gpt-4-turbo-preview')
+    .option('--dry-run', 'Dry Run (No Open AI)')
     .action(async (_, options) => {
       options = {
         generate: 'all',
@@ -139,6 +144,7 @@ async function main() {
         extension: 'py',
         regenExisting: options['regen-existing'] ?? false,
         gptModel: options['gpt-model'],
+        dryRun: options['dry-run'] ?? false,
         ...options,
       };
       // console.log(options);
