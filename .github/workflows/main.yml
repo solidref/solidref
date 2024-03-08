@@ -3,14 +3,14 @@ name: Validate Code
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main # or your default branch
 
 jobs:
   #######################################################################
   #                          VALIDATE CODE                              #
   #######################################################################
   validate:
-    name: "Validate Code"
+    name: 'Validate Code'
     runs-on: ubuntu-latest
 
     steps:
@@ -41,7 +41,7 @@ jobs:
         github.event_name != 'pull_request'
         || (github.event.pull_request && startsWith(github.event.pull_request.title, 'chore: release') != false)
       )
-    name: "Release Tag"
+    name: 'Release Tag'
     needs: [validate]
     outputs:
       version: ${{ steps.new_releases.outputs.version }}
@@ -99,9 +99,9 @@ jobs:
   #######################################################################
   publish:
     if: github.event_name != 'pull_request' && needs.release.outputs.version
-    name: "Publish Build"
+    name: 'Publish Build'
     needs: [release]
     uses: solidref/solidref/.github/workflows/publish.yml@main
-    with:
-      GhReleaseBranch: main
+    # with:
+    #   GhReleaseBranch: main
     secrets: inherit
