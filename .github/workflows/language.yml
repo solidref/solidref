@@ -55,10 +55,11 @@ jobs:
           cache: 'npm'
 
       - name: Build Language
+        env:
+          OPENAI_API_KEY: ${{ inputs.OpenAIKey }}
         run: |
           npm install
 
-          export OPENAI_API_KEY=${{ inputs.OpenAIKey }}
           node ./.scripts/esm/build-language-examples.js -l ${{ inputs.Language }} -g ${{ inputs.Generate }} -e ${{ inputs.Extension }}
 
       - name: Push Language Branch
