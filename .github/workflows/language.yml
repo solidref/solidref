@@ -67,5 +67,5 @@ jobs:
           git checkout -b ${{ inputs.Language }}_lang
 
           git add .
-          git commit -m "${COMMIT_MESSAGE}"
+          git commit -m "${{ inputs.Language }} language"
           git push origin ${{ inputs.Language }}_lang
