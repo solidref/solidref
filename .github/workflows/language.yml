@@ -1,0 +1,98 @@
+name: Publish Language
+
+on:
+  workflow_call:
+    inputs:
+      OpenAIKey:
+        required: true
+        type: string
+      Language:
+        required: true
+        type: string
+      Generate:
+        required: true
+        type: string
+      Extension:
+        required: true
+        type: string
+  workflow_dispatch:
+    OpenAIKey:
+      description: 'OpenAI API Key'
+      required: true
+      type: string
+    Language:
+      description: 'Language to generate examples for'
+      required: true
+      type: string
+    Generate:
+      description: 'Generate examples for the language'
+      options:
+        - all
+        - patterns
+        - principles
+      required: true
+      type: choice
+    Extension:
+      description: 'File extension for the generated examples'
+      required: true
+      type: string
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Build Project
+        run: |
+          npm install
+          npm run build
+          cp -rdf ./public/* ./dist
+          cp ./dist/index.html ./dist/404.html
+
+      # - name: Deploy to GitHub Pages
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GH_TOKEN }}
+      #     publish_dir: ./dist  # or your build directory
+      #     publish_branch: main  # branch of solidref.github.io
+      #     external_repository: solidref/solidref.github.io
+      #     user_name: 'GitHub Actions'
+      #     user_email: 'actions@github.com'
+      #     commit_message: 'Deploy project to GitHub Pages'
+
+      - name: Deploy to GitHub Pages
+        env:
+          TARGET_REPO: solidref/solidref.github.io
+          TARGET_BRANCH: main
+          COMMIT_MESSAGE: Deploy project to GitHub Pages
+          BUILD_DIR: dist
+        run: |
+          set -ex
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+
+          # Clone the GitHub Pages repository
+          git clone https://${{secrets.GH_TOKEN}}@github.com/${TARGET_REPO}.git /tmp/gh-pages
+
+          # Cleanup repository from old build
+          find /tmp/gh-pages -not -iname "*CNAME*" -not -iname ".git" -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+          ls -la /tmp/gh-pages/
+
+          # Copy the build output to the cloned repository
+          cp -r ${BUILD_DIR}/* /tmp/gh-pages/
+          ls -la /tmp/gh-pages/
+
+          # Commit and push the changes
+          cd /tmp/gh-pages
+          git add .
+          git commit -m "${COMMIT_MESSAGE}"
+          git push origin ${TARGET_BRANCH}
