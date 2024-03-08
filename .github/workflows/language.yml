@@ -1,5 +1,7 @@
 name: Generate Language
 
+run-name: ' Generate Language: ${{ inputs.Language }} (${{ inputs.Generate }})'
+
 on:
   workflow_call:
     inputs:
