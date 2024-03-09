@@ -49,13 +49,14 @@ async function translateExample(tsExampleFile, itemTitle, example, options) {
 
   const message =
     type === 'patterns'
-      ? `Please convert the following ${itemTitle.toLowerCase()} design pattern example to ${language} programming language by benefiting all the capabilities of this specific langauge.`
-      : `Please convert the following ${itemTitle.toLowerCase()} coding principle ${tsExampleType} example to ${language} programming language by benefiting all the capabilities of this specific langauge.`;
+      ? `Please convert the following ${itemTitle.toLowerCase()} design pattern example to ${language} programming language.`
+      : `Please convert the following ${itemTitle.toLowerCase()} coding principle ${tsExampleType} example to ${language} programming languag.`;
 
   const response = await askGpt(
     [
       `${message}
-Please provide only code, without the markdown formatting.
+Please do not only perform translation of the code, but try to refine it to be idiomatic to the target language.
+Please provide only code, without the markdown formatting. No lang\`\`\` tags are needed.
 Please make the code as simple as possible and make sure it is easy to understand.
 Inside the translated code, please also keep (and format properly) the comments from the original example (as much as the code allows - explanation comments are mandatory to keep).
 

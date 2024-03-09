@@ -1,5 +1,6 @@
 name: Go (Golang)
 code: go
+ext: go
 birth: 2009
 death: N/A
 inspiredBy:

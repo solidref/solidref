@@ -1,4 +1,3 @@
-```php
 <?php
 
 // Define the command interface
@@ -87,4 +86,3 @@ function main() {
  */
 
 main();
-```
