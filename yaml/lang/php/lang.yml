@@ -1,0 +1,19 @@
+name: PHP
+code: php
+ext: php
+birth: 1995
+death: N/A
+inspiredBy:
+  - c
+  - perl
+  - java
+  - c++
+inspiring:
+  - hack
+description: |
+  PHP (Hypertext Preprocessor) is a popular general-purpose scripting language that is especially suited to web development.
+  It was originally created by Rasmus Lerdorf in 1995 and has since become one of the most widely used languages for server-side development.
+  PHP code is executed on the server, and the result is returned to the client as plain HTML. The language is known for its ease of use and
+  ability to be embedded directly within HTML code. PHP offers a wide range of functionality for web development, including database interaction,
+  session management, and data encryption. It's used in the development of content management systems (CMS), e-commerce platforms, and web applications.
+  PHP has a large and active community, contributing to its continuous evolution and the addition of modern features to meet the changing demands of web development.
