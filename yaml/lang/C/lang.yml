@@ -1,0 +1,32 @@
+name: C
+code: c
+ext: c
+birth: 1972
+death: N/A
+inspiredBy:
+  - b
+  - algol
+  - assembly
+  - fortran
+  - pascal
+inspiring:
+  - c++
+  - java
+  - javascript
+  - c#
+  - python
+  - ruby
+  - perl
+  - php
+  - objective-c
+description: |
+  C is a general-purpose, procedural computer programming language supporting structured programming,
+  lexical variable scope, and recursion, while a static type system prevents unintended operations.
+  Developed by Dennis Ritchie at Bell Labs, C was originally designed for writing system software
+  like operating systems, compilers, and editors. It has since become one of the most widely used
+  programming languages. C is an efficient and powerful language, known for its performance and
+  control over system resources. Despite its age, C remains popular for both system-level and
+  application programming, forming the basis for more modern languages like C++, C#, and Objective-C.
+  It's also commonly used in embedded systems, operating systems like Linux and Windows, and complex
+  applications requiring high performance. The language’s influence is evident in numerous other
+  programming languages and it remains a fundamental part of software development history.
