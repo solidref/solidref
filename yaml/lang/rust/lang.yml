@@ -1,0 +1,18 @@
+name: Rust
+code: rust
+ext: rs
+birth: 2010
+death: N/A
+inspiredBy:
+  - c++
+  - erlang
+  - haskell
+  - ocaml
+  - ruby
+  - scheme
+inspiring:
+  - swift
+  - zig
+  - elm
+description: |
+  Rust is a systems programming language focused on speed, memory safety, and parallelism. It is syntactically similar to C++, but it aims to provide memory safety without using garbage collection. Rust is developed by a diverse community of enthusiasts and is sponsored by Mozilla Research. It features elements like zero-cost abstractions, move semantics, guaranteed memory safety, threads without data races, trait-based generics, pattern matching, and type inference. Rust's rich type system and ownership model guarantee memory-safety and thread-safety — enabling developers to write fast, concurrent programs without the usual pitfalls of C and C++. Rust is used in a wide range of applications, from operating systems to game engines, and is gaining popularity for its approach to safe systems programming.
