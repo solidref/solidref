@@ -9,7 +9,19 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
-import {IconButton, Slide, useScrollTrigger, useTheme, Box, AppBar, Link, Button} from '@mui/material';
+import {
+  IconButton,
+  Slide,
+  useScrollTrigger,
+  useTheme,
+  Box,
+  AppBar,
+  Link,
+  Button,
+  Menu,
+  MenuItem,
+  Divider,
+} from '@mui/material';
 import Logo from './Logo';
 
 import {ThemeWrapperContext} from '../components/styles/ThemeWrapper';
@@ -75,9 +87,92 @@ const HeaderLinks = () => {
   );
 };
 
+type SubMenuItem = {href: string; title: string; type?: 'link' | 'divider'};
+type MenuItem = SubMenuItem & {subItems?: SubMenuItem[]};
+
+type TobBarSubMenuItemProps = SubMenuItem & {handleClose: () => void};
+
+const TobBarSubMenuItem = ({href, title, type = 'link', handleClose}: TobBarSubMenuItemProps) => {
+  if (type === 'divider') {
+    return <Divider style={{margin: 'auto 10px'}} />;
+  }
+  return (
+    <MenuItem onClick={handleClose} key={href}>
+      <Link href={href} title={title} style={{textDecoration: 'none'}}>
+        {title}
+      </Link>
+    </MenuItem>
+  );
+};
+
+type TobBarMenuItemProps = MenuItem;
+
+const TopBarMenuItem = ({href, title, type = 'link', subItems}: TobBarMenuItemProps) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <Box>
+      {type === 'link' && href !== '#' && (
+        <Link href={href} title={title}>
+          <Button>{title}</Button>
+        </Link>
+      )}
+      {type === 'link' && href === '#' && (
+        <Button
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+        >
+          {title}
+        </Button>
+      )}
+      {subItems && subItems.length && (
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          {subItems.map((subItem, index) => (
+            <TobBarSubMenuItem {...subItem} handleClose={handleClose} key={`${index},${subItem.href}`} />
+          ))}
+        </Menu>
+      )}
+    </Box>
+  );
+};
+
 // type TopBarProps = {};
 
 const TopBar = () => {
+  const menuItems: MenuItem[] = [
+    {href: '/', title: 'Home'},
+    {
+      href: '#',
+      title: 'Code',
+      subItems: [
+        {href: '/coding-principles/solid', title: 'Coding Principles'},
+        {href: '/design-patterns/structural', title: 'Design Patterns'},
+        {type: 'divider', href: '#', title: 'Divider'},
+        {href: '/clean-code', title: 'Clean Code'},
+        {type: 'divider', href: '#', title: 'Divider'},
+        {href: '/languages', title: 'Programming Languages'},
+      ],
+    },
+    {href: '/about', title: 'About'},
+  ];
+
   return (
     <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={'100%'} height={'4rem'}>
       <Box display={'flex'} alignItems={'center'}>
@@ -102,26 +197,9 @@ const TopBar = () => {
         </Box>
       </Box>
       <Box display={'flex'} alignItems={'center'}>
-        <Box>
-          <Link href={'/'} title="Home">
-            <Button>Home</Button>
-          </Link>
-        </Box>
-        <Box>
-          <Link href={'/coding-principles/solid'} title="Coding Principles">
-            <Button>Coding Principles</Button>
-          </Link>
-        </Box>
-        <Box>
-          <Link href={'/design-patterns/structural'} title="Design Patterns">
-            <Button>Design Patterns</Button>
-          </Link>
-        </Box>
-        <Box>
-          <Link href={'/languages'} title="Programming Languages">
-            <Button>Languages</Button>
-          </Link>
-        </Box>
+        {menuItems.map((item) => (
+          <TopBarMenuItem {...item} key={item.href} />
+        ))}
         <Box>
           <ColorModeSwitch />
         </Box>
