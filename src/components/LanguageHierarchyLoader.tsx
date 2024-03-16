@@ -1,23 +1,25 @@
-import {useEffect} from 'react';
+// import {useEffect} from 'react';
 
-import {SetterOrUpdater, useRecoilValue} from 'recoil';
-import {loadLanguageHierarchy} from '../selector';
-import {LanguagesHierarchyState} from '../state';
+// import {SetterOrUpdater, useRecoilValue} from 'recoil';
+// import {loadLanguageHierarchy} from '../selector';
+// import {LanguagesHierarchyState} from '../state';
 
-export type LanguageHierarchyLoaderProps = {
-  setLanguagesHierarchyState?: SetterOrUpdater<LanguagesHierarchyState>;
-};
+// export type LanguageHierarchyLoaderProps = {
+//   setLanguagesHierarchyState?: SetterOrUpdater<LanguagesHierarchyState>;
+// };
 
-export default function LanguageHierarchyLoader({setLanguagesHierarchyState}: LanguageHierarchyLoaderProps) {
-  const languageHierarchy = useRecoilValue(loadLanguageHierarchy);
+// TODO: Remove File
 
-  useEffect(() => {
-    if (!languageHierarchy.ready) {
-      return;
-    }
+export default function LanguageHierarchyLoader(/*{setLanguagesHierarchyState}: LanguageHierarchyLoaderProps*/) {
+  // const languageHierarchy = useRecoilValue(loadLanguageHierarchy);
 
-    setLanguagesHierarchyState && setLanguagesHierarchyState(languageHierarchy);
-  }, [languageHierarchy, setLanguagesHierarchyState]);
+  // useEffect(() => {
+  //   if (!languageHierarchy.ready) {
+  //     return;
+  //   }
+
+  //   setLanguagesHierarchyState && setLanguagesHierarchyState(languageHierarchy);
+  // }, [languageHierarchy, setLanguagesHierarchyState]);
 
   return <></>;
 }

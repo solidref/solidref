@@ -34,9 +34,8 @@ export default function PrinciplesOrPatternsMenu({language, setPrincipleOrPatter
     defaultMatches: true,
   });
 
-  // console.log(language)
-
-  const filter = (key: CodingPrincipleType | DesignPatternType) => (mode === 'state' ? true : key !== 'proprietary');
+  const filter = (key: CodingPrincipleType | DesignPatternType) =>
+    mode === 'state' ? true : !key.includes('_proprietary');
 
   return (
     <Box position={'relative'}>

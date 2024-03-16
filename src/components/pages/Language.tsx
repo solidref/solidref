@@ -4,8 +4,6 @@ import {useRecoilValue} from 'recoil';
 
 import {Box, Typography, useTheme} from '@mui/material';
 
-import {LanguageParams} from './language/LanguageLoader';
-
 import {CodingPrinciple, DesignPattern, Language, LanguageState} from '../../state';
 import {loadLanguage} from '../../selector';
 import Container from '../../views/generic/Container';
@@ -43,7 +41,7 @@ export default function LanguagePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const boxBgColor = (theme.palette as any)?.alternate?.main;
 
-  const {language: languageParam = 'javascript'} = useParams<LanguageParams>();
+  const {language: languageParam = 'javascript'} = useParams<{language: string}>();
 
   const languageState = useRecoilValue<LanguageState>(loadLanguage(languageParam));
 
@@ -53,14 +51,12 @@ export default function LanguagePage() {
     if (!languageState || !languageState?.ready) {
       return;
     }
-    setDetectedPrincipleOrPattern(detectPrincipleOrPattern(languageState?.language ?? []));
+    setDetectedPrincipleOrPattern(detectPrincipleOrPattern(languageState?.language ?? ({} as Language)));
   }, [languageState, setDetectedPrincipleOrPattern]);
-
-  // console.log('LanguagePage', language, detectedPrincipleOrPattern)
 
   return (
     <Box>
-      {languageState?.ready && detectedPrincipleOrPattern.type ? (
+      {languageState?.language && detectedPrincipleOrPattern.type ? (
         <Box>
           <Box bgcolor={boxBgColor} position={'relative'}>
             <Container position="relative" zIndex={2}>

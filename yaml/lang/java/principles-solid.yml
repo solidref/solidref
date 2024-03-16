@@ -1,6 +1,6 @@
 ---
 principles:
-  - title: Liskov Substitution
+  - title: Liskov Substitution Principle (LSP)
     examples:
       - title: Good Example (Refined)
         codeFile: principles/solid/liskov-substitution/good-example-refined

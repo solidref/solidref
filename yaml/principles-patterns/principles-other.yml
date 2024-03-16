@@ -1,0 +1,104 @@
+---
+title: Understanding <i>SOLID</i> Principles <br /> in Software Development
+before:
+  - variant: subtitle1
+    content: |
+      The SOLID principles are a set of design principles in object-oriented programming that enable developers to
+      create more maintainable, understandable, and flexible software. Here's a deeper dive into each of these
+      principles.
+accordion:
+  Don't Repeat Yourself (DRY):
+    - variant: h6
+      content: Overview
+    - variant: subtitle1
+      content: |
+        DRY is a fundamental principle in software development that emphasizes the importance of avoiding
+        duplication in code. The idea is to have a single, authoritative representation of every piece of
+        knowledge and logic in the system.
+    - variant: h6
+      content: Benefits
+    - variant: subtitle1
+      content: |
+        By following DRY, you reduce the likelihood of inconsistencies and bugs because changes only need to be
+        made in one place. It also makes the codebase easier to maintain and understand.
+    - variant: h6
+      content: Implementation
+    - variant: subtitle1
+      content: |
+        Implement DRY by identifying patterns and repeated code blocks. Then refactor these into functions,
+        classes, or modules that can be reused.
+    - variant: h6
+      content: Example
+    - variant: subtitle1
+      content: |
+        Suppose you have several functions that validate user input. Instead of repeating the validation logic
+        in each function, create a single validateInput function and call it wherever validation is needed.
+    - variant: h6
+      content: Conclusion
+    - variant: subtitle1
+      content: |
+        Adhering to DRY helps in building a cleaner, more efficient, and error-resistant codebase. It's about
+        maximizing the impact of code changes while minimizing the effort.
+  Keep It Simple Stupid (KISS):
+    - variant: h6
+      content: Overview
+    - variant: subtitle1
+      content: |
+        KISS advocates for simplicity in design. It suggests that systems work best if they are kept simple
+        rather than made complex. Therefore, simplicity should be a key goal in design, and unnecessary
+        complexity should be avoided.
+    - variant: h6
+      content: Benefits
+    - variant: subtitle1
+      content: |
+        Simpler code is easier to understand, test, and maintain. It often leads to fewer bugs and improves
+        collaboration as more team members can understand and contribute to the codebase.
+    - variant: h6
+      content: Implementation
+    - variant: subtitle1
+      content: |
+        To keep things simple, always look for the most straightforward solution. Avoid over-engineering and
+        adding unnecessary features or layers.
+    - variant: h6
+      content: Example
+    - variant: subtitle1
+      content: |
+        When designing a function to calculate the area of a rectangle, stick to the basic formula (length *
+        width). Resist the urge to add unrelated features, like logging or input validation, to the function.
+    - variant: h6
+      content: Conclusion
+    - variant: subtitle1
+      content: |
+        KISS is about the elegance and power of simplicity. In a world where complexity is often seen as
+        sophistication, KISS reminds us that simple solutions are often the best.
+  You Aren't Gonna Need It (YAGNI):
+    - variant: h6
+      content: Overview
+    - variant: subtitle1
+      content: |
+        YAGNI is a principle of extreme programming that states a programmer should not add functionality until
+        deemed necessary. It's a caution against over-engineering.
+    - variant: h6
+      content: Benefits
+    - variant: subtitle1
+      content: |
+        Following YAGNI can save time and resources, and help keep the software product lean and focused. It
+        avoids the burden of maintaining unused code.
+    - variant: h6
+      content: Implementation
+    - variant: subtitle1
+      content: |
+        When developing, always question the necessity of each feature. Add something only when it's immediately
+        needed, not just because it might be needed in the future.
+    - variant: h6
+      content: Example
+    - variant: subtitle1
+      content: |
+        If you're building a website and think, "I might need a user forum in the future," resist the urge to
+        implement it now. Wait until it's clear that a forum is necessary.
+    - variant: h6
+      content: Conclusion
+    - variant: subtitle1
+      content: |
+        YAGNI is a reminder to stay focused on the present requirements and avoid getting sidetracked by
+        features and functionalities that might never be needed.

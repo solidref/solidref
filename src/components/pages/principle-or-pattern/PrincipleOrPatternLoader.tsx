@@ -1,30 +1,32 @@
-import {useEffect} from 'react';
-import {useParams} from 'react-router-dom';
-import {SetterOrUpdater, useRecoilValueLoadable} from 'recoil';
+// import {useEffect} from 'react';
+// import {useParams} from 'react-router-dom';
+// import {SetterOrUpdater, useRecoilValueLoadable} from 'recoil';
 
-import {loadPrinciplePatternContent} from '../../../selector';
-import {PrinciplePatternState} from '../../../state';
+// import {loadPrincipleOrPattern} from '../../../selector';
+// import {PrincipleOrPatternState} from '../../../state';
 
-export type PrinciplePatternContentParams = {
-  type?: string;
-};
+// export type PrinciplePatternContentParams = {
+//   type?: string;
+// };
 
-export type PrincipleOrPatterntLoaderProps = {
-  setPrinciplePatternContentState: SetterOrUpdater<PrinciplePatternState>;
-};
+// export type PrincipleOrPatterntLoaderProps = {
+//   setPrinciplePatternContentState: SetterOrUpdater<PrincipleOrPatternState>;
+// };
 
-export default function PrincipleOrPatternLoader({setPrinciplePatternContentState}: PrincipleOrPatterntLoaderProps) {
-  const {type = 'solid'} = useParams<PrinciplePatternContentParams>();
+// TODO: Remove File!
 
-  const principleOrPattern = useRecoilValueLoadable(loadPrinciplePatternContent(type));
+export default function PrincipleOrPatternLoader(/*{setPrinciplePatternContentState}: PrincipleOrPatterntLoaderProps*/) {
+  // const {type = 'solid'} = useParams<PrinciplePatternContentParams>();
 
-  useEffect(() => {
-    if (!principleOrPattern || principleOrPattern?.state !== 'hasValue' || !principleOrPattern?.contents?.ready) {
-      return;
-    }
+  // const principleOrPattern = useRecoilValueLoadable(loadPrincipleOrPattern(type));
 
-    setPrinciplePatternContentState(principleOrPattern.contents);
-  }, [principleOrPattern, setPrinciplePatternContentState]);
+  // useEffect(() => {
+  //   if (!principleOrPattern || principleOrPattern?.state !== 'hasValue' || !principleOrPattern?.contents?.ready) {
+  //     return;
+  //   }
+
+  //   setPrinciplePatternContentState(principleOrPattern.contents);
+  // }, [principleOrPattern, setPrinciplePatternContentState]);
 
   return <></>;
 }

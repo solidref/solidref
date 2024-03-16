@@ -8,4 +8,7 @@ export const CodingPrincipleTitles: Record<string, string> = {
   patterns_proprietary: 'Proprietary Patterns',
 };
 
-export const ThemeBrightness = 'theme-brightness';
+export const ThemeBrightness = btoa('theme-brightness');
+
+export const DefaultSelectedLanguageCode = 'typescript';
+export const LocalStorageSelectedLanguageCodeLabel = btoa('default-language');

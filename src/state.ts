@@ -1,5 +1,6 @@
 import {atom} from 'recoil';
 import {TypographyProps} from '@mui/material/Typography';
+import {DefaultSelectedLanguageCode, LocalStorageSelectedLanguageCodeLabel} from './constants';
 
 /**
  * Base Types
@@ -90,22 +91,37 @@ export const languagesHierarchyState = atom<LanguagesHierarchyState>({
 });
 
 /**
- * Hierarchy Languages State
+ * Selected Language State
  */
 
-export type LanguageState = StateReadiness & {
-  language: Language;
-};
-
-export type LanguagesState = Record<string, LanguageState>;
-
-export const languagesState = atom<LanguagesState>({
-  key: 'languagesState',
-  default: {},
+export const selectedLanguageCodeState = atom<string | null>({
+  key: 'SelectedLanguage',
+  default: (localStorage.getItem(LocalStorageSelectedLanguageCodeLabel) as string) || DefaultSelectedLanguageCode,
 });
 
 /**
- * Content State
+ * Language State
+ */
+
+export type LanguageState = StateReadiness & {
+  language?: Language;
+};
+
+/**
+ * Languages State
+ */
+
+// TODO: this is a concept that was not yet introduced
+
+// export type LanguagesState = Record<string, LanguageState>;
+
+// export const languagesState = atom<LanguagesState>({
+//   key: 'languagesState',
+//   default: {},
+// });
+
+/**
+ * Principle or Pattern State
  */
 
 export interface PrincipleOrPatternContent {
@@ -115,26 +131,11 @@ export interface PrincipleOrPatternContent {
   accordion?: Record<string, ContentType[]>;
 }
 
-export type PrinciplePatternState = StateReadiness & {
+export type PrincipleOrPatternState = StateReadiness & {
   content?: PrincipleOrPatternContent;
 };
 
-export const principleOrPatternState = atom<PrinciplePatternState>({
+export const principleOrPatternState = atom<PrincipleOrPatternState>({
   key: 'principleOrPatternState',
   default: {},
-});
-
-/**
- * Messages State
- */
-
-export interface MessagesState extends StateReadiness {
-  messages: Message[];
-}
-
-export const messagesState = atom<MessagesState>({
-  key: 'messagesState',
-  default: {
-    messages: [],
-  }, // default empty array
 });

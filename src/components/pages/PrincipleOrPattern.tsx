@@ -1,48 +1,67 @@
 import {useEffect, useState} from 'react';
 
 import {Box, useTheme} from '@mui/material';
-import {useRecoilState} from 'recoil';
+import {useRecoilValue} from 'recoil';
 
-import PrincipleOrPatternLoader from './principle-or-pattern/PrincipleOrPatternLoader';
 import Presentation from './principle-or-pattern/Presentation';
 
-import {Language, LanguageState, PrincipleOrPatternContent, principleOrPatternState} from '../../state';
+import {
+  CodingPrinciple,
+  DesignPattern,
+  Language,
+  PrincipleOrPatternContent,
+  selectedLanguageCodeState,
+} from '../../state';
 import Container from '../../views/generic/Container';
 import PrincipleOrPatternHero from '../../views/pages/principle-or-pattern/PrincipleOrPatternHero';
-import {loadLanguages} from '../../selector';
-import LanguageLoader from './language/LanguageLoader';
+import {loadLanguage, loadPrincipleOrPattern} from '../../selector';
 import PrinciplesOrPatternsMenu from '../../views/pages/language/PrinciplesOrPatternsMenu';
+import {useParams} from 'react-router-dom';
 
-export default function PrinciplePattern() {
+type PrincipleOrPatternProps = {
+  type: 'principles' | 'patterns';
+};
+
+export default function PrincipleOrPattern({type}: PrincipleOrPatternProps) {
   const theme = useTheme();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const boxBgColor = (theme.palette as any)?.alternate?.main;
+  const boxBgColor = (theme.palette as any).alternate?.main; // Direct access, assuming 'alternate' exists
 
-  const [languageState, setLanguagesState] = useRecoilState<LanguageState>(loadLanguages('javascript'));
+  const {group: principleOrPatternGroup = 'solid'} = useParams<{group: string}>();
+
+  const selectedLanguageCode = useRecoilValue(selectedLanguageCodeState) as string;
+
+  // Assuming useRecoilValue already returns the correct type, so explicit casting may not be necessary
+  const languageState = useRecoilValue(loadLanguage(selectedLanguageCode));
+  const principleOrPattern = useRecoilValue(loadPrincipleOrPattern(`${type}-${principleOrPatternGroup}`));
 
   const [language, setLanguage] = useState<Language | null>(null);
-
-  const [principleOrPattern, setPrincipleOrPattern] = useRecoilState(principleOrPatternState);
-
+  const [principleOrPatternExamples, setPrincipleOrPatternExamples] = useState<DesignPattern[] | CodingPrinciple[]>([]);
   const [principleOrPatternContent, setPrincipleOrPatternContent] = useState<PrincipleOrPatternContent | null>(null);
 
+  // Simplify useEffect hooks by directly setting state without intermediate condition
   useEffect(() => {
-    if (languageState?.ready) {
-      setLanguage(languageState.language);
+    if (languageState.ready) {
+      const l = languageState?.language as Language;
+      const examplesList = ['principles', 'patterns']
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .map((type) => (l as any)?.[type]?.[`${type}_${principleOrPatternGroup}`])
+        .filter((ex) => ex);
+      if (examplesList.length > 0) {
+        setPrincipleOrPatternExamples(examplesList.pop());
+      }
+      setLanguage(l);
     }
-  }, [languageState, setLanguage]);
+  }, [languageState, principleOrPatternGroup]);
 
   useEffect(() => {
-    if (!principleOrPattern || !principleOrPattern.ready) {
-      return;
+    if (principleOrPattern.ready) {
+      setPrincipleOrPatternContent(principleOrPattern.content as PrincipleOrPatternContent);
     }
-    setPrincipleOrPatternContent(principleOrPattern.content as PrincipleOrPatternContent);
-  }, [principleOrPattern, setPrincipleOrPatternContent]);
+  }, [principleOrPattern]);
 
   return (
     <Box>
-      <LanguageLoader code={'javascript'} setLanguagesState={setLanguagesState} />
-      <PrincipleOrPatternLoader setPrinciplePatternContentState={setPrincipleOrPattern} />
       {principleOrPatternContent ? (
         <Box>
           <Box>
@@ -51,7 +70,11 @@ export default function PrinciplePattern() {
           <Box>
             <Box bgcolor={boxBgColor} position={'relative'}>
               <Container position="relative" zIndex={2}>
-                <Presentation principleOrPattern={principleOrPatternContent} />
+                <Presentation
+                  principleOrPatternContent={principleOrPatternContent}
+                  principleOrPatternExamples={principleOrPatternExamples}
+                  languageCode={selectedLanguageCode}
+                />
               </Container>
             </Box>
           </Box>
@@ -59,13 +82,17 @@ export default function PrinciplePattern() {
       ) : (
         <Box>Loading...</Box>
       )}
-      <Box>
-        <Box position={'relative'}>
-          <Container position="relative" zIndex={2}>
-            {language && <PrinciplesOrPatternsMenu language={language} mode={'url'} />}
-          </Container>
+      {language ? (
+        <Box>
+          <Box position={'relative'}>
+            <Container position="relative" zIndex={2}>
+              {language && <PrinciplesOrPatternsMenu language={language} mode={'url'} />}
+            </Container>
+          </Box>
         </Box>
-      </Box>
+      ) : (
+        <Box>Loading...</Box>
+      )}
     </Box>
   );
 }

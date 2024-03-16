@@ -8,7 +8,7 @@ principles:
       - title: Bad Example
         code: |
           // code sample here
-  - title: Open-Closed
+  - title: Open/Closed Principle (OCP)
     examples:
       - title: Good Example
         code: |
@@ -16,7 +16,7 @@ principles:
       - title: Bad Example
         code: |
           // code sample here
-  - title: Liskov Substitution
+  - title: Liskov Substitution Principle (LSP)
     examples:
       - title: Good Example
         code: |
@@ -24,7 +24,7 @@ principles:
       - title: Bad Example
         code: |
           // code sample here
-  - title: Interface Segregation
+  - title: Interface Segregation Principle (ISP)
     examples:
       - title: Good Example
         code: |
@@ -32,7 +32,7 @@ principles:
       - title: Bad Example
         code: |
           // code sample here
-  - title: Dependency Inversion
+  - title: Dependency Inversion Principle (DIP)
     examples:
       - title: Good Example
         code: |

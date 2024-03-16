@@ -1,30 +1,30 @@
 ---
 principles:
-  - title: Single Responsibility
+  - title: Single Responsibility Principle (SRP)
     examples:
       - title: Good Example
         codeFile: principles/solid/single-responsibility/good-example
       - title: Bad Example
         codeFile: principles/solid/single-responsibility/bad-example
-  - title: Open-Closed
+  - title: Open/Closed Principle (OCP)
     examples:
       - title: Good Example
         codeFile: principles/solid/open-closed/good-example
       - title: Bad Example
         codeFile: principles/solid/open-closed/bad-example
-  - title: Liskov Substitution
+  - title: Liskov Substitution Principle (LSP)
     examples:
       - title: Good Example
         codeFile: principles/solid/liskov-substitution/good-example
       - title: Bad Example
         codeFile: principles/solid/liskov-substitution/bad-example
-  - title: Interface Segregation
+  - title: Interface Segregation Principle (ISP)
     examples:
       - title: Good Example
         codeFile: principles/solid/interface-segregation/good-example
       - title: Bad Example
         codeFile: principles/solid/interface-segregation/bad-example
-  - title: Dependency Inversion
+  - title: Dependency Inversion Principle (DIP)
     examples:
       - title: Good Example
         codeFile: principles/solid/interface-segregation/good-example

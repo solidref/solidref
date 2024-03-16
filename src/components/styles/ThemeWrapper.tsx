@@ -14,14 +14,14 @@ export const ThemeWrapperContext = createContext({toggleColorMode: () => {}});
 type Mode = 'light' | 'dark';
 
 export default function ThemeWrapper({children}: ThemeWrapperProps) {
-  const [mode, setMode] = useState<'light' | 'dark'>((localStorage.getItem(btoa(ThemeBrightness)) as Mode) || 'light');
+  const [mode, setMode] = useState<'light' | 'dark'>((localStorage.getItem(ThemeBrightness) as Mode) || 'light');
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => {
           const newMode = prevMode === 'light' ? 'dark' : 'light';
-          localStorage.setItem(btoa(ThemeBrightness), newMode);
+          localStorage.setItem(ThemeBrightness, newMode);
           return newMode;
         });
       },

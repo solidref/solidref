@@ -45,6 +45,7 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({code = '', childre
         <OriginalSyntaxHighlighter
           language={language}
           style={theme.palette.mode === 'light' ? customDocco : customDarcula}
+          wrapLongLines={true}
         >
           {code || children || '// no code provided'}
         </OriginalSyntaxHighlighter>

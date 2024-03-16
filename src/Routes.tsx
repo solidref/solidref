@@ -17,8 +17,8 @@ export default function LocalRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/languages" element={<Languages />} />
           <Route path={generateLanguagePath(':language')} element={<Language />} />
-          <Route path="/coding-principles/:type" element={<PrincipleOrPattern />} />
-          <Route path="/design-patterns/:type" element={<PrincipleOrPattern />} />
+          <Route path="/coding-principles/:group" element={<PrincipleOrPattern type={'principles'} />} />
+          <Route path="/design-patterns/:group" element={<PrincipleOrPattern type={'patterns'} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
