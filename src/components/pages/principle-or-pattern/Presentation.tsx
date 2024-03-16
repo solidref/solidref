@@ -9,7 +9,7 @@ import {CodeExample, CodingPrinciple, ContentType, DesignPattern, PrincipleOrPat
 import TypographySet from '../../../views/generic/TypographySet';
 import SyntaxHighlighter from '../../../views/code/SyntaxHighlighter';
 
-type PrinciplePatternAccordionItemProps = {
+type PresentationItemProps = {
   content: ContentType[];
   title: string;
   expanded: string[];
@@ -37,14 +37,7 @@ const CustomAccordionDetails = styled(AccordionDetails)(() => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-function PrinciplePatternAccordionItem({
-  title,
-  content,
-  handleChange,
-  examples,
-  expanded,
-  languageCode,
-}: PrinciplePatternAccordionItemProps) {
+function PresentationItem({title, content, handleChange, examples, expanded, languageCode}: PresentationItemProps) {
   return (
     <CustomAccordion expanded={expanded.includes(title)} onChange={handleChange(title)} elevation={0}>
       <CustomAccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -100,7 +93,7 @@ export default function Presentation({
     <>
       <TypographySet content={before} />
       {Object.keys(accordion).map((title) => (
-        <PrinciplePatternAccordionItem
+        <PresentationItem
           key={title}
           title={title}
           content={accordion[title]}

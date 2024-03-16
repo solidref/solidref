@@ -6,11 +6,23 @@ import {DefaultSelectedLanguageCode, LocalStorageSelectedLanguageCodeLabel} from
  * Base Types
  */
 
-export interface ContentType {
+export type ReferenceArticle = {
+  author: string;
+  authorUrl?: string;
+  title: string;
+  url: string;
+};
+
+export type ReferencesType = {
+  list: ReferenceArticle[];
+  variant: 'references';
+};
+
+export type ContentType = {
   content?: string;
   // same variants as Typography MUI
   variant?: TypographyProps['variant'] | 'code';
-}
+};
 
 export type CodeExample = {
   code?: string;

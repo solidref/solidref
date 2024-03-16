@@ -1,25 +1,58 @@
-import {Box, Typography} from '@mui/material';
+import {Box, Link, List, ListItem, ListItemText, Typography} from '@mui/material';
 
-import {ContentType} from '../../state';
+import {ContentType, ReferencesType} from '../../state';
 import SyntaxHighlighter from '../code/SyntaxHighlighter';
 
 export type TypographySetProps = {
-  content: ContentType[];
+  content: (ContentType | ReferencesType)[];
 };
+
+type ReferencesProps = {
+  references: ReferencesType;
+};
+
+function References({references}: ReferencesProps) {
+  return (
+    <Box>
+      <Typography variant="h6">References</Typography>
+      <List>
+        {references.list.map((item) => (
+          <ListItem style={{padding: '0'}}>
+            <ListItemText>
+              <Link href={item.url} target="_blank" rel="noreferrer">
+                {item.title}
+              </Link>
+              {item.authorUrl ? ' by ' : item.author ? ' on ' : ''}
+              {item.authorUrl ? (
+                <Link href={item.authorUrl} target="_blank" rel="noreferrer">
+                  {item.author}
+                </Link>
+              ) : (
+                item.author
+              )}
+            </ListItemText>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+}
 
 export default function TypographySet({content}: TypographySetProps) {
   return (
     <Box>
       {content.map((item) =>
-        item.variant !== 'code' ? (
+        item.variant === 'code' ? (
+          <SyntaxHighlighter language="javascript" code={item.content || 'Empty Code...'} />
+        ) : item.variant === 'references' ? (
+          <References references={item}></References>
+        ) : (
           <Typography
             key={item.content}
             variant={item.variant || 'subtitle1'}
             dangerouslySetInnerHTML={{__html: item.content || 'Undefined row...'}}
             style={{padding: '.5rem 0'}}
           />
-        ) : (
-          <SyntaxHighlighter language="javascript" code={item.content || 'Empty Code...'} />
         ),
       )}
     </Box>

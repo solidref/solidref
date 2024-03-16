@@ -13,172 +13,258 @@ after:
       maintainable software. By adhering to these principles, you can reduce bugs, improve code readability, and
       make your software easier to extend and maintain. While these principles might seem complex initially, their
       benefits in a professional software development environment are immense.
+  - variant: references
+    list:
+      - author: Ihechikara Vincent Abba
+        authorUrl: https://www.freecodecamp.org/news/author/ihechikara/
+        title: SOLID Definition – the SOLID Principles of Object-Oriented Design Explained
+        url: https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/
+      - author: Wikipedia
+        title: SOLID
+        url: https://en.wikipedia.org/wiki/SOLID
+      - author: DigitalOcean
+        title: 'SOLID: The First 5 Principles of Object Oriented Design'
+        url: https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design
 accordion:
   Single Responsibility Principle (SRP):
     - variant: h6
       content: Overview
     - variant: subtitle1
       content: |
-        The Single Responsibility Principle asserts that a class should have one, and only one, reason to
-        change. This means a class should only have one job or responsibility. The idea here is to organize the
-        code in a way that each class addresses a single concern or functionality.
-    - variant: h6
-      content: Benefits
+        The Single Responsibility Principle (SRP), introduced by Robert C. Martin as part of the SOLID principles,
+        underscores the philosophy that a class should have only one reason to change, embodying a single
+        functionality or concern. This principle advocates for simplicity and modularity in software design,
+        suggesting that each component or class should be responsible for a specific piece of functionality and
+        nothing more. By adhering to SRP, software developers ensure that their systems are more maintainable,
+        adaptable, and understandable, minimizing the risk of complex interdependencies and making the system easier
+        to debug and enhance over time.
     - variant: subtitle1
       content: |
-        By adhering to SRP, code becomes more robust. It's easier to debug because changes are isolated to the
-        specific part of the code responsible for the feature. It also enhances readability, as each class has a
-        clear purpose.
-    - variant: h6
-      content: Implementation
+        Imagine a software system as a bustling city, with each building representing a class within the system. Just
+        as every building is designed for a specific purpose – be it a library, a restaurant, or an office – each
+        class in a system should serve a distinct role. The SRP posits that a library should not double as a restaurant,
+        nor should an office take on the responsibilities of a gym. This specialization allows for changes to be made
+        to one building without the risk of unintended consequences rippling through the city, ensuring that enhancements
+        or repairs can be carried out efficiently and effectively.
     - variant: subtitle1
       content: |
-        In practice, if you find a class performing multiple tasks like data access, business logic, and data
-        validation, it's time to consider refactoring. Each of these tasks should be a separate class.
-    - variant: h6
-      content: Example
+        In this city, the flow of information and tasks between buildings mirrors the interactions within a well-designed
+        software system. A request from a citizen (user) is like a call to a Controller – a central hub that directs the
+        request to the appropriate service, akin to a specialized service building. This building then handles the request,
+        possibly consulting with others, like repositories or utility services, each dedicated to a specific aspect of city
+        life. The SRP ensures that these interactions are streamlined and that each building (class) focuses on its primary
+        function, maintaining order and efficiency.
     - variant: subtitle1
       content: |
-        Consider a class ReportGenerator. If it's handling both data retrieval and report generation, it
-        violates SRP. Instead, have one class for data retrieval (DataRetriever) and another for report
-        generation (ReportBuilder).
-    - variant: h6
-      content: Conclusion
+        Utility services within this city – be they transportation, sanitation, or communication networks – can be likened
+        to utility classes in software. While essential for the city's overall functionality, they operate in the background,
+        supporting the primary functions without overshadowing the dedicated roles of other buildings. These services embody
+        the SRP by providing specialized functionalities that enhance the city's operations without adding unnecessary
+        complexity to individual buildings.
     - variant: subtitle1
       content: |
-        SRP is fundamental in minimizing the impact of changes. When a class is responsible for one thing,
-        changes in that aspect of the application should only affect that class.
+        Robert C. Martin's introduction of the SRP and the broader SOLID principles has significantly influenced how developers
+        think about software architecture, much like the way urban planners meticulously design cities for optimal functionality.
+        By ensuring that each component of a system has a single responsibility, developers can create software that is not only
+        resilient and flexible but also a joy to work with and easy to evolve. The SRP, in its essence, teaches the importance
+        of keeping systems simple, organized, and focused, allowing for the creation of software that stands the test of time,
+        just as well-planned cities endure and thrive through the ages.
+    - variant: references
+      list:
+        - author: Robert C. Martin
+          authorUrl: https://en.wikipedia.org/wiki/Robert_C._Martin
+          title: The Single Responsibility Principle
+          url: https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html
+        - author: Vlad Ungureanu
+          authorUrl: https://medium.com/@learnstuff.io
+          title: Single Responsibility Principle
+          url: https://medium.com/@learnstuff.io/single-responsibility-principle-ad3ae3e264bb
+        - author: Wikipedia
+          title: Single Responsibility Principle
+          url: https://en.wikipedia.org/wiki/Single_responsibility_principle
   Open/Closed Principle (OCP):
     - variant: h6
       content: Overview
     - variant: subtitle1
       content: |
-        The Open/Closed Principle states that software entities (classes, modules, functions, etc.) should be
-        open for extension but closed for modification. This means a class's behavior can be extended without
-        modifying its source code.
-    - variant: h6
-      content: Benefits
+        The Open/Closed Principle, eloquently articulated by Robert C. Martin as a cornerstone of the SOLID principles, introduces a
+        foundational concept in software development: systems should be designed to accommodate growth through extension, not
+        modification. This principle suggests that once a class is developed and tested, its core should remain untouched, while any
+        evolution or enhancement should be achieved by building upon it, rather than altering its essence. This approach ensures that
+        the original class retains its reliability and functionality, safeguarding against the introduction of new bugs or the need
+        for re-validation through extensive quality assurance processes.
     - variant: subtitle1
       content: |
-        OCP is critical for reducing the risk of breaking existing functionality when implementing new features.
-        It promotes the use of interfaces and abstract classes to allow behaviors to be extended.
-    - variant: h6
-      content: Implementation
+        Consider the metaphor of a well-established tree in an ever-evolving garden. The tree's roots and trunk provide a stable,
+        unchanging foundation, while its branches represent the potential for growth and adaptation. As the seasons change, the tree
+        may sprout new branches or leaves to better capture sunlight or support the ecosystem around it, but the core—the trunk and
+        roots—remains steadfast. This natural analogy mirrors the Open/Closed Principle, where the "tree" (our class) can extend new
+        "branches" (features or behaviors) without altering its "trunk" (the original, tested code).
     - variant: subtitle1
       content: |
-        One way to implement OCP is by using abstract classes or interfaces. These can be extended by other
-        classes to add new functionality without changing the original class's code.
-    - variant: h6
-      content: Example
+        In the realm of software, a classic illustration of adhering to this principle is the handling of a Shape class designed to
+        calculate perimeters. Initially, the class might cater to a limited set of shapes, calculating each perimeter through a specific
+        method. According to the Open/Closed Principle, rather than rewriting the Shape class to accommodate new shapes, it is made
+        abstract, and new shapes are introduced as subclasses, each implementing their unique method for perimeter calculation. This design
+        allows the system to gracefully integrate new shapes without disturbing the existing hierarchy or functionality, akin to adding new
+        branches to the tree without tampering with its trunk.
     - variant: subtitle1
       content: |
-        Imagine a <Code>PaymentProcessor</Code> class. Instead of modifying it for each payment method, you can
-        create an interface <Code>IPaymentMethod</Code> and then extend it for <Code>CreditCardPayment</Code>,
-        <Code>PaypalPayment</Code>, etc.
-    - variant: h6
-      content: Conclusion
+        However, not all situations are straightforward. The software landscape is rich and varied, sometimes requiring solutions like
+        the Abstract Factory pattern or strategies that involve interfaces to ensure flexibility and adherence to the Open/Closed Principle.
+        These scenarios underscore the principle's call for foresight and thoughtful design, allowing systems to evolve through extension
+        rather than modification, much like the strategic pruning and grafting of branches to support new growth without compromising the
+        tree's integrity.
     - variant: subtitle1
       content: |
-        OCP helps in building scalable systems where new functionalities can be added with minimal changes to
-        existing code, reducing the likelihood of introducing bugs in already-tested code.
+        Embracing the Open/Closed Principle is akin to planning for a garden that thrives through seasons and years. It encourages developers
+        to anticipate change and design systems that are not only resilient but also adaptable, capable of embracing the future without losing
+        their essence. Through this principle, Martin invites us to envision software development as an organic, evolving craft, where the
+        structures we create today are built not just for the present but are ready to grow and flourish in the unknown landscapes of tomorrow.
+    - variant: references
+      list:
+        - author: Robert C. Martin
+          authorUrl: https://en.wikipedia.org/wiki/Robert_C._Martin
+          title: The Open Closed Principle
+          url: https://blog.cleancoder.com/uncle-bob/2014/05/12/TheOpenClosedPrinciple.html
+        - author: Vlad Ungureanu
+          authorUrl: https://medium.com/@learnstuff.io
+          title: Open/Close Principle
+          url: https://medium.com/@learnstuff.io/open-close-principle-442ebafb3528
+        - author: Wikipedia
+          title: Open–closed principle
+          url: https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle
   Liskov Substitution Principle (LSP):
     - variant: h6
       content: Overview
     - variant: subtitle1
       content: |
-        The Liskov Substitution Principle demands that objects of a superclass shall be replaceable with objects
-        of its subclasses without affecting the correctness of the program. Essentially, subclasses should be
-        substitutable for their base classes.
-    - variant: h6
-      content: Benefits
+        The Liskov Substitution Principle (LSP), conceived by Barbara Liskov and popularized within the SOLID principles by Robert C. Martin,
+        illuminates an essential tenet of object-oriented programming: the idea that subclasses should be interchangeable with their parent class
+        without altering the expected behavior of the program. This principle serves as a litmus test for design integrity within a class hierarchy,
+        ensuring that extensions or modifications preserve the functionality and expectations set forth by the original class.
     - variant: subtitle1
       content: |
-        LSP ensures that a subclass can stand in for its superclass. This principle is crucial for ensuring that
-        a system remains robust when faced with subclassing, as it guarantees that a subclass does not alter
-        expected behavior.
-    - variant: h6
-      content: Implementation
+        Envision a kingdom in a mythical world, where each creature, from the majestic dragons to the humble field mice, has a role to play in the
+        realm's ecosystem. The creatures are organized into a hierarchy, with mythical beings at the top and various subclasses beneath them. According
+        to the LSP, one should be able to replace a mythical being with one of its descendants—say, a dragon replaced by a fire dragon—without
+        disrupting the balance of the kingdom. This seamless substitution is akin to ensuring that a square, when introduced into a system expecting a
+        rectangle, behaves in a manner consistent with the rectangle's contract, even if its inherent properties suggest a specialized behavior.
     - variant: subtitle1
       content: |
-        To follow LSP, ensure that subclasses fulfill the promises made by their base class. This means they
-        should not remove base class functionality and should not introduce side effects that are not present in
-        the base class.
-    - variant: h6
-      content: Example
+        However, LSP's essence stretches beyond the confines of inheritance and polymorphism, touching on the broader themes of design foresight and
+        system robustness. Just as a kingdom's harmony relies on the predictable behaviors of its creatures, so too does a software system's reliability
+        depend on the consistent behavior of its components. When modeling a hierarchy—be it of shapes, documents, or mythical creatures—the principle
+        advises caution against straying too far from the parent class's purpose, thus preserving the system's integrity and predictability.
     - variant: subtitle1
       content: |
-        If you have a Bird class with a method fly(), a subclass Penguin should not implement fly() in a way
-        that throws an error or does nothing, as penguins can't fly. Instead, consider restructuring the
-        hierarchy.
-    - variant: h6
-      content: Conclusion
+        The principle's application extends into practical scenarios, such as managing diverse document types within a software system. Each document
+        type, from text files to spreadsheets, shares common attributes and functionalities, like being storable or readable. Introducing a file type
+        that diverges significantly from the established document behavior—say, a configuration file masquerading as a document—threatens to unravel
+        the system's cohesiveness, leading to unpredictable outcomes. The LSP encourages designers to maintain a disciplined approach to inheritance,
+        ensuring that each subclass genuinely belongs in the hierarchy it's placed in, upholding the system's logical structure and expected behavior.
     - variant: subtitle1
       content: |
-        LSP is fundamental in inheritance-based architectures. It ensures that subclasses maintain the expected
-        behavior, leading to more reliable and easy-to-maintain code.
+        In essence, the Liskov Substitution Principle is a guiding star for designing resilient and reliable object-oriented systems. It compels
+        developers to think deeply about the relationships between components, advocating for a design philosophy that emphasizes compatibility,
+        reliability, and the seamless interchangeability of classes within a hierarchy. Through adherence to LSP, software architects can craft systems
+        that are not only logically sound but also adaptable and robust, capable of standing the test of time and evolving requirements.
+    - variant: references
+      list:
+        - author: Vlad Ungureanu
+          authorUrl: https://medium.com/@learnstuff.io
+          title: Liskov Substitution Principle
+          url: https://medium.com/@learnstuff.io/liskov-substitution-principle-ad0d6a51ffb0
+        - author: Wikipedia
+          title: Liskov substitution principle
+          url: https://en.wikipedia.org/wiki/Liskov_substitution_principle
   Interface Segregation Principle (ISP):
     - variant: h6
       content: Overview
     - variant: subtitle1
       content: |
-        The Interface Segregation Principle emphasizes that no client should be forced to depend on methods it
-        does not use. This principle advocates for creating specific interfaces rather than one general-purpose
-        interface.
-    - variant: h6
-      content: Benefits
+        The Interface Segregation Principle (ISP), introduced by Robert C. Martin within the SOLID acronym, illuminates an essential facet of
+        software design: the crafting of interfaces that are narrowly tailored and cohesive. According to ISP, interfaces should be segregated—or
+        split—into smaller, more specific ones so that implementing classes only need to concern themselves with the methods that are relevant to
+        their functionality. This principle can be thought of as the application of the Single Responsibility Principle (SRP) to interfaces,
+        emphasizing that each interface should represent a single concept or functionality.
     - variant: subtitle1
       content: |
-        ISP leads to a more organized codebase. It reduces the side effects of changes in the interface and
-        makes the codebase more adaptable and easier to refactor.
-    - variant: h6
-      content: Implementation
+        Consider the analogy of a specialized toolkit designed for a variety of artisans—from carpenters and jewelers to electricians and painters.
+        Each artisan requires a distinct set of tools tailored to their craft. Just as it would be impractical and burdensome for a painter to carry
+        a toolkit filled with electrician's gear, so too is it cumbersome for a class to implement an interface laden with unrelated methods. The ISP
+        advocates for creating distinct toolkits (interfaces) that contain only the tools (methods) pertinent to the task at hand, ensuring that
+        artisans (classes) carry only what is necessary for their work, thereby enhancing efficiency and coherence.
     - variant: subtitle1
       content: |
-        Instead of one large interface, multiple smaller, more specific interfaces should be used. Clients will
-        only need to know about the methods that are of interest to them.
-    - variant: h6
-      content: Example
+        The principle's significance becomes evident as software systems evolve. Initially, a generic interface might seem adequate when there is a
+        single implementing class. However, as the system grows and diversifies, the one-size-fits-all approach leads to inefficiencies and confusion.
+        Implementing classes may end up with empty or irrelevant method implementations, analogous to a jeweler finding a saw in their toolkit—a tool
+        that is superfluous to their needs. This not only muddies the interface's intent but also burdens developers with the maintenance of unnecessary
+        code, akin to the artisan having to lug around an unnecessarily heavy and cluttered toolkit.
     - variant: subtitle1
       content: |
-        Imagine an interface IWorker with methods work() and eat(). Not all workers might need eat(). In this
-        case, it's better to have two interfaces, IWorkable and IEatable, and classes can implement these as
-        needed.
-    - variant: h6
-      content: Conclusion
+        ISP's advocacy for interface segregation aligns with modern coding practices, where interfaces serve as pivotal abstraction layers for decoupling
+        components—such as logic, models, repositories, and utilities. By adhering to ISP, developers ensure that their software architecture remains
+        robust, adaptable, and user-friendly. Implementing focused interfaces allows for a clearer contract between different parts of a system,
+        facilitating a more modular and flexible design that can easily adapt to new requirements without entangling dependencies.
     - variant: subtitle1
       content: |
-        ISP helps in building flexible systems that can evolve over time without unnecessary dependencies or
-        forced implementations, leading to cleaner, more modular code.
+        In essence, the Interface Segregation Principle encourages a thoughtful approach to interface design, akin to curating specialized toolkits for
+        artisans. By ensuring that interfaces are segregated and contextually coherent, software becomes more intuitive, maintainable, and aligned with
+        the principles of good craftsmanship. Through the disciplined application of ISP, developers can create systems that are not only efficient and
+        scalable but also a pleasure to work with, reflecting the artistry and precision inherent in well-designed software.
+    - variant: references
+      list:
+        - author: Vlad Ungureanu
+          authorUrl: https://medium.com/@learnstuff.io
+          title: Interface Segregation Principle
+          url: https://medium.com/@learnstuff.io/interface-segregation-principle-dd885e59aec9
+        - author: Wikipedia
+          title: Interface segregation principle
+          url: https://en.wikipedia.org/wiki/Interface_segregation_principle
   Dependency Inversion Principle (DIP):
     - variant: h6
       content: Overview
     - variant: subtitle1
       content: |
-        The Dependency Inversion Principle is about decoupling software modules. It states that high-level
-        modules should not depend on low-level modules; both should depend on abstractions. Also, abstractions
-        should not depend on details, but details should depend on abstractions.
-    - variant: h6
-      content: Benefits
+        The Dependency Inversion Principle (DIP), a fundamental concept within the SOLID principles introduced by Robert C. Martin, champions a design
+        architecture where high-level modules are insulated from the vagaries of low-level modules through the strategic use of abstractions. By
+        prioritizing abstractions over concrete implementations, DIP facilitates a design where high-level classes—those responsible for orchestrating
+        complex logic—do not directly depend on low-level classes—those providing specific utility functions. Instead, both sets of classes interact
+        through interfaces, ensuring that modifications in detailed operations do not necessitate alterations in the system's overarching logic.
     - variant: subtitle1
       content: |
-        DIP reduces the direct coupling between high-level and low-level modules, making the system more robust
-        and less prone to breakage when individual components are modified or replaced.
-    - variant: h6
-      content: Implementation
+        Envision a city's water supply system as an analogy for DIP. In this city, the high-level module is the water management authority, responsible for
+        ensuring that water reaches every home efficiently. The low-level modules are the various water sources and treatment facilities scattered
+        throughout the city. Instead of the water authority depending directly on each individual water source—which would be cumbersome and inflexible—the
+        city employs a network of pipes and control mechanisms (the abstractions) that standardize how water is delivered, regardless of its source. This
+        system allows for the addition or modification of water sources without disrupting the overall water supply, mirroring how DIP enables high-level
+        logic to remain unaffected by changes in low-level modules.
     - variant: subtitle1
       content: |
-        Implement DIP by using interfaces or abstract classes to create a layer of abstraction between different
-        modules. High-level modules interact with these abstractions rather than directly with low-level modules
-    - variant: h6
-      content: Example
+        The Model-View-Controller (MVC) pattern serves as a prime illustration of DIP in software engineering. In MVC, the Controller acts as the abstraction
+        layer that separates the Model (business logic) from the View (user interface). This separation allows for the independent development and modification
+        of the UI and business logic, harmonizing their interaction through a consistent, abstracted contract provided by the Controller. This architecture
+        embodies DIP by ensuring that changes in the user interface do not necessitate changes in the underlying business processes, and vice versa.
     - variant: subtitle1
       content: |
-        Consider a high-level module OrderProcessor that needs to save data using a Database. Instead of
-        directly using a specific database class, OrderProcessor should depend on an IDatabase interface, which
-        can be implemented by any specific database class.
-    - variant: h6
-      content: Conclusion
+        Moreover, the principle's application is evident in the use of collections in Java, where relying on the List interface for business logic allows
+        developers the flexibility to choose between ArrayList, LinkedList, or Vector implementations. This choice can be made without altering the logic
+        itself, showcasing how DIP promotes loose coupling between components. By abstracting the type of collection used, the principle underlines the
+        importance of design by contract, enabling seamless interchangeability and adaptability of implementations.
     - variant: subtitle1
       content: |
-        DIP is a powerful principle for achieving loose coupling and greater modularity in a software system,
-        leading to code that is more maintainable and flexible.
+        The Dependency Inversion Principle, therefore, encourages a high degree of modularity, flexibility, and reusability in software design. By advocating
+        for dependencies on abstractions rather than concrete implementations, DIP enables developers to construct systems that are robust, adaptable, and
+        resilient to change. This principle not only simplifies maintenance and enhancement but also ensures that the architecture can gracefully evolve to
+        meet new challenges and requirements, much like a city's infrastructure adapting to the ever-changing needs of its inhabitants.
+    - variant: references
+      list:
+        - author: Vlad Ungureanu
+          authorUrl: https://medium.com/@learnstuff.io
+          title: Dependency Inversion Principle
+          url: https://medium.com/@learnstuff.io/dependency-inversion-principle-aafa06af26b4
+        - author: Wikipedia
+          title: Dependency inversion principle
+          url: https://en.wikipedia.org/wiki/Dependency_inversion_principle
