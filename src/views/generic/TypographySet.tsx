@@ -2,6 +2,7 @@ import {Box, Link, List, ListItem, ListItemText, Typography} from '@mui/material
 
 import {ContentType, ReferencesType} from '../../state';
 import SyntaxHighlighter from '../code/SyntaxHighlighter';
+import LazyLoadImage from '../../components/images/LazyLoadImage';
 
 export type TypographySetProps = {
   content: (ContentType | ReferencesType)[];
@@ -43,7 +44,15 @@ export default function TypographySet({content}: TypographySetProps) {
     <Box>
       {content.map((item) =>
         item.variant === 'code' ? (
-          <SyntaxHighlighter language="javascript" code={item.content || 'Empty Code...'} />
+          <SyntaxHighlighter key={item.content} language="javascript" code={item.content || 'Empty Code...'} />
+        ) : item.variant === 'svg' ? (
+          <Box display={'flex'} justifyContent={'center'}>
+            <LazyLoadImage
+              key={item.content}
+              image={item.content as string}
+              style={{width: '36rem', height: '18rem'}}
+            />
+          </Box>
         ) : item.variant === 'references' ? (
           <References references={item}></References>
         ) : (

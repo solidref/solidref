@@ -46,6 +46,8 @@ accordion:
         nor should an office take on the responsibilities of a gym. This specialization allows for changes to be made
         to one building without the risk of unintended consequences rippling through the city, ensuring that enhancements
         or repairs can be carried out efficiently and effectively.
+    - variant: svg
+      content: solid/SeparationOfConcerns
     - variant: subtitle1
       content: |
         In this city, the flow of information and tasks between buildings mirrors the interactions within a well-designed

@@ -21,7 +21,7 @@ export type ReferencesType = {
 export type ContentType = {
   content?: string;
   // same variants as Typography MUI
-  variant?: TypographyProps['variant'] | 'code';
+  variant?: TypographyProps['variant'] | 'code' | 'svg';
 };
 
 export type CodeExample = {
