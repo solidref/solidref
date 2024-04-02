@@ -102,6 +102,8 @@ accordion:
         may sprout new branches or leaves to better capture sunlight or support the ecosystem around it, but the core—the trunk and
         roots—remains steadfast. This natural analogy mirrors the Open/Closed Principle, where the "tree" (our class) can extend new
         "branches" (features or behaviors) without altering its "trunk" (the original, tested code).
+    - variant: svg
+      content: solid/OpenClosed
     - variant: subtitle1
       content: |
         In the realm of software, a classic illustration of adhering to this principle is the handling of a Shape class designed to
@@ -152,6 +154,8 @@ accordion:
         to the LSP, one should be able to replace a mythical being with one of its descendants—say, a dragon replaced by a fire dragon—without
         disrupting the balance of the kingdom. This seamless substitution is akin to ensuring that a square, when introduced into a system expecting a
         rectangle, behaves in a manner consistent with the rectangle's contract, even if its inherent properties suggest a specialized behavior.
+    - variant: svg
+      content: solid/LiskovSubstitution
     - variant: subtitle1
       content: |
         However, LSP's essence stretches beyond the confines of inheritance and polymorphism, touching on the broader themes of design foresight and
@@ -197,6 +201,8 @@ accordion:
         a toolkit filled with electrician's gear, so too is it cumbersome for a class to implement an interface laden with unrelated methods. The ISP
         advocates for creating distinct toolkits (interfaces) that contain only the tools (methods) pertinent to the task at hand, ensuring that
         artisans (classes) carry only what is necessary for their work, thereby enhancing efficiency and coherence.
+    - variant: svg
+      content: solid/InterfaceSegregation
     - variant: subtitle1
       content: |
         The principle's significance becomes evident as software systems evolve. Initially, a generic interface might seem adequate when there is a
@@ -243,6 +249,8 @@ accordion:
         city employs a network of pipes and control mechanisms (the abstractions) that standardize how water is delivered, regardless of its source. This
         system allows for the addition or modification of water sources without disrupting the overall water supply, mirroring how DIP enables high-level
         logic to remain unaffected by changes in low-level modules.
+    - variant: svg
+      content: solid/DependencyInversion
     - variant: subtitle1
       content: |
         The Model-View-Controller (MVC) pattern serves as a prime illustration of DIP in software engineering. In MVC, the Controller acts as the abstraction
