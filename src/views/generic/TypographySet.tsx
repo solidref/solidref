@@ -1,12 +1,8 @@
-import {Box, Link, List, ListItem, ListItemText, Typography} from '@mui/material';
+import {Box, Link, List, ListItem, ListItemText, SvgIconProps, Typography} from '@mui/material';
 
 import {ContentType, ReferencesType} from '../../state';
-import SyntaxHighlighter from '../code/SyntaxHighlighter';
+import SyntaxHighlighter from './SyntaxHighlighter';
 import LazyLoadImage from '../../components/images/LazyLoadImage';
-
-export type TypographySetProps = {
-  content: (ContentType | ReferencesType)[];
-};
 
 type ReferencesProps = {
   references: ReferencesType;
@@ -39,7 +35,15 @@ function References({references}: ReferencesProps) {
   );
 }
 
-export default function TypographySet({content}: TypographySetProps) {
+export type TypographySetProps = {
+  content: (ContentType | ReferencesType)[];
+  svgProps?: Omit<SvgIconProps, 'children' | 'mode'>;
+};
+
+export default function TypographySet({
+  content,
+  svgProps = {style: {width: '36rem', height: '18rem'}},
+}: TypographySetProps) {
   return (
     <Box>
       {content.map((item) =>
@@ -47,11 +51,7 @@ export default function TypographySet({content}: TypographySetProps) {
           <SyntaxHighlighter key={item.content} language="javascript" code={item.content || 'Empty Code...'} />
         ) : item.variant === 'svg' ? (
           <Box display={'flex'} justifyContent={'center'}>
-            <LazyLoadImage
-              key={item.content}
-              image={item.content as string}
-              style={{width: '36rem', height: '18rem'}}
-            />
+            <LazyLoadImage key={item.content} image={item.content as string} {...svgProps} />
           </Box>
         ) : item.variant === 'references' ? (
           <References references={item}></References>

@@ -3,7 +3,7 @@ import {Box, ToggleButton, ToggleButtonGroup, useTheme} from '@mui/material';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
-import LanguagesList, {FilterMode} from './languages/LanguagesList';
+import LanguagesList, {FilterMode} from './languages/List';
 import Hero from './home/Hero';
 
 import Container from '../generic/Container';

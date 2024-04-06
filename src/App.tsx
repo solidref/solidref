@@ -1,17 +1,24 @@
+import {styled} from '@mui/material';
 import React from 'react';
 
-import Routes from './Routes';
-
 import ThemeWrapper from './components/styles/ThemeWrapper';
-
+import Routes from './Routes';
 import Header from './views/Header';
+import LoadingIcon from './views/icons/Loading';
 import Footer from './views/Footer';
-import {styled} from '@mui/material';
 
 const MyApp = styled('div')(() => ({
   // background: 'red',
   display: 'flex',
   flexDirection: 'column',
+  minHeight: '100vh',
+}));
+
+const Loading = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
   minHeight: '100vh',
 }));
 
@@ -21,8 +28,13 @@ const App: React.FC = () => {
   return (
     <ThemeWrapper>
       <MyApp>
-        {/* <LanguageHierarchyLoader setLanguagesHierarchyState={setLanguagesHierarchyState} /> */}
-        <React.Suspense fallback={<div>Loading...</div>}>
+        <React.Suspense
+          fallback={
+            <Loading>
+              <LoadingIcon />
+            </Loading>
+          }
+        >
           <Header />
           <Routes />
           <Footer />
