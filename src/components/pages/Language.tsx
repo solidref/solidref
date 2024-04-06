@@ -1,16 +1,16 @@
+import {Box, Typography, useTheme} from '@mui/material';
 import {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {useRecoilValue} from 'recoil';
 
-import {Box, Typography, useTheme} from '@mui/material';
-
+import {CodingPrincipleTitles} from '../../constants';
 import {CodingPrinciple, DesignPattern, Language, LanguageState} from '../../state';
 import {loadLanguage} from '../../selector';
 import Container from '../../views/generic/Container';
-import LanguageHero from '../../views/pages/language/LanguageHero';
-import PrinciplesOrPatterns from '../../views/pages/language/PrinciplesOrPatterns';
-import PrinciplesOrPatternsMenu from '../../views/pages/language/PrinciplesOrPatternsMenu';
-import {CodingPrincipleTitles} from '../../constants';
+import LanguageHero from '../../views/pages/language/Hero';
+import PrinciplesOrPatternsMenu from '../../views/pages/language/BottomMenu';
+// import PatternsOrPrinciples from '../../views/principles-or-patterns/AsAccordion';
+import PatternsOrPrinciples from '../../views/docs/AsGrid';
 
 type DetectedPrincipleOrPattern = {type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[]};
 
@@ -72,10 +72,10 @@ export default function LanguagePage() {
               </Box>
               <Box sx={{flexGrow: 1}}>
                 {detectedPrincipleOrPattern.principlesOrPatterns?.length && (
-                  <PrinciplesOrPatterns
+                  <PatternsOrPrinciples
                     type={detectedPrincipleOrPattern.type ?? ''}
-                    principlesOrPatterns={detectedPrincipleOrPattern.principlesOrPatterns ?? []}
-                    languageCode={languageState.language.code}
+                    patternsOrPrinciples={detectedPrincipleOrPattern.principlesOrPatterns ?? []}
+                    language={languageState.language.code}
                   />
                 )}
               </Box>
@@ -95,7 +95,7 @@ export default function LanguagePage() {
           </Box>
         </Box>
       ) : (
-        <Box>Loading...</Box>
+        <Box />
       )}
     </Box>
   );

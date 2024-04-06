@@ -1,7 +1,7 @@
 import {Box, useTheme} from '@mui/material';
 
 import HomeHero from './home/Hero';
-import LanguagesList from './languages/LanguagesList';
+import LanguagesList from './languages/List';
 
 import Container from '../generic/Container';
 import {useRecoilValue} from 'recoil';

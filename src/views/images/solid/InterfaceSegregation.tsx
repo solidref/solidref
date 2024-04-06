@@ -1,5 +1,5 @@
 import {SvgIconProps, useTheme} from '@mui/material';
-import {createSvgIcon} from '../../icons/SvgIcon';
+import {createSvgIcon} from '../../icons/languages/SvgIcon';
 
 const SvgIcon = createSvgIcon({
   height: '128',
@@ -10,6 +10,7 @@ const SvgIcon = createSvgIcon({
 
 export default function OpenClosed(props: SvgIconProps): SvgIconProps {
   const theme = useTheme();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const colorPrimaryAlt = (theme.palette as any)?.alternate?.light;
 
   return (

@@ -1,26 +1,26 @@
 ---
 title: <i>Creational</i> Design Patterns <br /> in Software Development
 before:
-  - variant: subtitle1
+  - variant: body1
     content: |
       Creational design patterns abstract the instantiation process. They help make a system independent of how its objects are created, composed, and represented. A class creational pattern uses inheritance to vary the class that’s instantiated, whereas an object creational pattern will delegate instantiation to another object. Below, we explore several key creational design patterns, providing insights into their purposes, structures, and applications, using JavaScript for illustrations.
 accordion:
   Factory Method:
-    - variant: subtitle1
+    - variant: body1
       content: |
         The Factory Method Pattern defines an interface for creating an object, but lets subclasses alter the type of objects that will be created.
-    - variant: h6
-      content: Concept
     - variant: subtitle1
+      content: Concept
+    - variant: body1
       content: |
         This pattern involves a single class which is responsible to create an object while making sure that only one object gets created. It provides a way to delegate the instantiation logic to child classes.
-    - variant: h6
-      content: Structure
     - variant: subtitle1
+      content: Structure
+    - variant: body1
       content: |
         Creator: A class that contains the implementations for all of the methods to manipulate products, including the factory method.
         ConcreteCreator: Overrides the factory method to return an instance of a ConcreteProduct.
-    - variant: h6
+    - variant: subtitle1
       content: Example
     - variant: code
       content: |
@@ -45,23 +45,23 @@ accordion:
         const creator = new ConcreteCreator();
         const product = creator.factoryMethod();
   Abstract Factory:
-    - variant: subtitle1
+    - variant: body1
       content: |
         The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes.
-    - variant: h6
-      content: Concept
     - variant: subtitle1
+      content: Concept
+    - variant: body1
       content: |
         This pattern involves multiple Factory Methods, one for each type of object to be created and an abstract class to define the standard interface.
-    - variant: h6
-      content: Structure
     - variant: subtitle1
+      content: Structure
+    - variant: body1
       content: |
         AbstractFactory: Declares an interface for operations that create abstract product objects.
         ConcreteFactory: Implements the operations to create concrete product objects.
         AbstractProduct: Declares an interface for a type of product object.
         ConcreteProduct: Defines a product object to be created by the corresponding concrete factory.
-    - variant: h6
+    - variant: subtitle1
       content: Example
     - variant: code
       content: |
@@ -98,23 +98,23 @@ accordion:
         const productA1 = factory1.createProductA();
         const productB1 = factory1.createProductB();
   Builder:
-    - variant: subtitle1
+    - variant: body1
       content: |
         The Builder Pattern separates the construction of a complex object from its representation, so that the same construction process can create different representations.
-    - variant: h6
-      content: Concept
     - variant: subtitle1
+      content: Concept
+    - variant: body1
       content: |
         This pattern allows you to produce different types and representations of an object using the same construction code.
-    - variant: h6
-      content: Structure
     - variant: subtitle1
+      content: Structure
+    - variant: body1
       content: |
         Builder: Interface that defines all the steps needed to construct a product.
         ConcreteBuilder: Implements the Builder interface and provides an interface for retrieving the product.
         Director: Constructs an object using the Builder interface.
         Product: The final object that is being built.
-    - variant: h6
+    - variant: subtitle1
       content: Example
     - variant: code
       content: |
@@ -155,22 +155,22 @@ accordion:
         const builder = new ConcreteBuilder();
         const product = director.construct(builder);
   Prototype:
-    - variant: subtitle1
+    - variant: body1
       content: |
         The Prototype Pattern creates new objects, but instead of creating non-initialized objects, it returns objects that are initialized with values it copied from a prototype – or sample – object.
-    - variant: h6
-      content: Concept
     - variant: subtitle1
+      content: Concept
+    - variant: body1
       content: |
         The Prototype pattern is used when creating an instance of a class is more expensive or complex than copying an existing instance.
-    - variant: h6
-      content: Structure
     - variant: subtitle1
+      content: Structure
+    - variant: body1
       content: |
         Prototype: Declares an interface for cloning itself.
         ConcretePrototype: Implements an operation for cloning itself.
         Client: Creates a new object by asking a prototype to clone itself.
-    - variant: h6
+    - variant: subtitle1
       content: Example
     - variant: code
       content: |
@@ -194,21 +194,21 @@ accordion:
         const prototype = new ConcretePrototype();
         const clonedObject = prototype.clone();
   Singleton:
-    - variant: subtitle1
+    - variant: body1
       content: |
         The Singleton Pattern ensures a class has only one instance and provides a global point of access to it.
-    - variant: h6
-      content: Concept
     - variant: subtitle1
+      content: Concept
+    - variant: body1
       content: |
         Singleton pattern restricts a class from instantiating multiple objects. This pattern ensures a class has only one instance and provides a global point of access to it.
-    - variant: h6
-      content: Structure
     - variant: subtitle1
+      content: Structure
+    - variant: body1
       content: |
         Instance: A private static variable that holds the one and only instance of the class.
         getInstance(): A public static method that returns the single instance of the class.
-    - variant: h6
+    - variant: subtitle1
       content: Example
     - variant: code
       content: |

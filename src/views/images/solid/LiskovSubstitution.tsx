@@ -1,5 +1,5 @@
-import {SvgIconProps, useTheme} from '@mui/material';
-import {createSvgIcon} from '../../icons/SvgIcon';
+import {SvgIconProps} from '@mui/material';
+import {createSvgIcon} from '../../icons/languages/SvgIcon';
 
 const SvgIcon = createSvgIcon({
   height: '128',

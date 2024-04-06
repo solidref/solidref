@@ -1,21 +1,21 @@
 import {Box, Typography, useTheme, useMediaQuery} from '@mui/material';
 
-import Hero from '../../generic/Hero';
+import GenericHero from '../../generic/Hero';
 import {Language} from '../../../state';
 import LazyLoadIcon from '../../../components/icons/LazyLoadIcon';
 
-export type LanguageHeroProps = {
+export type HeroProps = {
   language: Language;
 };
 
-export default function LanguageHero({language}: LanguageHeroProps) {
+export default function Hero({language}: HeroProps) {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
 
   return (
-    <Hero breakpoints={{md: 12}}>
+    <GenericHero breakpoints={{md: 12}}>
       <Box
         maxWidth={'100%'}
         data-aos={isMd ? 'fade-left' : 'fade-up'}
@@ -53,6 +53,6 @@ export default function LanguageHero({language}: LanguageHeroProps) {
           }}
         />
       </Box>
-    </Hero>
+    </GenericHero>
   );
 }

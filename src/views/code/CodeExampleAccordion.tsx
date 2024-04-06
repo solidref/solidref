@@ -4,7 +4,7 @@ import {styled} from '@mui/system';
 import {Box, Typography} from '@mui/material';
 
 import {CodeExample} from '../../state';
-import SyntaxHighlighter from './SyntaxHighlighter';
+import SyntaxHighlighter from '../generic/SyntaxHighlighter';
 import HorizontalAccordion from '../generic/accordion/HorizontalAccordion';
 import HorizontalAccordionSummary from '../generic/accordion/HorizontalAccordionSummary';
 import HorizontalAccordionDetails from '../generic/accordion/HorizontalAccordionDetails';

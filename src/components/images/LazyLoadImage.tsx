@@ -2,10 +2,10 @@ import React, {ElementType, Suspense, lazy, useEffect, useState} from 'react';
 import {SvgIconProps} from '@mui/material';
 import {OverridableTypeMap, OverrideProps} from '@mui/material/OverridableComponent';
 
-import Loader from '../../views/Loader';
+import Loader from '../../views/icons/Loading';
 
 // Extending SvgIconProps to include all properties a MUI Box element can have
-export type LazyLoadImageProps = SvgIconProps & {
+export type LazyLoadImageProps = Omit<SvgIconProps, 'children'> & {
   image: string;
   fallback?: ElementType;
   fallbackProps?: OverrideProps<OverridableTypeMap, ElementType>;

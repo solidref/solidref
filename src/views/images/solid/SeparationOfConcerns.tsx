@@ -1,5 +1,5 @@
 import {SvgIconProps, useTheme} from '@mui/material';
-import {createSvgIcon} from '../../icons/SvgIcon';
+import {createSvgIcon} from '../../icons/languages/SvgIcon';
 
 const SvgIcon = createSvgIcon({
   height: '128',
@@ -11,6 +11,7 @@ export default function SeparationOfConcerns(props: SvgIconProps): SvgIconProps 
   const theme = useTheme();
   const colorPrimaryMain = theme.palette.primary.main;
   const colorPrimarySec = theme.palette.secondary.main;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const colorPrimaryAlt = (theme.palette as any)?.alternate?.light;
 
   return (

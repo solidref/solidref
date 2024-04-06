@@ -1,19 +1,19 @@
 import {Box, Typography, useTheme, useMediaQuery} from '@mui/material';
 
-import Hero from '../../generic/Hero';
+import GenericHero from '../../generic/Hero';
 
-export type LanguageHeroProps = {
+export type HeroProps = {
   title: string;
 };
 
-export default function PrincipleOrPatternHero({title}: LanguageHeroProps) {
+export default function Hero({title}: HeroProps) {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
   });
 
   return (
-    <Hero breakpoints={{md: 12}}>
+    <GenericHero breakpoints={{md: 12}}>
       <Box
         maxWidth={'100%'}
         data-aos={isMd ? 'fade-left' : 'fade-up'}
@@ -26,6 +26,6 @@ export default function PrincipleOrPatternHero({title}: LanguageHeroProps) {
           <i dangerouslySetInnerHTML={{__html: title || 'Undefined row...'}} />
         </Typography>
       </Box>
-    </Hero>
+    </GenericHero>
   );
 }
