@@ -55,7 +55,7 @@ export default function AsGrid({columns = 4, language = 'js', patternOrPrinciple
 
   const frames = [
     ...examples.map((example) => (
-      <div>
+      <div key={example.title}>
         <Typography variant="subtitle1"># {(example.title ?? 'Example').toLowerCase()}</Typography>
         <SyntaxHighlighter code={example.code || '// missing code'} language={language} />
       </div>
@@ -87,14 +87,14 @@ export default function AsGrid({columns = 4, language = 'js', patternOrPrinciple
           {[
             ...examples.map((example, index) => (
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              <IconButton onClick={() => (sliderRef as any).slickGoTo(index)}>
-                <CodeIcon key={JSON.stringify(example)} style={{fontSize: '1rem'}} />
+              <IconButton key={JSON.stringify(example)} onClick={() => (sliderRef as any).slickGoTo(index)}>
+                <CodeIcon style={{fontSize: '1rem'}} />
               </IconButton>
             )),
             ...(description.length
               ? [
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  <IconButton onClick={() => (sliderRef as any).slickGoTo(examples.length)}>
+                  <IconButton key={1} onClick={() => (sliderRef as any).slickGoTo(examples.length)}>
                     <LibraryBooksIcon style={{fontSize: '1rem'}} />
                   </IconButton>,
                 ]

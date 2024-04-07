@@ -1,5 +1,5 @@
 import {SvgIconProps} from '@mui/material';
-import {createSvgIcon} from './SvgIcon';
+import {createSvgIcon} from '../../SvgIcon';
 
 const SvgIcon = createSvgIcon({
   viewBox: '0 0 256 288',

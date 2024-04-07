@@ -1,6 +1,6 @@
 import React from 'react';
 import {SvgIconProps} from '@mui/material';
-import {createSvgIcon} from '../icons/languages/SvgIcon';
+import {createSvgIcon} from '../icons/SvgIcon';
 
 const SvgIcon = createSvgIcon({
   viewBox: '0 0 20 20',

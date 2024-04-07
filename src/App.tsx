@@ -8,7 +8,6 @@ import LoadingIcon from './views/icons/Loading';
 import Footer from './views/Footer';
 
 const MyApp = styled('div')(() => ({
-  // background: 'red',
   display: 'flex',
   flexDirection: 'column',
   minHeight: '100vh',
@@ -23,8 +22,6 @@ const Loading = styled('div')(() => ({
 }));
 
 const App: React.FC = () => {
-  // const [, setLanguagesHierarchyState] = useRecoilState(languagesHierarchyState);
-
   return (
     <ThemeWrapper>
       <MyApp>

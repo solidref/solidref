@@ -9,7 +9,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('views/images') || id.includes('views/icons/languages')) {
+          if (id.includes('views/images/lazy') || id.includes('views/icons/lazy')) {
+            console.log(id);
             return btoa(`views/${id.split('views/')[1]}-${id.split('/').pop()}`);
             // return `${id
             //   .split('/')

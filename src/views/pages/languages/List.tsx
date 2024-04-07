@@ -67,7 +67,7 @@ export default function LanguagesList({
                 }}
               >
                 <LazyLoadIcon
-                  icon={language.code.charAt(0).toUpperCase() + language.code.slice(1)}
+                  icon={`languages/${language.code.charAt(0).toUpperCase() + language.code.slice(1)}`}
                   style={{
                     width: '8rem',
                     height: '8rem',

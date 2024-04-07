@@ -1,4 +1,4 @@
-import GenericCodeIcon from '../../views/icons/languages/GenericCodeIcon';
+import GenericCodeIcon from '../../views/icons/lazy/languages/GenericCodeIcon';
 import {LoadSvgWithLazy, LoadSvgWithImport, LazyLoadSvgProps, Importer} from '../images/LazyLoadImage';
 
 // Extending SvgIconProps to include all properties a MUI Box element can have
@@ -11,7 +11,13 @@ export default function LazyLoadIcon({
   fallback = GenericCodeIcon,
   icon,
   mode = 'lazy',
-  importer = async (name: string) => import(`../../views/icons/languages/${name}.tsx`),
+  importer = async (name: string) => {
+    if (name.includes('languages/')) {
+      const lang = name.split('/').pop();
+      return import(`../../views/icons/lazy/languages/${lang}.tsx`);
+    }
+    return import(`../../views/icons/lazy/${name}.tsx`);
+  },
   ...rest
 }: LazyLoadIconProps) {
   if (mode === 'lazy') {

@@ -37,7 +37,7 @@ export default function Slider({
 }: SliderProps) {
   return (
     <SlickSlider.default {...sliderProps}>
-      {frames.map((frame) => createElement(frameWrapper, {...rest, children: frame}))}
+      {frames.map((frame) => createElement(frameWrapper, {...rest, key: frame, children: frame}))}
     </SlickSlider.default>
   );
 }

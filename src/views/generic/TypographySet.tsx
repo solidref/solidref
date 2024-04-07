@@ -14,7 +14,7 @@ function References({references}: ReferencesProps) {
       <Typography variant="h6">References</Typography>
       <List>
         {references.list.map((item) => (
-          <ListItem style={{padding: '0'}}>
+          <ListItem key={`${item.author}-${item.authorUrl}`} style={{padding: '0'}}>
             <ListItemText>
               <Link href={item.url} target="_blank" rel="noreferrer">
                 {item.title}
@@ -46,7 +46,7 @@ export default function TypographySet({
 }: TypographySetProps) {
   return (
     <Box>
-      {content.map((item) =>
+      {content.map((item, index) =>
         item.variant === 'code' ? (
           <SyntaxHighlighter key={item.content} language="javascript" code={item.content || 'Empty Code...'} />
         ) : item.variant === 'svg' ? (
@@ -54,7 +54,7 @@ export default function TypographySet({
             <LazyLoadImage key={item.content} name={item.content as string} {...svgProps} />
           </Box>
         ) : item.variant === 'references' ? (
-          <References references={item}></References>
+          <References key={index} references={item}></References>
         ) : (
           <Typography
             key={item.content}

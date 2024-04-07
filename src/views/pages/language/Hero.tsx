@@ -34,7 +34,7 @@ export default function Hero({language}: HeroProps) {
           Here are the <i>{language.name}</i> Coding Principles or Design Patterns explained
         </Typography>
         <LazyLoadIcon
-          icon={language.code.charAt(0).toUpperCase() + language.code.slice(1)}
+          icon={`languages/${language.code.charAt(0).toUpperCase() + language.code.slice(1)}`}
           style={{
             width: '8rem',
             height: '8rem',

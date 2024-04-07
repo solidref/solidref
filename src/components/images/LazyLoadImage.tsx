@@ -78,12 +78,18 @@ export function LoadSvgWithLazy({
 
 export default function LazyLoadImage({
   mode = 'lazy',
-  name: image,
-  importer = async (name: string) => import(`../../views/images/${name}.tsx`),
+  name,
+  importer = async (name: string) => {
+    if (name.includes('solid/')) {
+      const image = name.split('/').pop();
+      return import(`../../views/images/lazy/solid/${image}.tsx`);
+    }
+    return import(`../../views/images/lazy/${name}.tsx`);
+  },
   ...rest
 }: Omit<LazyLoadSvgProps, 'importer'> & {importer?: Importer}) {
   if (mode === 'lazy') {
-    return <LoadSvgWithLazy name={image} importer={importer} {...rest} />;
+    return <LoadSvgWithLazy name={name} importer={importer} {...rest} />;
   }
-  return <LoadSvgWithImport name={image} importer={importer} {...rest} />;
+  return <LoadSvgWithImport name={name} importer={importer} {...rest} />;
 }

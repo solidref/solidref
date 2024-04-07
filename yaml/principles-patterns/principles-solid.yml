@@ -17,7 +17,7 @@ after:
     list:
       - author: Ihechikara Vincent Abba
         authorUrl: https://www.freecodecamp.org/news/author/ihechikara/
-        title: SOLID Definition – the SOLID Principles of Object-Oriented Design Explained
+        title: SOLID Definition - the SOLID Principles of Object-Oriented Design Explained
         url: https://www.freecodecamp.org/news/solid-principles-single-responsibility-principle-explained/
       - author: Wikipedia
         title: SOLID
@@ -41,7 +41,7 @@ accordion:
     - variant: body1
       content: |
         Imagine a software system as a bustling city, with each building representing a class within the system. Just
-        as every building is designed for a specific purpose – be it a library, a restaurant, or an office – each
+        as every building is designed for a specific purpose - be it a library, a restaurant, or an office - each
         class in a system should serve a distinct role. The SRP posits that a library should not double as a restaurant,
         nor should an office take on the responsibilities of a gym. This specialization allows for changes to be made
         to one building without the risk of unintended consequences rippling through the city, ensuring that enhancements
@@ -51,14 +51,14 @@ accordion:
     - variant: body1
       content: |
         In this city, the flow of information and tasks between buildings mirrors the interactions within a well-designed
-        software system. A request from a citizen (user) is like a call to a Controller – a central hub that directs the
+        software system. A request from a citizen (user) is like a call to a Controller - a central hub that directs the
         request to the appropriate service, akin to a specialized service building. This building then handles the request,
         possibly consulting with others, like repositories or utility services, each dedicated to a specific aspect of city
         life. The SRP ensures that these interactions are streamlined and that each building (class) focuses on its primary
         function, maintaining order and efficiency.
     - variant: body1
       content: |
-        Utility services within this city – be they transportation, sanitation, or communication networks – can be likened
+        Utility services within this city - be they transportation, sanitation, or communication networks - can be likened
         to utility classes in software. While essential for the city's overall functionality, they operate in the background,
         supporting the primary functions without overshadowing the dedicated roles of other buildings. These services embody
         the SRP by providing specialized functionalities that enhance the city's operations without adding unnecessary
@@ -136,7 +136,7 @@ accordion:
           title: Open/Close Principle
           url: https://medium.com/@learnstuff.io/open-close-principle-442ebafb3528
         - author: Wikipedia
-          title: Open–closed principle
+          title: Open-closed principle
           url: https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle
   Liskov Substitution Principle (LSP):
     - variant: subtitle1

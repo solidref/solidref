@@ -70,7 +70,7 @@ export default function LanguageSelector() {
         onClick={handleClick}
       >
         <LazyLoadIcon
-          icon={selectedLanguageCode.charAt(0).toUpperCase() + selectedLanguageCode.slice(1)}
+          icon={`languages/${selectedLanguageCode.charAt(0).toUpperCase() + selectedLanguageCode.slice(1)}`}
           style={IconStyle}
           fallbackProps={{
             style: IconStyle,
@@ -94,7 +94,7 @@ export default function LanguageSelector() {
                 aria-label={`Set ${name} as Your Programming Language`}
               >
                 <LazyLoadIcon
-                  icon={code.charAt(0).toUpperCase() + code.slice(1)}
+                  icon={`languages/${code.charAt(0).toUpperCase() + code.slice(1)}`}
                   style={IconStyle}
                   fallbackProps={{
                     style: IconStyle,
