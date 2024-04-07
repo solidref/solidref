@@ -51,7 +51,7 @@ export default function TypographySet({
           <SyntaxHighlighter key={item.content} language="javascript" code={item.content || 'Empty Code...'} />
         ) : item.variant === 'svg' ? (
           <Box display={'flex'} justifyContent={'center'}>
-            <LazyLoadImage key={item.content} image={item.content as string} {...svgProps} />
+            <LazyLoadImage key={item.content} name={item.content as string} {...svgProps} />
           </Box>
         ) : item.variant === 'references' ? (
           <References references={item}></References>
