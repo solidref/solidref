@@ -1,4 +1,3 @@
-import React from 'react';
 import {SvgIconProps} from '@mui/material';
 import {createSvgIcon} from './SvgIcon';
 
@@ -6,7 +5,7 @@ const SvgIcon = createSvgIcon({
   viewBox: '0 0 256 256',
 });
 
-const Assemblyscript: React.FunctionComponent<SvgIconProps> = (props: SvgIconProps) => {
+export default function Assemblyscript(props: SvgIconProps) {
   return (
     <SvgIcon {...props}>
       <path d="M0 0v256h256V0h-98.4c0 15-11.1 30-29.4 30A29.5 29.5 0 0198.5 0z" fill="#007acc"></path>
@@ -16,6 +15,4 @@ const Assemblyscript: React.FunctionComponent<SvgIconProps> = (props: SvgIconPro
       ></path>
     </SvgIcon>
   );
-};
-
-export default Assemblyscript;
+}
