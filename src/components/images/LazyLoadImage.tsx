@@ -1,4 +1,4 @@
-import React, {ElementType, Suspense, lazy, useEffect, useState} from 'react';
+import {createElement, ElementType, Suspense, lazy, useEffect, useState} from 'react';
 import {SvgIconProps} from '@mui/material';
 import {OverridableTypeMap, OverrideProps} from '@mui/material/OverridableComponent';
 
@@ -24,7 +24,7 @@ export function LazyLoadImageImport({
     let isActive = true;
     const importpath = async () => {
       try {
-        const {default: ImportedImage} = await import(image);
+        const {default: ImportedImage} = await import(/* @vite-ignore */ image);
         if (isActive) setLazypath(() => ImportedImage);
       } catch (error) {
         console.error(`Error importing language path: ${image}`, error);
@@ -39,8 +39,8 @@ export function LazyLoadImageImport({
   }, [image, fallback, fallbackProps]);
 
   return (
-    <Suspense fallback={React.createElement(fallback, fallbackProps)}>
-      {Lazypath ? React.createElement(Lazypath, {...rest}) : React.createElement(fallback, fallbackProps)}
+    <Suspense fallback={createElement(fallback, fallbackProps)}>
+      {Lazypath ? createElement(Lazypath, {...rest}) : createElement(fallback, fallbackProps)}
     </Suspense>
   );
 }
@@ -53,7 +53,7 @@ export function LazyLoadImageLazy({
 }: Omit<LazyLoadImageProps, 'mode'>) {
   const LazyImage = lazy(async () => {
     try {
-      return import(image);
+      return import(/* @vite-ignore */ image);
     } catch (error) {
       console.error(`Error importing language path: ${image}`, error);
     }
@@ -63,9 +63,11 @@ export function LazyLoadImageLazy({
   });
 
   return (
-    <Suspense fallback={React.createElement(fallback, fallbackProps)}>
-      <LazyImage {...rest} />
-    </Suspense>
+    <>
+      <Suspense fallback={createElement(fallback, fallbackProps)}>
+        <LazyImage {...rest} />
+      </Suspense>
+    </>
   );
 }
 
