@@ -10,8 +10,12 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('views/images') || id.includes('views/icons/languages')) {
-            console.log(id);
-            return btoa(`views/${id.split('views/')[1]}-${id.split('/').pop()}`);
+            // return btoa(`views/${id.split('views/')[1]}-${id.split('/').pop()}`);
+            return `${id
+              .split('/')
+              .pop()
+              .replace(/\.[tj]sx?$/gi, '')
+              .toLowerCase()}`;
           }
           // if (id.includes('node_modules')) {
           //   // Return the directory name under node_modules
