@@ -36,41 +36,49 @@ async function yamlParseAndSave(file) {
     'principles-solid',
     'principles-other',
     'principles-proprietary',
+    'clean-code',
   ];
   for (const name of names) {
-    let defaultPPYamlObject = {};
+    let genericExamplesYamlObject = {};
     let key;
 
-    const defaultPPFile = pathJoin(langPath, '_', name) + '.yml';
-    if (existsSync(defaultPPFile)) {
-      const defaultPPYamlString = await readFile(defaultPPFile, 'utf-8');
-      defaultPPYamlObject = yaml.parse(defaultPPYamlString);
-      key = Object.keys(defaultPPYamlObject)[0];
+    const genericExamplesFile = pathJoin(langPath, '_', name) + '.yml';
+    if (existsSync(genericExamplesFile)) {
+      const genericExamplesYamlString = await readFile(genericExamplesFile, 'utf-8');
+      genericExamplesYamlObject = yaml.parse(genericExamplesYamlString);
+      key = Object.keys(genericExamplesYamlObject)[0];
     }
 
-    const ppFile = pathJoin(langPath, langYamlObject.code, name) + '.yml';
-    let ppYamlObject = {};
-    if (existsSync(ppFile)) {
-      console.log(ppFile);
-      const ppYamlString = await readFile(ppFile, 'utf-8');
-      ppYamlObject = yaml.parse(ppYamlString);
+    // console.log(name, key, genericExamplesFile, genericExamplesYamlObject);
+
+    const examplesFile = pathJoin(langPath, langYamlObject.code, name) + '.yml';
+    let examplesYamlObject = {};
+    if (existsSync(examplesFile)) {
+      const examplesYamlString = await readFile(examplesFile, 'utf-8');
+      examplesYamlObject = yaml.parse(examplesYamlString);
       if (!key) {
-        key = Object.keys(ppYamlObject)[0];
+        key = Object.keys(examplesYamlObject)[0];
       }
     }
 
-    (ppYamlObject[key] || []).forEach((item) => {
-      const defaultItem = (defaultPPYamlObject[key] ?? []).find((defaultItem) => defaultItem.title === item.title);
+    // console.log(name, key, examplesFile, examplesYamlObject);
+
+    (examplesYamlObject[key] || []).forEach((item) => {
+      const defaultItem = (genericExamplesYamlObject[key] ?? []).find(
+        (defaultItem) => defaultItem.title === item.title,
+      );
       if (defaultItem) {
         defaultItem.examples = [...(defaultItem.examples ?? []), ...item.examples];
         defaultItem.examples = [...new Set(defaultItem.examples)]; // make'em unique
       } else {
-        defaultPPYamlObject[key] = defaultPPYamlObject[key] ?? [];
-        defaultPPYamlObject[key].push(item);
+        genericExamplesYamlObject[key] = genericExamplesYamlObject[key] ?? [];
+        genericExamplesYamlObject[key].push(item);
       }
     });
 
-    for (const item of defaultPPYamlObject[key] ?? []) {
+    // console.log(name, key, examplesFile, examplesYamlObject);
+
+    for (const item of genericExamplesYamlObject[key] ?? []) {
       for (const example of item.examples) {
         if (example.codeFile) {
           const codeFile = pathJoin(langPath, langYamlObject.code, example.codeFile) + `.${langYamlObject.ext}`;
@@ -87,12 +95,18 @@ async function yamlParseAndSave(file) {
       }
     }
 
-    const [pp, ppType] = name.split('-');
-    if (defaultPPYamlObject[pp] && defaultPPYamlObject[pp].length) {
-      langYamlObject[pp] = {
-        ...(langYamlObject[pp] ?? {}),
-        [`${pp}_${ppType}`]: defaultPPYamlObject[pp] ?? [],
-      };
+    // console.log(name, key, JSON.stringify(genericExamplesYamlObject));
+
+    if (name !== 'clean-code') {
+      const [docsType, docsCategory] = name.split('-');
+      if (genericExamplesYamlObject[docsType] && genericExamplesYamlObject[docsType].length) {
+        langYamlObject[docsType] = {
+          ...(langYamlObject[docsType] ?? {}),
+          [`${docsType}_${docsCategory}`]: genericExamplesYamlObject[docsType] ?? [],
+        };
+      }
+    } else {
+      langYamlObject[name] = genericExamplesYamlObject[name] ?? [];
     }
   }
 
@@ -105,6 +119,7 @@ async function yamlParseAndSave(file) {
 
 async function main() {
   const search = ofUnix(pathJoin(langPath, '**', 'lang.yml'));
+  // const search = ofUnix(pathJoin(langPath, 'typescript', 'lang.yml'));
 
   const yamlFiles = await globby([search]);
   await Promise.all(

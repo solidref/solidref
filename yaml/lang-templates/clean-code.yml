@@ -1,0 +1,26 @@
+---
+clean-code:
+  - title: Meaningful Names
+    examples:
+      - code: |
+          // code sample here
+  - title: Single Task Functions
+    examples:
+      - code: |
+          // code sample here
+  - title: Comments
+    examples:
+      - code: |
+          // code sample here
+  - title: Code Formatting
+    examples:
+      - code: |
+          // code sample here
+  - title: Error Handling
+    examples:
+      - code: |
+          // code sample here
+  - title: Refactoring
+    examples:
+      - code: |
+          // code sample here

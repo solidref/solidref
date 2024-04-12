@@ -6,10 +6,10 @@ import {useRef} from 'react';
 import * as SlickSlider from 'react-slick';
 
 import {AsArticleProps} from './AsArticle';
-import Slider from '../../generic/Slider';
-import {defaultSlickSliderProps} from '../../generic/SliderDefaults';
-import SyntaxHighlighter from '../../generic/SyntaxHighlighter';
-import TypographySet from '../../generic/TypographySet';
+import Slider from '../../../generic/Slider';
+import {defaultSlickSliderProps} from '../../../generic/SliderDefaults';
+import SyntaxHighlighter from '../../../generic/SyntaxHighlighter';
+import TypographySet from '../../../generic/TypographySet';
 
 const WrapperBox = styled(Box)(({theme}) => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

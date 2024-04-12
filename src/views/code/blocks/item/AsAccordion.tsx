@@ -6,9 +6,9 @@ import {SyntheticEvent} from 'react';
 import {Link} from 'react-router-dom';
 
 import {AsArticleProps} from './AsArticle';
-import CodeExampleAccordion from '../../code/CodeExampleAccordion';
-import TypographySet from '../../generic/TypographySet';
-import SyntaxHighlighter from '../../generic/SyntaxHighlighter';
+import CodeExampleAccordion from '../../CodeExampleAccordion';
+import TypographySet from '../../../generic/TypographySet';
+import SyntaxHighlighter from '../../../generic/SyntaxHighlighter';
 
 export type AsAccordionProps = AsArticleProps & {
   expanded: string[];

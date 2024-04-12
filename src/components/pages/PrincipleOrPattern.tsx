@@ -16,13 +16,22 @@ import Container from '../../views/generic/Container';
 import PrincipleOrPatternHero from '../../views/pages/principle-or-pattern/Hero';
 import PrinciplesOrPatternsMenu from '../../views/pages/language/BottomMenu';
 // import PatternsOrPrinciples from '../../views/principles-or-patterns/AsAccordion';
-import PatternsOrPrinciples from '../../views/docs/AsGrid';
+import PatternsOrPrinciples from '../../views/code/blocks/AsGrid';
+import TypographySet from '../../views/generic/TypographySet';
 
 type PrincipleOrPatternProps = {
-  type: 'principles' | 'patterns';
+  readonly showAfter?: boolean;
+  readonly showBefore?: boolean;
+  readonly showMenu?: boolean;
+  readonly type: 'principles' | 'patterns' | 'clean-code';
 };
 
-export default function PrincipleOrPattern({type}: PrincipleOrPatternProps) {
+export default function PrincipleOrPattern({
+  type,
+  showAfter,
+  showBefore,
+  showMenu = true,
+}: Readonly<PrincipleOrPatternProps>) {
   const theme = useTheme();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const boxBgColor = (theme.palette as any).alternate?.main; // Direct access, assuming 'alternate' exists
@@ -33,7 +42,9 @@ export default function PrincipleOrPattern({type}: PrincipleOrPatternProps) {
 
   // Assuming useRecoilValue already returns the correct type, so explicit casting may not be necessary
   const languageState = useRecoilValue(loadLanguage(selectedLanguageCode));
-  const principleOrPattern = useRecoilValue(loadPrincipleOrPattern(`${type}-${principleOrPatternGroup}`));
+  const principleOrPattern = useRecoilValue(
+    loadPrincipleOrPattern(type === 'clean-code' ? type : `${type}-${principleOrPatternGroup}`),
+  );
 
   const [language, setLanguage] = useState<Language | null>(null);
   const [principleOrPatternExamples, setPrincipleOrPatternExamples] = useState<DesignPattern[] | CodingPrinciple[]>([]);
@@ -43,9 +54,11 @@ export default function PrincipleOrPattern({type}: PrincipleOrPatternProps) {
   useEffect(() => {
     if (languageState.ready && principleOrPattern.ready) {
       const l = languageState?.language as Language;
-      const examplesList = ['principles', 'patterns']
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .map((type) => (l as any)?.[type]?.[`${type}_${principleOrPatternGroup}`])
+      const examplesList = ['principles', 'patterns', 'clean-code']
+        .map((type) =>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          type === 'clean-code' ? (l as any)?.[type] : (l as any)?.[type]?.[`${type}_${principleOrPatternGroup}`],
+        )
         .filter((ex) => ex);
       if (examplesList.length > 0) {
         const accordion = principleOrPattern?.content?.accordion ?? {};
@@ -77,14 +90,29 @@ export default function PrincipleOrPattern({type}: PrincipleOrPatternProps) {
           <Box>
             <PrincipleOrPatternHero title={principleOrPatternContent?.title} />
           </Box>
+
           <Box>
             <Box bgcolor={boxBgColor} position={'relative'}>
               <Container position="relative" zIndex={2}>
+                {showBefore ? (
+                  <Box>
+                    <TypographySet content={principleOrPatternContent.before ?? []} />
+                  </Box>
+                ) : (
+                  <></>
+                )}
                 <PatternsOrPrinciples
                   patternsOrPrinciples={principleOrPatternExamples ?? []}
                   language={selectedLanguageCode || 'js'}
                   type={type}
                 />
+                {showAfter ? (
+                  <Box>
+                    <TypographySet content={principleOrPatternContent.after ?? []} />
+                  </Box>
+                ) : (
+                  <></>
+                )}
               </Container>
             </Box>
           </Box>
@@ -92,7 +120,7 @@ export default function PrincipleOrPattern({type}: PrincipleOrPatternProps) {
       ) : (
         <Box />
       )}
-      {language ? (
+      {showMenu && language ? (
         <Box>
           <Box position={'relative'}>
             <Container position="relative" zIndex={2}>

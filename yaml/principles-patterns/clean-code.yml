@@ -1,0 +1,77 @@
+---
+title: Clean Code
+before:
+  - variant: body1
+    content: |
+      Clean Code is a philosophy in software development that prioritizes writing code that is easy to read,
+      understand, and maintain. The concept, popularized by Robert C. Martin and other software engineers,
+      suggests that code should be written considering the next developer who will read it, who might very well
+      be you. This approach not only facilitates better collaboration among team members but also enhances the
+      longevity and adaptability of the software itself. By adhering to a set of well-considered practices and
+      principles, developers can produce code that is efficient, error-resistant, and, most importantly,
+      understandable by humans.
+accordion:
+  Meaningful Names:
+    - variant: body1
+      content: |
+        One of the cornerstones of Clean Code is the use of meaningful names for variables, functions, and classes.
+        Names should clearly convey to the reader what a variable holds, what a function does, and what a class
+        represents.
+    - variant: body1
+      content: |
+        In the bad example, the class and method names (D and d) do not convey any meaning, making it hard to
+        understand what the code does without deeper inspection. In contrast, the good example uses descriptive names
+        that make the code's purpose immediately clear.
+  Single Task Functions:
+    - variant: body1
+      content: |
+        In the bad example, processData is doing multiple things: splitting the input into lines, processing those
+        lines, and then printing the results. The good example refactors this into separate functions, each with a
+        clear, singular purpose. This not only makes the code easier to follow but also enhances reusability and
+        testability.
+  Comments:
+    - variant: body1
+      content: |
+        While comments can be helpful, Clean Code advocates for writing code that is self-explanatory and only using
+        comments when necessary to explain the "why" behind a piece of code, not the "what" or "how". Comments should
+        not compensate for bad code. Instead, strive to make your code so clear and self-explanatory that comments
+        become largely unnecessary for understanding what the code does.
+    - variant: body1
+      content: |
+        In the bad example, the comment is redundant because the function name and parameter names already clearly
+        convey what the function does. The good example uses a comment to explain a non-obvious reason for adjusting a
+        timestamp, which adds valuable context that the code itself cannot convey.
+  Code Formatting:
+    - variant: body1
+      content: |
+        Consistent code formatting is crucial for maintaining readability. This includes conventions on indentation,
+        spacing, bracket placement, and more. A well-formatted codebase looks professional and is easier to read and
+        understand at a glance.
+    - variant: body1
+      content: |
+        The well-formatted example uses proper indentation, spacing around operators and parameters, and clear block
+        delimitation to enhance readability. Such practices make the code easier to follow and maintain, especially
+        when working in teams.
+  Error Handling:
+    - variant: body1
+      content: |
+        Error handling is an essential aspect of writing clean and robust code. Clean Code principles advocate for the
+        use of exceptions rather than return codes to handle errors, promoting cleaner and more readable error handling
+        mechanisms. The idea is to separate the logic of error handling from the main business logic, making the code
+        easier to understand and maintain.
+    - variant: body1
+      content: |
+        In the bad example, error handling is done using a special return value, mixing error handling logic with normal
+        control flow, which can complicate the code's logic. The good example uses exceptions to separate error handling
+        from the main logic, making the code cleaner and the error handling more explicit.
+  Refactoring:
+    - variant: body1
+      content: |
+        Refactoring is the process of changing a software system in such a way that it does not alter the external behavior
+        of the code yet improves its internal structure. It is a critical tool for maintaining and enhancing clean code,
+        allowing developers to iteratively improve the codebase for better readability, maintainability, and performance.
+    - variant: body1
+      content: |
+        The refactored example replaces the manual loop with a more expressive and concise .map() method, making the code
+        shorter, more readable, and easier to understand at a glance. This change does not alter the function's behavior
+        but significantly improves its internal structure.

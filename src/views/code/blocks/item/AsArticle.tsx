@@ -1,4 +1,4 @@
-import {CodingPrinciple, DesignPattern} from '../../../state';
+import {CodingPrinciple, DesignPattern} from '../../../../state';
 
 export type AsArticleProps = {
   patternOrPrinciple: DesignPattern | CodingPrinciple;

@@ -48,9 +48,11 @@ async function translateExample(tsExampleFile, itemTitle, example, options) {
   const code = await readFile(tsExampleFile).then((buf) => buf.toString('utf-8'));
 
   const message =
-    type === 'patterns'
-      ? `Please convert the following ${itemTitle.toLowerCase()} design pattern example to ${language} programming language.`
-      : `Please convert the following ${itemTitle.toLowerCase()} coding principle ${tsExampleType} example to ${language} programming languag.`;
+    type === 'clean-code'
+      ? `Please convert the following ${itemTitle.toLowerCase()} clean code ${tsExampleType} example to ${language} programming language.`
+      : type === 'patterns'
+        ? `Please convert the following ${itemTitle.toLowerCase()} design pattern example to ${language} programming language.`
+        : `Please convert the following ${itemTitle.toLowerCase()} coding principle ${tsExampleType} example to ${language} programming language.`;
 
   const response = await askGpt(
     [
@@ -77,11 +79,16 @@ ${code}`,
 async function generateExamples(options) {
   const {generate: type} = options;
 
-  const patternTypes = type === 'patterns' ? ['behavioural', 'creational', 'structural'] : ['solid', 'other'];
+  const patternTypes =
+    type === 'clean-code'
+      ? type
+      : type === 'patterns'
+        ? ['behavioural', 'creational', 'structural']
+        : ['solid', 'other'];
   for (const patternType of patternTypes) {
-    const patternYaml = await readFile(pathJoin(langPath, '_', `${type}-${patternType}.yml`)).then((buf) =>
-      buf.toString('utf-8'),
-    );
+    const patternYaml = await readFile(
+      pathJoin(langPath, '_', type === 'clean-code' ? `${type}.yml` : `${type}-${patternType}.yml`),
+    ).then((buf) => buf.toString('utf-8'));
     const patternObject = yaml.parse(patternYaml);
     for (const item of patternObject[type]) {
       for (const example of item.examples) {
@@ -164,6 +171,12 @@ async function main() {
         await generateExamples({
           ...options,
           generate: 'principles',
+        });
+      }
+      if (generate === 'all' || generate === 'clean-code') {
+        await generateExamples({
+          ...options,
+          generate: 'clean-code',
         });
       }
     })

@@ -10,7 +10,7 @@ import Container from '../../views/generic/Container';
 import LanguageHero from '../../views/pages/language/Hero';
 import PrinciplesOrPatternsMenu from '../../views/pages/language/BottomMenu';
 // import PatternsOrPrinciples from '../../views/principles-or-patterns/AsAccordion';
-import PatternsOrPrinciples from '../../views/docs/AsGrid';
+import PatternsOrPrinciples from '../../views/code/blocks/AsGrid';
 
 type DetectedPrincipleOrPattern = {type?: string; principlesOrPatterns?: DesignPattern[] | CodingPrinciple[]};
 

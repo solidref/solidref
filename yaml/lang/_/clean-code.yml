@@ -1,0 +1,38 @@
+---
+clean-code:
+  - title: Meaningful Names
+    examples:
+      - title: Good Example
+        codeFile: clean-code/meaningful-names/good-example
+      - title: Bad Example
+        codeFile: clean-code/meaningful-names/bad-example
+  - title: Single Task Functions
+    examples:
+      - title: Good Example
+        codeFile: clean-code/single-task-functions/good-example
+      - title: Bad Example
+        codeFile: clean-code/single-task-functions/bad-example
+  - title: Comments
+    examples:
+      - title: Good Example
+        codeFile: clean-code/comments/good-example
+      - title: Bad Example
+        codeFile: clean-code/comments/bad-example
+  - title: Code Formatting
+    examples:
+      - title: Good Example
+        codeFile: clean-code/code-formatting/good-example
+      - title: Bad Example
+        codeFile: clean-code/code-formatting/bad-example
+  - title: Error Handling
+    examples:
+      - title: Good Example
+        codeFile: clean-code/error-handling/good-example
+      - title: Bad Example
+        codeFile: clean-code/error-handling/bad-example
+  - title: Refactoring
+    examples:
+      - title: Good Example
+        codeFile: clean-code/refactoring/good-example
+      - title: Bad Example
+        codeFile: clean-code/refactoring/bad-example

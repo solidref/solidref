@@ -1,4 +1,4 @@
-import {CodingPrinciple, DesignPattern} from '../../state';
+import {CodingPrinciple, DesignPattern} from '../../../state';
 import AsArticleItem from './item/AsArticle';
 
 export type AsArticleProps = {
