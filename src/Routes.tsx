@@ -6,6 +6,7 @@ import Home from './views/pages/Home';
 import Languages from './views/pages/Languages';
 import {generateLanguagePath} from './utils/url';
 import NotFound from './views/pages/NotFound';
+import About from './views/pages/About';
 
 // import History from './views/pages/History';
 
@@ -23,6 +24,7 @@ export default function LocalRoutes() {
             path="/clean-code"
             element={<PrincipleOrPattern type={'clean-code'} showMenu={false} showBefore={true} />}
           />
+          <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
